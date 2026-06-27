@@ -11,107 +11,185 @@
 
 <body>
 
-<header>
+<header class="studio-header">
 
-    <h1>Two Marshalls Studios</h1>
-
-    <p>Studio Headquarters & Development Command Center</p>
+    <div class="header-content">
+        <p class="eyebrow">Studio Headquarters</p>
+        <h1>Two Marshalls Studios</h1>
+        <p class="header-subtitle">Command Center for games, systems, publishing, and studio operations.</p>
+    </div>
 
 </header>
 
-<main>
+<main class="dashboard">
 
-    <section>
+    <section class="focus-card dashboard-card full-width">
 
-        <h2>🎯 Today's Focus</h2>
+        <div class="card-header">
+            <span class="card-icon">🎯</span>
+            <div>
+                <p class="section-label">Current Work Session</p>
+                <h2>Today's Focus</h2>
+            </div>
+        </div>
 
-        <p>
-            Continue building the Studio Headquarters.
+        <p class="focus-text">
+            Build the permanent Studio Headquarters layout and continue moving toward Version 1.0.
         </p>
 
-    </section>
+        <div class="focus-details">
+            <div>
+                <span class="detail-label">Project</span>
+                <strong>Studio Portal</strong>
+            </div>
 
-    <section>
+            <div>
+                <span class="detail-label">Phase</span>
+                <strong>Dashboard Foundation</strong>
+            </div>
 
-        <h2>🎮 Current Projects</h2>
-
-        <ul>
-
-            <li>🚗 Dead Roads</li>
-
-            <li>🎮 45s</li>
-
-            <li>🏢 Studio Operating System</li>
-
-        </ul>
-
-    </section>
-
-    <section>
-
-        <h2>🏗 Studio Areas</h2>
-
-        <ul>
-
-            <li>Documentation</li>
-
-            <li>Game Development</li>
-
-            <li>Publishing</li>
-
-            <li>Marketing</li>
-
-            <li>Assets</li>
-
-            <li>Business Operations</li>
-
-        </ul>
+            <div>
+                <span class="detail-label">Version</span>
+                <strong>v0.3</strong>
+            </div>
+        </div>
 
     </section>
 
-    <section>
+    <section class="dashboard-card projects-card">
 
-        <h2>📊 Studio Status</h2>
+        <div class="card-header">
+            <span class="card-icon">🎮</span>
+            <div>
+                <p class="section-label">Active Work</p>
+                <h2>Current Projects</h2>
+            </div>
+        </div>
 
-        <table>
+        <div class="project-list">
 
-            <tr>
-                <td>Studio Portal</td>
-                <td>🟢 Online</td>
-            </tr>
+            <article class="project-item">
+                <div>
+                    <h3>Dead Roads</h3>
+                    <p>Third-person survival game.</p>
+                </div>
+                <span class="project-status">In Development</span>
+            </article>
 
-            <tr>
-                <td>GitHub</td>
-                <td>🟢 Connected</td>
-            </tr>
+            <article class="project-item">
+                <div>
+                    <h3>45s</h3>
+                    <p>Fast, simple card-based game concept.</p>
+                </div>
+                <span class="project-status planned">Planned</span>
+            </article>
 
-            <tr>
-                <td>GitHub Pages</td>
-                <td>🟢 Live</td>
-            </tr>
+            <article class="project-item">
+                <div>
+                    <h3>Studio Operating System</h3>
+                    <p>Internal system for running Two Marshalls Studios.</p>
+                </div>
+                <span class="project-status">Active</span>
+            </article>
 
-            <tr>
-                <td>Current Version</td>
-                <td>v0.1</td>
-            </tr>
+        </div>
 
-        </table>
+    </section>
+
+    <section class="dashboard-card status-card">
+
+        <div class="card-header">
+            <span class="card-icon">📊</span>
+            <div>
+                <p class="section-label">System Health</p>
+                <h2>Studio Status</h2>
+            </div>
+        </div>
+
+        <div class="status-list">
+
+            <div class="status-row">
+                <span>Studio Portal</span>
+                <strong>🟢 Online</strong>
+            </div>
+
+            <div class="status-row">
+                <span>GitHub</span>
+                <strong>🟢 Connected</strong>
+            </div>
+
+            <div class="status-row">
+                <span>GitHub Pages</span>
+                <strong>🟢 Live</strong>
+            </div>
+
+            <div class="status-row">
+                <span>Current Version</span>
+                <strong>v0.3</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="dashboard-card full-width studio-areas-card">
+
+        <div class="card-header">
+            <span class="card-icon">🏢</span>
+            <div>
+                <p class="section-label">Studio Navigation</p>
+                <h2>Studio Areas</h2>
+            </div>
+        </div>
+
+        <div class="area-grid">
+
+            <div class="area-item">
+                <span>📚</span>
+                <strong>Documentation</strong>
+                <p>Standards, guides, decisions, and studio knowledge.</p>
+            </div>
+
+            <div class="area-item">
+                <span>🛠️</span>
+                <strong>Development</strong>
+                <p>GitHub, Unity, builds, releases, and technical work.</p>
+            </div>
+
+            <div class="area-item">
+                <span>🎨</span>
+                <strong>Assets</strong>
+                <p>Art, models, audio, icons, and reusable materials.</p>
+            </div>
+
+            <div class="area-item">
+                <span>🚀</span>
+                <strong>Publishing</strong>
+                <p>Store pages, checklists, launch plans, and releases.</p>
+            </div>
+
+            <div class="area-item">
+                <span>📣</span>
+                <strong>Marketing</strong>
+                <p>Screenshots, trailers, campaigns, and brand assets.</p>
+            </div>
+
+            <div class="area-item">
+                <span>💼</span>
+                <strong>Business Operations</strong>
+                <p>Planning, finance, time tracking, and studio management.</p>
+            </div>
+
+        </div>
 
     </section>
 
 </main>
 
-<footer>
+<footer class="studio-footer">
 
-    <p>
-
-        Two Marshalls Studios © 2026
-
-        <br>
-
-        Studio Headquarters Version 0.1
-
-    </p>
+    <p>Two Marshalls Studios © 2026</p>
+    <p>Studio Headquarters Version 0.3</p>
 
 </footer>
 
