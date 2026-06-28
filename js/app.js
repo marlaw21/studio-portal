@@ -16,12 +16,28 @@ function getStatusIcon(state) {
     return "⚪";
 }
 
-function getProjectStatusClass(status) {
+function getRecordStatusClass(status) {
+    if (!status) {
+        return "project-status";
+    }
+
     if (status.toLowerCase() === "planned") {
         return "project-status planned";
     }
 
     return "project-status";
+}
+
+function getRecordTitle(record) {
+    return record.name || record.title || "Untitled";
+}
+
+function getRecordDescription(record) {
+    return record.description || record.text || "";
+}
+
+function getRecordStatus(record) {
+    return record.status || record.time || "";
 }
 
 function renderStudioHeader() {
@@ -63,22 +79,26 @@ function renderCurrentWorkSession() {
 function renderRecordList(containerId, records) {
     const recordList = document.getElementById(containerId);
 
-    if (!recordList) {
+    if (!recordList || !records) {
         return;
     }
 
     recordList.innerHTML = "";
 
     records.forEach(function (record) {
+        const title = getRecordTitle(record);
+        const description = getRecordDescription(record);
+        const status = getRecordStatus(record);
+
         const recordItem = document.createElement("article");
         recordItem.className = "project-item";
 
         recordItem.innerHTML = `
             <div>
-                <h3>${record.name}</h3>
-                <p>${record.description}</p>
+                <h3>${title}</h3>
+                <p>${description}</p>
             </div>
-            <span class="${getProjectStatusClass(record.status)}">${record.status}</span>
+            <span class="${getRecordStatusClass(status)}">${status}</span>
         `;
 
         recordList.appendChild(recordItem);
@@ -88,7 +108,7 @@ function renderRecordList(containerId, records) {
 function renderAreaGrid(containerId, records) {
     const areaGrid = document.getElementById(containerId);
 
-    if (!areaGrid) {
+    if (!areaGrid || !records) {
         return;
     }
 
@@ -99,9 +119,9 @@ function renderAreaGrid(containerId, records) {
         areaItem.className = "area-item";
 
         areaItem.innerHTML = `
-            <span>${record.icon}</span>
-            <strong>${record.name}</strong>
-            <p>${record.description}</p>
+            <span>${record.icon || "📌"}</span>
+            <strong>${getRecordTitle(record)}</strong>
+            <p>${getRecordDescription(record)}</p>
         `;
 
         areaGrid.appendChild(areaItem);
@@ -111,7 +131,7 @@ function renderAreaGrid(containerId, records) {
 function renderStatusRows(containerId, rows) {
     const statusList = document.getElementById(containerId);
 
-    if (!statusList) {
+    if (!statusList || !rows) {
         return;
     }
 
@@ -187,242 +207,10 @@ function renderProgress() {
     });
 }
 
-function renderActivityFeed() {
-    const activityFeed = document.getElementById("activity-feed");
-
-    if (!activityFeed || !studioData.activityFeed) {
-        return;
-    }
-
-    activityFeed.innerHTML = "";
-
-    studioData.activityFeed.forEach(function (activity) {
-        const activityItem = document.createElement("article");
-        activityItem.className = "project-item";
-
-        activityItem.innerHTML = `
-            <div>
-                <h3>${activity.title}</h3>
-                <p>${activity.description}</p>
-            </div>
-            <span class="project-status">${activity.time}</span>
-        `;
-
-        activityFeed.appendChild(activityItem);
-    });
-}
-
-function renderProjects() {
-    renderRecordList("project-list", studioData.projects);
-}
-
-function renderDevelopmentProjects() {
-    renderRecordList("development-project-list", studioData.projects);
-}
-
-function renderDocumentationRecords() {
-    const documentationRecords = [
-        {
-            name: "Build Session Log",
-            description: "Tracks what was completed during each work session.",
-            status: "Planned"
-        },
-        {
-            name: "Decision Log",
-            description: "Records important studio decisions and why they were made.",
-            status: "Planned"
-        },
-        {
-            name: "Enhancement Ideas Log",
-            description: "Stores future ideas without interrupting active development.",
-            status: "Planned"
-        }
-    ];
-
-    renderRecordList("documentation-record-list", documentationRecords);
-}
-
-function renderAssetCategories() {
-    const assetCategories = [
-        {
-            name: "3D Models",
-            description: "Unity and Blender models.",
-            status: "Active"
-        },
-        {
-            name: "Textures & Materials",
-            description: "Surfaces, shaders, and reusable materials.",
-            status: "Active"
-        },
-        {
-            name: "Audio Library",
-            description: "Music, ambience, sound effects, and voice.",
-            status: "Planned"
-        }
-    ];
-
-    renderRecordList("asset-category-list", assetCategories);
-}
-
-function renderAssetGroups() {
-    const assetGroups = [
-        {
-            icon: "🪓",
-            name: "Weapons",
-            description: "Tools, melee, ranged weapons, and upgrades."
-        },
-        {
-            icon: "🌲",
-            name: "Environment",
-            description: "Trees, rocks, terrain, foliage, and props."
-        },
-        {
-            icon: "🏠",
-            name: "Buildings",
-            description: "Structures, interiors, furniture, and modular kits."
-        },
-        {
-            icon: "🎵",
-            name: "Audio",
-            description: "Music, ambience, effects, and voice assets."
-        },
-        {
-            icon: "🖥️",
-            name: "UI Assets",
-            description: "Icons, menus, HUD elements, and interface graphics."
-        },
-        {
-            icon: "🎬",
-            name: "Animations",
-            description: "Character, creature, and object animations."
-        }
-    ];
-
-    renderAreaGrid("asset-group-list", assetGroups);
-}
-
-function renderPublishingChannels() {
-    const publishingChannels = [
-        {
-            name: "Apple App Store",
-            description: "iPhone and iPad publishing path.",
-            status: "Planned"
-        },
-        {
-            name: "Google Play",
-            description: "Android phone and tablet publishing path.",
-            status: "Planned"
-        },
-        {
-            name: "Steam",
-            description: "PC publishing and distribution path.",
-            status: "Planned"
-        }
-    ];
-
-    renderRecordList("publishing-channel-list", publishingChannels);
-}
-
-function renderPublishingPipeline() {
-    const publishingPipeline = [
-        {
-            icon: "✅",
-            name: "Prepare",
-            description: "Confirm game build, store assets, screenshots, descriptions, and requirements."
-        },
-        {
-            icon: "📦",
-            name: "Package",
-            description: "Create the correct release build for the target platform."
-        },
-        {
-            icon: "🧪",
-            name: "Review",
-            description: "Test release candidates before submitting to any platform."
-        },
-        {
-            icon: "🚀",
-            name: "Submit",
-            description: "Upload the release package to the correct store or distribution channel."
-        },
-        {
-            icon: "📣",
-            name: "Launch",
-            description: "Coordinate launch timing, marketing, announcements, and release notes."
-        },
-        {
-            icon: "📊",
-            name: "Track",
-            description: "Monitor downloads, feedback, ratings, issues, and revenue after release."
-        }
-    ];
-
-    renderAreaGrid("publishing-pipeline-list", publishingPipeline);
-}
-
-function renderMarketingChannels() {
-    const marketingChannels = [
-        {
-            name: "Game Store Assets",
-            description: "Screenshots, icons, descriptions, capsule art, and feature graphics.",
-            status: "Planned"
-        },
-        {
-            name: "Trailers & Video",
-            description: "Gameplay trailers, teaser videos, development updates, and launch videos.",
-            status: "Planned"
-        },
-        {
-            name: "Community Updates",
-            description: "Player-facing updates, development news, and release announcements.",
-            status: "Planned"
-        }
-    ];
-
-    renderRecordList("marketing-channel-list", marketingChannels);
-}
-
-function renderMarketingPipeline() {
-    const marketingPipeline = [
-        {
-            icon: "🧠",
-            name: "Message",
-            description: "Define what the game is, who it is for, and why players should care."
-        },
-        {
-            icon: "📸",
-            name: "Capture",
-            description: "Create screenshots, clips, gameplay footage, and visual materials."
-        },
-        {
-            icon: "🎬",
-            name: "Produce",
-            description: "Build trailers, store graphics, announcements, and release content."
-        },
-        {
-            icon: "📢",
-            name: "Publish",
-            description: "Post updates, store materials, community announcements, and launch messages."
-        },
-        {
-            icon: "👥",
-            name: "Engage",
-            description: "Respond to feedback, track interest, and build trust with players."
-        },
-        {
-            icon: "📈",
-            name: "Measure",
-            description: "Review traffic, wishlists, downloads, engagement, reviews, and conversion."
-        }
-    ];
-
-    renderAreaGrid("marketing-pipeline-list", marketingPipeline);
-}
-
 function renderStatus() {
     const statusList = document.getElementById("status-list");
 
-    if (!statusList) {
+    if (!statusList || !studioData.status) {
         return;
     }
 
@@ -444,7 +232,7 @@ function renderStatus() {
 function renderDepartments() {
     const departmentList = document.getElementById("department-list");
 
-    if (!departmentList) {
+    if (!departmentList || !studioData.departments) {
         return;
     }
 
@@ -489,18 +277,25 @@ function renderDashboard() {
     renderStudioHeader();
     renderCurrentWorkSession();
     renderStudioState();
-    renderProjects();
-    renderDevelopmentProjects();
-    renderDocumentationRecords();
-    renderAssetCategories();
-    renderAssetGroups();
-    renderPublishingChannels();
-    renderPublishingPipeline();
-    renderMarketingChannels();
-    renderMarketingPipeline();
+
+    renderRecordList("studio-command-list", studioData.studioCommands);
+    renderRecordList("notification-list", studioData.notifications);
+    renderStatusRows("system-config-list", studioData.systemConfig);
+
+    renderRecordList("project-list", studioData.projects);
+    renderRecordList("development-project-list", studioData.projects);
+    renderRecordList("documentation-record-list", studioData.documentationRecords);
+    renderRecordList("asset-category-list", studioData.assetCategories);
+    renderAreaGrid("asset-group-list", studioData.assetGroups);
+    renderRecordList("publishing-channel-list", studioData.publishingChannels);
+    renderAreaGrid("publishing-pipeline-list", studioData.publishingPipeline);
+    renderRecordList("marketing-channel-list", studioData.marketingChannels);
+    renderAreaGrid("marketing-pipeline-list", studioData.marketingPipeline);
+
     renderStatus();
     renderProgress();
-    renderActivityFeed();
+    renderRecordList("activity-feed", studioData.activityFeed);
+    renderRecordList("version-history-list", studioData.versionHistory);
     renderDepartments();
     renderFooter();
 
