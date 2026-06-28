@@ -23,6 +23,20 @@
 
 </header>
 
+<nav class="global-nav">
+
+    <ul>
+        <li><a href="../index.html">🏠 Headquarters</a></li>
+        <li><a href="documentation.html">📚 Documentation</a></li>
+        <li><a href="development.html">🛠 Development</a></li>
+        <li><a href="assets.html">🎨 Assets</a></li>
+        <li><a class="active" href="publishing.html">🚀 Publishing</a></li>
+        <li><a href="marketing.html">📣 Marketing</a></li>
+        <li><a href="business.html">🏢 Business</a></li>
+    </ul>
+
+</nav>
+
 <main class="dashboard">
 
     <section class="dashboard-card full-width">
@@ -36,10 +50,8 @@
         </div>
 
         <p>
-            This department will manage how Two Marshalls Studios prepares, packages,
-            releases, and tracks games across publishing platforms. It will eventually
-            include launch checklists, store requirements, version history, release notes,
-            and platform-specific publishing workflows.
+            This department is now connected to the shared Studio Data Architecture.
+            Publishing channels and release workflow details below are loaded by the shared dashboard engine.
         </p>
 
     </section>
@@ -54,32 +66,8 @@
             </div>
         </div>
 
-        <div class="project-list">
-
-            <article class="project-item">
-                <div>
-                    <h3>Apple App Store</h3>
-                    <p>iPhone and iPad publishing path.</p>
-                </div>
-                <span class="project-status planned">Planned</span>
-            </article>
-
-            <article class="project-item">
-                <div>
-                    <h3>Google Play</h3>
-                    <p>Android phone and tablet publishing path.</p>
-                </div>
-                <span class="project-status planned">Planned</span>
-            </article>
-
-            <article class="project-item">
-                <div>
-                    <h3>Steam</h3>
-                    <p>PC publishing and distribution path.</p>
-                </div>
-                <span class="project-status planned">Planned</span>
-            </article>
-
+        <div class="project-list" id="publishing-channel-list">
+            <p>Loading publishing channels...</p>
         </div>
 
     </section>
@@ -130,44 +118,8 @@
             </div>
         </div>
 
-        <div class="area-grid">
-
-            <div class="area-item">
-                <span>✅</span>
-                <strong>Prepare</strong>
-                <p>Confirm game build, store assets, screenshots, descriptions, and requirements.</p>
-            </div>
-
-            <div class="area-item">
-                <span>📦</span>
-                <strong>Package</strong>
-                <p>Create the correct release build for the target platform.</p>
-            </div>
-
-            <div class="area-item">
-                <span>🧪</span>
-                <strong>Review</strong>
-                <p>Test release candidates before submitting to any platform.</p>
-            </div>
-
-            <div class="area-item">
-                <span>🚀</span>
-                <strong>Submit</strong>
-                <p>Upload the release package to the correct store or distribution channel.</p>
-            </div>
-
-            <div class="area-item">
-                <span>📣</span>
-                <strong>Launch</strong>
-                <p>Coordinate launch timing, marketing, announcements, and release notes.</p>
-            </div>
-
-            <div class="area-item">
-                <span>📊</span>
-                <strong>Track</strong>
-                <p>Monitor downloads, feedback, ratings, issues, and revenue after release.</p>
-            </div>
-
+        <div class="area-grid" id="publishing-pipeline-list">
+            <p>Loading publishing pipeline...</p>
         </div>
 
     </section>
@@ -192,11 +144,12 @@
 
 <footer class="studio-footer">
 
-    <p>Two Marshalls Studios © 2026</p>
-    <p>Publishing Department Version 0.1</p>
+    <p id="footer-copyright">Two Marshalls Studios © 2026</p>
+    <p id="footer-version">Publishing Department Version Loading...</p>
 
 </footer>
 
+<script src="../js/studio-data.js"></script>
 <script src="../js/app.js"></script>
 
 </body>

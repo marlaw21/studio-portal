@@ -48,9 +48,8 @@
         </div>
 
         <p>
-            This page will become the central development hub for Two Marshalls Studios.
-            It will organize active game projects, development tools, build status,
-            testing work, version history, and release readiness.
+            This page is now connected to the shared Studio Data Architecture.
+            Project information will load from the central studio data file instead of being hard-coded here.
         </p>
 
     </section>
@@ -65,32 +64,8 @@
             </div>
         </div>
 
-        <div class="project-list">
-
-            <article class="project-item">
-                <div>
-                    <h3>Dead Roads</h3>
-                    <p>Third-person survival game built in Unity.</p>
-                </div>
-                <span class="project-status">In Development</span>
-            </article>
-
-            <article class="project-item">
-                <div>
-                    <h3>45s</h3>
-                    <p>Simple, fast-play game planned for multiple platforms.</p>
-                </div>
-                <span class="project-status planned">Planned</span>
-            </article>
-
-            <article class="project-item">
-                <div>
-                    <h3>Studio Portal</h3>
-                    <p>Internal headquarters and operating system for the studio.</p>
-                </div>
-                <span class="project-status">Active</span>
-            </article>
-
+        <div class="project-list" id="development-project-list">
+            <p>Loading development projects...</p>
         </div>
 
     </section>
@@ -203,11 +178,12 @@
 
 <footer class="studio-footer">
 
-    <p>Two Marshalls Studios © 2026</p>
-    <p>Development Department Version 0.2</p>
+    <p id="footer-copyright">Two Marshalls Studios © 2026</p>
+    <p id="footer-version">Development Department Version Loading...</p>
 
 </footer>
 
+<script src="../js/studio-data.js"></script>
 <script src="../js/app.js"></script>
 
 </body>

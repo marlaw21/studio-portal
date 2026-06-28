@@ -23,6 +23,20 @@
 
 </header>
 
+<nav class="global-nav">
+
+    <ul>
+        <li><a href="../index.html">🏠 Headquarters</a></li>
+        <li><a href="documentation.html">📚 Documentation</a></li>
+        <li><a href="development.html">🛠 Development</a></li>
+        <li><a class="active" href="assets.html">🎨 Assets</a></li>
+        <li><a href="publishing.html">🚀 Publishing</a></li>
+        <li><a href="marketing.html">📣 Marketing</a></li>
+        <li><a href="business.html">🏢 Business</a></li>
+    </ul>
+
+</nav>
+
 <main class="dashboard">
 
     <section class="dashboard-card full-width">
@@ -36,9 +50,8 @@
         </div>
 
         <p>
-            This department will become the central library for every reusable asset created
-            by Two Marshalls Studios. It will eventually organize 3D models, textures,
-            materials, audio, animations, icons, UI elements, and branding resources.
+            This department is now connected to the shared Studio Data Architecture.
+            Asset categories below are loaded by the shared dashboard engine.
         </p>
 
     </section>
@@ -53,32 +66,8 @@
             </div>
         </div>
 
-        <div class="project-list">
-
-            <article class="project-item">
-                <div>
-                    <h3>3D Models</h3>
-                    <p>Unity and Blender models.</p>
-                </div>
-                <span class="project-status">Active</span>
-            </article>
-
-            <article class="project-item">
-                <div>
-                    <h3>Textures & Materials</h3>
-                    <p>Surfaces, shaders, and reusable materials.</p>
-                </div>
-                <span class="project-status">Active</span>
-            </article>
-
-            <article class="project-item">
-                <div>
-                    <h3>Audio Library</h3>
-                    <p>Music, ambience, sound effects, and voice.</p>
-                </div>
-                <span class="project-status planned">Planned</span>
-            </article>
-
+        <div class="project-list" id="asset-category-list">
+            <p>Loading asset categories...</p>
         </div>
 
     </section>
@@ -129,44 +118,8 @@
             </div>
         </div>
 
-        <div class="area-grid">
-
-            <div class="area-item">
-                <span>🪓</span>
-                <strong>Weapons</strong>
-                <p>Tools, melee, ranged weapons, and upgrades.</p>
-            </div>
-
-            <div class="area-item">
-                <span>🌲</span>
-                <strong>Environment</strong>
-                <p>Trees, rocks, terrain, foliage, and props.</p>
-            </div>
-
-            <div class="area-item">
-                <span>🏠</span>
-                <strong>Buildings</strong>
-                <p>Structures, interiors, furniture, and modular kits.</p>
-            </div>
-
-            <div class="area-item">
-                <span>🎵</span>
-                <strong>Audio</strong>
-                <p>Music, ambience, effects, and voice assets.</p>
-            </div>
-
-            <div class="area-item">
-                <span>🖥️</span>
-                <strong>UI Assets</strong>
-                <p>Icons, menus, HUD elements, and interface graphics.</p>
-            </div>
-
-            <div class="area-item">
-                <span>🎬</span>
-                <strong>Animations</strong>
-                <p>Character, creature, and object animations.</p>
-            </div>
-
+        <div class="area-grid" id="asset-group-list">
+            <p>Loading asset groups...</p>
         </div>
 
     </section>
@@ -191,11 +144,12 @@
 
 <footer class="studio-footer">
 
-    <p>Two Marshalls Studios © 2026</p>
-    <p>Assets Department Version 0.1</p>
+    <p id="footer-copyright">Two Marshalls Studios © 2026</p>
+    <p id="footer-version">Assets Department Version Loading...</p>
 
 </footer>
 
+<script src="../js/studio-data.js"></script>
 <script src="../js/app.js"></script>
 
 </body>

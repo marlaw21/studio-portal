@@ -48,9 +48,8 @@
         </div>
 
         <p>
-            This page will become the central home for Two Marshalls Studios documentation.
-            It will include the build session log, decision log, enhancement ideas log,
-            standards, guides, and future operating procedures.
+            This department is now connected to the shared Studio Data Architecture.
+            The documentation records below are loaded by the shared dashboard engine.
         </p>
 
     </section>
@@ -65,32 +64,8 @@
             </div>
         </div>
 
-        <div class="project-list">
-
-            <article class="project-item">
-                <div>
-                    <h3>Build Session Log</h3>
-                    <p>Tracks what was completed during each work session.</p>
-                </div>
-                <span class="project-status planned">Planned</span>
-            </article>
-
-            <article class="project-item">
-                <div>
-                    <h3>Decision Log</h3>
-                    <p>Records important studio decisions and why they were made.</p>
-                </div>
-                <span class="project-status planned">Planned</span>
-            </article>
-
-            <article class="project-item">
-                <div>
-                    <h3>Enhancement Ideas Log</h3>
-                    <p>Stores future ideas without interrupting active development.</p>
-                </div>
-                <span class="project-status planned">Planned</span>
-            </article>
-
+        <div class="project-list" id="documentation-record-list">
+            <p>Loading documentation records...</p>
         </div>
 
     </section>
@@ -151,11 +126,12 @@
 
 <footer class="studio-footer">
 
-    <p>Two Marshalls Studios © 2026</p>
-    <p>Documentation Department Version 0.2</p>
+    <p id="footer-copyright">Two Marshalls Studios © 2026</p>
+    <p id="footer-version">Documentation Department Version Loading...</p>
 
 </footer>
 
+<script src="../js/studio-data.js"></script>
 <script src="../js/app.js"></script>
 
 </body>

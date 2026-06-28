@@ -15,8 +15,8 @@
 
     <div class="header-content">
         <p class="eyebrow">Studio Headquarters</p>
-        <h1>Two Marshalls Studios</h1>
-        <p class="header-subtitle">
+        <h1 id="studio-name">Two Marshalls Studios</h1>
+        <p class="header-subtitle" id="studio-mission">
             Command Center for games, systems, publishing, and studio operations.
         </p>
     </div>
@@ -49,27 +49,43 @@
             </div>
         </div>
 
-        <p class="focus-text">
-            Create the first shared data file for the Studio Portal.
+        <p class="focus-text" id="focus-text">
+            Loading current work session...
         </p>
 
         <div class="focus-details">
 
             <div>
                 <span class="detail-label">Project</span>
-                <strong>Studio Portal</strong>
+                <strong id="focus-project">Loading...</strong>
             </div>
 
             <div>
                 <span class="detail-label">Phase</span>
-                <strong>Studio Data Layer</strong>
+                <strong id="focus-phase">Loading...</strong>
             </div>
 
             <div>
                 <span class="detail-label">Version</span>
-                <strong>v0.6</strong>
+                <strong id="focus-version">Loading...</strong>
             </div>
 
+        </div>
+
+    </section>
+
+    <section class="dashboard-card full-width">
+
+        <div class="card-header">
+            <span class="card-icon">🧠</span>
+            <div>
+                <p class="section-label">Studio Operating System</p>
+                <h2>Studio State</h2>
+            </div>
+        </div>
+
+        <div class="status-list" id="studio-state-list">
+            <p>Loading studio state...</p>
         </div>
 
     </section>
@@ -84,32 +100,8 @@
             </div>
         </div>
 
-        <div class="project-list">
-
-            <article class="project-item">
-                <div>
-                    <h3>Dead Roads</h3>
-                    <p>Third-person survival game.</p>
-                </div>
-                <span class="project-status">In Development</span>
-            </article>
-
-            <article class="project-item">
-                <div>
-                    <h3>45s</h3>
-                    <p>Fast, simple card-based game concept.</p>
-                </div>
-                <span class="project-status planned">Planned</span>
-            </article>
-
-            <article class="project-item">
-                <div>
-                    <h3>Studio Operating System</h3>
-                    <p>Internal system for running Two Marshalls Studios.</p>
-                </div>
-                <span class="project-status">Active</span>
-            </article>
-
+        <div class="project-list" id="project-list">
+            <p>Loading projects...</p>
         </div>
 
     </section>
@@ -124,28 +116,40 @@
             </div>
         </div>
 
-        <div class="status-list">
+        <div class="status-list" id="status-list">
+            <p>Loading studio status...</p>
+        </div>
 
-            <div class="status-row">
-                <span>Studio Portal</span>
-                <strong>🟢 Online</strong>
+    </section>
+
+    <section class="dashboard-card full-width">
+
+        <div class="card-header">
+            <span class="card-icon">📈</span>
+            <div>
+                <p class="section-label">Build Progress</p>
+                <h2>Foundation Progress</h2>
             </div>
+        </div>
 
-            <div class="status-row">
-                <span>GitHub</span>
-                <strong>🟢 Connected</strong>
+        <div class="status-list" id="progress-list">
+            <p>Loading progress...</p>
+        </div>
+
+    </section>
+
+    <section class="dashboard-card full-width">
+
+        <div class="card-header">
+            <span class="card-icon">🕒</span>
+            <div>
+                <p class="section-label">Recent Activity</p>
+                <h2>Activity Feed</h2>
             </div>
+        </div>
 
-            <div class="status-row">
-                <span>GitHub Pages</span>
-                <strong>🟢 Live</strong>
-            </div>
-
-            <div class="status-row">
-                <span>Studio Data Layer</span>
-                <strong>🟢 Started</strong>
-            </div>
-
+        <div class="project-list" id="activity-feed">
+            <p>Loading activity...</p>
         </div>
 
     </section>
@@ -160,44 +164,8 @@
             </div>
         </div>
 
-        <div class="area-grid">
-
-            <a class="area-item area-link" href="pages/documentation.html">
-                <span>📚</span>
-                <strong>Documentation</strong>
-                <p>Standards, guides, decisions, and studio knowledge.</p>
-            </a>
-
-            <a class="area-item area-link" href="pages/development.html">
-                <span>🛠️</span>
-                <strong>Development</strong>
-                <p>GitHub, Unity, builds, releases, and technical work.</p>
-            </a>
-
-            <a class="area-item area-link" href="pages/assets.html">
-                <span>🎨</span>
-                <strong>Assets</strong>
-                <p>Art, models, audio, icons, and reusable materials.</p>
-            </a>
-
-            <a class="area-item area-link" href="pages/publishing.html">
-                <span>🚀</span>
-                <strong>Publishing</strong>
-                <p>Store pages, checklists, launch plans, and releases.</p>
-            </a>
-
-            <a class="area-item area-link" href="pages/marketing.html">
-                <span>📣</span>
-                <strong>Marketing</strong>
-                <p>Screenshots, trailers, campaigns, and brand assets.</p>
-            </a>
-
-            <a class="area-item area-link" href="pages/business.html">
-                <span>💼</span>
-                <strong>Business Operations</strong>
-                <p>Planning, finance, time tracking, and studio management.</p>
-            </a>
-
+        <div class="area-grid" id="department-list">
+            <p>Loading departments...</p>
         </div>
 
     </section>
@@ -206,8 +174,8 @@
 
 <footer class="studio-footer">
 
-    <p>Two Marshalls Studios © 2026</p>
-    <p>Studio Headquarters Version 0.6</p>
+    <p id="footer-copyright">Two Marshalls Studios © 2026</p>
+    <p id="footer-version">Studio Headquarters Version Loading...</p>
 
 </footer>
 

@@ -2,18 +2,65 @@ const studioData = {
     studio: {
         name: "Two Marshalls Studios",
         portalName: "Studio Portal",
-        currentVersion: "v0.6",
+        currentVersion: "v0.7",
         copyrightYear: "2026",
-        mission: "Build games, systems, publishing workflows, and studio operations through one connected headquarters."
+        mission: "Command Center for games, systems, publishing, and studio operations."
     },
 
     currentWorkSession: {
-        number: "011",
-        title: "Studio Data Architecture",
-        phase: "Studio Data Layer",
-        focus: "Create the first shared data file for the Studio Portal.",
+        number: "015",
+        title: "Studio Operating System Foundation",
+        phase: "Studio OS Foundation",
+        focus: "Add the first operating system layer to the Studio Headquarters dashboard.",
         status: "In Progress"
     },
+
+    studioState: {
+        activeProject: "Studio Operating System",
+        currentMilestone: "Dynamic Studio Foundation",
+        buildStatus: "Stable",
+        currentSprint: "Foundation Sprint",
+        lastCommit: "Dynamic department engine completed",
+        lastPush: "Pending after Work Session 015",
+        currentDepartment: "Headquarters"
+    },
+
+    progress: [
+        {
+            name: "Foundation",
+            value: 100
+        },
+        {
+            name: "Navigation",
+            value: 100
+        },
+        {
+            name: "Dynamic Engine",
+            value: 100
+        },
+        {
+            name: "Studio OS Layer",
+            value: 25
+        }
+    ],
+
+    activityFeed: [
+        {
+            time: "Current",
+            title: "Work Session 015 Started",
+            description: "Beginning Studio Operating System Foundation."
+        },
+        {
+            time: "Previous",
+            title: "Dynamic Department Engine Completed",
+            description: "All department pages now use the shared rendering architecture."
+        },
+        {
+            time: "Previous",
+            title: "Shared Data Layer Added",
+            description: "Studio Portal began reading from centralized studio data."
+        }
+    ],
 
     status: [
         {
@@ -32,7 +79,7 @@ const studioData = {
             state: "green"
         },
         {
-            label: "Studio Data Layer",
+            label: "Studio OS Layer",
             value: "Started",
             state: "green"
         }
