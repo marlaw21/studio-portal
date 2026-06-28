@@ -1,30 +1,15 @@
 console.log("Two Marshalls Studios Command Center Loaded");
 
 function getStatusIcon(state) {
-    if (state === "green") {
-        return "🟢";
-    }
-
-    if (state === "yellow") {
-        return "🟡";
-    }
-
-    if (state === "red") {
-        return "🔴";
-    }
-
+    if (state === "green") return "🟢";
+    if (state === "yellow") return "🟡";
+    if (state === "red") return "🔴";
     return "⚪";
 }
 
 function getRecordStatusClass(status) {
-    if (!status) {
-        return "project-status";
-    }
-
-    if (status.toLowerCase() === "planned") {
-        return "project-status planned";
-    }
-
+    if (!status) return "project-status";
+    if (status.toLowerCase() === "planned") return "project-status planned";
     return "project-status";
 }
 
@@ -33,72 +18,50 @@ function getRecordTitle(record) {
 }
 
 function getRecordDescription(record) {
-    return record.description || record.text || "";
+    return record.description || record.focus || record.completed || "";
 }
 
 function getRecordStatus(record) {
-    return record.status || record.time || "";
+    return record.status || record.version || record.time || "";
+}
+
+function getCurrentSession() {
+    return studioData.sessionLog[0];
 }
 
 function renderStudioHeader() {
     const studioName = document.getElementById("studio-name");
     const studioMission = document.getElementById("studio-mission");
 
-    if (studioName) {
-        studioName.textContent = studioData.studio.name;
-    }
-
-    if (studioMission) {
-        studioMission.textContent = studioData.studio.mission;
-    }
+    if (studioName) studioName.textContent = studioData.studio.name;
+    if (studioMission) studioMission.textContent = studioData.studio.mission;
 }
 
 function renderCurrentWorkSession() {
-    const focusText = document.getElementById("focus-text");
-    const focusProject = document.getElementById("focus-project");
-    const focusPhase = document.getElementById("focus-phase");
-    const focusVersion = document.getElementById("focus-version");
+    const currentSession = getCurrentSession();
 
-    if (focusText) {
-        focusText.textContent = studioData.currentWorkSession.focus;
-    }
-
-    if (focusProject) {
-        focusProject.textContent = studioData.studio.portalName;
-    }
-
-    if (focusPhase) {
-        focusPhase.textContent = studioData.currentWorkSession.phase;
-    }
-
-    if (focusVersion) {
-        focusVersion.textContent = studioData.studio.currentVersion;
-    }
+    document.getElementById("focus-text").textContent = currentSession.focus;
+    document.getElementById("focus-project").textContent = studioData.studio.portalName;
+    document.getElementById("focus-phase").textContent = currentSession.phase;
+    document.getElementById("focus-version").textContent = currentSession.version;
 }
 
 function renderRecordList(containerId, records) {
     const recordList = document.getElementById(containerId);
-
-    if (!recordList || !records) {
-        return;
-    }
+    if (!recordList || !records) return;
 
     recordList.innerHTML = "";
 
     records.forEach(function (record) {
-        const title = getRecordTitle(record);
-        const description = getRecordDescription(record);
-        const status = getRecordStatus(record);
-
         const recordItem = document.createElement("article");
         recordItem.className = "project-item";
 
         recordItem.innerHTML = `
             <div>
-                <h3>${title}</h3>
-                <p>${description}</p>
+                <h3>${getRecordTitle(record)}</h3>
+                <p>${getRecordDescription(record)}</p>
             </div>
-            <span class="${getRecordStatusClass(status)}">${status}</span>
+            <span class="${getRecordStatusClass(getRecordStatus(record))}">${getRecordStatus(record)}</span>
         `;
 
         recordList.appendChild(recordItem);
@@ -107,10 +70,7 @@ function renderRecordList(containerId, records) {
 
 function renderAreaGrid(containerId, records) {
     const areaGrid = document.getElementById(containerId);
-
-    if (!areaGrid || !records) {
-        return;
-    }
+    if (!areaGrid || !records) return;
 
     areaGrid.innerHTML = "";
 
@@ -130,10 +90,7 @@ function renderAreaGrid(containerId, records) {
 
 function renderStatusRows(containerId, rows) {
     const statusList = document.getElementById(containerId);
-
-    if (!statusList || !rows) {
-        return;
-    }
+    if (!statusList || !rows) return;
 
     statusList.innerHTML = "";
 
@@ -151,35 +108,15 @@ function renderStatusRows(containerId, rows) {
 }
 
 function renderStudioState() {
-    if (!studioData.studioState) {
-        return;
-    }
+    const currentSession = getCurrentSession();
 
     const rows = [
-        {
-            label: "Active Project",
-            value: studioData.studioState.activeProject
-        },
-        {
-            label: "Current Milestone",
-            value: studioData.studioState.currentMilestone
-        },
-        {
-            label: "Build Status",
-            value: studioData.studioState.buildStatus
-        },
-        {
-            label: "Current Sprint",
-            value: studioData.studioState.currentSprint
-        },
-        {
-            label: "Last Commit",
-            value: studioData.studioState.lastCommit
-        },
-        {
-            label: "Last Push",
-            value: studioData.studioState.lastPush
-        }
+        { label: "Active Project", value: studioData.studioState.activeProject },
+        { label: "Current Milestone", value: studioData.studioState.currentMilestone },
+        { label: "Build Status", value: studioData.studioState.buildStatus },
+        { label: "Current Sprint", value: studioData.studioState.currentSprint },
+        { label: "Current Session", value: `Work Session ${currentSession.number}` },
+        { label: "Session Status", value: currentSession.status }
     ];
 
     renderStatusRows("studio-state-list", rows);
@@ -187,10 +124,7 @@ function renderStudioState() {
 
 function renderProgress() {
     const progressList = document.getElementById("progress-list");
-
-    if (!progressList || !studioData.progress) {
-        return;
-    }
+    if (!progressList || !studioData.progress) return;
 
     progressList.innerHTML = "";
 
@@ -209,10 +143,7 @@ function renderProgress() {
 
 function renderStatus() {
     const statusList = document.getElementById("status-list");
-
-    if (!statusList || !studioData.status) {
-        return;
-    }
+    if (!statusList || !studioData.status) return;
 
     statusList.innerHTML = "";
 
@@ -231,10 +162,7 @@ function renderStatus() {
 
 function renderDepartments() {
     const departmentList = document.getElementById("department-list");
-
-    if (!departmentList || !studioData.departments) {
-        return;
-    }
+    if (!departmentList || !studioData.departments) return;
 
     departmentList.innerHTML = "";
 
@@ -258,48 +186,33 @@ function renderFooter() {
     const footerVersion = document.getElementById("footer-version");
 
     if (footerCopyright) {
-        footerCopyright.textContent =
-            `${studioData.studio.name} © ${studioData.studio.copyrightYear}`;
+        footerCopyright.textContent = `${studioData.studio.name} © ${studioData.studio.copyrightYear}`;
     }
 
     if (footerVersion) {
-        footerVersion.textContent =
-            `Studio Headquarters Version ${studioData.studio.currentVersion}`;
+        footerVersion.textContent = `Studio Headquarters Version ${studioData.studio.currentVersion}`;
     }
 }
 
 function renderDashboard() {
-    if (typeof studioData === "undefined") {
-        console.warn("studioData was not found. Make sure studio-data.js is loaded before app.js.");
-        return;
-    }
+    if (typeof studioData === "undefined") return;
 
     renderStudioHeader();
     renderCurrentWorkSession();
     renderStudioState();
 
-    renderRecordList("studio-command-list", studioData.studioCommands);
+    renderRecordList("session-log-list", studioData.sessionLog);
     renderRecordList("notification-list", studioData.notifications);
+    renderRecordList("studio-command-list", studioData.studioCommands);
     renderStatusRows("system-config-list", studioData.systemConfig);
 
     renderRecordList("project-list", studioData.projects);
-    renderRecordList("development-project-list", studioData.projects);
-    renderRecordList("documentation-record-list", studioData.documentationRecords);
-    renderRecordList("asset-category-list", studioData.assetCategories);
-    renderAreaGrid("asset-group-list", studioData.assetGroups);
-    renderRecordList("publishing-channel-list", studioData.publishingChannels);
-    renderAreaGrid("publishing-pipeline-list", studioData.publishingPipeline);
-    renderRecordList("marketing-channel-list", studioData.marketingChannels);
-    renderAreaGrid("marketing-pipeline-list", studioData.marketingPipeline);
-
     renderStatus();
     renderProgress();
-    renderRecordList("activity-feed", studioData.activityFeed);
-    renderRecordList("version-history-list", studioData.versionHistory);
     renderDepartments();
     renderFooter();
 
-    console.log("Studio dashboard rendered from studioData:", studioData);
+    console.log("Studio dashboard rendered from session log:", studioData);
 }
 
 renderDashboard();

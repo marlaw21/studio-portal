@@ -5,26 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Two Marshalls Studios</title>
-
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
 <header class="studio-header">
-
     <div class="header-content">
         <p class="eyebrow">Studio Headquarters</p>
         <h1 id="studio-name">Two Marshalls Studios</h1>
-        <p class="header-subtitle" id="studio-mission">
-            Command Center for games, systems, publishing, and studio operations.
-        </p>
+        <p class="header-subtitle" id="studio-mission">Command Center for games, systems, publishing, and studio operations.</p>
     </div>
-
 </header>
 
 <nav class="global-nav">
-
     <ul>
         <li><a class="active" href="index.html">🏠 Headquarters</a></li>
         <li><a href="pages/documentation.html">📚 Documentation</a></li>
@@ -34,13 +28,11 @@
         <li><a href="pages/marketing.html">📣 Marketing</a></li>
         <li><a href="pages/business.html">🏢 Business</a></li>
     </ul>
-
 </nav>
 
 <main class="dashboard">
 
     <section class="focus-card dashboard-card full-width">
-
         <div class="card-header">
             <span class="card-icon">🎯</span>
             <div>
@@ -48,34 +40,15 @@
                 <h2>Today's Focus</h2>
             </div>
         </div>
-
-        <p class="focus-text" id="focus-text">
-            Loading current work session...
-        </p>
-
+        <p class="focus-text" id="focus-text">Loading current work session...</p>
         <div class="focus-details">
-
-            <div>
-                <span class="detail-label">Project</span>
-                <strong id="focus-project">Loading...</strong>
-            </div>
-
-            <div>
-                <span class="detail-label">Phase</span>
-                <strong id="focus-phase">Loading...</strong>
-            </div>
-
-            <div>
-                <span class="detail-label">Version</span>
-                <strong id="focus-version">Loading...</strong>
-            </div>
-
+            <div><span class="detail-label">Project</span><strong id="focus-project">Loading...</strong></div>
+            <div><span class="detail-label">Phase</span><strong id="focus-phase">Loading...</strong></div>
+            <div><span class="detail-label">Version</span><strong id="focus-version">Loading...</strong></div>
         </div>
-
     </section>
 
     <section class="dashboard-card full-width">
-
         <div class="card-header">
             <span class="card-icon">🧠</span>
             <div>
@@ -83,31 +56,21 @@
                 <h2>Studio State</h2>
             </div>
         </div>
+        <div class="status-list" id="studio-state-list"></div>
+    </section>
 
-        <div class="status-list" id="studio-state-list">
-            <p>Loading studio state...</p>
+    <section class="dashboard-card full-width">
+        <div class="card-header">
+            <span class="card-icon">🧾</span>
+            <div>
+                <p class="section-label">Build History</p>
+                <h2>Build Session Log</h2>
+            </div>
         </div>
-
+        <div class="project-list" id="session-log-list"></div>
     </section>
 
     <section class="dashboard-card projects-card">
-
-        <div class="card-header">
-            <span class="card-icon">⚡</span>
-            <div>
-                <p class="section-label">Core Engine</p>
-                <h2>Studio Commands</h2>
-            </div>
-        </div>
-
-        <div class="project-list" id="studio-command-list">
-            <p>Loading studio commands...</p>
-        </div>
-
-    </section>
-
-    <section class="dashboard-card status-card">
-
         <div class="card-header">
             <span class="card-icon">🔔</span>
             <div>
@@ -115,15 +78,21 @@
                 <h2>Notifications</h2>
             </div>
         </div>
+        <div class="project-list" id="notification-list"></div>
+    </section>
 
-        <div class="project-list" id="notification-list">
-            <p>Loading notifications...</p>
+    <section class="dashboard-card status-card">
+        <div class="card-header">
+            <span class="card-icon">⚡</span>
+            <div>
+                <p class="section-label">Core Engine</p>
+                <h2>Studio Commands</h2>
+            </div>
         </div>
-
+        <div class="project-list" id="studio-command-list"></div>
     </section>
 
     <section class="dashboard-card full-width">
-
         <div class="card-header">
             <span class="card-icon">⚙️</span>
             <div>
@@ -131,15 +100,10 @@
                 <h2>Studio OS Configuration</h2>
             </div>
         </div>
-
-        <div class="status-list" id="system-config-list">
-            <p>Loading system configuration...</p>
-        </div>
-
+        <div class="status-list" id="system-config-list"></div>
     </section>
 
     <section class="dashboard-card projects-card">
-
         <div class="card-header">
             <span class="card-icon">🎮</span>
             <div>
@@ -147,15 +111,10 @@
                 <h2>Current Projects</h2>
             </div>
         </div>
-
-        <div class="project-list" id="project-list">
-            <p>Loading projects...</p>
-        </div>
-
+        <div class="project-list" id="project-list"></div>
     </section>
 
     <section class="dashboard-card status-card">
-
         <div class="card-header">
             <span class="card-icon">📊</span>
             <div>
@@ -163,15 +122,10 @@
                 <h2>Studio Status</h2>
             </div>
         </div>
-
-        <div class="status-list" id="status-list">
-            <p>Loading studio status...</p>
-        </div>
-
+        <div class="status-list" id="status-list"></div>
     </section>
 
     <section class="dashboard-card full-width">
-
         <div class="card-header">
             <span class="card-icon">📈</span>
             <div>
@@ -179,47 +133,10 @@
                 <h2>Foundation Progress</h2>
             </div>
         </div>
-
-        <div class="status-list" id="progress-list">
-            <p>Loading progress...</p>
-        </div>
-
+        <div class="status-list" id="progress-list"></div>
     </section>
 
     <section class="dashboard-card full-width">
-
-        <div class="card-header">
-            <span class="card-icon">🕒</span>
-            <div>
-                <p class="section-label">Recent Activity</p>
-                <h2>Activity Feed</h2>
-            </div>
-        </div>
-
-        <div class="project-list" id="activity-feed">
-            <p>Loading activity...</p>
-        </div>
-
-    </section>
-
-    <section class="dashboard-card full-width">
-
-        <div class="card-header">
-            <span class="card-icon">🧾</span>
-            <div>
-                <p class="section-label">Version Control</p>
-                <h2>Version History</h2>
-            </div>
-        </div>
-
-        <div class="project-list" id="version-history-list">
-            <p>Loading version history...</p>
-        </div>
-
-    </section>
-
-    <section class="dashboard-card full-width studio-areas-card">
-
         <div class="card-header">
             <span class="card-icon">🏢</span>
             <div>
@@ -227,25 +144,18 @@
                 <h2>Studio Areas</h2>
             </div>
         </div>
-
-        <div class="area-grid" id="department-list">
-            <p>Loading departments...</p>
-        </div>
-
+        <div class="area-grid" id="department-list"></div>
     </section>
 
 </main>
 
 <footer class="studio-footer">
-
     <p id="footer-copyright">Two Marshalls Studios © 2026</p>
     <p id="footer-version">Studio Headquarters Version Loading...</p>
-
 </footer>
 
 <script src="js/studio-data.js"></script>
 <script src="js/app.js"></script>
 
 </body>
-
 </html>
