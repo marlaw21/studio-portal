@@ -2,21 +2,31 @@ const studioData = {
     studio: {
         name: "Two Marshalls Studios",
         portalName: "Studio Portal",
-        currentVersion: "v1.2",
+        currentVersion: "v1.3",
         copyrightYear: "2026",
         mission: "Command Center for games, systems, publishing, and studio operations."
     },
 
     sessionLog: [
         {
+            number: "021",
+            title: "Studio Decision Logging Engine",
+            phase: "Documentation Engine",
+            focus: "Create a structured decision log for important Studio OS decisions.",
+            status: "In Progress",
+            version: "v1.3",
+            date: "2026",
+            completed: "Adding structured decision records to the Documentation Engine."
+        },
+        {
             number: "020",
             title: "Studio Documentation Engine",
             phase: "Documentation Engine",
             focus: "Create structured documentation collections for the Studio OS.",
-            status: "In Progress",
+            status: "Complete",
             version: "v1.2",
             date: "2026",
-            completed: "Adding build sessions, decisions, standards, procedures, and enhancement ideas."
+            completed: "Added build sessions, decisions, standards, procedures, and enhancement ideas."
         },
         {
             number: "019",
@@ -70,13 +80,46 @@ const studioData = {
         }
     ],
 
+    decisionLog: [
+        {
+            name: "Decision 001 — Use Shared Studio Data Architecture",
+            description: "All reusable Studio OS information should live in studio-data.js and be rendered by app.js.",
+            status: "Approved",
+            reason: "This prevents duplicate information across pages and makes future updates easier."
+        },
+        {
+            name: "Decision 002 — Replace Full Files When Code Changes",
+            description: "When a file changes, the full file should be replaced instead of using partial snippets.",
+            status: "Approved",
+            reason: "This reduces confusion, avoids missed code placement, and supports safer step-by-step work."
+        },
+        {
+            name: "Decision 003 — Finish Foundation Before Enhancements",
+            description: "Enhancement ideas should be captured but not built until the core Studio OS foundation is stable.",
+            status: "Approved",
+            reason: "This keeps development focused and prevents scope creep."
+        },
+        {
+            name: "Decision 004 — Test Before Commit",
+            description: "Every work session must be tested locally before committing and pushing to GitHub.",
+            status: "Approved",
+            reason: "This protects the main branch and keeps each checkpoint stable."
+        },
+        {
+            name: "Decision 005 — Documentation Must Be Structured",
+            description: "Build sessions, decisions, standards, procedures, and enhancements must be stored as structured records.",
+            status: "Approved",
+            reason: "This prepares the Studio OS for future search, filtering, and Google Drive publishing."
+        }
+    ],
+
     studioState: {
         activeProject: "Studio Operating System",
-        currentMilestone: "Studio Documentation Engine",
+        currentMilestone: "Studio Decision Logging Engine",
         buildStatus: "Stable",
         currentSprint: "Foundation Sprint",
-        lastCommit: "Build Session Logging System completed",
-        lastPush: "Completed after Work Session 019",
+        lastCommit: "Studio Documentation Engine completed",
+        lastPush: "Completed after Work Session 020",
         currentDepartment: "Documentation"
     },
 
@@ -95,24 +138,20 @@ const studioData = {
     ],
 
     notifications: [
-        { title: "Documentation Engine Started", description: "The Documentation department is becoming a structured knowledge hub.", status: "Active" },
-        { title: "Session Logging Complete", description: "Build sessions now feed the Studio OS from one source.", status: "Complete" },
-        { title: "Next Milestone", description: "Prepare documentation records for future Google Drive publishing.", status: "Planned" }
+        { title: "Decision Logging Started", description: "The Documentation Engine now has a structured studio decision log.", status: "Active" },
+        { title: "Documentation Engine Complete", description: "Documentation records are now rendered dynamically from shared data.", status: "Complete" },
+        { title: "Next Milestone", description: "Prepare Studio Standards Engine.", status: "Planned" }
     ],
 
     documentationEngine: {
         buildSessions: [
-            { name: "Work Session 020", description: "Created the Studio Documentation Engine.", status: "In Progress" },
+            { name: "Work Session 021", description: "Created the Studio Decision Logging Engine.", status: "In Progress" },
+            { name: "Work Session 020", description: "Created the Studio Documentation Engine.", status: "Complete" },
             { name: "Work Session 019", description: "Created centralized build session logging.", status: "Complete" },
-            { name: "Work Session 018", description: "Added the Work Session Tracker Foundation.", status: "Complete" },
-            { name: "Work Session 017", description: "Added the Studio OS Core Engine.", status: "Complete" }
+            { name: "Work Session 018", description: "Added the Work Session Tracker Foundation.", status: "Complete" }
         ],
 
-        decisions: [
-            { name: "Use One Shared Data Source", description: "Studio data should live in studio-data.js and be rendered by app.js.", status: "Approved" },
-            { name: "Complete File Replacement Rule", description: "When a file changes, replace the full file instead of using partial snippets.", status: "Approved" },
-            { name: "Stay on Foundation Before Enhancements", description: "Enhancements are logged but not built until the core vision is stable.", status: "Approved" }
-        ],
+        decisions: [],
 
         standards: [
             { name: "Shared Rendering Standard", description: "Pages should use reusable render functions instead of duplicate hard-coded sections.", status: "Active" },
@@ -137,15 +176,15 @@ const studioData = {
         { name: "Foundation", value: 100 },
         { name: "Navigation", value: 100 },
         { name: "Dynamic Engine", value: 100 },
-        { name: "Studio OS Layer", value: 85 },
-        { name: "Documentation Engine", value: 30 }
+        { name: "Studio OS Layer", value: 88 },
+        { name: "Decision Logging", value: 35 }
     ],
 
     status: [
         { label: "Studio Portal", value: "Online", state: "green" },
         { label: "GitHub", value: "Connected", state: "green" },
         { label: "GitHub Pages", value: "Live", state: "green" },
-        { label: "Documentation Engine", value: "Started", state: "green" }
+        { label: "Decision Log", value: "Started", state: "green" }
     ],
 
     projects: [
@@ -214,5 +253,7 @@ const studioData = {
         { icon: "📈", name: "Measure", description: "Review traffic, wishlists, downloads, engagement, reviews, and conversion." }
     ]
 };
+
+studioData.documentationEngine.decisions = studioData.decisionLog;
 
 console.log("Studio data loaded:", studioData);

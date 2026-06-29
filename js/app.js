@@ -19,6 +19,10 @@ function getRecordTitle(record) {
 }
 
 function getRecordDescription(record) {
+    if (record.reason) {
+        return `${record.description} Reason: ${record.reason}`;
+    }
+
     return record.description || record.focus || record.completed || "";
 }
 
@@ -222,7 +226,7 @@ function renderDashboard() {
     renderDepartments();
 
     renderRecordList("documentation-build-session-list", studioData.documentationEngine?.buildSessions);
-    renderRecordList("documentation-decision-list", studioData.documentationEngine?.decisions);
+    renderRecordList("documentation-decision-list", studioData.decisionLog);
     renderRecordList("documentation-standard-list", studioData.documentationEngine?.standards);
     renderRecordList("documentation-procedure-list", studioData.documentationEngine?.procedures);
     renderRecordList("documentation-enhancement-list", studioData.documentationEngine?.enhancements);
