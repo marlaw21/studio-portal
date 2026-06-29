@@ -2,21 +2,31 @@ const studioData = {
     studio: {
         name: "Two Marshalls Studios",
         portalName: "Studio Portal",
-        currentVersion: "v1.4",
+        currentVersion: "v1.5",
         copyrightYear: "2026",
         mission: "Command Center for games, systems, publishing, and studio operations."
     },
 
     sessionLog: [
         {
+            number: "023",
+            title: "Studio Procedures Engine",
+            phase: "Documentation Engine",
+            focus: "Create structured procedures for repeatable Studio OS work.",
+            status: "In Progress",
+            version: "v1.5",
+            date: "2026",
+            completed: "Adding the Studio Procedures Engine."
+        },
+        {
             number: "022",
             title: "Studio Standards Engine",
             phase: "Documentation Engine",
             focus: "Create structured studio standards for development, documentation, assets, publishing, and operations.",
-            status: "In Progress",
+            status: "Complete",
             version: "v1.4",
             date: "2026",
-            completed: "Adding the Studio Standards Engine."
+            completed: "Added the Studio Standards Engine."
         },
         {
             number: "021",
@@ -57,36 +67,6 @@ const studioData = {
             version: "v1.0",
             date: "2026",
             completed: "Work Session Tracker added."
-        },
-        {
-            number: "017",
-            title: "Studio OS Core Engine",
-            phase: "Core Engine Foundation",
-            focus: "Added commands, notifications, configuration, and version history.",
-            status: "Complete",
-            version: "v0.9",
-            date: "2026",
-            completed: "Studio OS Core Engine completed."
-        },
-        {
-            number: "016",
-            title: "Data Cleanup and Shared Department Data",
-            phase: "Data Architecture Cleanup",
-            focus: "Moved department-specific data into studio-data.js.",
-            status: "Complete",
-            version: "v0.8",
-            date: "2026",
-            completed: "Shared data cleanup completed."
-        },
-        {
-            number: "015",
-            title: "Studio Operating System Foundation",
-            phase: "Studio OS Foundation",
-            focus: "Added Studio State, Foundation Progress, and Activity Feed.",
-            status: "Complete",
-            version: "v0.7",
-            date: "2026",
-            completed: "Studio OS Foundation added."
         }
     ],
 
@@ -180,13 +160,58 @@ const studioData = {
         }
     ],
 
+    proceduresLog: [
+        {
+            name: "Procedure 001 — Work Session Procedure",
+            description: "Start each session with a clear goal, identify changed files, replace full files, test locally, then commit and push.",
+            status: "Active",
+            category: "Development"
+        },
+        {
+            name: "Procedure 002 — Page Testing Procedure",
+            description: "Open the affected page locally, press Ctrl + Shift + R, verify content loads, and confirm no loading placeholders remain.",
+            status: "Active",
+            category: "Testing"
+        },
+        {
+            name: "Procedure 003 — GitHub Commit Procedure",
+            description: "After a passed test, commit to main with a clear work session message and push to origin.",
+            status: "Active",
+            category: "GitHub"
+        },
+        {
+            name: "Procedure 004 — Documentation Update Procedure",
+            description: "When a work session creates a decision, standard, procedure, or enhancement, add it to the proper structured log.",
+            status: "Active",
+            category: "Documentation"
+        },
+        {
+            name: "Procedure 005 — Enhancement Handling Procedure",
+            description: "Capture useful future ideas in the enhancement log but do not build them until the planned enhancement phase.",
+            status: "Active",
+            category: "Planning"
+        },
+        {
+            name: "Procedure 006 — Data Change Procedure",
+            description: "When dashboard information changes, update studio-data.js first and only update app.js when rendering behavior must change.",
+            status: "Active",
+            category: "Architecture"
+        },
+        {
+            name: "Procedure 007 — Department Expansion Procedure",
+            description: "New department features should use the existing shared data and rendering architecture whenever possible.",
+            status: "Planned",
+            category: "Architecture"
+        }
+    ],
+
     studioState: {
         activeProject: "Studio Operating System",
-        currentMilestone: "Studio Standards Engine",
+        currentMilestone: "Studio Procedures Engine",
         buildStatus: "Stable",
         currentSprint: "Foundation Sprint",
-        lastCommit: "Studio Decision Logging Engine completed",
-        lastPush: "Completed after Work Session 021",
+        lastCommit: "Studio Standards Engine completed",
+        lastPush: "Completed after Work Session 022",
         currentDepartment: "Documentation"
     },
 
@@ -205,28 +230,24 @@ const studioData = {
     ],
 
     notifications: [
-        { title: "Standards Engine Started", description: "The Documentation Engine now includes structured studio standards.", status: "Active" },
-        { title: "Decision Engine Complete", description: "Studio decisions are now stored and rendered from the decision log.", status: "Complete" },
-        { title: "Next Milestone", description: "Prepare Studio Procedures Engine.", status: "Planned" }
+        { title: "Procedures Engine Started", description: "The Documentation Engine now includes structured studio procedures.", status: "Active" },
+        { title: "Standards Engine Complete", description: "Studio standards are now stored and rendered from the standards log.", status: "Complete" },
+        { title: "Next Milestone", description: "Prepare Enhancement Backlog Engine.", status: "Planned" }
     ],
 
     documentationEngine: {
         buildSessions: [
-            { name: "Work Session 022", description: "Created the Studio Standards Engine.", status: "In Progress" },
+            { name: "Work Session 023", description: "Created the Studio Procedures Engine.", status: "In Progress" },
+            { name: "Work Session 022", description: "Created the Studio Standards Engine.", status: "Complete" },
             { name: "Work Session 021", description: "Created the Studio Decision Logging Engine.", status: "Complete" },
-            { name: "Work Session 020", description: "Created the Studio Documentation Engine.", status: "Complete" },
-            { name: "Work Session 019", description: "Created centralized build session logging.", status: "Complete" }
+            { name: "Work Session 020", description: "Created the Studio Documentation Engine.", status: "Complete" }
         ],
 
         decisions: [],
 
         standards: [],
 
-        procedures: [
-            { name: "Build Session Procedure", description: "Start with a focused goal, replace only changed files, test locally, then commit and push.", status: "Active" },
-            { name: "Page Testing Procedure", description: "Open the local page, press Ctrl + Shift + R, and verify no loading placeholders remain.", status: "Active" },
-            { name: "GitHub Procedure", description: "Commit a stable checkpoint to main and push to origin after each passed work session.", status: "Active" }
-        ],
+        procedures: [],
 
         enhancements: [
             { name: "Documentation Search", description: "Add search or filtering for build sessions, decisions, standards, and procedures.", status: "Deferred" },
@@ -239,15 +260,15 @@ const studioData = {
         { name: "Foundation", value: 100 },
         { name: "Navigation", value: 100 },
         { name: "Dynamic Engine", value: 100 },
-        { name: "Studio OS Layer", value: 90 },
-        { name: "Standards Engine", value: 35 }
+        { name: "Studio OS Layer", value: 92 },
+        { name: "Procedures Engine", value: 35 }
     ],
 
     status: [
         { label: "Studio Portal", value: "Online", state: "green" },
         { label: "GitHub", value: "Connected", state: "green" },
         { label: "GitHub Pages", value: "Live", state: "green" },
-        { label: "Standards Engine", value: "Started", state: "green" }
+        { label: "Procedures Engine", value: "Started", state: "green" }
     ],
 
     projects: [
@@ -269,6 +290,7 @@ const studioData = {
         { name: "Build Session Log", description: "Tracks what was completed during each work session.", status: "Active" },
         { name: "Decision Log", description: "Records important studio decisions and why they were made.", status: "Active" },
         { name: "Standards Log", description: "Stores rules and standards that guide studio work.", status: "Active" },
+        { name: "Procedures Log", description: "Stores repeatable studio operating procedures.", status: "Active" },
         { name: "Enhancement Ideas Log", description: "Stores future ideas without interrupting active development.", status: "Active" }
     ],
 
@@ -320,5 +342,6 @@ const studioData = {
 
 studioData.documentationEngine.decisions = studioData.decisionLog;
 studioData.documentationEngine.standards = studioData.standardsLog;
+studioData.documentationEngine.procedures = studioData.proceduresLog;
 
 console.log("Studio data loaded:", studioData);

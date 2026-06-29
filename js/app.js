@@ -234,7 +234,7 @@ function renderDashboard() {
     renderRecordList("documentation-build-session-list", studioData.documentationEngine?.buildSessions);
     renderRecordList("documentation-decision-list", studioData.decisionLog);
     renderRecordList("documentation-standard-list", studioData.standardsLog);
-    renderRecordList("documentation-procedure-list", studioData.documentationEngine?.procedures);
+    renderRecordList("documentation-procedure-list", studioData.proceduresLog);
     renderRecordList("documentation-enhancement-list", studioData.documentationEngine?.enhancements);
 
     renderRecordList("development-project-list", studioData.projects);
