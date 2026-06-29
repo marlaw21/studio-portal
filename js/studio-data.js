@@ -2,21 +2,31 @@ const studioData = {
     studio: {
         name: "Two Marshalls Studios",
         portalName: "Studio Portal",
-        currentVersion: "v1.5",
+        currentVersion: "v1.6",
         copyrightYear: "2026",
         mission: "Command Center for games, systems, publishing, and studio operations."
     },
 
     sessionLog: [
         {
+            number: "024",
+            title: "Enhancement Backlog Engine",
+            phase: "Documentation Engine",
+            focus: "Create a structured enhancement backlog for future Studio OS improvements.",
+            status: "In Progress",
+            version: "v1.6",
+            date: "2026",
+            completed: "Adding the Enhancement Backlog Engine."
+        },
+        {
             number: "023",
             title: "Studio Procedures Engine",
             phase: "Documentation Engine",
             focus: "Create structured procedures for repeatable Studio OS work.",
-            status: "In Progress",
+            status: "Complete",
             version: "v1.5",
             date: "2026",
-            completed: "Adding the Studio Procedures Engine."
+            completed: "Added the Studio Procedures Engine."
         },
         {
             number: "022",
@@ -57,16 +67,6 @@ const studioData = {
             version: "v1.1",
             date: "2026",
             completed: "Centralized build session logging added."
-        },
-        {
-            number: "018",
-            title: "Work Session Tracker Foundation",
-            phase: "Studio OS Tracking",
-            focus: "Added a work session tracker to Studio Headquarters.",
-            status: "Complete",
-            version: "v1.0",
-            date: "2026",
-            completed: "Work Session Tracker added."
         }
     ],
 
@@ -205,13 +205,65 @@ const studioData = {
         }
     ],
 
+    enhancementBacklog: [
+        {
+            name: "Enhancement 001 — Documentation Search",
+            description: "Add search or filtering for build sessions, decisions, standards, procedures, and enhancement records.",
+            status: "Deferred",
+            category: "Documentation",
+            priority: "Medium"
+        },
+        {
+            name: "Enhancement 002 — Google Drive Publishing",
+            description: "Publish structured documentation records into the future Google documentation hierarchy.",
+            status: "Deferred",
+            category: "Documentation",
+            priority: "High"
+        },
+        {
+            name: "Enhancement 003 — Interactive Documentation Forms",
+            description: "Allow new documentation records to be added through the Studio OS interface.",
+            status: "Deferred",
+            category: "Documentation",
+            priority: "Medium"
+        },
+        {
+            name: "Enhancement 004 — Department Metrics",
+            description: "Add dashboard metrics to Assets, Publishing, Marketing, and Business Operations.",
+            status: "Deferred",
+            category: "Dashboard",
+            priority: "Medium"
+        },
+        {
+            name: "Enhancement 005 — Quick Actions",
+            description: "Add action buttons for future workflows such as adding assets, logging decisions, and creating tasks.",
+            status: "Deferred",
+            category: "Workflow",
+            priority: "Low"
+        },
+        {
+            name: "Enhancement 006 — Visual Progress Bars",
+            description: "Replace plain percentage rows with visual progress bars across the Studio OS.",
+            status: "Deferred",
+            category: "Interface",
+            priority: "Low"
+        },
+        {
+            name: "Enhancement 007 — Local Storage Support",
+            description: "Allow simple data changes to be saved locally before introducing a full database.",
+            status: "Deferred",
+            category: "Data",
+            priority: "Medium"
+        }
+    ],
+
     studioState: {
         activeProject: "Studio Operating System",
-        currentMilestone: "Studio Procedures Engine",
+        currentMilestone: "Enhancement Backlog Engine",
         buildStatus: "Stable",
         currentSprint: "Foundation Sprint",
-        lastCommit: "Studio Standards Engine completed",
-        lastPush: "Completed after Work Session 022",
+        lastCommit: "Studio Procedures Engine completed",
+        lastPush: "Completed after Work Session 023",
         currentDepartment: "Documentation"
     },
 
@@ -230,17 +282,17 @@ const studioData = {
     ],
 
     notifications: [
-        { title: "Procedures Engine Started", description: "The Documentation Engine now includes structured studio procedures.", status: "Active" },
-        { title: "Standards Engine Complete", description: "Studio standards are now stored and rendered from the standards log.", status: "Complete" },
-        { title: "Next Milestone", description: "Prepare Enhancement Backlog Engine.", status: "Planned" }
+        { title: "Enhancement Backlog Started", description: "The Studio OS can now track future ideas without building them immediately.", status: "Active" },
+        { title: "Procedures Engine Complete", description: "Studio procedures are now stored and rendered from the procedures log.", status: "Complete" },
+        { title: "Next Milestone", description: "Prepare Documentation Search Foundation.", status: "Planned" }
     ],
 
     documentationEngine: {
         buildSessions: [
-            { name: "Work Session 023", description: "Created the Studio Procedures Engine.", status: "In Progress" },
+            { name: "Work Session 024", description: "Created the Enhancement Backlog Engine.", status: "In Progress" },
+            { name: "Work Session 023", description: "Created the Studio Procedures Engine.", status: "Complete" },
             { name: "Work Session 022", description: "Created the Studio Standards Engine.", status: "Complete" },
-            { name: "Work Session 021", description: "Created the Studio Decision Logging Engine.", status: "Complete" },
-            { name: "Work Session 020", description: "Created the Studio Documentation Engine.", status: "Complete" }
+            { name: "Work Session 021", description: "Created the Studio Decision Logging Engine.", status: "Complete" }
         ],
 
         decisions: [],
@@ -249,26 +301,22 @@ const studioData = {
 
         procedures: [],
 
-        enhancements: [
-            { name: "Documentation Search", description: "Add search or filtering for build sessions, decisions, standards, and procedures.", status: "Deferred" },
-            { name: "Google Drive Publishing", description: "Publish structured documentation records into the future Google documentation hierarchy.", status: "Deferred" },
-            { name: "Interactive Documentation Forms", description: "Allow new documentation records to be added through the Studio OS interface.", status: "Deferred" }
-        ]
+        enhancements: []
     },
 
     progress: [
         { name: "Foundation", value: 100 },
         { name: "Navigation", value: 100 },
         { name: "Dynamic Engine", value: 100 },
-        { name: "Studio OS Layer", value: 92 },
-        { name: "Procedures Engine", value: 35 }
+        { name: "Studio OS Layer", value: 94 },
+        { name: "Enhancement Backlog", value: 35 }
     ],
 
     status: [
         { label: "Studio Portal", value: "Online", state: "green" },
         { label: "GitHub", value: "Connected", state: "green" },
         { label: "GitHub Pages", value: "Live", state: "green" },
-        { label: "Procedures Engine", value: "Started", state: "green" }
+        { label: "Enhancement Backlog", value: "Started", state: "green" }
     ],
 
     projects: [
@@ -291,7 +339,7 @@ const studioData = {
         { name: "Decision Log", description: "Records important studio decisions and why they were made.", status: "Active" },
         { name: "Standards Log", description: "Stores rules and standards that guide studio work.", status: "Active" },
         { name: "Procedures Log", description: "Stores repeatable studio operating procedures.", status: "Active" },
-        { name: "Enhancement Ideas Log", description: "Stores future ideas without interrupting active development.", status: "Active" }
+        { name: "Enhancement Backlog", description: "Stores future ideas without interrupting active development.", status: "Active" }
     ],
 
     assetCategories: [
@@ -343,5 +391,6 @@ const studioData = {
 studioData.documentationEngine.decisions = studioData.decisionLog;
 studioData.documentationEngine.standards = studioData.standardsLog;
 studioData.documentationEngine.procedures = studioData.proceduresLog;
+studioData.documentationEngine.enhancements = studioData.enhancementBacklog;
 
 console.log("Studio data loaded:", studioData);

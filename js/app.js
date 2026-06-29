@@ -25,6 +25,10 @@ function getRecordDescription(record) {
         description = `${description} Category: ${record.category}.`;
     }
 
+    if (record.priority) {
+        description = `${description} Priority: ${record.priority}.`;
+    }
+
     if (record.reason) {
         description = `${description} Reason: ${record.reason}`;
     }
@@ -235,7 +239,7 @@ function renderDashboard() {
     renderRecordList("documentation-decision-list", studioData.decisionLog);
     renderRecordList("documentation-standard-list", studioData.standardsLog);
     renderRecordList("documentation-procedure-list", studioData.proceduresLog);
-    renderRecordList("documentation-enhancement-list", studioData.documentationEngine?.enhancements);
+    renderRecordList("documentation-enhancement-list", studioData.enhancementBacklog);
 
     renderRecordList("development-project-list", studioData.projects);
     renderRecordList("documentation-record-list", studioData.documentationRecords);
