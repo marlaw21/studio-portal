@@ -2,21 +2,31 @@ const studioData = {
     studio: {
         name: "Two Marshalls Studios",
         portalName: "Studio Portal",
-        currentVersion: "v1.3",
+        currentVersion: "v1.4",
         copyrightYear: "2026",
         mission: "Command Center for games, systems, publishing, and studio operations."
     },
 
     sessionLog: [
         {
+            number: "022",
+            title: "Studio Standards Engine",
+            phase: "Documentation Engine",
+            focus: "Create structured studio standards for development, documentation, assets, publishing, and operations.",
+            status: "In Progress",
+            version: "v1.4",
+            date: "2026",
+            completed: "Adding the Studio Standards Engine."
+        },
+        {
             number: "021",
             title: "Studio Decision Logging Engine",
             phase: "Documentation Engine",
             focus: "Create a structured decision log for important Studio OS decisions.",
-            status: "In Progress",
+            status: "Complete",
             version: "v1.3",
             date: "2026",
-            completed: "Adding structured decision records to the Documentation Engine."
+            completed: "Added structured decision records to the Documentation Engine."
         },
         {
             number: "020",
@@ -113,13 +123,70 @@ const studioData = {
         }
     ],
 
+    standardsLog: [
+        {
+            name: "Standard 001 — Code Change Standard",
+            description: "When a code file changes, provide and replace the full file instead of using partial snippets.",
+            status: "Active",
+            category: "Development"
+        },
+        {
+            name: "Standard 002 — Testing Standard",
+            description: "Every changed page must be tested locally with Ctrl + Shift + R before committing.",
+            status: "Active",
+            category: "Development"
+        },
+        {
+            name: "Standard 003 — GitHub Standard",
+            description: "Only stable, tested work should be committed to main and pushed to origin.",
+            status: "Active",
+            category: "Development"
+        },
+        {
+            name: "Standard 004 — Documentation Standard",
+            description: "Build sessions, decisions, standards, procedures, and enhancements must be stored as structured records.",
+            status: "Active",
+            category: "Documentation"
+        },
+        {
+            name: "Standard 005 — Data Architecture Standard",
+            description: "Reusable studio data belongs in studio-data.js, while app.js should focus on rendering.",
+            status: "Active",
+            category: "Architecture"
+        },
+        {
+            name: "Standard 006 — Asset Naming Standard",
+            description: "Studio assets should use clear names that identify category, purpose, and version when needed.",
+            status: "Planned",
+            category: "Assets"
+        },
+        {
+            name: "Standard 007 — Unity Build Standard",
+            description: "Unity project changes should be tested in the editor before being considered ready for commit.",
+            status: "Planned",
+            category: "Development"
+        },
+        {
+            name: "Standard 008 — Publishing Standard",
+            description: "Publishing work should follow a checklist before any build is submitted to a store or platform.",
+            status: "Planned",
+            category: "Publishing"
+        },
+        {
+            name: "Standard 009 — Marketing Standard",
+            description: "Marketing materials should clearly identify the game, target audience, platform, and release purpose.",
+            status: "Planned",
+            category: "Marketing"
+        }
+    ],
+
     studioState: {
         activeProject: "Studio Operating System",
-        currentMilestone: "Studio Decision Logging Engine",
+        currentMilestone: "Studio Standards Engine",
         buildStatus: "Stable",
         currentSprint: "Foundation Sprint",
-        lastCommit: "Studio Documentation Engine completed",
-        lastPush: "Completed after Work Session 020",
+        lastCommit: "Studio Decision Logging Engine completed",
+        lastPush: "Completed after Work Session 021",
         currentDepartment: "Documentation"
     },
 
@@ -138,26 +205,22 @@ const studioData = {
     ],
 
     notifications: [
-        { title: "Decision Logging Started", description: "The Documentation Engine now has a structured studio decision log.", status: "Active" },
-        { title: "Documentation Engine Complete", description: "Documentation records are now rendered dynamically from shared data.", status: "Complete" },
-        { title: "Next Milestone", description: "Prepare Studio Standards Engine.", status: "Planned" }
+        { title: "Standards Engine Started", description: "The Documentation Engine now includes structured studio standards.", status: "Active" },
+        { title: "Decision Engine Complete", description: "Studio decisions are now stored and rendered from the decision log.", status: "Complete" },
+        { title: "Next Milestone", description: "Prepare Studio Procedures Engine.", status: "Planned" }
     ],
 
     documentationEngine: {
         buildSessions: [
-            { name: "Work Session 021", description: "Created the Studio Decision Logging Engine.", status: "In Progress" },
+            { name: "Work Session 022", description: "Created the Studio Standards Engine.", status: "In Progress" },
+            { name: "Work Session 021", description: "Created the Studio Decision Logging Engine.", status: "Complete" },
             { name: "Work Session 020", description: "Created the Studio Documentation Engine.", status: "Complete" },
-            { name: "Work Session 019", description: "Created centralized build session logging.", status: "Complete" },
-            { name: "Work Session 018", description: "Added the Work Session Tracker Foundation.", status: "Complete" }
+            { name: "Work Session 019", description: "Created centralized build session logging.", status: "Complete" }
         ],
 
         decisions: [],
 
-        standards: [
-            { name: "Shared Rendering Standard", description: "Pages should use reusable render functions instead of duplicate hard-coded sections.", status: "Active" },
-            { name: "Documentation Standard", description: "Important build work, decisions, and future ideas must be captured in structured records.", status: "Active" },
-            { name: "Testing Standard", description: "Every work session must be tested locally before committing and pushing.", status: "Active" }
-        ],
+        standards: [],
 
         procedures: [
             { name: "Build Session Procedure", description: "Start with a focused goal, replace only changed files, test locally, then commit and push.", status: "Active" },
@@ -176,15 +239,15 @@ const studioData = {
         { name: "Foundation", value: 100 },
         { name: "Navigation", value: 100 },
         { name: "Dynamic Engine", value: 100 },
-        { name: "Studio OS Layer", value: 88 },
-        { name: "Decision Logging", value: 35 }
+        { name: "Studio OS Layer", value: 90 },
+        { name: "Standards Engine", value: 35 }
     ],
 
     status: [
         { label: "Studio Portal", value: "Online", state: "green" },
         { label: "GitHub", value: "Connected", state: "green" },
         { label: "GitHub Pages", value: "Live", state: "green" },
-        { label: "Decision Log", value: "Started", state: "green" }
+        { label: "Standards Engine", value: "Started", state: "green" }
     ],
 
     projects: [
@@ -205,6 +268,7 @@ const studioData = {
     documentationRecords: [
         { name: "Build Session Log", description: "Tracks what was completed during each work session.", status: "Active" },
         { name: "Decision Log", description: "Records important studio decisions and why they were made.", status: "Active" },
+        { name: "Standards Log", description: "Stores rules and standards that guide studio work.", status: "Active" },
         { name: "Enhancement Ideas Log", description: "Stores future ideas without interrupting active development.", status: "Active" }
     ],
 
@@ -255,5 +319,6 @@ const studioData = {
 };
 
 studioData.documentationEngine.decisions = studioData.decisionLog;
+studioData.documentationEngine.standards = studioData.standardsLog;
 
 console.log("Studio data loaded:", studioData);
