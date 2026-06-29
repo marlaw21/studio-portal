@@ -2,21 +2,31 @@ const studioData = {
     studio: {
         name: "Two Marshalls Studios",
         portalName: "Studio Portal",
-        currentVersion: "v1.1",
+        currentVersion: "v1.2",
         copyrightYear: "2026",
         mission: "Command Center for games, systems, publishing, and studio operations."
     },
 
     sessionLog: [
         {
+            number: "020",
+            title: "Studio Documentation Engine",
+            phase: "Documentation Engine",
+            focus: "Create structured documentation collections for the Studio OS.",
+            status: "In Progress",
+            version: "v1.2",
+            date: "2026",
+            completed: "Adding build sessions, decisions, standards, procedures, and enhancement ideas."
+        },
+        {
             number: "019",
             title: "Build Session Logging System",
             phase: "Studio OS Logging",
             focus: "Create one session log source that feeds the dashboard.",
-            status: "In Progress",
+            status: "Complete",
             version: "v1.1",
             date: "2026",
-            completed: "Adding centralized build session logging."
+            completed: "Centralized build session logging added."
         },
         {
             number: "018",
@@ -62,12 +72,12 @@ const studioData = {
 
     studioState: {
         activeProject: "Studio Operating System",
-        currentMilestone: "Build Session Logging",
+        currentMilestone: "Studio Documentation Engine",
         buildStatus: "Stable",
         currentSprint: "Foundation Sprint",
-        lastCommit: "Work Session Tracker Foundation completed",
-        lastPush: "Completed after Work Session 018",
-        currentDepartment: "Headquarters"
+        lastCommit: "Build Session Logging System completed",
+        lastPush: "Completed after Work Session 019",
+        currentDepartment: "Documentation"
     },
 
     systemConfig: [
@@ -85,24 +95,57 @@ const studioData = {
     ],
 
     notifications: [
-        { title: "Build Session Logging Started", description: "The Studio OS now begins using one session log as the source of truth.", status: "Active" },
-        { title: "Work Session Tracker Complete", description: "Session tracking was added to the Headquarters dashboard.", status: "Complete" },
-        { title: "Next Milestone", description: "Prepare structured decision and enhancement logs.", status: "Planned" }
+        { title: "Documentation Engine Started", description: "The Documentation department is becoming a structured knowledge hub.", status: "Active" },
+        { title: "Session Logging Complete", description: "Build sessions now feed the Studio OS from one source.", status: "Complete" },
+        { title: "Next Milestone", description: "Prepare documentation records for future Google Drive publishing.", status: "Planned" }
     ],
+
+    documentationEngine: {
+        buildSessions: [
+            { name: "Work Session 020", description: "Created the Studio Documentation Engine.", status: "In Progress" },
+            { name: "Work Session 019", description: "Created centralized build session logging.", status: "Complete" },
+            { name: "Work Session 018", description: "Added the Work Session Tracker Foundation.", status: "Complete" },
+            { name: "Work Session 017", description: "Added the Studio OS Core Engine.", status: "Complete" }
+        ],
+
+        decisions: [
+            { name: "Use One Shared Data Source", description: "Studio data should live in studio-data.js and be rendered by app.js.", status: "Approved" },
+            { name: "Complete File Replacement Rule", description: "When a file changes, replace the full file instead of using partial snippets.", status: "Approved" },
+            { name: "Stay on Foundation Before Enhancements", description: "Enhancements are logged but not built until the core vision is stable.", status: "Approved" }
+        ],
+
+        standards: [
+            { name: "Shared Rendering Standard", description: "Pages should use reusable render functions instead of duplicate hard-coded sections.", status: "Active" },
+            { name: "Documentation Standard", description: "Important build work, decisions, and future ideas must be captured in structured records.", status: "Active" },
+            { name: "Testing Standard", description: "Every work session must be tested locally before committing and pushing.", status: "Active" }
+        ],
+
+        procedures: [
+            { name: "Build Session Procedure", description: "Start with a focused goal, replace only changed files, test locally, then commit and push.", status: "Active" },
+            { name: "Page Testing Procedure", description: "Open the local page, press Ctrl + Shift + R, and verify no loading placeholders remain.", status: "Active" },
+            { name: "GitHub Procedure", description: "Commit a stable checkpoint to main and push to origin after each passed work session.", status: "Active" }
+        ],
+
+        enhancements: [
+            { name: "Documentation Search", description: "Add search or filtering for build sessions, decisions, standards, and procedures.", status: "Deferred" },
+            { name: "Google Drive Publishing", description: "Publish structured documentation records into the future Google documentation hierarchy.", status: "Deferred" },
+            { name: "Interactive Documentation Forms", description: "Allow new documentation records to be added through the Studio OS interface.", status: "Deferred" }
+        ]
+    },
 
     progress: [
         { name: "Foundation", value: 100 },
         { name: "Navigation", value: 100 },
         { name: "Dynamic Engine", value: 100 },
-        { name: "Studio OS Layer", value: 80 },
-        { name: "Build Session Logging", value: 30 }
+        { name: "Studio OS Layer", value: 85 },
+        { name: "Documentation Engine", value: 30 }
     ],
 
     status: [
         { label: "Studio Portal", value: "Online", state: "green" },
         { label: "GitHub", value: "Connected", state: "green" },
         { label: "GitHub Pages", value: "Live", state: "green" },
-        { label: "Session Logging", value: "Started", state: "green" }
+        { label: "Documentation Engine", value: "Started", state: "green" }
     ],
 
     projects: [
@@ -122,8 +165,8 @@ const studioData = {
 
     documentationRecords: [
         { name: "Build Session Log", description: "Tracks what was completed during each work session.", status: "Active" },
-        { name: "Decision Log", description: "Records important studio decisions and why they were made.", status: "Planned" },
-        { name: "Enhancement Ideas Log", description: "Stores future ideas without interrupting active development.", status: "Planned" }
+        { name: "Decision Log", description: "Records important studio decisions and why they were made.", status: "Active" },
+        { name: "Enhancement Ideas Log", description: "Stores future ideas without interrupting active development.", status: "Active" }
     ],
 
     assetCategories: [

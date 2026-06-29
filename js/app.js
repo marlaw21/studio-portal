@@ -10,6 +10,7 @@ function getStatusIcon(state) {
 function getRecordStatusClass(status) {
     if (!status) return "project-status";
     if (status.toLowerCase() === "planned") return "project-status planned";
+    if (status.toLowerCase() === "deferred") return "project-status planned";
     return "project-status";
 }
 
@@ -38,12 +39,19 @@ function renderStudioHeader() {
 }
 
 function renderCurrentWorkSession() {
+    const focusText = document.getElementById("focus-text");
+    const focusProject = document.getElementById("focus-project");
+    const focusPhase = document.getElementById("focus-phase");
+    const focusVersion = document.getElementById("focus-version");
+
+    if (!focusText || !focusProject || !focusPhase || !focusVersion) return;
+
     const currentSession = getCurrentSession();
 
-    document.getElementById("focus-text").textContent = currentSession.focus;
-    document.getElementById("focus-project").textContent = studioData.studio.portalName;
-    document.getElementById("focus-phase").textContent = currentSession.phase;
-    document.getElementById("focus-version").textContent = currentSession.version;
+    focusText.textContent = currentSession.focus;
+    focusProject.textContent = studioData.studio.portalName;
+    focusPhase.textContent = currentSession.phase;
+    focusVersion.textContent = currentSession.version;
 }
 
 function renderRecordList(containerId, records) {
@@ -108,6 +116,8 @@ function renderStatusRows(containerId, rows) {
 }
 
 function renderStudioState() {
+    if (!studioData.studioState || !studioData.sessionLog) return;
+
     const currentSession = getCurrentSession();
 
     const rows = [
@@ -210,9 +220,25 @@ function renderDashboard() {
     renderStatus();
     renderProgress();
     renderDepartments();
+
+    renderRecordList("documentation-build-session-list", studioData.documentationEngine?.buildSessions);
+    renderRecordList("documentation-decision-list", studioData.documentationEngine?.decisions);
+    renderRecordList("documentation-standard-list", studioData.documentationEngine?.standards);
+    renderRecordList("documentation-procedure-list", studioData.documentationEngine?.procedures);
+    renderRecordList("documentation-enhancement-list", studioData.documentationEngine?.enhancements);
+
+    renderRecordList("development-project-list", studioData.projects);
+    renderRecordList("documentation-record-list", studioData.documentationRecords);
+    renderRecordList("asset-category-list", studioData.assetCategories);
+    renderAreaGrid("asset-group-list", studioData.assetGroups);
+    renderRecordList("publishing-channel-list", studioData.publishingChannels);
+    renderAreaGrid("publishing-pipeline-list", studioData.publishingPipeline);
+    renderRecordList("marketing-channel-list", studioData.marketingChannels);
+    renderAreaGrid("marketing-pipeline-list", studioData.marketingPipeline);
+
     renderFooter();
 
-    console.log("Studio dashboard rendered from session log:", studioData);
+    console.log("Studio dashboard rendered:", studioData);
 }
 
 renderDashboard();
