@@ -1,5 +1,101 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Two Marshalls Studios | Two Marshalls Studios</title><link rel="stylesheet" href="css/styles.css"></head><body><header class="studio-header"><div class="header-content"><p class="eyebrow">Studio Headquarters</p><h1>Two Marshalls Studios</h1><p class="header-subtitle">Command Center for games, systems, publishing, and studio operations.</p></div></header><nav class="global-nav"><ul><li><a class="active" href="index.html">🏠 Headquarters</a></li><li><a href="pages/documentation.html">📚 Documentation</a></li><li><a href="pages/development.html">🛠 Development</a></li><li><a href="pages/assets.html">🎨 Assets</a></li><li><a href="pages/publishing.html">🚀 Publishing</a></li><li><a href="pages/marketing.html">📣 Marketing</a></li><li><a href="pages/business.html">🏢 Business</a></li></ul></nav><main class="dashboard"><section class="focus-card dashboard-card full-width"><div class="card-header"><span class="card-icon">🎯</span><div><p class="section-label">Current Work Session</p><h2>Today's Focus</h2></div></div><p class="focus-text" id="focus-text">Loading current work session...</p><div class="focus-details"><div><span class="detail-label">Project</span><strong id="focus-project">Loading...</strong></div><div><span class="detail-label">Phase</span><strong id="focus-phase">Loading...</strong></div><div><span class="detail-label">Version</span><strong id="focus-version">Loading...</strong></div></div></section><section class="dashboard-card full-width"><div class="card-header"><span class="card-icon">🧠</span><div><p class="section-label">Studio Operating System</p><h2>Studio State</h2></div></div><div class="status-list" id="studio-state-list"></div></section><section class="dashboard-card projects-card"><div class="card-header"><span class="card-icon">🔔</span><div><p class="section-label">System Alerts</p><h2>Notifications</h2></div></div><div class="project-list" id="notification-list"></div></section><section class="dashboard-card status-card"><div class="card-header"><span class="card-icon">⚡</span><div><p class="section-label">Core Engine</p><h2>Studio Commands</h2></div></div><div class="project-list" id="studio-command-list"></div></section><section class="dashboard-card full-width"><div class="card-header"><span class="card-icon">⚙️</span><div><p class="section-label">System Configuration</p><h2>Studio OS Configuration</h2></div></div><div class="status-list" id="system-config-list"></div></section><section class="dashboard-card projects-card"><div class="card-header"><span class="card-icon">🎮</span><div><p class="section-label">Active Work</p><h2>Current Projects</h2></div></div><div class="project-list" id="project-list"></div></section><section class="dashboard-card status-card"><div class="card-header"><span class="card-icon">📊</span><div><p class="section-label">System Health</p><h2>Studio Status</h2></div></div><div class="status-list" id="status-list"></div></section><section class="dashboard-card full-width"><div class="card-header"><span class="card-icon">📈</span><div><p class="section-label">Build Progress</p><h2>Foundation Progress</h2></div></div><div class="status-list" id="progress-list"></div></section><section class="dashboard-card full-width"><div class="card-header"><span class="card-icon">🏢</span><div><p class="section-label">Studio Navigation</p><h2>Studio Areas</h2></div></div><div class="area-grid" id="department-list"></div></section></main><footer class="studio-footer"><p id="footer-copyright">Two Marshalls Studios © 2026</p><p id="footer-version">Studio Headquarters Version Loading...</p></footer><script src="js/studio-data/core.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two Marshalls Studios | Two Marshalls Studios</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="studio-header">
+  <div class="header-content">
+    <p class="eyebrow">Studio Headquarters</p>
+    <h1>Two Marshalls Studios</h1>
+    <p class="header-subtitle">Command Center for games, systems, publishing, and studio operations.</p>
+  </div>
+</header>
+
+<nav class="global-nav">
+  <ul>
+    <li><a class="active" href="index.html">🏠 Headquarters</a></li>
+    <li><a href="pages/documentation.html">📚 Documentation</a></li>
+    <li><a href="pages/development.html">🛠 Development</a></li>
+    <li><a href="pages/assets.html">🎨 Assets</a></li>
+    <li><a href="pages/publishing.html">🚀 Publishing</a></li>
+    <li><a href="pages/marketing.html">📣 Marketing</a></li>
+    <li><a href="pages/business.html">🏢 Business</a></li>
+  </ul>
+</nav>
+
+<main class="dashboard">
+  <section class="focus-card dashboard-card full-width">
+    <div class="card-header">
+      <span class="card-icon">🎯</span>
+      <div>
+        <p class="section-label">Current Work Session</p>
+        <h2>Today's Focus</h2>
+      </div>
+    </div>
+    <p class="focus-text" id="focus-text">Loading current work session...</p>
+    <div class="focus-details">
+      <div><span class="detail-label">Project</span><strong id="focus-project">Loading...</strong></div>
+      <div><span class="detail-label">Phase</span><strong id="focus-phase">Loading...</strong></div>
+      <div><span class="detail-label">Version</span><strong id="focus-version">Loading...</strong></div>
+    </div>
+  </section>
+
+  <section class="dashboard-card full-width">
+    <div class="card-header"><span class="card-icon">🧠</span><div><p class="section-label">Studio Operating System</p><h2>Studio State</h2></div></div>
+    <div class="status-list" id="studio-state-list"></div>
+  </section>
+
+  <section class="dashboard-card projects-card">
+    <div class="card-header"><span class="card-icon">🔔</span><div><p class="section-label">System Alerts</p><h2>Notifications</h2></div></div>
+    <div class="project-list" id="notification-list"></div>
+  </section>
+
+  <section class="dashboard-card status-card">
+    <div class="card-header"><span class="card-icon">⚡</span><div><p class="section-label">Core Engine</p><h2>Studio Commands</h2></div></div>
+    <div class="project-list" id="studio-command-list"></div>
+  </section>
+
+  <section class="dashboard-card full-width">
+    <div class="card-header"><span class="card-icon">⚙️</span><div><p class="section-label">System Configuration</p><h2>Studio OS Configuration</h2></div></div>
+    <div class="status-list" id="system-config-list"></div>
+  </section>
+
+  <section class="dashboard-card projects-card">
+    <div class="card-header"><span class="card-icon">🎮</span><div><p class="section-label">Active Work</p><h2>Current Projects</h2></div></div>
+    <div class="project-list" id="project-list"></div>
+  </section>
+
+  <section class="dashboard-card status-card">
+    <div class="card-header"><span class="card-icon">📊</span><div><p class="section-label">System Health</p><h2>Studio Status</h2></div></div>
+    <div class="status-list" id="status-list"></div>
+  </section>
+
+  <section class="dashboard-card full-width">
+    <div class="card-header"><span class="card-icon">📈</span><div><p class="section-label">Build Progress</p><h2>Foundation Progress</h2></div></div>
+    <div class="status-list" id="progress-list"></div>
+  </section>
+
+  <section class="dashboard-card full-width">
+    <div class="card-header"><span class="card-icon">🏢</span><div><p class="section-label">Studio Navigation</p><h2>Studio Areas</h2></div></div>
+    <div class="area-grid" id="department-list"></div>
+  </section>
+</main>
+
+<footer class="studio-footer">
+  <p id="footer-copyright">Two Marshalls Studios © 2026</p>
+  <p id="footer-version">Studio Headquarters Version Loading...</p>
+</footer>
+
+<script src="js/studio-data/core.js"></script>
 <script src="js/studio-data/documentation.js"></script>
 <script src="js/studio-data/departments.js"></script>
+<script src="js/studio-data/database.js"></script>
 <script src="js/studio-data/loader.js"></script>
-<script src="js/app.js"></script></body></html>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

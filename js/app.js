@@ -1,175 +1,313 @@
-console.log("Two Marshalls Studios Command Center Loaded");
+/*
+TMS-OS / Two Marshalls Studios Operating System
+Work Session 039 — Headquarters Uses StudioDB
+File: js/app.js
+*/
 
-function getStatusIcon(state) {
-    if (state === "green") return "🟢";
-    if (state === "yellow") return "🟡";
-    if (state === "red") return "🔴";
-    return "⚪";
-}
+(function () {
+    "use strict";
 
-function getRecordStatusClass(status) {
-    if (!status) return "project-status";
-    if (status.toLowerCase() === "planned") return "project-status planned";
-    if (status.toLowerCase() === "deferred") return "project-status planned";
-    return "project-status";
-}
+    document.addEventListener("DOMContentLoaded", function () {
+        const data = window.studio || window.studioData || {};
 
-function getRecordTitle(record) { return record.name || record.title || "Untitled"; }
-function getRecordStatus(record) { return record.status || record.version || record.time || ""; }
+        if (!data || Object.keys(data).length === 0) {
+            console.warn("Studio data was not found. Check studio-data files and loader.js.");
+            return;
+        }
 
-function getRecordDescription(record) {
-    let description = record.description || record.focus || record.completed || "";
-    if (record.category) description = `${description} Category: ${record.category}.`;
-    if (record.priority) description = `${description} Priority: ${record.priority}.`;
-    if (record.reason) description = `${description} Reason: ${record.reason}`;
-    return description;
-}
+        renderHeader(data);
+        renderTodaysFocus(data);
+        renderStudioState(data);
+        renderNotifications();
+        renderStudioCommands();
+        renderSystemConfig();
+        renderProjects();
+        renderStudioStatus();
+        renderProgress();
+        renderStudioAreas();
+        renderFooter(data);
 
-function getCurrentSession() { return studioData.sessionLog[0]; }
-
-function renderStudioHeader() {
-    const studioName = document.getElementById("studio-name");
-    const studioMission = document.getElementById("studio-mission");
-    if (studioName) studioName.textContent = studioData.studio.name;
-    if (studioMission) studioMission.textContent = studioData.studio.mission;
-}
-
-function renderCurrentWorkSession() {
-    const focusText = document.getElementById("focus-text");
-    const focusProject = document.getElementById("focus-project");
-    const focusPhase = document.getElementById("focus-phase");
-    const focusVersion = document.getElementById("focus-version");
-    if (!focusText || !focusProject || !focusPhase || !focusVersion) return;
-    const currentSession = getCurrentSession();
-    focusText.textContent = currentSession.focus;
-    focusProject.textContent = studioData.studio.portalName;
-    focusPhase.textContent = currentSession.phase;
-    focusVersion.textContent = currentSession.version;
-}
-
-function renderRecordList(containerId, records) {
-    const recordList = document.getElementById(containerId);
-    if (!recordList || !records) return;
-    recordList.innerHTML = "";
-    records.forEach(function (record) {
-        const recordItem = document.createElement("article");
-        recordItem.className = "project-item";
-        recordItem.dataset.searchText = [getRecordTitle(record), getRecordDescription(record), getRecordStatus(record)].join(" ").toLowerCase();
-        recordItem.innerHTML = `<div><h3>${getRecordTitle(record)}</h3><p>${getRecordDescription(record)}</p></div><span class="${getRecordStatusClass(getRecordStatus(record))}">${getRecordStatus(record)}</span>`;
-        recordList.appendChild(recordItem);
+        console.log("Headquarters rendered successfully using StudioDB.");
     });
-}
 
-function renderAreaGrid(containerId, records) {
-    const areaGrid = document.getElementById(containerId);
-    if (!areaGrid || !records) return;
-    areaGrid.innerHTML = "";
-    records.forEach(function (record) {
-        const areaItem = document.createElement("div");
-        areaItem.className = "area-item";
-        areaItem.innerHTML = `<span>${record.icon || "📌"}</span><strong>${getRecordTitle(record)}</strong><p>${getRecordDescription(record)}</p>`;
-        areaGrid.appendChild(areaItem);
-    });
-}
+    function renderHeader(data) {
+        const headerTitle = document.querySelector(".studio-header h1");
+        const headerSubtitle = document.querySelector(".header-subtitle");
 
-function renderStatusRows(containerId, rows) {
-    const statusList = document.getElementById(containerId);
-    if (!statusList || !rows) return;
-    statusList.innerHTML = "";
-    rows.forEach(function (row) {
-        const statusRow = document.createElement("div");
-        statusRow.className = "status-row";
-        statusRow.innerHTML = `<span>${row.label}</span><strong>${row.value}</strong>`;
-        statusList.appendChild(statusRow);
-    });
-}
+        if (headerTitle && data.studio && data.studio.name) {
+            headerTitle.textContent = data.studio.name;
+        }
 
-function renderStudioState() {
-    if (!studioData.studioState || !studioData.sessionLog) return;
-    const currentSession = getCurrentSession();
-    renderStatusRows("studio-state-list", [
-        { label: "Active Project", value: studioData.studioState.activeProject },
-        { label: "Current Milestone", value: studioData.studioState.currentMilestone },
-        { label: "Build Status", value: studioData.studioState.buildStatus },
-        { label: "Current Sprint", value: studioData.studioState.currentSprint },
-        { label: "Current Session", value: `Work Session ${currentSession.number}` },
-        { label: "Session Status", value: currentSession.status }
-    ]);
-}
+        if (headerSubtitle && data.studio && data.studio.mission) {
+            headerSubtitle.textContent = data.studio.mission;
+        }
+    }
 
-function renderProgress() {
-    const progressList = document.getElementById("progress-list");
-    if (!progressList || !studioData.progress) return;
-    progressList.innerHTML = "";
-    studioData.progress.forEach(item => {
-        const row = document.createElement("div");
-        row.className = "status-row";
-        row.innerHTML = `<span>${item.name}</span><strong>${item.value}%</strong>`;
-        progressList.appendChild(row);
-    });
-}
+    function renderTodaysFocus(data) {
+        const card = findCardByHeading("Today's Focus");
+        if (!card || !data.studioState || !data.studio) return;
 
-function renderStatus() {
-    const statusList = document.getElementById("status-list");
-    if (!statusList || !studioData.status) return;
-    statusList.innerHTML = "";
-    studioData.status.forEach(item => {
-        const row = document.createElement("div");
-        row.className = "status-row";
-        row.innerHTML = `<span>${item.label}</span><strong>${getStatusIcon(item.state)} ${item.value}</strong>`;
-        statusList.appendChild(row);
-    });
-}
+        const body = getCardBody(card);
 
-function renderDepartments() {
-    const departmentList = document.getElementById("department-list");
-    if (!departmentList || !studioData.departments) return;
-    departmentList.innerHTML = "";
-    studioData.departments.forEach(department => {
-        const card = document.createElement("a");
-        card.className = "area-item area-link";
-        card.href = department.url;
-        card.innerHTML = `<span>${department.icon}</span><strong>${department.name}</strong><p>${department.description}</p>`;
-        departmentList.appendChild(card);
-    });
-}
+        body.innerHTML = `
+            <p class="focus-text">${safeText(data.studioState.currentMilestone || "Current work session")}</p>
+            <div class="focus-details">
+                <div>
+                    <p class="detail-label">Project</p>
+                    <strong>${safeText(data.studioState.activeProject || "Not set")}</strong>
+                </div>
+                <div>
+                    <p class="detail-label">Phase</p>
+                    <strong>${safeText(data.studioState.currentDepartment || "Not set")}</strong>
+                </div>
+                <div>
+                    <p class="detail-label">Version</p>
+                    <strong>${safeText(data.studio.currentVersion || "Not set")}</strong>
+                </div>
+            </div>
+        `;
+    }
 
-function renderFooter() {
-    const footerCopyright = document.getElementById("footer-copyright");
-    const footerVersion = document.getElementById("footer-version");
-    if (footerCopyright) footerCopyright.textContent = `${studioData.studio.name} © ${studioData.studio.copyrightYear}`;
-    if (footerVersion) footerVersion.textContent = `Studio Headquarters Version ${studioData.studio.currentVersion}`;
-}
+    function renderStudioState(data) {
+        const card = findCardByHeading("Studio State");
+        if (!card || !data.studioState) return;
 
-function renderDashboard() {
-    if (typeof studioData === "undefined") return;
-    renderStudioHeader();
-    renderCurrentWorkSession();
-    renderStudioState();
-    renderRecordList("session-log-list", studioData.sessionLog);
-    renderRecordList("notification-list", studioData.notifications);
-    renderRecordList("studio-command-list", studioData.studioCommands);
-    renderStatusRows("system-config-list", studioData.systemConfig);
-    renderRecordList("project-list", studioData.projects);
-    renderStatus();
-    renderProgress();
-    renderDepartments();
-    renderRecordList("documentation-build-session-list", studioData.documentationEngine?.buildSessions);
-    renderRecordList("documentation-decision-list", studioData.decisionLog);
-    renderRecordList("documentation-standard-list", studioData.standardsLog);
-    renderRecordList("documentation-procedure-list", studioData.proceduresLog);
-    renderRecordList("documentation-enhancement-list", studioData.enhancementBacklog);
-    renderRecordList("development-project-list", studioData.projects);
-    renderRecordList("documentation-record-list", studioData.documentationRecords);
-    renderRecordList("asset-category-list", studioData.assetCategories);
-    renderAreaGrid("asset-group-list", studioData.assetGroups);
-    renderRecordList("publishing-channel-list", studioData.publishingChannels);
-    renderAreaGrid("publishing-pipeline-list", studioData.publishingPipeline);
-    renderRecordList("marketing-channel-list", studioData.marketingChannels);
-    renderAreaGrid("marketing-pipeline-list", studioData.marketingPipeline);
-    if (typeof initializeDocumentationSearch === "function") initializeDocumentationSearch();
-    renderFooter();
-    console.log("Studio dashboard rendered:", studioData);
-}
+        const body = getCardBody(card);
 
-renderDashboard();
+        body.innerHTML = `
+            <div class="status-list">
+                ${renderStatusRow("Active Project", data.studioState.activeProject)}
+                ${renderStatusRow("Current Milestone", data.studioState.currentMilestone)}
+                ${renderStatusRow("Build Status", data.studioState.buildStatus)}
+                ${renderStatusRow("Current Sprint", data.studioState.currentSprint)}
+                ${renderStatusRow("Current Department", data.studioState.currentDepartment)}
+                ${renderStatusRow("Last Commit", data.studioState.lastCommit)}
+                ${renderStatusRow("Last Push", data.studioState.lastPush)}
+            </div>
+        `;
+    }
+
+    function renderNotifications() {
+        const card = findCardByHeading("Notifications");
+        const records = getStudioRecords("notifications");
+
+        if (!card || records.length === 0) return;
+
+        const body = getCardBody(card);
+
+        body.innerHTML = `
+            <div class="status-list">
+                ${records.map(function (item) {
+                    return `
+                        <div class="status-row">
+                            <div>
+                                <strong>${safeText(item.title)}</strong>
+                                <p>${safeText(item.description)}</p>
+                            </div>
+                            <span class="project-status">${safeText(item.status)}</span>
+                        </div>
+                    `;
+                }).join("")}
+            </div>
+        `;
+    }
+
+    function renderStudioCommands() {
+        const card = findCardByHeading("Studio Commands");
+        const records = getStudioRecords("studioCommands");
+
+        if (!card || records.length === 0) return;
+
+        const body = getCardBody(card);
+
+        body.innerHTML = `
+            <div class="project-list">
+                ${records.map(function (item) {
+                    return renderProjectItem(item);
+                }).join("")}
+            </div>
+        `;
+    }
+
+    function renderSystemConfig() {
+        const card = findCardByHeading("Studio OS Configuration");
+        const records = getStudioRecords("systemConfig");
+
+        if (!card || records.length === 0) return;
+
+        const body = getCardBody(card);
+
+        body.innerHTML = `
+            <div class="status-list">
+                ${records.map(function (item) {
+                    return renderStatusRow(item.label, item.value);
+                }).join("")}
+            </div>
+        `;
+    }
+
+    function renderProjects() {
+        const card = findCardByHeading("Current Projects");
+        const records = getStudioRecords("projects");
+
+        if (!card || records.length === 0) return;
+
+        const body = getCardBody(card);
+
+        body.innerHTML = `
+            <div class="project-list">
+                ${records.map(function (item) {
+                    return renderProjectItem(item);
+                }).join("")}
+            </div>
+        `;
+    }
+
+    function renderStudioStatus() {
+        const card = findCardByHeading("Studio Status");
+        const records = getStudioRecords("status");
+
+        if (!card || records.length === 0) return;
+
+        const body = getCardBody(card);
+
+        body.innerHTML = `
+            <div class="status-list">
+                ${records.map(function (item) {
+                    return renderStatusRow(item.label, item.value);
+                }).join("")}
+            </div>
+        `;
+    }
+
+    function renderProgress() {
+        const card = findCardByHeading("Foundation Progress");
+        const records = getStudioRecords("progress");
+
+        if (!card || records.length === 0) return;
+
+        const body = getCardBody(card);
+
+        body.innerHTML = `
+            <div class="status-list">
+                ${records.map(function (item) {
+                    return renderStatusRow(item.name, item.value + "%");
+                }).join("")}
+            </div>
+        `;
+    }
+
+    function renderStudioAreas() {
+        const card = findCardByHeading("Studio Areas");
+        const records = getStudioRecords("departments");
+
+        if (!card || records.length === 0) return;
+
+        const body = getCardBody(card);
+
+        body.innerHTML = `
+            <div class="area-grid">
+                ${records.map(function (department) {
+                    return `
+                        <a class="area-item area-link" href="${safeAttribute(department.url)}">
+                            <span>${safeText(department.icon)}</span>
+                            <strong>${safeText(department.name)}</strong>
+                            <p>${safeText(department.description)}</p>
+                        </a>
+                    `;
+                }).join("")}
+            </div>
+        `;
+    }
+
+    function renderFooter(data) {
+        const footer = document.querySelector(".studio-footer");
+        if (!footer || !data.studio) return;
+
+        footer.innerHTML = `
+            <p>${safeText(data.studio.name || "Two Marshalls Studios")} © ${safeText(data.studio.copyrightYear || "2026")}</p>
+            <p>Studio Headquarters Version ${safeText(data.studio.currentVersion || "Not set")}</p>
+        `;
+    }
+
+    function getStudioRecords(recordType) {
+        if (window.StudioDB && typeof window.StudioDB.get === "function") {
+            return window.StudioDB.get(recordType);
+        }
+
+        return [];
+    }
+
+    function renderProjectItem(item) {
+        return `
+            <div class="project-item">
+                <div>
+                    <h3>${safeText(item.name)}</h3>
+                    <p>${safeText(item.description)}</p>
+                </div>
+                <span class="project-status ${item.status === "Planned" ? "planned" : ""}">${safeText(item.status)}</span>
+            </div>
+        `;
+    }
+
+    function renderStatusRow(label, value) {
+        return `
+            <div class="status-row">
+                <span>${safeText(label)}</span>
+                <strong>${safeText(value || "Not set")}</strong>
+            </div>
+        `;
+    }
+
+    function findCardByHeading(headingText) {
+        const headings = document.querySelectorAll("h2, h3");
+
+        for (let index = 0; index < headings.length; index += 1) {
+            const heading = headings[index];
+
+            if (normalizeText(heading.textContent).includes(normalizeText(headingText))) {
+                return heading.closest(".dashboard-card");
+            }
+        }
+
+        return null;
+    }
+
+    function getCardBody(card) {
+        let body = card.querySelector(".card-body");
+
+        if (!body) {
+            body = document.createElement("div");
+            body.className = "card-body";
+            card.appendChild(body);
+        }
+
+        Array.from(card.children).forEach(function (child) {
+            if (!child.classList.contains("card-header") && !child.classList.contains("card-body")) {
+                child.remove();
+            }
+        });
+
+        return body;
+    }
+
+    function normalizeText(value) {
+        return String(value || "")
+            .replace(/\s+/g, " ")
+            .trim()
+            .toLowerCase();
+    }
+
+    function safeText(value) {
+        return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function safeAttribute(value) {
+        return safeText(value || "#");
+    }
+})();

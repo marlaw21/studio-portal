@@ -1,15 +1,23 @@
-# TMS-OS Version
+# VERSION.md
 
-Current Version: v0.27.0
+## Current Version
 
-Current Work Session: 027 — Shared Search Engine
+v0.28.1
 
-Current Milestone: Shared Search Engine
+---
 
-Current Sprint: Foundation Sprint
+## Work Session 028 — Cross-Department Search Display Fix
 
-Build Status: Stable
+### Completed
 
-Last Completed Session: 026 — Studio Data Modularization
+- Added missing shared search result styling.
+- Fixed search results displaying as one long unformatted line.
+- Search results now display as separated clickable cards.
+- Preserved the existing studio visual design.
+- Kept the fix focused on the display issue only.
 
-Next Planned Session: 028 — Cross-Department Search
+---
+
+## Previous Version
+
+v0.28.0 — Work Session 028: Cross-Department Search
