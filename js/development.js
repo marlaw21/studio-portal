@@ -1,38 +1,26 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 031 — Development Page Rendering Engine
+Work Session 044C — Development Renderer Uses StudioDB
 File: js/development.js
-
-Purpose:
-- Render the Development page from structured studio data.
-- Keep app.js focused on Headquarters.
-- Keep Development rendering modular.
 */
 
 (function () {
     "use strict";
 
     document.addEventListener("DOMContentLoaded", function () {
+        renderDevelopmentProjects();
 
-        const data = window.studioData || window.studio || {};
-
-        renderDevelopmentProjects(data);
-
-        console.log("Development page rendered successfully.");
+        console.log("Development page rendered successfully using StudioDB.");
     });
 
-    function renderDevelopmentProjects(data) {
-
+    function renderDevelopmentProjects() {
         const container = document.getElementById("development-project-list");
 
-        if (!container) {
-            return;
-        }
+        if (!container) return;
 
-        const projects = Array.isArray(data.projects) ? data.projects : [];
+        const projects = getRecords("projects");
 
         if (projects.length === 0) {
-
             container.innerHTML = `
                 <div class="project-item">
                     <div>
@@ -42,7 +30,6 @@ Purpose:
                     <span class="project-status planned">Empty</span>
                 </div>
             `;
-
             return;
         }
 
@@ -50,55 +37,46 @@ Purpose:
     }
 
     function renderProject(project) {
-
-        const name = project.name || "Unnamed Project";
-        const description = project.description || "";
+        const name = project.name || project.title || "Unnamed Project";
+        const description = project.description || project.summary || "";
         const status = project.status || "Planned";
 
         return `
             <div class="project-item">
-
                 <div>
-
                     <h3>${escapeHtml(name)}</h3>
-
                     <p>${escapeHtml(description)}</p>
-
                 </div>
-
-                <span class="project-status ${statusClass(status)}">
-
-                    ${escapeHtml(status)}
-
-                </span>
-
+                <span class="project-status ${statusClass(status)}">${escapeHtml(status)}</span>
             </div>
         `;
     }
 
+    function getRecords(recordType) {
+        if (window.StudioDB && typeof window.StudioDB.get === "function") {
+            return window.StudioDB.get(recordType);
+        }
+
+        return [];
+    }
+
     function statusClass(status) {
-
-        switch (status.toLowerCase()) {
-
+        switch (String(status || "").toLowerCase()) {
             case "planned":
                 return "planned";
-
             case "complete":
                 return "complete";
-
             case "active":
                 return "active";
-
             case "in progress":
+            case "in development":
                 return "active";
-
             default:
                 return "";
         }
     }
 
     function escapeHtml(value) {
-
         return String(value || "")
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
@@ -106,5 +84,4 @@ Purpose:
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
-
 })();

@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 031 — Marketing Page Rendering Engine
+Work Session 044D — Marketing Renderer Uses StudioDB
 File: js/marketing.js
 */
 
@@ -8,19 +8,17 @@ File: js/marketing.js
     "use strict";
 
     document.addEventListener("DOMContentLoaded", function () {
-        const data = window.studioData || window.studio || {};
+        renderMarketingChannels();
+        renderMarketingPipeline();
 
-        renderMarketingChannels(data);
-        renderMarketingPipeline(data);
-
-        console.log("Marketing page rendered successfully.");
+        console.log("Marketing page rendered successfully using StudioDB.");
     });
 
-    function renderMarketingChannels(data) {
+    function renderMarketingChannels() {
         const container = document.getElementById("marketing-channel-list");
         if (!container) return;
 
-        const channels = findMarketingChannels(data);
+        const channels = getRecords("marketingChannels");
 
         if (channels.length === 0) {
             container.innerHTML = `
@@ -40,7 +38,7 @@ File: js/marketing.js
                 <div class="project-item">
                     <div>
                         <h3>${safeText(channel.name || channel.title || "Unnamed Channel")}</h3>
-                        <p>${safeText(channel.description || "No description provided.")}</p>
+                        <p>${safeText(channel.description || channel.summary || "No description provided.")}</p>
                     </div>
                     <span class="project-status ${getStatusClass(channel.status)}">${safeText(channel.status || "Planned")}</span>
                 </div>
@@ -48,11 +46,11 @@ File: js/marketing.js
         }).join("");
     }
 
-    function renderMarketingPipeline(data) {
+    function renderMarketingPipeline() {
         const container = document.getElementById("marketing-pipeline-list");
         if (!container) return;
 
-        const pipeline = findMarketingPipeline(data);
+        const pipeline = getRecords("marketingPipeline");
 
         if (pipeline.length === 0) {
             container.innerHTML = `
@@ -70,31 +68,35 @@ File: js/marketing.js
                 <div class="area-item">
                     <span>${safeText(step.icon || "🎬")}</span>
                     <strong>${safeText(step.name || step.title || "Unnamed Step")}</strong>
-                    <p>${safeText(step.description || "No description provided.")}</p>
+                    <p>${safeText(step.description || step.summary || "No description provided.")}</p>
                 </div>
             `;
         }).join("");
     }
 
-    function findMarketingChannels(data) {
-        if (Array.isArray(data.marketingChannels)) return data.marketingChannels;
-        if (data.marketing && Array.isArray(data.marketing.channels)) return data.marketing.channels;
-        if (Array.isArray(data.marketing)) return data.marketing;
-        return [];
-    }
+    function getRecords(recordType) {
+        if (window.StudioDB && typeof window.StudioDB.get === "function") {
+            return window.StudioDB.get(recordType);
+        }
 
-    function findMarketingPipeline(data) {
-        if (Array.isArray(data.marketingPipeline)) return data.marketingPipeline;
-        if (data.marketing && Array.isArray(data.marketing.pipeline)) return data.marketing.pipeline;
         return [];
     }
 
     function getStatusClass(status) {
-        if (status === "Planned" || status === "Deferred") {
-            return "planned";
-        }
+        switch (String(status || "").toLowerCase()) {
+            case "planned":
+            case "deferred":
+                return "planned";
 
-        return "";
+            case "active":
+                return "active";
+
+            case "complete":
+                return "complete";
+
+            default:
+                return "";
+        }
     }
 
     function safeText(value) {
@@ -105,4 +107,5 @@ File: js/marketing.js
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
+
 })();

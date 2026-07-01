@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 031 — Publishing Page Rendering Engine
+Work Session 044B — Publishing Renderer Uses StudioDB
 File: js/publishing.js
 */
 
@@ -8,19 +8,17 @@ File: js/publishing.js
     "use strict";
 
     document.addEventListener("DOMContentLoaded", function () {
-        const data = window.studioData || window.studio || {};
+        renderPublishingChannels();
+        renderPublishingPipeline();
 
-        renderPublishingChannels(data);
-        renderPublishingPipeline(data);
-
-        console.log("Publishing page rendered successfully.");
+        console.log("Publishing page rendered successfully using StudioDB.");
     });
 
-    function renderPublishingChannels(data) {
+    function renderPublishingChannels() {
         const container = document.getElementById("publishing-channel-list");
         if (!container) return;
 
-        const channels = findPublishingChannels(data);
+        const channels = getRecords("publishingChannels");
 
         if (channels.length === 0) {
             container.innerHTML = `
@@ -40,7 +38,7 @@ File: js/publishing.js
                 <div class="project-item">
                     <div>
                         <h3>${safeText(channel.name || channel.title || "Unnamed Channel")}</h3>
-                        <p>${safeText(channel.description || "No description provided.")}</p>
+                        <p>${safeText(channel.description || channel.summary || "No description provided.")}</p>
                     </div>
                     <span class="project-status ${getStatusClass(channel.status)}">${safeText(channel.status || "Planned")}</span>
                 </div>
@@ -48,11 +46,11 @@ File: js/publishing.js
         }).join("");
     }
 
-    function renderPublishingPipeline(data) {
+    function renderPublishingPipeline() {
         const container = document.getElementById("publishing-pipeline-list");
         if (!container) return;
 
-        const pipeline = findPublishingPipeline(data);
+        const pipeline = getRecords("publishingPipeline");
 
         if (pipeline.length === 0) {
             container.innerHTML = `
@@ -70,22 +68,17 @@ File: js/publishing.js
                 <div class="area-item">
                     <span>${safeText(step.icon || "✅")}</span>
                     <strong>${safeText(step.name || step.title || "Unnamed Step")}</strong>
-                    <p>${safeText(step.description || "No description provided.")}</p>
+                    <p>${safeText(step.description || step.summary || "No description provided.")}</p>
                 </div>
             `;
         }).join("");
     }
 
-    function findPublishingChannels(data) {
-        if (Array.isArray(data.publishingChannels)) return data.publishingChannels;
-        if (data.publishing && Array.isArray(data.publishing.channels)) return data.publishing.channels;
-        if (Array.isArray(data.publishing)) return data.publishing;
-        return [];
-    }
+    function getRecords(recordType) {
+        if (window.StudioDB && typeof window.StudioDB.get === "function") {
+            return window.StudioDB.get(recordType);
+        }
 
-    function findPublishingPipeline(data) {
-        if (Array.isArray(data.publishingPipeline)) return data.publishingPipeline;
-        if (data.publishing && Array.isArray(data.publishing.pipeline)) return data.publishing.pipeline;
         return [];
     }
 

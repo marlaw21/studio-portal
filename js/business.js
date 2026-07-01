@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 031 — Business Operations Page Rendering Engine
+Work Session 044E — Business Renderer Uses StudioDB
 File: js/business.js
 */
 
@@ -8,19 +8,17 @@ File: js/business.js
     "use strict";
 
     document.addEventListener("DOMContentLoaded", function () {
-        const data = window.studioData || window.studio || {};
+        renderBusinessProjects();
+        renderBusinessStatus();
 
-        renderBusinessProjects(data);
-        renderBusinessStatus(data);
-
-        console.log("Business page rendered successfully.");
+        console.log("Business page rendered successfully using StudioDB.");
     });
 
-    function renderBusinessProjects(data) {
+    function renderBusinessProjects() {
         const container = document.getElementById("business-project-list");
         if (!container) return;
 
-        const projects = findBusinessProjects(data);
+        const projects = getRecords("projects");
 
         if (projects.length === 0) {
             container.innerHTML = `
@@ -40,7 +38,7 @@ File: js/business.js
                 <div class="project-item">
                     <div>
                         <h3>${safeText(project.name || project.title || "Unnamed Project")}</h3>
-                        <p>${safeText(project.description || "No description provided.")}</p>
+                        <p>${safeText(project.description || project.summary || "No description provided.")}</p>
                     </div>
                     <span class="project-status ${getStatusClass(project.status)}">${safeText(project.status || "Planned")}</span>
                 </div>
@@ -48,11 +46,11 @@ File: js/business.js
         }).join("");
     }
 
-    function renderBusinessStatus(data) {
+    function renderBusinessStatus() {
         const container = document.getElementById("business-status-list");
         if (!container) return;
 
-        const statusItems = findBusinessStatus(data);
+        const statusItems = getRecords("status");
 
         if (statusItems.length === 0) {
             container.innerHTML = `
@@ -74,30 +72,10 @@ File: js/business.js
         }).join("");
     }
 
-    function findBusinessProjects(data) {
-        if (Array.isArray(data.businessProjects)) return data.businessProjects;
-        if (data.business && Array.isArray(data.business.projects)) return data.business.projects;
-
-        /*
-        Temporary foundation fallback:
-        Until business-specific records are added, the Business page may display
-        current studio projects from the shared project list.
-        */
-        if (Array.isArray(data.projects)) return data.projects;
-
-        return [];
-    }
-
-    function findBusinessStatus(data) {
-        if (Array.isArray(data.businessStatus)) return data.businessStatus;
-        if (data.business && Array.isArray(data.business.status)) return data.business.status;
-
-        /*
-        Temporary foundation fallback:
-        Until business-specific records are added, the Business page may display
-        shared studio status records.
-        */
-        if (Array.isArray(data.status)) return data.status;
+    function getRecords(recordType) {
+        if (window.StudioDB && typeof window.StudioDB.get === "function") {
+            return window.StudioDB.get(recordType);
+        }
 
         return [];
     }
@@ -109,7 +87,11 @@ File: js/business.js
             return "planned";
         }
 
-        if (normalizedStatus === "active" || normalizedStatus === "in progress") {
+        if (
+            normalizedStatus === "active" ||
+            normalizedStatus === "in progress" ||
+            normalizedStatus === "in development"
+        ) {
             return "active";
         }
 
@@ -128,4 +110,5 @@ File: js/business.js
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
+
 })();
