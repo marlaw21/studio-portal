@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 045D — StudioDB Schema Validation Engine
+Work Session 047C — Knowledge Engine Schema Rules
 File: js/studio-data/loader.js
 */
 
@@ -38,7 +38,21 @@ File: js/studio-data/loader.js
         decisions: ["id", "title", "status"],
         standards: ["id", "title", "status"],
         procedures: ["id", "title", "status"],
-        enhancements: ["id", "title", "status"]
+        enhancements: ["id", "title", "status"],
+
+        designPrinciples: ["id", "title", "status"],
+        lessonsLearned: ["id", "title", "status"],
+        technicalDebt: ["id", "title", "status"],
+        milestones: ["id", "title", "status"],
+        research: ["id", "title", "status"],
+        knowledgePackages: ["id", "title", "status"],
+        studioChronicle: ["id", "title", "status"],
+        bugs: ["id", "title", "status"],
+        recommendations: ["id", "title", "status"],
+        releases: ["id", "title", "status"],
+        risks: ["id", "title", "status"],
+        meetingNotes: ["id", "title", "status"],
+        aiConversations: ["id", "title", "status"]
     };
 
     function getRecords(recordType) {
@@ -151,6 +165,46 @@ File: js/studio-data/loader.js
         };
     }
 
+    function exportData() {
+        return {
+            meta: {
+                ...getMeta(),
+                exportedAt: new Date().toISOString(),
+                exportedBy: "StudioDB.exportData",
+                validation: buildValidationReport()
+            },
+            records: JSON.parse(JSON.stringify(window.studioData.records || {})),
+            schemas: JSON.parse(JSON.stringify(recordSchemas))
+        };
+    }
+
+    function exportJSON() {
+        return JSON.stringify(exportData(), null, 2);
+    }
+
+    function downloadJSON() {
+        const json = exportJSON();
+        const blob = new Blob([json], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        const today = new Date().toISOString().slice(0, 10);
+
+        link.href = url;
+        link.download = "studio-db-export-" + today + ".json";
+        document.body.appendChild(link);
+        link.click();
+
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        return {
+            fileName: link.download,
+            recordCount: getAllRecords().length,
+            exportedAt: new Date().toISOString()
+        };
+    }
+
     window.StudioDB = {
         get: function (recordType) {
             return getRecords(recordType).slice();
@@ -257,6 +311,18 @@ File: js/studio-data/loader.js
 
         validationReport: function () {
             return buildValidationReport();
+        },
+
+        exportData: function () {
+            return exportData();
+        },
+
+        exportJSON: function () {
+            return exportJSON();
+        },
+
+        downloadJSON: function () {
+            return downloadJSON();
         }
     };
 
