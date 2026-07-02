@@ -1,19 +1,20 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 047E — First Knowledge Engine Records
+Work Session 048D — Migration Engine Foundation
 File: js/studio-data/database.js
 */
 
 const studioDatabaseData = {
     meta: {
         name: "Studio Database Foundation",
-        version: "v0.47.1",
+        version: "v0.48.0",
         status: "Foundation",
-        description: "Database-ready record structure for Two Marshalls Studios Operating System with universal record IDs and first Knowledge Engine records."
+        description: "Database-ready record structure for Two Marshalls Studios Operating System with universal record IDs, Knowledge Engine records, and Migration Engine foundation."
     },
 
     records: {
         workSessions: [
+            { id: "WS-2026-0048", number: "048", title: "Knowledge Migration Framework", department: "Documentation", status: "In Progress", version: "v0.48.0", year: "2026", summary: "Create the framework for migrating historical project knowledge from previous chats, Git history, code review, and current StudioDB records into permanent TMS-OS knowledge records." },
             { id: "WS-2026-0047", number: "047", title: "Studio Knowledge Engine Foundation", department: "Core Architecture", status: "In Progress", version: "v0.47.1", year: "2026", summary: "Establish the Knowledge Engine record model so TMS-OS can preserve work sessions, decisions, recommendations, milestones, and generated documentation packages." },
             { id: "WS-2026-0043", number: "043", title: "Cross-Department Global Search", department: "Core Architecture", status: "Complete", version: "v0.43.0", year: "2026", summary: "Move department records into StudioDB so global search can search across all departments." },
             { id: "WS-2026-0042", number: "042", title: "Global Search Integration", department: "Core Architecture", status: "Complete", version: "v0.42.0", year: "2026", summary: "Updated search.js to use StudioDB.search()." },
@@ -217,6 +218,10 @@ const studioDatabaseData = {
         ],
         aiConversations: [
             { id: "AIC-2026-0001", title: "AI-Assisted Session Documentation Direction", status: "Recorded", department: "Documentation", summary: "The project established that AI should help identify and generate documentation-worthy records, including enhancements and recommendations, instead of requiring manual tracking forms.", relatedWorkSessions: ["WS-2026-0047"], relatedRecordIds: ["DP-2026-0002", "REC-2026-0003"] }
+        ],
+
+        migrationPackages: [
+            { id: "MIG-2026-0001", title: "Historical Knowledge Migration Framework", status: "Active", department: "Documentation", summary: "Initial migration package framework for bringing earlier TMS-OS project history into the Knowledge Engine with source tracking, confidence, review status, and documentation completeness.", migrationScope: "Historical Work Sessions", sourceTypes: ["Previous Chat", "Git History", "Code Review", "Current StudioDB", "User Context"], reviewStatus: "Framework", confidence: "High", relatedWorkSessions: ["WS-2026-0048"], relatedProjects: ["PRJ-2026-0003"], relatedTechnicalDebt: ["DEBT-2026-0001"], relatedRecordIds: ["KP-2026-0001", "REC-2026-0006"] }
         ]
     }
 };

@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 047C — Knowledge Engine Schema Rules
+Work Session 049B — Modular Projects Record Support
 File: js/studio-data/loader.js
 */
 
@@ -17,6 +17,18 @@ File: js/studio-data/loader.js
         window.studioData.database = window.studioDatabaseData;
         window.studioData.records = window.studioDatabaseData.records;
     }
+
+    if (!window.studioData.records) {
+        window.studioData.records = {};
+    }
+
+    if (Array.isArray(window.studioRecordProjects)) {
+        window.studioData.records.projects = window.studioRecordProjects;
+    }
+
+    if (Array.isArray(window.studioRecordWorkSessions)) {
+    window.studioData.records.workSessions = window.studioRecordWorkSessions;
+}
 
     window.studio = window.studioData;
 
@@ -39,7 +51,6 @@ File: js/studio-data/loader.js
         standards: ["id", "title", "status"],
         procedures: ["id", "title", "status"],
         enhancements: ["id", "title", "status"],
-
         designPrinciples: ["id", "title", "status"],
         lessonsLearned: ["id", "title", "status"],
         technicalDebt: ["id", "title", "status"],
@@ -52,7 +63,8 @@ File: js/studio-data/loader.js
         releases: ["id", "title", "status"],
         risks: ["id", "title", "status"],
         meetingNotes: ["id", "title", "status"],
-        aiConversations: ["id", "title", "status"]
+        aiConversations: ["id", "title", "status"],
+        migrationPackages: ["id", "title", "status"]
     };
 
     function getRecords(recordType) {

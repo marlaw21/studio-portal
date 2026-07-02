@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 048C — Knowledge Migration Metadata
+Work Session 048D — Knowledge Engine Migration Package Support
 File: js/studio-data/knowledge.js
 */
 
@@ -20,7 +20,8 @@ File: js/studio-data/knowledge.js
         "releases",
         "risks",
         "meetingNotes",
-        "aiConversations"
+        "aiConversations",
+        "migrationPackages"
     ];
 
     function getRecords(recordType) {
@@ -54,53 +55,19 @@ File: js/studio-data/knowledge.js
         return records;
     }
 
-    function getKnowledgePackages() {
-        return getRecords("knowledgePackages");
-    }
-
-    function getChronicle() {
-        return getRecords("studioChronicle");
-    }
-
-    function getDesignPrinciples() {
-        return getRecords("designPrinciples");
-    }
-
-    function getLessons() {
-        return getRecords("lessonsLearned");
-    }
-
-    function getRecommendations() {
-        return getRecords("recommendations");
-    }
-
-    function getMilestones() {
-        return getRecords("milestones");
-    }
-
-    function getTechnicalDebt() {
-        return getRecords("technicalDebt");
-    }
-
-    function getBugs() {
-        return getRecords("bugs");
-    }
-
-    function getRisks() {
-        return getRecords("risks");
-    }
-
-    function getResearch() {
-        return getRecords("research");
-    }
-
-    function getMeetingNotes() {
-        return getRecords("meetingNotes");
-    }
-
-    function getAIConversations() {
-        return getRecords("aiConversations");
-    }
+    function getKnowledgePackages() { return getRecords("knowledgePackages"); }
+    function getChronicle() { return getRecords("studioChronicle"); }
+    function getDesignPrinciples() { return getRecords("designPrinciples"); }
+    function getLessons() { return getRecords("lessonsLearned"); }
+    function getRecommendations() { return getRecords("recommendations"); }
+    function getMilestones() { return getRecords("milestones"); }
+    function getTechnicalDebt() { return getRecords("technicalDebt"); }
+    function getBugs() { return getRecords("bugs"); }
+    function getRisks() { return getRecords("risks"); }
+    function getResearch() { return getRecords("research"); }
+    function getMeetingNotes() { return getRecords("meetingNotes"); }
+    function getAIConversations() { return getRecords("aiConversations"); }
+    function getMigrationPackages() { return getRecords("migrationPackages"); }
 
     function searchKnowledge(query) {
         const cleanQuery = String(query || "").trim();
@@ -133,7 +100,8 @@ File: js/studio-data/knowledge.js
             "relatedRecommendations",
             "relatedEnhancements",
             "relatedFiles",
-            "relatedRecordIds"
+            "relatedRecordIds",
+            "relatedTechnicalDebt"
         ];
 
         const relatedIds = [];
@@ -168,6 +136,7 @@ File: js/studio-data/knowledge.js
     function getKnowledgeSummary() {
         return {
             knowledgePackages: getKnowledgePackages().length,
+            migrationPackages: getMigrationPackages().length,
             designPrinciples: getDesignPrinciples().length,
             lessonsLearned: getLessons().length,
             recommendations: getRecommendations().length,
@@ -229,12 +198,14 @@ File: js/studio-data/knowledge.js
             migratedRecordCount: migratedRecords.length,
             liveRecordCount: allKnowledgeRecords.length - migratedRecords.length,
             needsReviewCount: needsReviewRecords.length,
+            migrationPackageCount: getMigrationPackages().length,
             confidence: confidenceCounts
         };
     }
 
     window.TMSKnowledge = {
         packages: getKnowledgePackages,
+        migrationPackages: getMigrationPackages,
         chronicle: getChronicle,
         designPrinciples: getDesignPrinciples,
         lessons: getLessons,
