@@ -28,7 +28,39 @@ File: js/studio-data/loader.js
 
     if (Array.isArray(window.studioRecordWorkSessions)) {
     window.studioData.records.workSessions = window.studioRecordWorkSessions;
-}
+    }
+
+    if (Array.isArray(window.studioRecordMilestones)) {
+    window.studioData.records.milestones = window.studioRecordMilestones;
+    }
+
+    if (Array.isArray(window.studioRecordDesignPrinciples)) {
+    window.studioData.records.designPrinciples = window.studioRecordDesignPrinciples;
+    }
+
+    if (Array.isArray(window.studioRecordLessonsLearned)) {
+    window.studioData.records.lessonsLearned = window.studioRecordLessonsLearned;
+    }
+
+    if (Array.isArray(window.studioRecordTechnicalDebt)) {
+    window.studioData.records.technicalDebt = window.studioRecordTechnicalDebt;
+    }
+
+    if (Array.isArray(window.studioRecordResearch)) {
+    window.studioData.records.research = window.studioRecordResearch;
+    }
+
+    if (Array.isArray(window.studioRecordKnowledgePackages)) {
+    window.studioData.records.knowledgePackages = window.studioRecordKnowledgePackages;
+    }
+
+    if (Array.isArray(window.studioRecordStudioChronicle)) {
+    window.studioData.records.studioChronicle = window.studioRecordStudioChronicle;
+    }
+
+    if (Array.isArray(window.studioRecordBugs)) {
+    window.studioData.records.bugs = window.studioRecordBugs;
+    }
 
     window.studio = window.studioData;
 
