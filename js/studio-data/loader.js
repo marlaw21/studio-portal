@@ -62,6 +62,82 @@ File: js/studio-data/loader.js
     window.studioData.records.bugs = window.studioRecordBugs;
     }
 
+    if (Array.isArray(window.studioRecordRecommendations)) {
+    window.studioData.records.recommendations = window.studioRecordRecommendations;
+    }
+
+    if (Array.isArray(window.studioRecordReleases)) {
+    window.studioData.records.releases = window.studioRecordReleases;
+    }
+
+    if (Array.isArray(window.studioRecordRisks)) {
+    window.studioData.records.risks = window.studioRecordRisks;
+    }
+
+    if (Array.isArray(window.studioRecordMeetingNotes)) {
+    window.studioData.records.meetingNotes = window.studioRecordMeetingNotes;
+    }
+
+    if (Array.isArray(window.studioRecordAIConversations)) {
+    window.studioData.records.aiConversations = window.studioRecordAIConversations;
+    }
+
+    if (Array.isArray(window.studioRecordDecisions)) {
+    window.studioData.records.decisions = window.studioRecordDecisions;
+    }
+
+    if (Array.isArray(window.studioRecordStandards)) {
+    window.studioData.records.standards = window.studioRecordStandards;
+    }
+
+    if (Array.isArray(window.studioRecordProcedures)) {
+    window.studioData.records.procedures = window.studioRecordProcedures;
+    }
+
+    if (Array.isArray(window.studioRecordEnhancements)) {
+    window.studioData.records.enhancements = window.studioRecordEnhancements;
+    }
+
+    if (Array.isArray(window.studioRecordStatus)) {
+    window.studioData.records.status = window.studioRecordStatus;
+    }
+    
+    if (Array.isArray(window.studioRecordNotifications)) {
+    window.studioData.records.notifications = window.studioRecordNotifications;
+    }
+
+    if (Array.isArray(window.studioRecordStudioCommands)) {
+    window.studioData.records.studioCommands = window.studioRecordStudioCommands;
+    }
+
+    if (Array.isArray(window.studioRecordSystemConfig)) {
+    window.studioData.records.systemConfig = window.studioRecordSystemConfig;
+    }
+
+    if (Array.isArray(window.studioRecordProgress)) {
+    window.studioData.records.progress = window.studioRecordProgress;
+    }
+
+    if (Array.isArray(window.studioRecordDepartments)) {
+    window.studioData.records.departments = window.studioRecordDepartments;
+    }
+
+    if (Array.isArray(window.studioRecordAssetCategories)) {
+    window.studioData.records.assetCategories = window.studioRecordAssetCategories;
+    }
+
+    if (Array.isArray(window.studioRecordAssetGroups)) {
+    window.studioData.records.assetGroups = window.studioRecordAssetGroups;
+    }
+
+    if (Array.isArray(window.studioRecordPublishingChannels)) {
+    window.studioData.records.publishingChannels = window.studioRecordPublishingChannels;
+    }
+
+    if (Array.isArray(window.studioRecordPublishingPipeline)) {
+    window.studioData.records.publishingPipeline = window.studioRecordPublishingPipeline;
+    }
+
     window.studio = window.studioData;
 
     const recordSchemas = {
