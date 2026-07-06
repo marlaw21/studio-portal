@@ -82,6 +82,10 @@ File: js/studio-data/loader.js
     window.studioData.records.aiConversations = window.studioRecordAIConversations;
     }
 
+    if (Array.isArray(window.studioRecordMigrationPackages)) {
+    window.studioData.records.migrationPackages = window.studioRecordMigrationPackages;
+    }
+
     if (Array.isArray(window.studioRecordDecisions)) {
     window.studioData.records.decisions = window.studioRecordDecisions;
     }
@@ -136,6 +140,14 @@ File: js/studio-data/loader.js
 
     if (Array.isArray(window.studioRecordPublishingPipeline)) {
     window.studioData.records.publishingPipeline = window.studioRecordPublishingPipeline;
+    }
+
+    if (Array.isArray(window.studioRecordMarketingChannels)) {
+    window.studioData.records.marketingChannels = window.studioRecordMarketingChannels;
+    }
+
+    if (Array.isArray(window.studioRecordMarketingPipeline)) {
+    window.studioData.records.marketingPipeline = window.studioRecordMarketingPipeline;
     }
 
     window.studio = window.studioData;
