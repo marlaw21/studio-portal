@@ -1,0 +1,155 @@
+{
+    "id": "BUG-HIST-001",
+    "title": "Studio Bug and Fix History",
+    "documentType": "Permanent Studio Bug and Fix History",
+    "organization": "Two Marshalls Studios - Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Bugs and Fixes",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Provides the permanent history structure for verified bugs and completed fixes.",
+    "keywords": [
+        "BUG-HIST-001",
+        "Studio Bug and Fix History",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document is the permanent bug and fix history for Two Marshalls Studios. It preserves verified defects and their verified correction status so completed troubleshooting is not lost between work sessions.",
+                "This history does not reconstruct missing bug numbers, dates, causes, or fixes by assumption."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Bug and Fix Verification Rule",
+            "paragraphs": [
+                "Only bugs and fixes supported by verified records or direct approved observation are recorded as confirmed.",
+                "PROC-002 governs the bug-fix process. BUG-HIST-001 preserves the permanent history of verified bug and fix outcomes."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Bug and Fix Status Definitions",
+            "paragraphs": [
+                "Open — a verified defect exists and remains unresolved.",
+                "Fix in Progress — corrective work is actively underway in an approved work session.",
+                "Fixed — the correction has been completed.",
+                "Verified Fixed — the correction has been tested and the expected result confirmed.",
+                "Recovery Required — historical evidence suggests a bug or fix existed, but the available record is not sufficient for permanent confirmation."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Verified Bug and Fix History",
+            "tables": [
+                {
+                    "headers": [
+                        "Bug ID",
+                        "Affected Project / Component",
+                        "Verified Problem",
+                        "Status",
+                        "Verified Fix",
+                        "Evidence / Verification"
+                    ],
+                    "rows": [
+                        [
+                            "None yet verified",
+                            "—",
+                            "Historical bug and fix records still require controlled recovery.",
+                            "Recovery Required",
+                            "—",
+                            "PROC-002 confirms bug-fix governance, but individual permanent history records require evidence review."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Bug History Entry Requirements",
+            "paragraphs": [
+                "Every future permanent bug-history entry must include a unique bug ID, affected project or component, verified problem, verified status, evidence source, fix summary when applicable, and verification result.",
+                "Do not add estimated dates, root causes, severity, ownership, or technical details unless they are verified."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Relationship to PROC-002",
+            "paragraphs": [
+                "PROC-002 - Bug Fix Procedure governs how active bugs are investigated, corrected, tested, and closed.",
+                "BUG-HIST-001 does not replace PROC-002. It preserves the verified historical record after a bug or fix has enough evidence for permanent entry."
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Relationship to Technical Debt and Enhancements",
+            "paragraphs": [
+                "A verified unresolved corrective obligation may also require tracking in TECH-DEBT-001. A requested improvement that is not a defect belongs in ENH-LOG-001.",
+                "Items must not be moved between these records by assumption. Classification must be supported by verified evidence or approved direction."
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Historical Recovery Boundary",
+            "paragraphs": [
+                "Historical recovery confirmed that bug-fix handling existed and that PROC-002 governs the process. Historical bug records still require controlled recovery.",
+                "No individual historical bug or fix is promoted to the verified permanent history solely because a prior work session mentioned troubleshooting."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Future Bug History Entry Process",
+            "paragraphs": [
+                "1. Confirm that a defect is verified.",
+                "2. Follow PROC-002 for active correction and testing.",
+                "3. Assign the next sequential permanent bug-history ID when the record is ready for preservation.",
+                "4. Record only verified facts and evidence.",
+                "5. Record the fix and verification result when confirmed.",
+                "6. Cross-reference TECH-DEBT-001, ENH-LOG-001, DEC-LOG-001, or WS-HIST-001 when applicable.",
+                "7. Update the permanent record when status changes."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Current State",
+            "paragraphs": [
+                "The permanent Bugs and fixes documentation category is now established through BUG-HIST-001.",
+                "Historical bug and fix records remain subject to controlled recovery before individual entries are marked verified."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Next Controlled Action",
+            "paragraphs": [
+                "Update the permanent documentation index and current system state after this document is visually verified in the approved Google Headquarters location."
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "BUG-HIST-001 is the permanent human-readable history for verified Two Marshalls Studios bugs and fixes. It must preserve confirmed outcomes, remain separate from active bug-fix procedure, and prevent missing historical details from being invented."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

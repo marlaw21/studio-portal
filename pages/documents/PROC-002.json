@@ -1,0 +1,309 @@
+{
+    "id": "PROC-002",
+    "title": "Bug Fix Procedure",
+    "documentType": "Permanent Studio Procedure",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Operations",
+    "category": "Procedures",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Defines the controlled process for investigating, correcting, testing, and closing verified bugs.",
+    "keywords": [
+        "PROC-002",
+        "Bug Fix Procedure",
+        "Testing / Studio Operations"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This procedure defines the required method for handling bugs in Two Marshalls Studios projects. Its purpose is to prevent new work from being layered on top of a known problem, preserve stable behavior, identify the real cause, verify the correction, and record what was learned."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Core Rule",
+            "paragraphs": [
+                "When a bug appears: stop new work, identify the source, fix the source, and retest.",
+                "Do not continue adding features or unrelated improvements while a known bug is unresolved unless Stephen explicitly approves a separate path."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "When This Procedure Must Be Used",
+            "items": [
+                "A page, feature, button, search box, form, script, asset, pipeline, or workflow stops working.",
+                "The expected result does not match the actual result.",
+                "A browser, console, application, build, or automation reports an error.",
+                "A previously working feature breaks after a change.",
+                "A file is in the wrong location, loads in the wrong order, or cannot be found.",
+                "Data is missing, incorrect, duplicated, or displayed in the wrong place.",
+                "A test fails or produces an unexpected result."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Required Bug-Fix Sequence"
+        },
+        {
+            "number": "4.1",
+            "title": "Step 1 — Stop New Work",
+            "paragraphs": [
+                "Do not add another feature, redesign the system, or make unrelated improvements. Preserve the current state so the bug can be examined without introducing additional variables."
+            ]
+        },
+        {
+            "number": "4.2",
+            "title": "Step 2 — Record the Expected Result",
+            "paragraphs": [
+                "State exactly what should have happened. Use the current work-session goal, approved design, prior successful test, screenshot, or documented requirement as the reference."
+            ]
+        },
+        {
+            "number": "4.3",
+            "title": "Step 3 — Record the Actual Result",
+            "paragraphs": [
+                "State exactly what happened instead. Capture visible error messages, console errors, screenshots, failed test results, and the exact action that triggered the problem."
+            ]
+        },
+        {
+            "number": "4.4",
+            "title": "Step 4 — Reproduce the Bug",
+            "paragraphs": [
+                "Repeat the same action in a controlled way. Confirm whether the bug happens every time, only under certain conditions, or cannot be reproduced."
+            ]
+        },
+        {
+            "number": "4.5",
+            "title": "Step 5 — Identify the Source",
+            "paragraphs": [
+                "Trace the problem to the responsible file, setting, data record, dependency, path, load order, workflow step, or configuration. Do not guess. Use evidence."
+            ]
+        },
+        {
+            "number": "4.6",
+            "title": "Step 6 — Identify the Root Cause",
+            "paragraphs": [
+                "Explain why the source failed. Examples include a wrong file path, missing script, incorrect load order, mismatched field, stale data, syntax error, or logic condition in the wrong location."
+            ]
+        },
+        {
+            "number": "4.7",
+            "title": "Step 7 — Make the Smallest Focused Fix",
+            "paragraphs": [
+                "Change only what is needed to correct the verified root cause. Preserve stable working behavior. Do not add unrelated enhancements during the fix."
+            ]
+        },
+        {
+            "number": "4.8",
+            "title": "Step 8 — Retest the Original Failure",
+            "paragraphs": [
+                "Repeat the exact action that failed. Confirm that the expected result now occurs and that the original error no longer appears."
+            ]
+        },
+        {
+            "number": "4.9",
+            "title": "Step 9 — Regression Test Related Behavior",
+            "paragraphs": [
+                "Test nearby or dependent functionality that could have been affected by the fix. Confirm that the correction did not break previously working behavior."
+            ]
+        },
+        {
+            "number": "4.10",
+            "title": "Step 10 — Document and Close",
+            "paragraphs": [
+                "Capture the bug, root cause, fix, files changed, tests performed, expected and actual results, and any lesson learned. Only then return to the planned work-session path."
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Required Bug Record",
+            "paragraphs": [
+                "Every meaningful bug should preserve the following information:"
+            ],
+            "tables": [
+                {
+                    "headers": [
+                        "Required Field",
+                        "What to Record"
+                    ],
+                    "rows": [
+                        [
+                            "Bug title",
+                            "A short, specific description of the failure."
+                        ],
+                        [
+                            "Work session",
+                            "The session in which the bug was discovered or fixed."
+                        ],
+                        [
+                            "Starting state",
+                            "What was working before the problem appeared."
+                        ],
+                        [
+                            "Expected result",
+                            "What should have happened."
+                        ],
+                        [
+                            "Actual result",
+                            "What happened instead."
+                        ],
+                        [
+                            "Evidence",
+                            "Screenshots, error text, console output, or failed test result."
+                        ],
+                        [
+                            "Root cause",
+                            "The verified reason the problem occurred."
+                        ],
+                        [
+                            "Fix",
+                            "The exact correction that was made."
+                        ],
+                        [
+                            "Files or systems changed",
+                            "Every file, setting, record, pipeline, or system touched by the fix."
+                        ],
+                        [
+                            "Retest",
+                            "The exact test used to verify the correction."
+                        ],
+                        [
+                            "Regression test",
+                            "Related behavior checked after the fix."
+                        ],
+                        [
+                            "Final status",
+                            "Open, In Progress, Fixed, Verified, or Deferred."
+                        ],
+                        [
+                            "Lesson learned",
+                            "Reusable knowledge that should prevent or shorten a similar problem later."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Testing Standard",
+            "paragraphs": [
+                "A bug is not considered fixed because the code changed. It is fixed only after verification."
+            ],
+            "items": [
+                "Repeat the exact failed action.",
+                "Confirm the expected result.",
+                "Confirm the original error is gone.",
+                "Check related functionality for regressions.",
+                "Use screenshots or console results when visual evidence is useful.",
+                "Do not commit and push until the fix is stable."
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Code and File Change Rules",
+            "items": [
+                "Preserve stable working behavior.",
+                "Make the smallest focused correction.",
+                "Do not redesign completed systems without a clear approved reason.",
+                "For code changes provided to Stephen, use complete replacement files rather than partial snippets.",
+                "Provide the exact file path and exact replacement instructions.",
+                "When a work-session package is needed, preserve the folder structure and include clear install and test instructions.",
+                "Keep enhancement ideas separate from the active bug fix."
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Example — Shared Search Engine File-Path Bug",
+            "paragraphs": [
+                "During the Shared Search Engine work, the browser received HTML at the JavaScript path and raised a MIME type error. The search feature was not treated as ready, and unrelated work did not become the focus."
+            ],
+            "tables": [
+                {
+                    "headers": [
+                        "Bug-Fix Field",
+                        "Example"
+                    ],
+                    "rows": [
+                        [
+                            "Expected result",
+                            "The shared search script loads and the search box filters studio knowledge."
+                        ],
+                        [
+                            "Actual result",
+                            "The browser receives HTML at the JavaScript path and reports a MIME type error."
+                        ],
+                        [
+                            "Source",
+                            "The search.js file location."
+                        ],
+                        [
+                            "Root cause",
+                            "search.js was installed in the wrong location."
+                        ],
+                        [
+                            "Fix",
+                            "Move search.js to studio-portal/js/search.js."
+                        ],
+                        [
+                            "Retest",
+                            "Reload the portal, verify the console confirms the Shared Search Engine loaded, then test search terms."
+                        ],
+                        [
+                            "Result",
+                            "The script loaded successfully and the search feature could be tested."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Relationship to the Work Session Procedure",
+            "paragraphs": [
+                "PROC-001 defines how a focused work session is run. PROC-002 applies whenever a bug interrupts that work. The bug-fix procedure temporarily becomes the active path until the problem is verified as fixed. After verification, work returns to the planned session goal."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Completion Checklist",
+            "items": [
+                "☐ New work stopped while the bug was investigated.",
+                "☐ Expected and actual results were recorded.",
+                "☐ The bug was reproduced or its conditions were clearly identified.",
+                "☐ The source and root cause were verified.",
+                "☐ Only the focused fix was made.",
+                "☐ The original failure was retested.",
+                "☐ Related behavior was regression tested.",
+                "☐ The result was documented.",
+                "☐ The work session can safely return to the planned path."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Permanent Procedure Statement",
+            "paragraphs": [
+                "When a bug appears, Two Marshalls Studios stops new work, identifies the source and root cause, makes the smallest focused correction, retests the original failure, checks related behavior, documents the result, and only then continues the planned work.",
+                "Two Marshalls Studios | TMS-OS Permanent Documentation"
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

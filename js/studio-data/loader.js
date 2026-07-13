@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 049B — Modular Projects Record Support
+Work Session 041 — Documentation Catalog Engine — Step 2
 File: js/studio-data/loader.js
 */
 
@@ -102,6 +102,10 @@ File: js/studio-data/loader.js
     window.studioData.records.enhancements = window.studioRecordEnhancements;
     }
 
+    if (Array.isArray(window.studioRecordDocuments)) {
+    window.studioData.records.documents = window.studioRecordDocuments;
+    }
+
     if (Array.isArray(window.studioRecordStatus)) {
     window.studioData.records.status = window.studioRecordStatus;
     }
@@ -171,6 +175,7 @@ File: js/studio-data/loader.js
         standards: ["id", "title", "status"],
         procedures: ["id", "title", "status"],
         enhancements: ["id", "title", "status"],
+        documents: ["id", "title", "department", "category", "status"],
         designPrinciples: ["id", "title", "status"],
         lessonsLearned: ["id", "title", "status"],
         technicalDebt: ["id", "title", "status"],

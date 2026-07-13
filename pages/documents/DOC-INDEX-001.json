@@ -1,0 +1,320 @@
+{
+    "id": "DOC-INDEX-001",
+    "title": "Documentation Index",
+    "documentType": "Permanent Documentation Index",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Documentation Index",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Provides the permanent master index of verified human-readable studio documents.",
+    "keywords": [
+        "DOC-INDEX-001",
+        "Documentation Index",
+        "Studio Governance / Documentation"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document is the permanent master index for the Two Marshalls Studios human-readable documentation layer. It records which permanent documents have been verified, where they belong, which recovered documentation categories they support, and what documentation work remains."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Core Rule",
+            "paragraphs": [
+                "The Documentation Index records verified facts only.",
+                "A document must not be listed as verified merely because its category appears in historical records, a backup, a work session, or a planned package. Each permanent document must be created or recovered, placed in the approved Google Headquarters location, and visually verified before its status is changed to Verified."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Verified Permanent Document Index",
+            "paragraphs": [
+                "The following permanent documents are verified at this checkpoint:"
+            ],
+            "tables": [
+                {
+                    "headers": [
+                        "Document ID",
+                        "Document Title",
+                        "Google Headquarters Location",
+                        "Status"
+                    ],
+                    "rows": [
+                        [
+                            "STATE-001",
+                            "Current System State",
+                            "01 - Studio Governance",
+                            "Verified"
+                        ],
+                        [
+                            "PROC-001",
+                            "Work Session Procedure",
+                            "02 - Studio Operations",
+                            "Verified"
+                        ],
+                        [
+                            "PROC-002",
+                            "Bug Fix Procedure",
+                            "02 - Studio Operations",
+                            "Verified"
+                        ],
+                        [
+                            "PROC-003",
+                            "Documentation Update Procedure",
+                            "02 - Studio Operations",
+                            "Verified"
+                        ],
+                        [
+                            "ENH-LOG-001",
+                            "Enhancement Ideas Log",
+                            "09 - Knowledge Base",
+                            "Verified"
+                        ],
+                        [
+                            "DOC-STATE-001",
+                            "Documentation State",
+                            "01 - Studio Governance",
+                            "Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Current Verified Document Count",
+            "paragraphs": [
+                "Verified permanent human-readable documents: 6",
+                "This count reflects documents that have been confirmed in their approved Google Headquarters locations. It does not count temporary Word uploads, backups, chat records, screenshots, or unverified historical references."
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Recovered 16-Category Documentation Package",
+            "paragraphs": [
+                "Historical recovery identified 16 permanent documentation categories. These categories define the required coverage of the human-readable documentation layer. They are not a verified numbered upload sequence."
+            ],
+            "tables": [
+                {
+                    "headers": [
+                        "Category",
+                        "Current Verified Coverage",
+                        "Current State"
+                    ],
+                    "rows": [
+                        [
+                            "Current system state",
+                            "STATE-001",
+                            "Verified"
+                        ],
+                        [
+                            "Roadmap",
+                            "None yet verified",
+                            "Recovery / population required"
+                        ],
+                        [
+                            "Documentation state",
+                            "DOC-STATE-001",
+                            "Verified"
+                        ],
+                        [
+                            "Documentation index",
+                            "DOC-INDEX-001",
+                            "Current population step"
+                        ],
+                        [
+                            "Historical timeline",
+                            "None yet verified",
+                            "Recovery / population required"
+                        ],
+                        [
+                            "Architecture",
+                            "None yet verified",
+                            "Recovery / population required"
+                        ],
+                        [
+                            "Architecture evolution",
+                            "None yet verified",
+                            "Recovery / population required"
+                        ],
+                        [
+                            "Decisions",
+                            "None yet verified",
+                            "Recovery / population required"
+                        ],
+                        [
+                            "Standards",
+                            "None yet verified",
+                            "Recovery / population required"
+                        ],
+                        [
+                            "Work sessions",
+                            "PROC-001 governs work sessions",
+                            "Historical records still require recovery"
+                        ],
+                        [
+                            "Milestones",
+                            "None yet verified",
+                            "Recovery / population required"
+                        ],
+                        [
+                            "Procedures",
+                            "PROC-001, PROC-002, PROC-003",
+                            "Verified coverage established"
+                        ],
+                        [
+                            "Bugs and fixes",
+                            "PROC-002 governs bug-fix handling",
+                            "Historical records still require recovery"
+                        ],
+                        [
+                            "Lessons learned",
+                            "None yet verified",
+                            "Recovery / population required"
+                        ],
+                        [
+                            "Technical debt",
+                            "None yet verified",
+                            "Recovery / population required"
+                        ],
+                        [
+                            "Enhancement ideas",
+                            "ENH-LOG-001",
+                            "Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Approved Headquarters Locations",
+            "items": [
+                "01 - Studio Governance",
+                "02 - Studio Operations",
+                "03 - Game Projects",
+                "04 - Development",
+                "05 - Assets",
+                "06 - Publishing",
+                "07 - Marketing",
+                "08 - Business Operations",
+                "09 - Knowledge Base",
+                "10 - Meetings",
+                "99 - Archive",
+                "START HERE"
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Index Status Definitions",
+            "tables": [
+                {
+                    "headers": [
+                        "Status",
+                        "Meaning"
+                    ],
+                    "rows": [
+                        [
+                            "Verified",
+                            "The permanent document exists in the approved location and has been visually confirmed."
+                        ],
+                        [
+                            "Current population step",
+                            "The document is being created and must still complete upload, Google conversion, verification, and temporary-file cleanup."
+                        ],
+                        [
+                            "Recovery / population required",
+                            "The category is verified as required, but no permanent Google document has yet been verified for it."
+                        ],
+                        [
+                            "Historical records still require recovery",
+                            "A governing procedure exists, but the historical records covered by that category have not yet been fully reconstructed and published."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Required Index Update Rule",
+            "paragraphs": [
+                "The Documentation Index must be updated whenever a permanent document is created, recovered, renamed, moved, superseded, archived, or verified."
+            ],
+            "items": [
+                "Record the exact Document ID.",
+                "Record the exact permanent title.",
+                "Record the approved Google Headquarters location.",
+                "Record only the status supported by current verification.",
+                "Update category coverage when a document satisfies or governs a recovered category.",
+                "Do not delete historical index information when a document is superseded; preserve the relationship and current state."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Current Documentation Control Checkpoint",
+            "items": [
+                "Top-level Google Headquarters structure: Verified complete",
+                "Verified permanent documents before this index: 6",
+                "DOC-INDEX-001: Current population step",
+                "Recovered documentation categories: 16",
+                "Fixed numbered upload sequence: Not established",
+                "Historical recovery: In progress",
+                "Enhancement Ideas Log: Established",
+                "Automatic Google publishing: Deferred enhancement",
+                "Google synchronization: Not started"
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Next Controlled Action",
+            "paragraphs": [
+                "Upload DOC-INDEX-001 to Studio Headquarters → 01 - Studio Governance, convert it to a native Google Doc, verify the title, formatting, and location, remove the temporary Word file, and then record the result.",
+                "After verification, the next documentation item must be selected from the remaining recovered categories based on verified source evidence and recovery priority. No document name, ID, or sequence should be invented."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Completion Checklist",
+            "items": [
+                "Document ID and title verified",
+                "All currently verified permanent documents listed",
+                "Current verified count recorded",
+                "All 16 recovered categories listed",
+                "Category coverage distinguished from document existence",
+                "Status definitions recorded",
+                "Approved Headquarters locations recorded",
+                "Index update rule recorded",
+                "Current checkpoint recorded",
+                "Next controlled action recorded"
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "The Documentation Index is the permanent control list for the human-readable studio documentation layer. Its purpose is to make the state of documentation visible, verifiable, and recoverable without relying on memory, chat history, or assumptions."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

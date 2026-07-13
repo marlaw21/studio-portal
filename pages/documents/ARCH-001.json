@@ -1,0 +1,251 @@
+{
+    "id": "ARCH-001",
+    "title": "Current Studio Architecture",
+    "documentType": "Permanent Current Architecture Record",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Core Architecture",
+    "category": "Architecture",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Defines the verified current Fully Modular StudioDB architecture and its operating layers.",
+    "keywords": [
+        "ARCH-001",
+        "Current Studio Architecture",
+        "Studio Governance / Core Architecture"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document defines the verified current architecture of the Two Marshalls Studios Operating System (TMS-OS). It records how the studio's portal, structured data, documentation, search, source code, and permanent human-readable records relate to one another at the current historical recovery checkpoint.",
+                "This document describes the architecture that is verified now. Historical changes belong in the separate Architecture Evolution record."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Architecture Control Rule",
+            "paragraphs": [
+                "The current architecture must be described from verified system behavior and approved records, not assumptions about future work.",
+                "TMS-OS and StudioDB govern structured studio records. Google Workspace provides the permanent human-readable documentation layer. GitHub preserves source code and project history. Chat, screenshots, temporary files, and local working copies may provide evidence or working context, but they must not become competing permanent sources of truth."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Current Architecture Summary",
+            "paragraphs": [
+                "The verified current architecture is:",
+                "Fully Modular StudioDB",
+                "The architecture is organized around a shared Studio Operating System in which structured studio information is separated into modular data files and combined into a common studio data object for use across the Studio Portal."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Core Architecture Layers",
+            "items": [
+                "Studio Portal — visible command center and user-facing operating interface.",
+                "StudioDB — structured studio record system.",
+                "Modular studio-data files — separated data sources organized by studio information area.",
+                "Shared render layer — reusable rendering behavior for portal content.",
+                "Shared search engine — cross-department search across supported studio knowledge.",
+                "GitHub — source code and project history preservation.",
+                "Google Headquarters — permanent human-readable documentation and operational reference layer.",
+                "Enhancement Ideas Log — controlled holding location for future improvements that are not active work."
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Studio Portal Layer",
+            "paragraphs": [
+                "The Studio Portal is the visible command center for Two Marshalls Studios. It presents studio status, current work, system health, notifications, commands, projects, progress, departments, documentation, and shared search.",
+                "The portal is not intended to create separate copies of studio truth. Its role is to render and expose information from the governed studio data structure."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "StudioDB Layer",
+            "paragraphs": [
+                "StudioDB is the structured data foundation of TMS-OS.",
+                "The verified stable checkpoint contains:",
+                "The last completed development milestone, MILE-013 - Fully Modular StudioDB, established the current modular architecture."
+            ],
+            "items": [
+                "32 record types",
+                "127 records",
+                "0 invalid records",
+                "0 duplicate IDs"
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Modular Data Structure",
+            "paragraphs": [
+                "The current architecture separates studio data into modular files rather than maintaining one large permanent data file.",
+                "The modular data sources are combined into the shared studio data object used by the portal. This allows the system to remain organized while still presenting a unified operating view."
+            ],
+            "items": [
+                "Core studio data",
+                "Documentation data",
+                "Department data"
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Shared Rendering Architecture",
+            "paragraphs": [
+                "The portal uses shared rendering behavior so supported content can be displayed through common components and layouts rather than requiring unrelated page-specific systems.",
+                "This architecture supports consistency across studio areas and reduces the risk that individual pages become separate sources of truth."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Shared Search Architecture",
+            "paragraphs": [
+                "The shared search engine is a verified cross-department capability.",
+                "The search architecture is intended to search supported studio knowledge across departments rather than remaining isolated to a single page."
+            ],
+            "items": [
+                "Global Search Integration — Complete",
+                "Cross-Department Global Search — Complete"
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Documentation Architecture",
+            "paragraphs": [
+                "The documentation architecture has two distinct governed layers:",
+                "These layers must support one another without becoming competing sources of truth.",
+                "The permanent procedures governing this relationship include PROC-003 - Documentation Update Procedure, DOC-STATE-001 - Documentation State, and DOC-INDEX-001 - Documentation Index."
+            ],
+            "items": [
+                "Structured records governed by TMS-OS and StudioDB.",
+                "Permanent human-readable documents published to the approved Google Headquarters structure."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Google Headquarters Architecture",
+            "paragraphs": [
+                "The verified permanent top-level Google Headquarters structure is:",
+                "This structure is complete. Population of the permanent human-readable documentation layer remains in progress."
+            ],
+            "items": [
+                "01 - Studio Governance",
+                "02 - Studio Operations",
+                "03 - Game Projects",
+                "04 - Development",
+                "05 - Assets",
+                "06 - Publishing",
+                "07 - Marketing",
+                "08 - Business Operations",
+                "09 - Knowledge Base",
+                "10 - Meetings",
+                "99 - Archive",
+                "START HERE"
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Source Code and Project History",
+            "paragraphs": [
+                "GitHub preserves source code and project history. The studio architecture must remain accessible from multiple workstations and must not depend on one computer for important work.",
+                "Local files may be used during active work, but important source code, records, and permanent documentation must be preserved in their approved shared systems."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Current Architecture Relationships",
+            "items": [
+                "TMS-OS provides the overall studio operating framework.",
+                "StudioDB governs structured studio records.",
+                "Modular data files separate major data responsibilities.",
+                "The shared data object combines supported modular data for portal use.",
+                "The render layer displays governed information.",
+                "The shared search engine finds supported knowledge across studio areas.",
+                "GitHub preserves code and project history.",
+                "Google Headquarters preserves permanent human-readable documentation.",
+                "ENH-LOG-001 preserves deferred improvements without interrupting approved work."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Current Architecture Boundaries",
+            "paragraphs": [
+                "The following must not become independent permanent sources of truth:",
+                "These items may provide evidence, recovery material, or temporary working context, but verified knowledge must be reconciled into the governed architecture."
+            ],
+            "items": [
+                "Chat history",
+                "Screenshots",
+                "Temporary Word uploads",
+                "Unverified backup exports",
+                "Personal memory",
+                "Files available only on one workstation"
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Current Architecture Status",
+            "items": [
+                "Current architecture: Fully Modular StudioDB",
+                "Last completed development milestone: MILE-013 - Fully Modular StudioDB",
+                "Current active milestone: MILE-014 - Complete Historical Recovery",
+                "Historical documentation recovery: In Progress",
+                "Google Headquarters structure: Complete",
+                "Google synchronization: Not Started"
+            ]
+        },
+        {
+            "number": "16",
+            "title": "Change Control",
+            "paragraphs": [
+                "Architecture changes must not be introduced during unrelated work or bug-fix activity unless Stephen explicitly approves a separate path.",
+                "A proposed architecture improvement must be captured as an enhancement when it is not part of approved current work. Approved architecture changes must later be preserved in the appropriate decision, architecture evolution, work session, milestone, and documentation records."
+            ]
+        },
+        {
+            "number": "17",
+            "title": "Relationship to Other Permanent Records",
+            "items": [
+                "STATE-001 records the current system state.",
+                "ROADMAP-001 records completed, active, and controlled future direction.",
+                "HIST-001 records the verified historical sequence.",
+                "DOC-STATE-001 records documentation status.",
+                "DOC-INDEX-001 controls the permanent document index.",
+                "ENH-LOG-001 preserves deferred enhancement ideas.",
+                "The future Architecture Evolution record will preserve verified changes from earlier architecture states to the current architecture."
+            ]
+        },
+        {
+            "number": "18",
+            "title": "Current Architecture Completion Standard",
+            "paragraphs": [
+                "The current architecture record is complete when it accurately describes the verified operating layers, their responsibilities, their relationships, and their boundaries without inventing unsupported components or future systems."
+            ]
+        },
+        {
+            "number": "19",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "The current Two Marshalls Studios architecture is a Fully Modular StudioDB operating model. Structured records, portal rendering, shared search, source control, and permanent human-readable documentation must remain coordinated so the studio can work across locations without losing history or creating competing sources of truth."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

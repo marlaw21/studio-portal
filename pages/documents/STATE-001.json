@@ -1,0 +1,427 @@
+{
+    "id": "STATE-001",
+    "title": "Current System State",
+    "documentType": "Permanent Current System State Record",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Current System State",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Records the current verified operating state and checkpoint of TMS-OS.",
+    "keywords": [
+        "STATE-001",
+        "TWO MARSHALLS STUDIOS",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document records the verified current state of the Two Marshalls Studios Operating System at the historical recovery and documentation reconciliation checkpoint.",
+                "Its purpose is to answer one question:",
+                "Where does the studio system actually stand right now?",
+                "This document is a human-readable reference. Structured studio records remain governed by TMS-OS and StudioDB."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Current Studio System",
+            "paragraphs": [
+                "Studio: Two Marshalls Studios",
+                "System Name: TMS-OS",
+                "Full Name: Two Marshalls Studios Operating System",
+                "Portal Name: Studio Portal",
+                "Primary Purpose: Serve as the internal command center for games, systems, documentation, development, assets, publishing, marketing, and studio operations."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Current Work Session",
+            "paragraphs": [
+                "Current Work Session: WS-049AR",
+                "Session Description: Historical Recovery and Documentation Reconciliation",
+                "The current work is focused on recovering, validating, reconciling, and preserving the history and operating knowledge of Two Marshalls Studios.",
+                "This work is intended to ensure that the studio does not preserve only its current technical architecture while losing the history of:"
+            ],
+            "items": [
+                "what was built",
+                "why it was built",
+                "decisions that changed direction",
+                "bugs and their fixes",
+                "lessons learned",
+                "standards and procedures",
+                "deferred enhancements",
+                "milestones",
+                "work-session history",
+                "future direction"
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Current Milestone State",
+            "paragraphs": [
+                "Last Completed Development Milestone: MILE-013 - Fully Modular StudioDB",
+                "Current Active Milestone: MILE-014 - Complete Historical Recovery",
+                "The development foundation reached a stable checkpoint before the historical recovery work became the active priority.",
+                "The current milestone does not replace or redesign the completed StudioDB foundation.",
+                "Its purpose is to recover and reconcile the studio knowledge required to make that foundation historically complete and operationally useful."
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Current Architecture",
+            "paragraphs": [
+                "The current system architecture is:",
+                "Fully Modular StudioDB",
+                "TMS-OS evolved from a static studio portal into a structured operating system with a shared data architecture.",
+                "The system progression included:"
+            ],
+            "items": [
+                "Static headquarters and department pages.",
+                "Shared visual design and navigation.",
+                "Dynamic dashboard rendering.",
+                "Shared Studio Data.",
+                "Modular Studio Data files.",
+                "Studio OS commands and configuration.",
+                "Work-session and build-session tracking.",
+                "The Documentation Engine.",
+                "Structured decisions, standards, procedures, and enhancements.",
+                "Shared Search.",
+                "StudioDB.",
+                "Department migration to StudioDB.",
+                "Global StudioDB search.",
+                "Universal record IDs.",
+                "Validation and export capabilities.",
+                "Modular StudioDB architecture.",
+                "Historical recovery and documentation reconciliation."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Verified Stable Checkpoint",
+            "paragraphs": [
+                "At the verified stable documentation checkpoint, StudioDB contained:",
+                "32 record types",
+                "127 total records",
+                "0 invalid records",
+                "0 duplicate IDs",
+                "This checkpoint confirms that the recovered StudioDB state was structurally valid at the time it was verified.",
+                "These numbers are checkpoint values, not permanent limits.",
+                "Future approved development may legitimately increase:",
+                "The required standard is not that the numbers remain unchanged.",
+                "The required standard is that future changes remain valid and controlled."
+            ],
+            "items": [
+                "record types",
+                "total records",
+                "relationships",
+                "schemas",
+                "capabilities"
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Validation State",
+            "paragraphs": [
+                "At the verified checkpoint:",
+                "Invalid Records: 0",
+                "Duplicate IDs: 0",
+                "Validation Status: Pass",
+                "StudioDB supports validation of structured records and detection of duplicate record IDs.",
+                "The system also supports export of StudioDB data into a portable JSON structure containing:"
+            ],
+            "items": [
+                "metadata",
+                "records",
+                "schemas",
+                "validation information"
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Current Source-of-Truth Model",
+            "paragraphs": [
+                "The approved operating model is:",
+                "TMS-OS / StudioDB = Structured Source of Truth"
+            ]
+        },
+        {
+            "number": "8.1",
+            "title": "TMS-OS / StudioDB",
+            "paragraphs": [
+                "Used for structured studio records, relationships, IDs, system state, and machine-readable knowledge.",
+                "Google Workspace = Human-Readable Documentation Layer"
+            ]
+        },
+        {
+            "number": "8.2",
+            "title": "Google Workspace",
+            "paragraphs": [
+                "Used for permanent human-readable documents, procedures, navigation, planning, reference material, and documentation people need to read and use.",
+                "Chat = Working Environment"
+            ]
+        },
+        {
+            "number": "8.3",
+            "title": "Chat",
+            "paragraphs": [
+                "Used for active working sessions, analysis, problem solving, drafting, building, and guided execution.",
+                "No one layer should silently replace the purpose of another."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Current Studio Operating Areas",
+            "paragraphs": [
+                "The current studio operating model recognizes these major areas:",
+                "The permanent Google Studio Headquarters also provides organized human-readable areas for:"
+            ],
+            "items": [
+                "Headquarters",
+                "Documentation",
+                "Development",
+                "Assets",
+                "Publishing",
+                "Marketing",
+                "Business Operations",
+                "Studio Governance",
+                "Studio Operations",
+                "Game Projects",
+                "Development",
+                "Assets",
+                "Publishing",
+                "Marketing",
+                "Business Operations",
+                "Knowledge Base",
+                "Meetings",
+                "Archive"
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Current Project State"
+        },
+        {
+            "number": "10.1",
+            "title": "Studio Operating System",
+            "paragraphs": [
+                "Status: Active",
+                "TMS-OS is the current primary studio infrastructure project.",
+                "Its role is to become the internal operating environment for managing the studio."
+            ]
+        },
+        {
+            "number": "10.2",
+            "title": "Dead Roads",
+            "paragraphs": [
+                "Status: In Development",
+                "Dead Roads is a third-person survival game project.",
+                "Confirmed gameplay work includes gathering resources and an initial crafting quest."
+            ]
+        },
+        {
+            "number": "10.3",
+            "title": "45s",
+            "paragraphs": [
+                "Status: Planned / Paused",
+                "45s remains a studio game concept but is not the current active development priority.",
+                "No change to its status should be inferred without an approved project decision."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Historical Recovery State",
+            "paragraphs": [
+                "The recovery process established the following evidence boundaries."
+            ]
+        },
+        {
+            "number": "11.1",
+            "title": "Recovered Historical Range",
+            "paragraphs": [
+                "WS-001 through WS-013",
+                "This early historical range was reconstructed from available evidence."
+            ]
+        },
+        {
+            "number": "11.2",
+            "title": "Confirmed Overall Migration Range",
+            "paragraphs": [
+                "WS-049 through WS-049AQ",
+                "This range is confirmed as part of the migration and recovery work."
+            ]
+        },
+        {
+            "number": "11.3",
+            "title": "Partially Unresolved Detail",
+            "paragraphs": [
+                "The exact letter-by-letter mapping of every activity inside the migration range is not fully recoverable from the available evidence.",
+                "Unresolved history must remain unresolved rather than being filled with assumptions."
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Documentation State",
+            "paragraphs": [
+                "The verified core documentation package contains 16 permanent documents organized across:",
+                "The package includes records covering:",
+                "The Google human-readable documentation layer is now being physically established."
+            ],
+            "items": [
+                "Studio Governance",
+                "Studio Operations",
+                "Knowledge Base",
+                "current system state",
+                "roadmap",
+                "documentation state",
+                "documentation index",
+                "historical timeline",
+                "architecture",
+                "architecture evolution",
+                "decisions",
+                "standards",
+                "work sessions",
+                "milestones",
+                "procedures",
+                "bugs and fixes",
+                "lessons learned",
+                "technical debt",
+                "enhancement ideas"
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Google Documentation State",
+            "paragraphs": [
+                "The permanent top-level Studio Headquarters structure has been created and verified.",
+                "It contains:",
+                "At this checkpoint:",
+                "Top-Level Headquarters Structure: Complete",
+                "Core Documents Populated: 0 of 16",
+                "START HERE: Preserved but not yet populated",
+                "Google Synchronization: Not started",
+                "The first controlled population test is STATE-001.",
+                "01 - Studio Governance",
+                "02 - Studio Operations",
+                "03 - Game Projects",
+                "04 - Development",
+                "05 - Assets",
+                "06 - Publishing",
+                "07 - Marketing",
+                "08 - Business Operations",
+                "09 - Knowledge Base",
+                "10 - Meetings",
+                "99 - Archive",
+                "START HERE"
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Current Operating Rules",
+            "paragraphs": [
+                "The studio continues to operate under these core rules:"
+            ],
+            "items": [
+                "Preserve stable working behavior.",
+                "Do not redesign completed systems without a clear approved reason.",
+                "Stay focused on the active work-session goal.",
+                "Do not allow enhancements to derail foundation work.",
+                "Record enhancement ideas for later review.",
+                "Provide complete replacement files when code changes are required.",
+                "Do not provide partial code fragments as file replacements.",
+                "Test before committing.",
+                "Commit and push stable completed work.",
+                "Preserve work-session continuity.",
+                "Document decisions, standards, procedures, bugs, fixes, lessons, technical debt, and enhancements.",
+                "Do not invent missing history.",
+                "Separate verified facts from recommendations and approved decisions."
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Current Documentation Priority",
+            "paragraphs": [
+                "The active documentation priority is:",
+                "Complete the human-readable Google documentation layer without creating a competing source of truth.",
+                "The controlled sequence is:",
+                "Verify Google Environment → Create Permanent Headquarters Structure → Define Population Procedure → Test with STATE-001 → Populate and Verify Core Documents → Build START HERE Navigation → Reconcile Google Documentation with TMS-OS → Establish Permanent Documentation Checkpoint"
+            ]
+        },
+        {
+            "number": "16",
+            "title": "Current Risks",
+            "paragraphs": [
+                "The primary current risks are:",
+                "The approved control is to populate and verify documents one at a time."
+            ],
+            "items": [
+                "treating reconstructed wording as original recovered wording",
+                "allowing Google documents to conflict with StudioDB",
+                "inventing missing historical details",
+                "creating duplicate documents",
+                "linking incomplete documents from START HERE",
+                "allowing checkpoint numbers to become permanent assumptions",
+                "moving too quickly and skipping verification"
+            ]
+        },
+        {
+            "number": "17",
+            "title": "Current Next Action",
+            "paragraphs": [
+                "The immediate next action is:",
+                "Create: STATE-001 - Current System State",
+                "Location: Studio Headquarters → 01 - Studio Governance",
+                "Then: Populate → Format → Verify → Record Result",
+                "No additional core document should be populated until the first procedure test passes."
+            ]
+        },
+        {
+            "number": "18",
+            "title": "Current State Summary",
+            "paragraphs": [
+                "STUDIO:",
+                "Two Marshalls Studios",
+                "SYSTEM:",
+                "TMS-OS",
+                "CURRENT WORK SESSION:",
+                "WS-049AR",
+                "CURRENT WORK:",
+                "Historical Recovery and Documentation Reconciliation",
+                "LAST COMPLETED DEVELOPMENT MILESTONE:",
+                "MILE-013 - Fully Modular StudioDB",
+                "CURRENT ACTIVE MILESTONE:",
+                "MILE-014 - Complete Historical Recovery",
+                "CURRENT ARCHITECTURE:",
+                "Fully Modular StudioDB",
+                "VERIFIED STABLE CHECKPOINT:",
+                "32 record types 127 records 0 invalid records 0 duplicate IDs",
+                "GOOGLE HEADQUARTERS STRUCTURE:",
+                "Complete",
+                "CORE GOOGLE DOCUMENTS POPULATED:",
+                "0 of 16",
+                "CURRENT GOOGLE POPULATION TEST:",
+                "STATE-001",
+                "GOOGLE SYNCHRONIZATION:",
+                "Not Started"
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

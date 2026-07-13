@@ -1,0 +1,301 @@
+{
+    "id": "PROC-001",
+    "title": "Work Session Procedure",
+    "documentType": "Permanent Studio Document",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Operations",
+    "category": "Procedures",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Defines the controlled process for starting, executing, verifying, documenting, and closing studio work sessions.",
+    "keywords": [
+        "PROC-001",
+        "TWO MARSHALLS STUDIOS",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This procedure defines how a Two Marshalls Studios work session is started, controlled, documented, verified, and closed.",
+                "Its purpose is to make studio work repeatable, recoverable, and understandable across computers, locations, future chats, and future work sessions.",
+                "A work session must preserve the agreed studio vision, the verified current state, the active milestone, and the exact next action."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Scope",
+            "paragraphs": [
+                "This procedure applies to work performed on:"
+            ],
+            "items": [
+                "TMS-OS and the Studio Portal;",
+                "StudioDB and structured studio records;",
+                "studio documentation and Google Headquarters;",
+                "game projects, including Dead Roads and approved future projects;",
+                "development, assets, publishing, marketing, and business operations;",
+                "historical recovery, migration, reconciliation, and verification work."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Source-of-Truth Rule",
+            "paragraphs": [
+                "The approved operating model is:",
+                "TMS-OS / StudioDB = Structured Source of Truth",
+                "Google Workspace = Human-Readable Documentation Layer",
+                "Chat = Working Environment",
+                "No one layer should silently replace the purpose of another. Work performed in chat is not considered permanently preserved until the required studio records and human-readable documentation are updated and verified."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Work Session Naming",
+            "paragraphs": [
+                "Each controlled work session must have a unique work session ID using the approved WS numbering sequence.",
+                "Examples:",
+                "Historical letter suffixes must be preserved when they are part of the verified record. Missing or uncertain history must not be invented."
+            ],
+            "items": [
+                "WS-001",
+                "WS-013",
+                "WS-049",
+                "WS-049AR"
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Required Start-of-Session Check",
+            "paragraphs": [
+                "Before new work begins, verify the following:",
+                "If the current state cannot be verified, the session must remain in recovery or reconciliation mode until the uncertainty is resolved or explicitly recorded as unresolved."
+            ],
+            "items": [
+                "current studio system and project;",
+                "current work session ID;",
+                "current active milestone;",
+                "last verified stable checkpoint;",
+                "current architecture and source-of-truth model;",
+                "last completed action;",
+                "exact next approved action;",
+                "known blockers, risks, or unresolved history."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Work Session Opening Procedure",
+            "items": [
+                "Open the current human-readable state record.",
+                "Confirm the active project and milestone.",
+                "Confirm the current work session ID.",
+                "Review the last verified checkpoint.",
+                "Review the exact next action.",
+                "Confirm that the required files and working environment are available.",
+                "Begin only the approved work."
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Focus and Change-Control Rule",
+            "paragraphs": [
+                "During a build session, work must remain strictly focused on the agreed studio vision and the approved current task.",
+                "Do not add unrelated systems, features, redesigns, or enhancements during the session unless they are explicitly approved.",
+                "Enhancement ideas that are not part of the approved task must be recorded for later review rather than inserted into the active build."
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Step-by-Step Execution Rule",
+            "paragraphs": [
+                "Work must be performed in controlled steps."
+            ],
+            "items": [
+                "Give one clear step or a tightly bounded group of actions.",
+                "State exactly where the action occurs.",
+                "State exactly what to click, enter, move, rename, create, or test.",
+                "Do not skip prerequisite steps.",
+                "Use exact file paths, names, IDs, dimensions, values, and expected results when applicable.",
+                "When code changes are required, provide the complete updated file rather than partial fragments.",
+                "Stop for verification at meaningful checkpoints before continuing."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Verification Rule",
+            "paragraphs": [
+                "A step is not complete merely because an action was attempted. The result must be checked.",
+                "Verification may include:",
+                "If a test fails, correct the failure before advancing unless the failure is deliberately recorded as an unresolved blocker."
+            ],
+            "items": [
+                "visual review;",
+                "expected screen or file result;",
+                "application test;",
+                "data validation;",
+                "record count and duplicate checks;",
+                "error review;",
+                "comparison against the last verified stable checkpoint."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Stable Checkpoint Rule",
+            "paragraphs": [
+                "After a meaningful body of work passes verification, record a stable checkpoint.",
+                "A stable checkpoint should identify:"
+            ],
+            "items": [
+                "what was completed;",
+                "what was tested;",
+                "the verified result;",
+                "the current architecture or state if it changed;",
+                "the exact next action."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Documentation Update Rule",
+            "paragraphs": [
+                "Documentation must describe the verified result, not an intended result that has not yet been proven.",
+                "When required, update:"
+            ],
+            "items": [
+                "structured TMS-OS / StudioDB records;",
+                "the relevant permanent Google document;",
+                "the current-state reference;",
+                "work session and milestone records;",
+                "the Enhancement Ideas Log for deferred ideas."
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Multi-Location and Workstation Rule",
+            "paragraphs": [
+                "Important Two Marshalls Studios work must remain accessible from multiple locations and workstations.",
+                "No critical studio state, procedure, decision, or recovery information should exist only on one computer.",
+                "Permanent human-readable material belongs in the approved Google Headquarters structure. Structured system knowledge remains governed by TMS-OS and StudioDB."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Error and Recovery Procedure",
+            "items": [
+                "Stop advancing the affected task.",
+                "Capture the exact error, unexpected result, or missing information.",
+                "Compare the result with the last verified checkpoint.",
+                "Fix only the confirmed issue unless a broader change is approved.",
+                "Retest the affected step.",
+                "Record unresolved uncertainty rather than filling gaps with assumptions.",
+                "Continue only after the result is verified or formally documented as blocked."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Work Session Closing Procedure",
+            "paragraphs": [
+                "Before ending a work session:"
+            ],
+            "items": [
+                "confirm what was completed;",
+                "confirm what was tested and passed;",
+                "record any failed or unresolved items;",
+                "record the last stable checkpoint;",
+                "record the exact next action;",
+                "update required structured and human-readable records;",
+                "confirm important work is accessible from more than one workstation or location."
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Required End-of-Session Record",
+            "paragraphs": [
+                "A closed or paused work session should leave behind enough information to answer:"
+            ],
+            "items": [
+                "What session was this?",
+                "What were we working on?",
+                "What was completed?",
+                "What was verified?",
+                "What remains unresolved?",
+                "What is the exact next step?"
+            ]
+        },
+        {
+            "number": "16",
+            "title": "Prohibited Practices",
+            "paragraphs": [
+                "The following practices are not allowed in a controlled studio work session:"
+            ],
+            "items": [
+                "inventing missing history;",
+                "silently changing the agreed studio vision;",
+                "adding unrelated enhancements without approval;",
+                "skipping required verification;",
+                "treating chat as the only permanent record;",
+                "leaving critical work accessible from only one computer;",
+                "replacing complete code files with unexplained partial snippets when a file change is required;",
+                "declaring a result complete before the expected result is confirmed."
+            ]
+        },
+        {
+            "number": "17",
+            "title": "Procedure Test",
+            "paragraphs": [
+                "PROC-001 is the first permanent procedure population test for the Google Headquarters documentation layer.",
+                "The procedure test passes when:",
+                "No additional core document should be populated until this procedure test passes."
+            ],
+            "items": [
+                "the complete formatted document is created;",
+                "the document is uploaded to the correct Google Headquarters folder;",
+                "the file is converted to a native Google Doc;",
+                "formatting and navigation survive conversion;",
+                "temporary upload files are removed;",
+                "only the final approved Google Doc remains;",
+                "the final document is visually verified."
+            ]
+        },
+        {
+            "number": "18",
+            "title": "Procedure Summary",
+            "paragraphs": [
+                "DOCUMENT:",
+                "PROC-001 - Work Session Procedure",
+                "SYSTEM:",
+                "TMS-OS",
+                "PURPOSE:",
+                "Control the opening, execution, verification, documentation, and closing of studio work sessions",
+                "SOURCE-OF-TRUTH MODEL:",
+                "TMS-OS / StudioDB = Structured Source of Truth; Google Workspace = Human-Readable Documentation Layer; Chat = Working Environment",
+                "CORE EXECUTION RULE:",
+                "Work step by step, do not skip steps, and verify meaningful results before advancing",
+                "CHANGE-CONTROL RULE:",
+                "Stay focused on the approved studio vision and current task; defer unapproved enhancements",
+                "ACCESS RULE:",
+                "Important studio work must be accessible from multiple locations and workstations",
+                "CURRENT TEST:",
+                "First permanent procedure population test",
+                "PASS CONDITION:",
+                "Final formatted native Google Doc verified in the correct Headquarters folder"
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

@@ -1,0 +1,243 @@
+{
+    "id": "ENH-LOG-001",
+    "title": "Enhancement Ideas Log",
+    "documentType": "Permanent Enhancement Ideas Log",
+    "organization": "Two Marshalls Studios - Studio Operating System (TMS-OS)",
+    "department": "Knowledge Base",
+    "category": "Enhancement Ideas",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Preserves deferred enhancement ideas from the beginning of the project without interrupting approved work.",
+    "keywords": [
+        "ENH-LOG-001",
+        "Enhancement Ideas Log",
+        "Documentation / Knowledge Base"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document is the permanent Enhancement Ideas Log for Two Marshalls Studios. It preserves future improvement ideas without allowing them to interrupt the current approved work path. Enhancement ideas are captured, categorized, deferred when needed, and reviewed later under a controlled process."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Permanent Rule",
+            "paragraphs": [
+                "Enhancement ideas must be captured from the beginning of the project, not only from the date this log was created.",
+                "The log exists so valuable ideas are not lost, but also so the active foundation build is not derailed by unrelated improvements."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "How Enhancement Ideas Are Handled",
+            "items": [
+                "Capture the idea as soon as it appears.",
+                "Do not build the idea during the current work session unless Stephen explicitly approves it.",
+                "Record the idea with a clear title, description, source, priority, status, and related records.",
+                "Keep the current work-session goal focused.",
+                "Review the Enhancement Ideas Log later during planning, roadmap, or dedicated enhancement sessions."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Historical Baseline Enhancements",
+            "paragraphs": [
+                "The following enhancement records are recovered from the existing TMS-OS backup and become the starting baseline for the permanent Enhancement Ideas Log."
+            ]
+        },
+        {
+            "number": "4.1",
+            "title": "ENH-2026-0001 - Google Drive Publishing",
+            "paragraphs": [
+                "Department: Documentation",
+                "Status: Deferred",
+                "Priority: High",
+                "Summary: Publish structured documentation into the future Google Drive documentation hierarchy.",
+                "Source / Notes: Recovered StudioDB enhancement record."
+            ]
+        },
+        {
+            "number": "4.2",
+            "title": "ENH-2026-0002 - Interactive Documentation Forms",
+            "paragraphs": [
+                "Department: Documentation",
+                "Status: Deferred",
+                "Priority: Medium",
+                "Summary: Allow records to be added through the Studio Portal interface.",
+                "Source / Notes: Recovered StudioDB enhancement record."
+            ]
+        },
+        {
+            "number": "4.3",
+            "title": "ENH-2026-0003 - Command Palette",
+            "paragraphs": [
+                "Department: Core Architecture",
+                "Status: Deferred",
+                "Priority: Medium",
+                "Summary: Add a command palette for fast navigation and studio actions.",
+                "Source / Notes: Recovered StudioDB enhancement record."
+            ]
+        },
+        {
+            "number": "5",
+            "title": "New Enhancement Captured During Google Documentation Recovery"
+        },
+        {
+            "number": "5.1",
+            "title": "ENH-2026-0004 - Automated Work Session Closeout and Google Documentation Publishing",
+            "paragraphs": [
+                "Department: Documentation / Core Architecture",
+                "Status: Deferred",
+                "Priority: High",
+                "Summary: Create a controlled end-of-session process that reviews the session, updates records, generates formatted documents, places them in the correct Google folder, updates current state, and records the next action.",
+                "Source / Notes: Captured from Stephen clarification during Google documentation recovery. Do not build until the current recovery foundation is complete."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Enhancement Review Status Definitions",
+            "tables": [
+                {
+                    "headers": [
+                        "Status",
+                        "Meaning"
+                    ],
+                    "rows": [
+                        [
+                            "Captured",
+                            "The idea has been recorded but not evaluated."
+                        ],
+                        [
+                            "Deferred",
+                            "The idea is valuable but not part of the current approved work."
+                        ],
+                        [
+                            "Under Review",
+                            "The idea is being evaluated for timing, scope, and risk."
+                        ],
+                        [
+                            "Approved",
+                            "The idea has been approved for a future work session or roadmap item."
+                        ],
+                        [
+                            "Rejected",
+                            "The idea was reviewed and intentionally declined."
+                        ],
+                        [
+                            "Built",
+                            "The idea has been implemented, tested, documented, and closed."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Required Fields for Future Enhancement Records",
+            "items": [
+                "Unique ID",
+                "Title",
+                "Department",
+                "Status",
+                "Priority",
+                "Summary",
+                "Why it matters",
+                "Source or trigger",
+                "Related work sessions",
+                "Related decisions, standards, procedures, bugs, lessons, or technical debt",
+                "Owner or review area if known",
+                "Review date when scheduled",
+                "Final decision and result"
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Current Enhancement Backlog",
+            "paragraphs": [
+                "This is the current recovered backlog. It should be expanded as more historical enhancement ideas are recovered and as new ideas appear during future sessions."
+            ]
+        },
+        {
+            "number": "8.1",
+            "title": "ENH-2026-0001 - Google Drive Publishing",
+            "paragraphs": [
+                "Status: Deferred",
+                "Priority: High",
+                "Next Review Action: Review after local documentation package and Google document recovery are stable."
+            ]
+        },
+        {
+            "number": "8.2",
+            "title": "ENH-2026-0002 - Interactive Documentation Forms",
+            "paragraphs": [
+                "Status: Deferred",
+                "Priority: Medium",
+                "Next Review Action: Review after the documentation model is stable."
+            ]
+        },
+        {
+            "number": "8.3",
+            "title": "ENH-2026-0003 - Command Palette",
+            "paragraphs": [
+                "Status: Deferred",
+                "Priority: Medium",
+                "Next Review Action: Review after core navigation and search foundations are stable."
+            ]
+        },
+        {
+            "number": "8.4",
+            "title": "ENH-2026-0004 - Automated Work Session Closeout and Google Documentation Publishing",
+            "paragraphs": [
+                "Status: Deferred",
+                "Priority: High",
+                "Next Review Action: Review after the 16-document recovery/population process is complete."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Relationship to Current Work",
+            "paragraphs": [
+                "This log does not authorize building enhancements immediately. It protects the current foundation work by giving every good idea a safe place to live until it can be reviewed. The current active path remains the Google documentation recovery and permanent document population process."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Completion Checklist",
+            "items": [
+                "Historical enhancements recovered from available backup material.",
+                "Current enhancement idea captured and deferred.",
+                "Enhancement process rule documented.",
+                "Backlog started.",
+                "Future review action recorded.",
+                "Current work path preserved."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "Two Marshalls Studios will preserve enhancement ideas from the beginning of the project forward. Ideas will be captured, organized, and reviewed later without interrupting the current approved work-session path.",
+                "Two Marshalls Studios | TMS-OS Permanent Documentation"
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

@@ -1,0 +1,218 @@
+{
+    "id": "ROADMAP-001",
+    "title": "Studio Roadmap",
+    "documentType": "Permanent Studio Roadmap",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Roadmap",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Records the verified completed path, active milestone, and controlled future direction of TMS-OS.",
+    "keywords": [
+        "ROADMAP-001",
+        "Studio Roadmap",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document records the verified roadmap state of the Two Marshalls Studios Operating System. It preserves what has been completed, what is active now, and what may happen only after the current recovery milestone is completed and verified.",
+                "The roadmap is a control document. It must not be used to invent work, accelerate into unrelated enhancements, or replace the structured records governed by TMS-OS and StudioDB."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Roadmap Control Rule",
+            "paragraphs": [
+                "Only verified milestones, active work, and approved future direction may appear as committed roadmap items.",
+                "Enhancement ideas are preserved separately in ENH-LOG-001. They do not become active roadmap commitments unless Stephen explicitly approves them through the studio planning and decision process."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Verified Current Roadmap State",
+            "tables": [
+                {
+                    "headers": [
+                        "Roadmap Control Point",
+                        "Verified State"
+                    ],
+                    "rows": [
+                        [
+                            "Current Work Session",
+                            "WS-049AR"
+                        ],
+                        [
+                            "Current Work",
+                            "Historical Recovery and Documentation Reconciliation"
+                        ],
+                        [
+                            "Last Completed Development Milestone",
+                            "MILE-013 - Fully Modular StudioDB"
+                        ],
+                        [
+                            "Current Active Milestone",
+                            "MILE-014 - Complete Historical Recovery"
+                        ],
+                        [
+                            "Current Architecture",
+                            "Fully Modular StudioDB"
+                        ],
+                        [
+                            "Historical Documentation Recovery",
+                            "In Progress"
+                        ],
+                        [
+                            "Google Headquarters Structure",
+                            "Complete"
+                        ],
+                        [
+                            "Google Synchronization",
+                            "Not Started"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Completed Foundation Path",
+            "paragraphs": [
+                "The verified historical record shows that the studio operating system progressed through the following completed foundation path:",
+                "The last completed development milestone is MILE-013 - Fully Modular StudioDB."
+            ],
+            "items": [
+                "Studio Database Foundation — Complete",
+                "Studio Database Engine — Complete",
+                "StudioDB v1 — Complete",
+                "Documentation Uses StudioDB — Complete",
+                "Headquarters Uses StudioDB — Complete",
+                "Data Consolidation — Complete",
+                "Core Data Cleanup — Complete",
+                "Global Search Integration — Complete",
+                "Cross-Department Global Search — Complete"
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Current Active Milestone",
+            "paragraphs": [
+                "MILE-014 - Complete Historical Recovery",
+                "The current priority is to reconstruct and reconcile the studio's verified historical knowledge so that important information does not remain dependent on chat history, temporary files, screenshots, memory, or a single workstation."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Current Recovery Workstream",
+            "items": [
+                "Preserve and verify the stable StudioDB checkpoint.",
+                "Maintain the permanent Google Headquarters structure.",
+                "Recover the human-readable documentation layer.",
+                "Populate permanent documents one controlled document at a time.",
+                "Verify each document's title, format, location, and permanent Google Doc state.",
+                "Remove temporary Word files after successful conversion and verification.",
+                "Maintain DOC-STATE-001 as the documentation-state record.",
+                "Maintain DOC-INDEX-001 as the permanent documentation control index.",
+                "Maintain ENH-LOG-001 so future ideas are preserved without interrupting approved foundation work.",
+                "Continue historical reconciliation until MILE-014 can be verified as complete."
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Verified Documentation Recovery Checkpoint",
+            "paragraphs": [
+                "At the current checkpoint, 7 permanent Google documents were verified before creation of this roadmap:",
+                "The historical recovery identified 16 documentation categories. Those categories define required documentation coverage; they are not a numbered sequence of 16 individual files."
+            ],
+            "items": [
+                "STATE-001 - Current System State",
+                "PROC-001 - Work Session Procedure",
+                "PROC-002 - Bug Fix Procedure",
+                "PROC-003 - Documentation Update Procedure",
+                "ENH-LOG-001 - Enhancement Ideas Log",
+                "DOC-STATE-001 - Documentation State",
+                "DOC-INDEX-001 - Documentation Index"
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Immediate Roadmap Priority",
+            "paragraphs": [
+                "Complete the human-readable Google documentation layer without creating a competing source of truth.",
+                "Recover verified source evidence → Create the permanent document → Upload to the approved Headquarters location → Convert to native Google Docs → Verify title, formatting, and location → Remove the temporary Word file → Update the documentation control records → Continue to the next verified recovery item."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Work That Must Not Interrupt the Current Milestone",
+            "items": [
+                "Unrelated feature development",
+                "Unapproved architecture changes",
+                "Convenience improvements that are not required to complete recovery",
+                "Deferred enhancements already captured in ENH-LOG-001",
+                "Automatic Google publishing or synchronization work before the current recovery milestone is complete and a separate implementation path is approved"
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Deferred Enhancement Relationship",
+            "paragraphs": [
+                "ENH-LOG-001 - Enhancement Ideas Log is the permanent holding location for future improvements. Enhancement ideas must be captured from the beginning of the project, preserved, and reviewed later without automatically becoming active roadmap work.",
+                "A deferred enhancement becomes active only after explicit approval and controlled roadmap placement."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Roadmap Decision Gates",
+            "items": [
+                "Gate 1 — Is the current historical recovery item supported by verified evidence?",
+                "Gate 2 — Has the permanent document or record been created in the correct location?",
+                "Gate 3 — Has the result been verified before the next item begins?",
+                "Gate 4 — Have documentation state and index records been updated when required?",
+                "Gate 5 — Has any new enhancement idea been captured without derailing current work?",
+                "Gate 6 — Is MILE-014 fully complete and verified before a new active milestone is declared?"
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Current Next Action",
+            "paragraphs": [
+                "Continue MILE-014 - Complete Historical Recovery by recovering the next documentation category from verified source evidence and the permanent Documentation Index.",
+                "No future milestone, project, document ID, or implementation sequence should be invented. The next item must be selected from the recovered record and verified before population."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Completion Standard for the Current Milestone",
+            "paragraphs": [
+                "MILE-014 may be marked complete only when the historical recovery and documentation reconciliation work has been reviewed against the verified source records, required permanent knowledge has been preserved, documentation controls are current, and no known critical recovery gap remains unrecorded."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "The Studio Roadmap records the verified path of Two Marshalls Studios. It separates completed work, active work, and deferred ideas so the studio can move forward without losing history, duplicating sources of truth, or abandoning the approved foundation path."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

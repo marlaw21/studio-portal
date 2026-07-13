@@ -1,0 +1,255 @@
+{
+    "id": "HIST-001",
+    "title": "Studio Historical Timeline",
+    "documentType": "Permanent Studio Historical Timeline",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Historical Timeline",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Preserves the verified development sequence of Two Marshalls Studios and TMS-OS.",
+    "keywords": [
+        "HIST-001",
+        "Studio Historical Timeline",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document preserves the verified historical development sequence of Two Marshalls Studios and the Studio Operating System (TMS-OS). It provides a permanent human-readable timeline of major foundation stages, completed system milestones, the current recovery period, and the transition into permanent Google documentation.",
+                "This timeline is based on recovered and verified records. Where an exact calendar date is not verified, the sequence is preserved without inventing a date."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Historical Control Rule",
+            "paragraphs": [
+                "Only verified historical events may be recorded as established history.",
+                "Unknown dates, unsupported milestones, and assumed development events must not be added. Future ideas belong in ENH-LOG-001 and do not become historical events until they are actually approved, completed, and verified."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Origin and Foundation Period",
+            "paragraphs": [
+                "The studio began establishing a centralized operating system so games, systems, publishing, documentation, and studio operations could be managed through a shared command structure."
+            ],
+            "items": [
+                "Two Marshalls Studios established TMS-OS as the central operating framework.",
+                "The Studio Portal became the main visible command center for studio information and operations.",
+                "A structured studio data layer was developed to prevent important information from remaining scattered across individual pages and files.",
+                "The long-term direction required studio work to be accessible across multiple workstations rather than depending on one computer."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Studio Database Foundation",
+            "paragraphs": [
+                "This period established the core structured data foundation that later documentation, headquarters, search, and operating-system functions could use."
+            ],
+            "items": [
+                "Studio Database Foundation — Complete",
+                "Studio Database Engine — Complete",
+                "StudioDB v1 — Complete"
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Documentation and Headquarters Integration",
+            "paragraphs": [
+                "These stages moved the studio toward a single governed information structure rather than separate page-specific sources."
+            ],
+            "items": [
+                "Documentation Uses StudioDB — Complete",
+                "Headquarters Uses StudioDB — Complete"
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Data Consolidation and Cleanup",
+            "paragraphs": [
+                "This work reduced fragmentation and prepared the studio data for broader search and cross-department use."
+            ],
+            "items": [
+                "Data Consolidation — Complete",
+                "Core Data Cleanup — Complete"
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Shared Search Development",
+            "paragraphs": [
+                "The shared search engine became capable of searching across studio knowledge rather than remaining limited to one department or page."
+            ],
+            "items": [
+                "Global Search Integration — Complete",
+                "Cross-Department Global Search — Complete"
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Fully Modular StudioDB Milestone",
+            "paragraphs": [
+                "MILE-013 - Fully Modular StudioDB",
+                "MILE-013 is the last verified completed development milestone. It established the current architecture as Fully Modular StudioDB."
+            ],
+            "items": [
+                "32 record types",
+                "127 records",
+                "0 invalid records",
+                "0 duplicate IDs"
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Transition to Historical Recovery",
+            "paragraphs": [
+                "After the modular StudioDB milestone, the studio identified a critical need to preserve and reconcile historical knowledge that still existed across chat history, temporary files, screenshots, backups, and other non-permanent sources."
+            ],
+            "items": [
+                "Current work session: WS-049AR",
+                "Current work: Historical Recovery and Documentation Reconciliation",
+                "Current active milestone: MILE-014 - Complete Historical Recovery"
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Google Headquarters Structure Established",
+            "paragraphs": [
+                "During MILE-014, the permanent Google Headquarters structure was created and verified.",
+                "The Google Headquarters structure is verified as complete."
+            ],
+            "items": [
+                "01 - Studio Governance",
+                "02 - Studio Operations",
+                "03 - Game Projects",
+                "04 - Development",
+                "05 - Assets",
+                "06 - Publishing",
+                "07 - Marketing",
+                "08 - Business Operations",
+                "09 - Knowledge Base",
+                "10 - Meetings",
+                "99 - Archive",
+                "START HERE"
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Permanent Documentation Population Begins",
+            "paragraphs": [
+                "The studio then began a controlled process for creating permanent human-readable Google documents from verified recovery evidence.",
+                "At this checkpoint, 8 permanent Google documents were verified before HIST-001 was created."
+            ],
+            "items": [
+                "STATE-001 - Current System State",
+                "PROC-001 - Work Session Procedure",
+                "PROC-002 - Bug Fix Procedure",
+                "PROC-003 - Documentation Update Procedure",
+                "ENH-LOG-001 - Enhancement Ideas Log",
+                "DOC-STATE-001 - Documentation State",
+                "DOC-INDEX-001 - Documentation Index",
+                "ROADMAP-001 - Studio Roadmap"
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Documentation Recovery Framework",
+            "paragraphs": [
+                "Historical recovery identified 16 permanent documentation categories requiring coverage. These categories are coverage areas, not a fixed numbered upload sequence."
+            ],
+            "items": [
+                "Current system state",
+                "Roadmap",
+                "Documentation state",
+                "Documentation index",
+                "Historical timeline",
+                "Architecture",
+                "Architecture evolution",
+                "Decisions",
+                "Standards",
+                "Work sessions",
+                "Milestones",
+                "Procedures",
+                "Bugs and fixes",
+                "Lessons learned",
+                "Technical debt",
+                "Enhancement ideas"
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Procedures and Governance Established During Recovery",
+            "items": [
+                "PROC-001 established the permanent Work Session Procedure.",
+                "PROC-002 established the permanent Bug Fix Procedure.",
+                "PROC-003 established the permanent Documentation Update Procedure.",
+                "ENH-LOG-001 established permanent enhancement tracking from the beginning of the project.",
+                "DOC-STATE-001 established the documentation-state record.",
+                "DOC-INDEX-001 established the permanent document control index.",
+                "ROADMAP-001 established the verified roadmap and separation between active work and deferred enhancements."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Current Historical Checkpoint",
+            "items": [
+                "Last completed development milestone: MILE-013 - Fully Modular StudioDB",
+                "Current active milestone: MILE-014 - Complete Historical Recovery",
+                "Current architecture: Fully Modular StudioDB",
+                "Historical documentation recovery: In Progress",
+                "Google Headquarters structure: Complete",
+                "Google synchronization: Not Started"
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Current Timeline Position",
+            "paragraphs": [
+                "The studio is currently in the historical recovery and documentation reconciliation period.",
+                "The immediate work is to continue recovering the remaining documentation categories one verified document at a time, place each permanent document in the approved Google Headquarters location, verify it, and update the documentation control records."
+            ]
+        },
+        {
+            "number": "16",
+            "title": "Relationship to Enhancement History",
+            "paragraphs": [
+                "Enhancement ideas discovered during historical recovery are preserved in ENH-LOG-001. They must be captured from the beginning of the project, but they remain deferred unless Stephen explicitly approves them for active work.",
+                "The historical timeline records what happened. The Enhancement Ideas Log preserves what may happen later."
+            ]
+        },
+        {
+            "number": "17",
+            "title": "Historical Completion Standard",
+            "paragraphs": [
+                "A historical event is considered permanently recovered when its supporting evidence has been reconciled, its meaning has been preserved in the appropriate permanent record, and the result no longer depends only on temporary chat history, screenshots, local files, or memory."
+            ]
+        },
+        {
+            "number": "18",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "The Two Marshalls Studios historical timeline must remain a verified record of the studio's actual development path. It exists so future work can understand how the studio reached its current state without inventing history, losing completed work, or confusing deferred ideas with verified accomplishments."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

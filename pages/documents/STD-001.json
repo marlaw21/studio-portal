@@ -1,0 +1,301 @@
+{
+    "id": "STD-001",
+    "title": "Studio Standards",
+    "documentType": "Permanent Studio Standards",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Standards",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Defines the permanent studio-wide standards governing focused, repeatable, verified work.",
+    "keywords": [
+        "STD-001",
+        "Studio Standards",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document defines the permanent studio-wide standards for Two Marshalls Studios. It recovers the working standards established from the beginning of the project and places them in one governed human-readable record.",
+                "These standards apply across studio operations, development, documentation, recovery, testing, source control, and future work unless a later verified decision formally changes them."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Permanent Standards Rule",
+            "paragraphs": [
+                "Studio standards must be followed consistently and must not depend on one chat thread, one workstation, one person's memory, or temporary instructions.",
+                "When a standard changes, the change must be approved, recorded, and reconciled with the permanent records affected by it."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Standard 001 — Stay Focused on the Approved Studio Vision",
+            "items": [
+                "Work only on the agreed current goal and approved studio vision.",
+                "Do not introduce unrelated systems, features, redesigns, or improvements during active build work.",
+                "If a useful enhancement appears, preserve it in ENH-LOG-001 rather than interrupting approved work.",
+                "A separate enhancement path begins only when Stephen explicitly approves it."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Standard 002 — Do Not Skip Steps",
+            "items": [
+                "Instructions must proceed in a controlled sequence.",
+                "State exactly where to go before asking for an action.",
+                "State exactly what to click, enter, move, rename, test, or verify.",
+                "Do not assume a step has been completed without evidence.",
+                "Do not jump ahead to later work before the current checkpoint passes."
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Standard 003 — Use One Controlled Step at a Time",
+            "items": [
+                "During active build and recovery work, give the next controlled action rather than a large uncontrolled batch.",
+                "Wait for the result or screenshot when verification is required.",
+                "Review the actual result before deciding the next step.",
+                "If the result is wrong, correct it before continuing."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Standard 004 — Use Complete Files for Code Changes",
+            "items": [
+                "When a code file must change, provide the complete updated file.",
+                "Do not provide partial snippets or fragments as the normal change method.",
+                "State the exact file path and file name.",
+                "Explain where the complete file belongs.",
+                "Test the result after replacement and state the expected result."
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Standard 005 — Stop and Fix the Source of Bugs",
+            "paragraphs": [
+                "PROC-002 - Bug Fix Procedure governs the full controlled bug-fix process."
+            ],
+            "items": [
+                "When a bug appears, stop unrelated new work.",
+                "Record the expected result and the actual result.",
+                "Reproduce the problem when possible.",
+                "Identify the source of the problem.",
+                "Make the smallest approved correction that fixes the source.",
+                "Retest the original failure and related behavior before continuing."
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Standard 006 — Test Before Declaring Work Complete",
+            "items": [
+                "A change is not complete merely because it was entered or uploaded.",
+                "Run the required test.",
+                "Compare the actual result with the expected result.",
+                "Use screenshots, system output, record counts, or other evidence when appropriate.",
+                "Do not mark a checkpoint as passed until the result is verified."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Standard 007 — Preserve Work Across Multiple Workstations",
+            "items": [
+                "Important studio work must not be limited to one computer.",
+                "Source code and project history must be preserved through the approved shared source-control process.",
+                "Permanent human-readable documentation must be preserved in the approved Google Headquarters structure.",
+                "The studio must maintain a clear process for continuing work from another location or workstation."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Standard 008 — Maintain Clear Source-of-Truth Boundaries",
+            "items": [
+                "TMS-OS and StudioDB govern structured studio records.",
+                "The Studio Portal presents and exposes governed information.",
+                "GitHub preserves source code and project history.",
+                "Google Headquarters preserves permanent human-readable documentation.",
+                "Chat history, screenshots, temporary uploads, local files, and backups may provide evidence but must not become competing permanent sources of truth."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Standard 009 — Use the Modular Studio Architecture",
+            "items": [
+                "The current verified architecture is Fully Modular StudioDB.",
+                "Data responsibilities must remain separated according to the approved modular structure.",
+                "Shared behavior should be used where the architecture already provides shared rendering, search, or data access.",
+                "Do not create isolated competing systems without explicit approval."
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Standard 010 — Protect Verified Stable Checkpoints",
+            "items": [
+                "Preserve the last known stable state before risky or structural changes.",
+                "Do not overwrite verified working behavior without a controlled reason.",
+                "After a change, verify that previously working behavior still works.",
+                "Record important completed milestones and stable checkpoints in the appropriate permanent records."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Standard 011 — Document Important Completed Work",
+            "items": [
+                "A work session is not fully closed until important results are captured where they belong.",
+                "Preserve significant changes, tests, decisions, bugs, fixes, lessons, milestones, and next actions.",
+                "Use PROC-003 - Documentation Update Procedure for controlled permanent documentation updates.",
+                "Do not allow important knowledge to remain only in chat."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Standard 012 — Verify Permanent Google Documents",
+            "items": [
+                "Upload the prepared document to its approved Google Headquarters folder.",
+                "Convert it to a permanent Google Doc.",
+                "Verify the exact document name.",
+                "Remove only the temporary Word upload after the Google Doc is confirmed.",
+                "Visually verify the final permanent document before counting it.",
+                "Update DOC-INDEX-001 and STATE-001 only after verification."
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Standard 013 — Preserve Historical Accuracy",
+            "items": [
+                "Recover history from verified evidence.",
+                "Do not invent dates, milestones, decisions, or completed work.",
+                "Separate verified history from future ideas.",
+                "Keep unresolved or unverified historical material identified as such until evidence supports it.",
+                "Preserve earlier records when later decisions supersede them rather than silently deleting history."
+            ]
+        },
+        {
+            "number": "16",
+            "title": "Standard 014 — Capture Enhancements Without Derailing Current Work",
+            "items": [
+                "Capture enhancement ideas when they appear.",
+                "Maintain the enhancement history from the beginning of the project.",
+                "Record ideas in ENH-LOG-001 with enough context for later review.",
+                "Do not build an enhancement during unrelated approved work unless Stephen explicitly approves the change in direction."
+            ]
+        },
+        {
+            "number": "17",
+            "title": "Standard 015 — Use Clear Names, IDs, and Locations",
+            "items": [
+                "Permanent records must use controlled document IDs.",
+                "File and document names must match the approved name exactly.",
+                "Permanent documents must be stored in the approved Google Headquarters location.",
+                "Temporary files must not be confused with verified permanent records.",
+                "Duplicate IDs and competing permanent copies are not acceptable."
+            ]
+        },
+        {
+            "number": "18",
+            "title": "Standard 016 — Use Numeric Specifications for Asset Work",
+            "items": [
+                "For studio asset creation, use exact numeric dimensions and values whenever the software supports them.",
+                "State exactly where each number is entered.",
+                "Include dimensions, transforms, bevel values, and other measurable settings when relevant.",
+                "Use this method to make asset creation repeatable and easier to verify."
+            ]
+        },
+        {
+            "number": "19",
+            "title": "Standard 017 — Maintain the Enhancement Ideas Log",
+            "items": [
+                "ENH-LOG-001 is a permanent studio record.",
+                "Enhancements must be collected from the beginning of the project, not only from the date the log was created.",
+                "New enhancement ideas must continue to be captured as they arise.",
+                "The log must remain separate from active approved build scope."
+            ]
+        },
+        {
+            "number": "20",
+            "title": "Standard 018 — Use Controlled Decision Records",
+            "items": [
+                "Major decisions must be preserved in DEC-LOG-001.",
+                "A major decision must record what was decided and its operating effect.",
+                "Future ideas must not be recorded as completed decisions.",
+                "When a decision affects architecture, roadmap, state, procedures, or other permanent records, those records must also be reconciled."
+            ]
+        },
+        {
+            "number": "21",
+            "title": "Standard 019 — Maintain Recovery Before Uncontrolled Forward Development",
+            "items": [
+                "MILE-014 - Complete Historical Recovery remains the current active milestone.",
+                "Historical recovery and documentation reconciliation must continue through the controlled process.",
+                "Do not abandon the recovery sequence for unrelated forward development unless Stephen explicitly changes the approved priority."
+            ]
+        },
+        {
+            "number": "22",
+            "title": "Current Standards Checkpoint",
+            "items": [
+                "Current architecture: Fully Modular StudioDB",
+                "Last completed development milestone: MILE-013 - Fully Modular StudioDB",
+                "Current active milestone: MILE-014 - Complete Historical Recovery",
+                "Google Headquarters structure: Complete",
+                "Historical documentation recovery: In Progress",
+                "Google synchronization: Not Started"
+            ]
+        },
+        {
+            "number": "23",
+            "title": "Standard Change Control",
+            "items": [
+                "Identify the proposed standard change.",
+                "Determine whether it is a correction, replacement, or new standard.",
+                "Obtain explicit approval when the change affects studio direction or established operating practice.",
+                "Record the related decision in DEC-LOG-001 when applicable.",
+                "Update this document through PROC-003.",
+                "Reconcile all affected permanent records.",
+                "Verify the final permanent Google documentation."
+            ]
+        },
+        {
+            "number": "24",
+            "title": "Relationship to Other Permanent Records",
+            "items": [
+                "PROC-001 governs controlled work sessions.",
+                "PROC-002 governs bug fixing.",
+                "PROC-003 governs documentation updates.",
+                "DEC-LOG-001 preserves major decisions.",
+                "ENH-LOG-001 preserves deferred enhancement ideas.",
+                "ARCH-001 defines the current architecture.",
+                "ARCH-EVO-001 preserves architecture evolution.",
+                "STATE-001 records the current system checkpoint.",
+                "DOC-INDEX-001 controls the verified permanent document index."
+            ]
+        },
+        {
+            "number": "25",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "Two Marshalls Studios will use consistent, controlled, repeatable standards so work remains focused, verifiable, recoverable, documented, and accessible across sessions and workstations.",
+                "These standards preserve the operating discipline established from the beginning of the project and must continue to govern future studio work unless formally changed through the controlled process."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

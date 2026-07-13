@@ -1,0 +1,294 @@
+{
+    "id": "WS-HIST-001",
+    "title": "Studio Work Session History",
+    "documentType": "Permanent Studio Work Session History",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Work Sessions",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Preserves the verified historical work-session sequence and major session outcomes.",
+    "keywords": [
+        "WS-HIST-001",
+        "Studio Work Session History",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document is the permanent human-readable history of controlled Two Marshalls Studios work sessions. It preserves the verified session sequence, major outcomes, recovery checkpoints, and continuity needed to continue work without depending on one chat thread or one workstation.",
+                "It does not replace PROC-001 - Work Session Procedure. PROC-001 governs how sessions are run; this document preserves what happened across sessions."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Historical Accuracy Rule",
+            "paragraphs": [
+                "Only verified session identifiers, outcomes, milestones, and facts may be recorded as historical fact."
+            ],
+            "items": [
+                "Do not invent missing dates, session numbers, tasks, results, or decisions.",
+                "Use verified records and surviving work-session evidence.",
+                "When an exact detail is not yet verified, mark the gap for recovery rather than guessing.",
+                "Add newly recovered historical sessions through the controlled documentation process."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Relationship to Other Permanent Records",
+            "items": [
+                "PROC-001 governs the work-session process.",
+                "PROC-003 governs permanent documentation updates.",
+                "HIST-001 preserves the broader studio historical timeline.",
+                "ROADMAP-001 preserves milestone direction and sequence.",
+                "STATE-001 records the current verified system checkpoint.",
+                "DEC-LOG-001 preserves major decisions.",
+                "ARCH-EVO-001 preserves architecture evolution.",
+                "This document preserves the work-session layer of studio history."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Recovered Work Session Framework",
+            "paragraphs": [
+                "Historical recovery confirms that studio work was conducted through numbered controlled work sessions. The session history must preserve continuity between completed work, stable checkpoints, bugs, fixes, documentation, and the next controlled action."
+            ],
+            "items": [
+                "Session identifier",
+                "Primary work area",
+                "Verified objective",
+                "Verified result or checkpoint",
+                "Related milestone or permanent record",
+                "Known follow-up or next action",
+                "Recovery status"
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Verified Recent Work Session Sequence",
+            "paragraphs": [
+                "The following recent sequence is verified from surviving studio records and current project continuity."
+            ],
+            "tables": [
+                {
+                    "headers": [
+                        "Session",
+                        "Work Area",
+                        "Verified Objective",
+                        "Verified Result / State",
+                        "Status"
+                    ],
+                    "rows": [
+                        [
+                            "WS-026",
+                            "Studio Operating System",
+                            "Studio data modularization",
+                            "Completed; modular studio-data files established and pushed after the session",
+                            "Verified"
+                        ],
+                        [
+                            "WS-027",
+                            "Studio Operating System",
+                            "Shared Search Engine",
+                            "Shared Search Engine work began; search behavior and search.js placement were investigated",
+                            "Verified"
+                        ],
+                        [
+                            "WS-028",
+                            "Studio Operating System",
+                            "Shared Search Engine / modular data continuity",
+                            "Continued from the modular data structure and shared search work",
+                            "Verified"
+                        ],
+                        [
+                            "WS-049AR",
+                            "Historical Recovery",
+                            "Historical Recovery and Documentation Reconciliation",
+                            "Current controlled recovery session; permanent Google documentation population and reconciliation in progress",
+                            "Verified current session"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Verified Work Session 026",
+            "paragraphs": [
+                "Session ID: WS-026"
+            ],
+            "items": [
+                "Primary area: Studio Operating System.",
+                "Verified outcome: Studio data modularization was completed.",
+                "Verified architecture direction: modular studio-data files.",
+                "Verified continuity record: the last push was completed after Work Session 026.",
+                "Historical significance: this session established the modular data foundation used by later shared system work."
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Verified Work Session 027",
+            "paragraphs": [
+                "Session ID: WS-027"
+            ],
+            "items": [
+                "Primary area: Shared Search Engine.",
+                "Verified action: the Shared Search Engine work began.",
+                "Verified issue encountered: the search box did not appear to work.",
+                "Verified correction path: search.js placement was reviewed and corrected.",
+                "Historical significance: this session advanced shared behavior across the Studio Portal rather than isolated page-specific search."
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Verified Work Session 028",
+            "paragraphs": [
+                "Session ID: WS-028"
+            ],
+            "items": [
+                "Primary area: continued Studio Operating System work.",
+                "Verified continuity: the session continued from the modular studio-data structure and Shared Search Engine work.",
+                "Verified data structure evidence: studioCoreData, studioDocumentationData, and studioDepartmentData were combined into studioData.",
+                "Verified project location evidence: modular data files were associated with studio-portal/js/studio-data.",
+                "Recovery note: additional exact session outcomes may be added only when surviving evidence is verified."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Verified Work Session 049AR",
+            "paragraphs": [
+                "Session ID: WS-049AR"
+            ],
+            "items": [
+                "Primary area: Historical Recovery and Documentation Reconciliation.",
+                "Last completed development milestone at the session checkpoint: MILE-013 - Fully Modular StudioDB.",
+                "Current active milestone: MILE-014 - Complete Historical Recovery.",
+                "Verified stable checkpoint: 32 record types, 127 records, 0 invalid records, and 0 duplicate IDs.",
+                "Google Headquarters structure: Complete.",
+                "Historical documentation recovery: In Progress.",
+                "Google synchronization: Not Started."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Verified Documentation Recovery Completed During WS-049AR",
+            "paragraphs": [
+                "During the current historical recovery session, the following permanent human-readable documents were verified and reconciled before this work-session history document:"
+            ],
+            "items": [
+                "STATE-001 - Current System State",
+                "PROC-001 - Work Session Procedure",
+                "PROC-002 - Bug Fix Procedure",
+                "PROC-003 - Documentation Update Procedure",
+                "ENH-LOG-001 - Enhancement Ideas Log",
+                "DOC-STATE-001 - Documentation State",
+                "DOC-INDEX-001 - Documentation Index",
+                "ROADMAP-001 - Studio Roadmap",
+                "HIST-001 - Studio Historical Timeline",
+                "ARCH-001 - Current Studio Architecture",
+                "ARCH-EVO-001 - Studio Architecture Evolution",
+                "DEC-LOG-001 - Studio Decision Log",
+                "STD-001 - Studio Standards"
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Recovered Session Operating Pattern",
+            "items": [
+                "Begin from the last verified checkpoint.",
+                "Identify one controlled objective.",
+                "Perform work step by step.",
+                "Stop and fix bugs before unrelated new work.",
+                "Test the actual result.",
+                "Preserve major decisions and enhancement ideas separately.",
+                "Update permanent documentation when important knowledge is created.",
+                "Record the next controlled action before the session is considered closed."
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Work Session Continuity Standard",
+            "paragraphs": [
+                "A future session must be able to continue from permanent records even if the original chat thread is unavailable."
+            ],
+            "items": [
+                "Current state must be recoverable from STATE-001.",
+                "The next milestone must be recoverable from ROADMAP-001.",
+                "Current architecture must be recoverable from ARCH-001.",
+                "Historical architecture changes must be recoverable from ARCH-EVO-001.",
+                "Major decisions must be recoverable from DEC-LOG-001.",
+                "Deferred ideas must be recoverable from ENH-LOG-001.",
+                "Work-session history must be recoverable from this document."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Historical Session Gaps",
+            "paragraphs": [
+                "The complete numbered session-by-session history from the beginning of the project has not yet been fully recovered into this document."
+            ],
+            "items": [
+                "Earlier session identifiers and exact outcomes must be recovered from surviving verified evidence.",
+                "Missing sessions must not be reconstructed from assumption.",
+                "A gap in the numbered sequence does not mean the work did not occur; it means the permanent historical record has not yet been fully verified.",
+                "Newly verified historical sessions must be added through PROC-003."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Required Entry Format for Future Recovered Sessions",
+            "items": [
+                "Session ID",
+                "Work area",
+                "Objective",
+                "Starting checkpoint",
+                "Work completed",
+                "Bugs or issues encountered",
+                "Tests performed",
+                "Verified result",
+                "Decisions created or affected",
+                "Enhancements captured",
+                "Permanent documents updated",
+                "Next controlled action"
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Current Recovery Status",
+            "items": [
+                "Work-session category: Historical recovery record established.",
+                "Verified recent session identifiers preserved: WS-026, WS-027, WS-028, and WS-049AR.",
+                "Earlier session-by-session recovery: Incomplete and controlled.",
+                "Current active recovery milestone: MILE-014 - Complete Historical Recovery.",
+                "Next requirement: continue recovering permanent documentation categories without inventing unsupported history."
+            ]
+        },
+        {
+            "number": "16",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "Two Marshalls Studios work sessions are part of the permanent operating history of the studio. Important session outcomes must remain recoverable across chat threads, computers, and time.",
+                "This record will grow as additional historical sessions are verified and as future controlled sessions are closed through the approved documentation process."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

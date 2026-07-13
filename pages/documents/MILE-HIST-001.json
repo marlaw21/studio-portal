@@ -1,0 +1,172 @@
+{
+    "id": "MILE-HIST-001",
+    "title": "Studio Milestone History",
+    "documentType": "Permanent Studio Milestone History",
+    "organization": "Two Marshalls Studios - Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Milestones",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Preserves verified completed and active studio milestones without inventing missing history.",
+    "keywords": [
+        "MILE-HIST-001",
+        "Studio Milestone History",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document is the permanent milestone history for Two Marshalls Studios. It preserves development milestones that can be verified from recovered records and current approved documentation."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Recovery Rule",
+            "paragraphs": [
+                "Only milestones supported by verified records are recorded as confirmed.",
+                "Missing milestone numbers, dates, names, or completion details are not reconstructed by assumption. Unverified historical milestones remain open for controlled recovery."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Milestone Status Definitions",
+            "paragraphs": [
+                "Completed — verified as finished in recovered or current approved records.",
+                "Active — verified as the current milestone in progress.",
+                "Recovered Reference — milestone information exists, but is not yet sufficient for full verification.",
+                "Unresolved — historical milestone details have not yet been recovered."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Verified Milestone History",
+            "tables": [
+                {
+                    "headers": [
+                        "Milestone ID",
+                        "Milestone Title",
+                        "Status",
+                        "Verified Evidence",
+                        "Notes"
+                    ],
+                    "rows": [
+                        [
+                            "MILE-013",
+                            "Fully Modular StudioDB",
+                            "Completed",
+                            "STATE-001 Current State Summary",
+                            "Last completed development milestone at the verified recovery checkpoint."
+                        ],
+                        [
+                            "MILE-014",
+                            "Complete Historical Recovery",
+                            "Active",
+                            "STATE-001 Current State Summary",
+                            "Current active milestone during WS-049AR. Historical recovery and documentation reconciliation are in progress."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Verified Milestone Sequence",
+            "paragraphs": [
+                "MILE-013 — Fully Modular StudioDB — Completed",
+                "MILE-014 — Complete Historical Recovery — Active"
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Current Milestone Checkpoint",
+            "tables": [
+                {
+                    "headers": [
+                        "Current Work Session",
+                        "WS-049AR"
+                    ],
+                    "rows": [
+                        [
+                            "Current Work",
+                            "Historical Recovery and Documentation Reconciliation"
+                        ],
+                        [
+                            "Last Completed Development Milestone",
+                            "MILE-013 - Fully Modular StudioDB"
+                        ],
+                        [
+                            "Current Active Milestone",
+                            "MILE-014 - Complete Historical Recovery"
+                        ],
+                        [
+                            "Current Architecture",
+                            "Fully Modular StudioDB"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Historical Recovery Boundary",
+            "paragraphs": [
+                "Milestones before MILE-013 are not yet listed as verified because the available recovery checkpoint does not provide enough confirmed detail to recreate them safely. They remain eligible for later controlled recovery from source records."
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Future Milestone Entry Requirements",
+            "paragraphs": [
+                "Milestone ID",
+                "Milestone title",
+                "Status",
+                "Date or work-session reference when verified",
+                "Source evidence",
+                "Completion result or current-state effect"
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Current State",
+            "paragraphs": [
+                "Verified completed milestones: 1",
+                "Verified active milestones: 1",
+                "Verified milestone records in this document: 2",
+                "Historical milestone recovery before MILE-013: Unresolved / controlled recovery required"
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Next Controlled Action",
+            "paragraphs": [
+                "Continue historical recovery using verified source material. Add earlier milestones only when their identity, status, and supporting evidence can be confirmed."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "This document is the permanent milestone-history record for Two Marshalls Studios. It must remain evidence-based and must not be expanded through assumption."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

@@ -1,0 +1,332 @@
+{
+    "id": "PROC-003",
+    "title": "Documentation Update Procedure",
+    "documentType": "Permanent Studio Procedure",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Operations",
+    "category": "Procedures",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Defines how completed studio work becomes permanent structured and human-readable documentation.",
+    "keywords": [
+        "PROC-003",
+        "Documentation Update Procedure",
+        "Documentation / Studio Operations"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This procedure defines how completed Two Marshalls Studios work is converted into permanent, structured documentation. Its purpose is to prevent important knowledge from remaining only in chat history, temporary notes, screenshots, local files, or a single workstation."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Core Rule",
+            "paragraphs": [
+                "Each completed work session should be added to the structured documentation records.",
+                "Documentation is part of the work itself. A session is not fully closed until its important results, reasoning, changes, tests, decisions, bugs, fixes, lessons, and next actions have been captured where they belong."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Source-of-Truth Rule",
+            "paragraphs": [
+                "TMS-OS and StudioDB govern structured studio records. Google Workspace is the human-readable documentation layer. Chat, screenshots, local files, and temporary exports may provide evidence, but they must not become competing permanent sources of truth."
+            ],
+            "items": [
+                "Structured records remain governed by TMS-OS / StudioDB.",
+                "Human-readable permanent documents are published to the approved Google Headquarters structure.",
+                "GitHub preserves source code and project history.",
+                "Chat may assist with recovery and documentation generation, but important knowledge must not exist only in chat."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "When This Procedure Must Be Used",
+            "items": [
+                "At the close of every controlled work session.",
+                "After a bug is fixed and verified.",
+                "After a milestone or checkpoint is completed.",
+                "After an approved decision, standard, or procedure is established.",
+                "After architecture changes or important technical lessons.",
+                "When an enhancement idea is identified but deferred.",
+                "When historical recovery produces verified information that must be preserved."
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Required Documentation Review",
+            "paragraphs": [
+                "Before closing a session, review the work and determine whether it produced any of the following:"
+            ],
+            "items": [
+                "Work-session record",
+                "Decision",
+                "Standard",
+                "Procedure",
+                "Bug and fix",
+                "Lesson learned",
+                "Technical debt",
+                "Enhancement idea",
+                "Milestone or checkpoint",
+                "Architecture change",
+                "Recommendation",
+                "Risk",
+                "Release or migration record",
+                "Current-state change",
+                "Documentation update"
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Required Update Sequence"
+        },
+        {
+            "number": "6.1",
+            "title": "Step 1 — Confirm the Work Is Verified",
+            "paragraphs": [
+                "Do not document an untested result as complete. Confirm the final state, test result, and any remaining limitations."
+            ]
+        },
+        {
+            "number": "6.2",
+            "title": "Step 2 — Identify Documentation-Worthy Knowledge",
+            "paragraphs": [
+                "Review what changed, why it changed, what failed, what was fixed, what was learned, and what must happen next."
+            ]
+        },
+        {
+            "number": "6.3",
+            "title": "Step 3 — Classify Each Record",
+            "paragraphs": [
+                "Place each item in the correct structured record type. Do not force unrelated knowledge into one general note."
+            ]
+        },
+        {
+            "number": "6.4",
+            "title": "Step 4 — Preserve the Reasoning",
+            "paragraphs": [
+                "Record why a decision or change was made, not only the final outcome."
+            ]
+        },
+        {
+            "number": "6.5",
+            "title": "Step 5 — Update Structured Records",
+            "paragraphs": [
+                "Add or update the appropriate TMS-OS / StudioDB records using the approved schema and identifiers."
+            ]
+        },
+        {
+            "number": "6.6",
+            "title": "Step 6 — Validate the Records",
+            "paragraphs": [
+                "Confirm required fields, IDs, relationships, and record types are structurally valid. Check for invalid records and duplicate IDs."
+            ]
+        },
+        {
+            "number": "6.7",
+            "title": "Step 7 — Update Human-Readable Documentation",
+            "paragraphs": [
+                "Create or update the approved Google document when the record belongs in the permanent human-readable documentation layer."
+            ]
+        },
+        {
+            "number": "6.8",
+            "title": "Step 8 — Verify Location and Naming",
+            "paragraphs": [
+                "Confirm the document is in the correct Studio Headquarters folder and uses the approved document name."
+            ]
+        },
+        {
+            "number": "6.9",
+            "title": "Step 9 — Remove Temporary Files",
+            "paragraphs": [
+                "After a Word upload has been converted and the native Google Doc verified, remove the temporary .docx file."
+            ]
+        },
+        {
+            "number": "6.10",
+            "title": "Step 10 — Record the Final Result",
+            "paragraphs": [
+                "Update the current-state record, documentation count, session record, or checkpoint information as required."
+            ]
+        },
+        {
+            "number": "6.11",
+            "title": "Step 11 — Close the Session",
+            "paragraphs": [
+                "Only after verification and documentation are complete should the session be committed, pushed, and closed."
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Required Work Session Record",
+            "paragraphs": [
+                "A completed work-session record should preserve enough information to resume work without relying on memory."
+            ],
+            "tables": [
+                {
+                    "headers": [
+                        "Required Field",
+                        "What to Preserve"
+                    ],
+                    "rows": [
+                        [
+                            "Session ID",
+                            "Approved work-session identifier."
+                        ],
+                        [
+                            "Title",
+                            "Clear description of the session goal."
+                        ],
+                        [
+                            "Status",
+                            "Current verified status."
+                        ],
+                        [
+                            "Version",
+                            "Associated version when applicable."
+                        ],
+                        [
+                            "Starting state",
+                            "What was true before the session began."
+                        ],
+                        [
+                            "Goal",
+                            "What the session was intended to accomplish."
+                        ],
+                        [
+                            "Work completed",
+                            "The focused actions performed."
+                        ],
+                        [
+                            "Files or systems changed",
+                            "Every important file, record, folder, workflow, or system changed."
+                        ],
+                        [
+                            "Bugs and fixes",
+                            "Problems found and how they were corrected."
+                        ],
+                        [
+                            "Verification",
+                            "Tests performed and actual results."
+                        ],
+                        [
+                            "Decisions and reasoning",
+                            "Approved choices and why they were made."
+                        ],
+                        [
+                            "Lessons learned",
+                            "Reusable knowledge produced by the work."
+                        ],
+                        [
+                            "Deferred enhancements",
+                            "Ideas preserved without interrupting the active path."
+                        ],
+                        [
+                            "Final state",
+                            "The verified condition at closeout."
+                        ],
+                        [
+                            "Next action",
+                            "The exact approved continuation point."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Documentation Quality Rules",
+            "items": [
+                "Do not guess or invent missing history.",
+                "Separate verified facts from recommendations and reconstructed history.",
+                "Preserve important reasoning, not just outcomes.",
+                "Use exact IDs, filenames, paths, versions, and test results when available.",
+                "Do not duplicate the same permanent truth across competing systems.",
+                "Keep enhancement ideas recorded but separate from current foundation work.",
+                "Write so another workstation or future session can continue without relying on one computer or one chat."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Google Documentation Publishing Rule",
+            "paragraphs": [
+                "When a permanent Google document is required, use the controlled publishing process:"
+            ],
+            "items": [
+                "Create the complete formatted .docx file.",
+                "Upload it to the approved Studio Headquarters folder.",
+                "Open the uploaded Word file.",
+                "Save it as a native Google Doc.",
+                "Verify the title, formatting, headings, navigation, and content.",
+                "Return to the folder and remove only the temporary .docx file.",
+                "Confirm that the permanent native Google Doc remains.",
+                "Record the successful population result before moving to the next document."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Relationship to Other Procedures",
+            "paragraphs": [
+                "PROC-001 controls the work session. PROC-002 controls bug fixing when a failure interrupts the session. PROC-003 controls the documentation update that preserves the verified result."
+            ],
+            "items": [
+                "PROC-001 — Work Session Procedure: start, execute, verify, document, and close focused work.",
+                "PROC-002 — Bug Fix Procedure: stop new work, identify the source and root cause, fix, and retest.",
+                "PROC-003 — Documentation Update Procedure: capture the verified knowledge produced by the work."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Example — Completed Shared Search Work",
+            "paragraphs": [
+                "A completed search-engine session should not be preserved only as 'search was fixed.' The documentation should capture the goal, the failed behavior, the wrong search.js location, the browser MIME type error, the corrected path, the successful console verification, the final search test, and the approved next action."
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Completion Checklist",
+            "items": [
+                "☐ Final work result was verified.",
+                "☐ Documentation-worthy knowledge was identified.",
+                "☐ Each item was classified into the correct record type.",
+                "☐ Reasoning was preserved where important.",
+                "☐ Structured records were updated.",
+                "☐ Records were validated.",
+                "☐ Required Google documents were populated and verified.",
+                "☐ Temporary files were removed after conversion.",
+                "☐ Current-state or documentation counts were updated where required.",
+                "☐ The exact next action was recorded.",
+                "☐ The session can be safely resumed from another location or workstation."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Permanent Procedure Statement",
+            "paragraphs": [
+                "Every completed Two Marshalls Studios work session must leave behind a verified, structured, and accessible record of what changed, why it changed, how it was tested, what was learned, and what happens next. Important studio knowledge must not remain trapped in chat history, temporary files, or one computer.",
+                "Two Marshalls Studios | TMS-OS Permanent Documentation"
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

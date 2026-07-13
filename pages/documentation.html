@@ -8,27 +8,25 @@
 </head>
 <body>
 <header id="studio-header" data-page-title="Documentation" data-page-subtitle="Build logs, decisions, standards, guides, and studio knowledge."></header>
-
 <nav id="studio-nav"></nav>
-
 <main class="dashboard">
   <section class="dashboard-card full-width">
     <div class="card-header"><span class="card-icon">🔎</span><div><p class="section-label">Documentation Search</p><h2>Search Studio Knowledge</h2></div></div>
-    <p>Search build sessions, decisions, standards, procedures, and enhancement ideas.</p>
-    <input id="documentation-search" type="search" placeholder="Search documentation..." aria-label="Search documentation" style="width:100%;padding:14px 16px;margin-top:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.08);color:inherit;font-size:1rem;">
-    <p id="documentation-search-status" class="section-label" style="margin-top:12px;">Showing all documentation records.</p>
+    <p>Search the permanent Studio Headquarters document catalog.</p>
+    <input id="documentation-search" type="search" placeholder="Search by document ID, title, category, or department..." aria-label="Search documentation" style="width:100%;padding:14px 16px;margin-top:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.08);color:inherit;font-size:1rem;">
+    <p id="documentation-search-status" class="section-label" style="margin-top:12px;">Loading permanent documentation records...</p>
   </section>
-
-  <section class="dashboard-card full-width"><div class="card-header"><span class="card-icon">📚</span><div><p class="section-label">Studio Knowledge</p><h2>Documentation Engine</h2></div></div><p>This page is the central documentation hub for TMS-OS.</p></section>
-  <section class="dashboard-card full-width documentation-search-section"><div class="card-header"><span class="card-icon">🧾</span><div><p class="section-label">Build History</p><h2>Recent Build Sessions</h2></div></div><div class="project-list" id="documentation-build-session-list"></div></section>
-  <section class="dashboard-card projects-card documentation-search-section"><div class="card-header"><span class="card-icon">📌</span><div><p class="section-label">Decision Records</p><h2>Studio Decisions</h2></div></div><div class="project-list" id="documentation-decision-list"></div></section>
-  <section class="dashboard-card status-card documentation-search-section"><div class="card-header"><span class="card-icon">📏</span><div><p class="section-label">Rules</p><h2>Studio Standards</h2></div></div><div class="project-list" id="documentation-standard-list"></div></section>
-  <section class="dashboard-card projects-card documentation-search-section"><div class="card-header"><span class="card-icon">⚙️</span><div><p class="section-label">Operating Knowledge</p><h2>Procedures</h2></div></div><div class="project-list" id="documentation-procedure-list"></div></section>
-  <section class="dashboard-card status-card documentation-search-section"><div class="card-header"><span class="card-icon">💡</span><div><p class="section-label">Future Work</p><h2>Enhancement Ideas</h2></div></div><div class="project-list" id="documentation-enhancement-list"></div></section>
+  <section class="dashboard-card full-width">
+    <div class="card-header"><span class="card-icon">📚</span><div><p class="section-label">Studio Knowledge</p><h2>Verified Document Catalog</h2></div></div>
+    <p>Browse the permanent human-readable records that govern and document TMS-OS.</p>
+    <div class="project-list" id="documentation-catalog-list"></div>
+  </section>
+  <section class="dashboard-card full-width" id="documentation-selection-panel" hidden>
+    <div class="card-header"><span class="card-icon">📄</span><div><p class="section-label">Embedded Document Viewer</p><h2 id="documentation-selection-title">Document Viewer</h2></div></div>
+    <div id="documentation-selection-content"></div>
+  </section>
 </main>
-
 <footer id="studio-footer"></footer>
-
 <script src="../js/studio-data/core.js"></script>
 <script src="../js/studio-data/documentation.js"></script>
 <script src="../js/studio-data/departments.js"></script>
@@ -53,6 +51,7 @@
 <script src="../js/studio-data/records/standards.js"></script>
 <script src="../js/studio-data/records/procedures.js"></script>
 <script src="../js/studio-data/records/enhancements.js"></script>
+<script src="../js/studio-data/records/documents.js"></script>
 <script src="../js/studio-data/records/status.js"></script>
 <script src="../js/studio-data/records/notifications.js"></script>
 <script src="../js/studio-data/records/studioCommands.js"></script>
@@ -71,28 +70,9 @@
 <script src="../js/layout.js"></script>
 <script src="../js/components.js"></script>
 <script src="../js/search.js"></script>
+<script src="../js/document-template.js"></script>
+<script src="../js/document-viewer.js"></script>
 <script src="../js/documentation.js"></script>
 <script src="../js/app.js"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const input = document.getElementById("documentation-search");
-  const status = document.getElementById("documentation-search-status");
-
-  if (!input || !status) return;
-
-  input.addEventListener("input", function () {
-    const query = input.value.trim();
-
-    if (!query) {
-      status.textContent = "Showing all documentation records.";
-      return;
-    }
-
-    const results = window.TMSSharedSearch ? window.TMSSharedSearch.search(query) : [];
-    status.textContent = "Showing " + results.length + " search result" + (results.length === 1 ? "." : "s.");
-  });
-});
-</script>
 </body>
 </html>

@@ -1,0 +1,264 @@
+{
+    "id": "ARCH-EVO-001",
+    "title": "Studio Architecture Evolution",
+    "documentType": "Permanent Architecture Evolution Record",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Core Architecture",
+    "category": "Architecture Evolution",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Preserves the verified architectural evolution from the portal-centered foundation to Fully Modular StudioDB.",
+    "keywords": [
+        "ARCH-EVO-001",
+        "Studio Architecture Evolution",
+        "Studio Governance / Core Architecture"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document preserves the verified evolution of the Two Marshalls Studios architecture from an early portal-centered structure to the current Fully Modular StudioDB operating model.",
+                "Its purpose is to explain how the architecture changed, why major structural changes mattered, and how the current system was reached without inventing unsupported dates or development stages."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Historical Control Rule",
+            "paragraphs": [
+                "Architecture evolution must be recorded from verified completed work and recovered evidence, not from assumptions about what may have happened.",
+                "Where an exact calendar date is not verified, the development sequence is preserved without inventing a date. Future architecture ideas remain in ENH-LOG-001 until approved, completed, and verified."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Starting Architecture — Portal-Centered Foundation",
+            "paragraphs": [
+                "The early verified architecture centered on establishing the Studio Portal as the visible command center for Two Marshalls Studios."
+            ],
+            "items": [
+                "Studio information was presented through the portal.",
+                "Individual pages and local files carried more responsibility than they do in the current architecture.",
+                "The studio needed a stronger shared data foundation so important information would not remain scattered across separate pages or workstations.",
+                "The long-term operating requirement was for studio work to remain accessible from multiple locations and computers."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Evolution to a Central Studio Database",
+            "paragraphs": [
+                "The architecture evolved by establishing StudioDB as the structured data foundation of TMS-OS.",
+                "This changed the architecture from primarily page-centered information handling toward a governed structured record system."
+            ],
+            "items": [
+                "Studio Database Foundation — Complete",
+                "Studio Database Engine — Complete",
+                "StudioDB v1 — Complete"
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Documentation Integration",
+            "paragraphs": [
+                "The next verified architectural change connected documentation to the shared StudioDB structure.",
+                "This reduced the need for separate page-specific information sources and moved the studio toward a shared operating model."
+            ],
+            "items": [
+                "Documentation Uses StudioDB — Complete",
+                "Headquarters Uses StudioDB — Complete"
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Data Consolidation",
+            "paragraphs": [
+                "This stage reduced fragmentation, improved consistency, and prepared the structured data for broader shared use."
+            ],
+            "items": [
+                "Data Consolidation — Complete",
+                "Core Data Cleanup — Complete"
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Evolution of Search",
+            "paragraphs": [
+                "Search evolved from a local page function into a shared studio capability across supported departments."
+            ],
+            "items": [
+                "Global Search Integration — Complete",
+                "Cross-Department Global Search — Complete"
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Transition to Modular Studio Data",
+            "paragraphs": [
+                "As the structured system grew, the architecture evolved away from relying on one large permanent studio data file.",
+                "These modular sources were combined into a shared studio data object for portal use."
+            ],
+            "items": [
+                "Core studio data",
+                "Documentation data",
+                "Department data"
+            ]
+        },
+        {
+            "number": "9",
+            "title": "MILE-013 — Fully Modular StudioDB",
+            "paragraphs": [
+                "MILE-013 - Fully Modular StudioDB is the last verified completed development milestone.",
+                "This milestone established the current Fully Modular StudioDB architecture."
+            ],
+            "items": [
+                "32 record types",
+                "127 records",
+                "0 invalid records",
+                "0 duplicate IDs"
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Evolution of the Source-of-Truth Model",
+            "items": [
+                "TMS-OS and StudioDB govern structured studio records.",
+                "The Studio Portal renders and exposes governed information.",
+                "GitHub preserves source code and project history.",
+                "Google Headquarters preserves permanent human-readable documentation.",
+                "Temporary chat, screenshots, local files, and uploads may provide evidence but must not become competing permanent sources of truth."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Establishment of Google Headquarters",
+            "paragraphs": [
+                "During historical recovery, the permanent Google Headquarters structure was created and verified.",
+                "This added a permanent human-readable documentation layer to the studio architecture."
+            ],
+            "items": [
+                "01 - Studio Governance",
+                "02 - Studio Operations",
+                "03 - Game Projects",
+                "04 - Development",
+                "05 - Assets",
+                "06 - Publishing",
+                "07 - Marketing",
+                "08 - Business Operations",
+                "09 - Knowledge Base",
+                "10 - Meetings",
+                "99 - Archive",
+                "START HERE"
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Evolution Through Historical Recovery",
+            "paragraphs": [
+                "After MILE-013, the studio entered MILE-014 - Complete Historical Recovery.",
+                "This period strengthened the architecture by recovering important knowledge from temporary or fragmented sources and converting verified information into permanent governed records."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Permanent Procedures Added to the Architecture",
+            "items": [
+                "PROC-001 established the controlled Work Session Procedure.",
+                "PROC-002 established the controlled Bug Fix Procedure.",
+                "PROC-003 established the Documentation Update Procedure.",
+                "ENH-LOG-001 established permanent enhancement tracking from the beginning of the project.",
+                "DOC-STATE-001 established documentation-state control.",
+                "DOC-INDEX-001 established permanent document indexing and verification.",
+                "HIST-001 established the verified studio historical timeline.",
+                "ARCH-001 established the verified current architecture."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Major Architectural Shifts",
+            "items": [
+                "From portal-centered information toward structured StudioDB records.",
+                "From isolated page data toward shared governed data.",
+                "From a large central data structure toward modular studio-data files.",
+                "From local search toward cross-department shared search.",
+                "From workstation dependence toward shared source control and permanent cloud documentation.",
+                "From temporary knowledge preservation toward controlled permanent records.",
+                "From enhancement ideas interrupting active work toward deferred controlled enhancement tracking."
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Current Architecture Result",
+            "paragraphs": [
+                "The verified result of this evolution is the Fully Modular StudioDB operating model."
+            ],
+            "items": [
+                "Studio Portal — visible command center",
+                "StudioDB — structured record foundation",
+                "Modular studio-data files — separated data responsibilities",
+                "Shared studio data object — unified portal data access",
+                "Shared rendering — reusable presentation behavior",
+                "Shared search engine — cross-department discovery",
+                "GitHub — source code and project history",
+                "Google Headquarters — permanent human-readable documentation",
+                "Enhancement Ideas Log — controlled deferred improvement tracking"
+            ]
+        },
+        {
+            "number": "16",
+            "title": "Current Evolution Checkpoint",
+            "items": [
+                "Last completed development milestone: MILE-013 - Fully Modular StudioDB",
+                "Current active milestone: MILE-014 - Complete Historical Recovery",
+                "Current architecture: Fully Modular StudioDB",
+                "Historical documentation recovery: In Progress",
+                "Google Headquarters structure: Complete",
+                "Google synchronization: Not Started"
+            ]
+        },
+        {
+            "number": "17",
+            "title": "Architecture Change Control Going Forward",
+            "paragraphs": [
+                "Future architecture changes must not be mixed into unrelated work sessions or bug fixes unless Stephen explicitly approves a separate path.",
+                "A proposed architecture improvement must first be captured in ENH-LOG-001 when it is not part of approved current work. Once approved and completed, the change must be reflected in the appropriate permanent records."
+            ]
+        },
+        {
+            "number": "18",
+            "title": "Relationship to Other Permanent Records",
+            "items": [
+                "ARCH-001 describes the architecture that exists now.",
+                "ARCH-EVO-001 explains how the verified architecture changed over time.",
+                "HIST-001 preserves the broader studio historical sequence.",
+                "STATE-001 records the current system checkpoint.",
+                "ROADMAP-001 separates completed, active, and future direction.",
+                "ENH-LOG-001 preserves future improvement ideas that are not yet verified history."
+            ]
+        },
+        {
+            "number": "19",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "Two Marshalls Studios evolved from a portal-centered foundation into a Fully Modular StudioDB operating model through verified stages of database creation, documentation integration, data consolidation, shared search, modularization, source control, and permanent documentation governance.",
+                "This record must continue to preserve actual architectural change without confusing future ideas with completed evolution."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

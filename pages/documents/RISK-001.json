@@ -1,0 +1,212 @@
+{
+    "id": "RISK-001",
+    "title": "Studio Risk Register",
+    "documentType": "Permanent Studio Risk Register",
+    "organization": "Two Marshalls Studios - Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Risks",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Records verified studio risks, current controls, priorities, and next controlled actions.",
+    "keywords": [
+        "RISK-001",
+        "Studio Risk Register",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document is the permanent risk register for Two Marshalls Studios. It records verified studio risks, the current control in place, and the next controlled action so important risks are not lost between work sessions."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Risk Verification Rule",
+            "paragraphs": [
+                "Only risks supported by verified studio records or direct approved observation are entered as confirmed.",
+                "A possible concern is not automatically a verified risk. Missing dates, causes, owners, probabilities, impacts, or mitigation plans are not reconstructed by assumption."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Risk Status Definitions",
+            "paragraphs": [
+                "Open - the verified risk currently exists.",
+                "Controlled - the risk exists, but an approved control or containment method is active.",
+                "Planned - a corrective or preventive action has been approved for future controlled work.",
+                "Resolved - the risk has been removed and the result verified.",
+                "Recovery Required - historical evidence suggests a risk may have existed, but the record is not sufficient for confirmation."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Risk Priority Definitions",
+            "paragraphs": [
+                "Critical - could stop core studio operations, cause major permanent data loss, or create an unrecoverable source-of-truth failure.",
+                "High - could materially disrupt approved work, damage continuity, or create significant recovery effort.",
+                "Moderate - could slow work, create confusion, or require avoidable rework.",
+                "Low - limited operational effect that remains worth monitoring."
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Verified Studio Risk Register",
+            "tables": [
+                {
+                    "headers": [
+                        "Risk ID",
+                        "Verified Risk",
+                        "Priority",
+                        "Current Status",
+                        "Current Control",
+                        "Next Controlled Action"
+                    ],
+                    "rows": [
+                        [
+                            "RISK-2026-0001",
+                            "Important studio knowledge may remain only in chat history, screenshots, temporary files, or memory.",
+                            "High",
+                            "Controlled",
+                            "Permanent Google documentation, PROC-003, DOC-INDEX-001, and STATE-001 are being used to preserve verified knowledge.",
+                            "Continue MILE-014 until remaining historical knowledge is reconciled."
+                        ],
+                        [
+                            "RISK-2026-0002",
+                            "Competing or duplicate sources of truth may cause conflicting studio information.",
+                            "High",
+                            "Controlled",
+                            "TMS-OS / StudioDB govern structured records; GitHub preserves source code and project history; Google Headquarters preserves permanent human-readable documentation.",
+                            "Continue verification and reconciliation before counting or changing permanent records."
+                        ],
+                        [
+                            "RISK-2026-0003",
+                            "Important studio work may become limited to one workstation or location.",
+                            "High",
+                            "Controlled",
+                            "GitHub and Google Headquarters provide shared preservation and access across workstations.",
+                            "Maintain shared-system use and avoid workstation-only permanent records."
+                        ],
+                        [
+                            "RISK-2026-0004",
+                            "Historical recovery may introduce invented or unsupported facts.",
+                            "High",
+                            "Controlled",
+                            "Historical documents use verified evidence only and explicitly mark unresolved gaps.",
+                            "Continue controlled recovery without reconstructing missing details by assumption."
+                        ],
+                        [
+                            "RISK-2026-0005",
+                            "Unapproved enhancements may interrupt foundation or recovery work.",
+                            "Moderate",
+                            "Controlled",
+                            "Enhancement ideas are captured in ENH-LOG-001 and deferred unless Stephen explicitly approves a separate path.",
+                            "Keep current work limited to the approved milestone and record new ideas separately."
+                        ],
+                        [
+                            "RISK-2026-0006",
+                            "Known bugs may be buried under unrelated new development.",
+                            "High",
+                            "Controlled",
+                            "PROC-002 requires stopping unrelated new work, fixing the source, and retesting.",
+                            "Continue using the controlled bug-fix procedure and BUG-HIST-001 for verified history."
+                        ],
+                        [
+                            "RISK-2026-0007",
+                            "Permanent documentation counts and category status may become inconsistent across control records.",
+                            "Moderate",
+                            "Controlled",
+                            "DOC-INDEX-001 and STATE-001 are updated and visually verified after each permanent document.",
+                            "Continue one-document-at-a-time reconciliation and checkpoint verification."
+                        ],
+                        [
+                            "RISK-2026-0008",
+                            "Google synchronization is not yet established.",
+                            "Moderate",
+                            "Open",
+                            "Google Headquarters structure is complete and documents are being populated manually.",
+                            "Complete historical recovery first, then establish the approved permanent synchronization process."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Risk Review Requirements",
+            "paragraphs": [
+                "Review the risk register when a verified risk appears, changes status, or is resolved.",
+                "Do not change priority, status, control, or next action without verified evidence or explicit approval.",
+                "Update related permanent records when a risk affects architecture, standards, decisions, roadmap, procedures, technical debt, bugs, or current state.",
+                "Preserve resolved risks as history rather than deleting them."
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Relationship to Other Permanent Records",
+            "paragraphs": [
+                "RISK-001 records verified studio risks. DEC-LOG-001 records major decisions. STD-001 records required standards. TECH-DEBT-001 records verified technical debt. BUG-HIST-001 records verified bug and fix history. ENH-LOG-001 records deferred enhancements. ROADMAP-001 and STATE-001 record approved direction and the current checkpoint."
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Historical Recovery Boundary",
+            "paragraphs": [
+                "Earlier historical risks may exist outside the verified records currently available. They remain eligible for controlled recovery but must not be added as confirmed risks until supporting evidence is verified."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Future Risk Entry Process",
+            "paragraphs": [
+                "1. Identify the verified risk.",
+                "2. Confirm the evidence source.",
+                "3. Assign the next sequential risk ID.",
+                "4. Record only verified facts.",
+                "5. Set the priority and current status.",
+                "6. Record the current control and next controlled action.",
+                "7. Update related permanent records when required.",
+                "8. Reverify the risk after any status change."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Current State",
+            "paragraphs": [
+                "RISK-001 establishes the permanent Studio Risk Register. Eight verified current risks are recorded at this checkpoint. Historical risk recovery remains controlled and incomplete."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Next Controlled Action",
+            "paragraphs": [
+                "Place this document in the approved Google Headquarters location, visually verify the converted Google Doc, then update DOC-INDEX-001 and STATE-001 only after verification."
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "RISK-001 is the permanent human-readable risk register for Two Marshalls Studios. It must preserve verified risks, current controls, and next actions without inventing unsupported history."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

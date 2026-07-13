@@ -1,0 +1,285 @@
+{
+    "id": "DOC-STATE-001",
+    "title": "Documentation State",
+    "documentType": "Permanent Documentation State Record",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Documentation State",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Records the verified state, control rules, and remaining recovery work for permanent studio documentation.",
+    "keywords": [
+        "DOC-STATE-001",
+        "Documentation State",
+        "Studio Governance / Documentation"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document is the permanent control record for the current state of Two Marshalls Studios documentation. It records what has been verified, what has already been published into the Google Headquarters structure, what still requires historical recovery, and the rules that prevent documentation from becoming fragmented or dependent on chat history."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Core Rule",
+            "paragraphs": [
+                "No documentation item is considered permanently established until its content, identity, destination, and status have been verified.",
+                "TMS-OS and StudioDB govern structured studio records. The approved Google Headquarters structure is the permanent human-readable documentation layer. GitHub preserves source code and project history. Chat, screenshots, temporary files, and local exports may provide evidence, but they must not become the only location of important studio knowledge."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Verified Google Headquarters Structure",
+            "paragraphs": [
+                "The permanent top-level Studio Headquarters structure has been created and verified:"
+            ],
+            "items": [
+                "01 - Studio Governance",
+                "02 - Studio Operations",
+                "03 - Game Projects",
+                "04 - Development",
+                "05 - Assets",
+                "06 - Publishing",
+                "07 - Marketing",
+                "08 - Business Operations",
+                "09 - Knowledge Base",
+                "10 - Meetings",
+                "99 - Archive",
+                "START HERE"
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Verified Permanent Documents Currently Established",
+            "paragraphs": [
+                "The following documents have been created, uploaded, converted to Google Docs where applicable, and visually verified during the current controlled population process:"
+            ],
+            "tables": [
+                {
+                    "headers": [
+                        "Document",
+                        "Location",
+                        "Status",
+                        "Purpose"
+                    ],
+                    "rows": [
+                        [
+                            "STATE-001 - Current System State",
+                            "01 - Studio Governance",
+                            "Verified",
+                            "Records the current operating state and checkpoint of TMS-OS."
+                        ],
+                        [
+                            "PROC-001 - Work Session Procedure",
+                            "02 - Studio Operations",
+                            "Verified",
+                            "Defines the controlled work-session process."
+                        ],
+                        [
+                            "PROC-002 - Bug Fix Procedure",
+                            "02 - Studio Operations",
+                            "Verified",
+                            "Defines the required bug investigation, correction, and retest sequence."
+                        ],
+                        [
+                            "PROC-003 - Documentation Update Procedure",
+                            "02 - Studio Operations",
+                            "Verified",
+                            "Defines how completed work becomes permanent structured documentation."
+                        ],
+                        [
+                            "ENH-LOG-001 - Enhancement Ideas Log",
+                            "09 - Knowledge Base",
+                            "Verified",
+                            "Preserves enhancement ideas from the beginning of the project without interrupting approved foundation work."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "5",
+            "title": "The 16-Document Documentation Package",
+            "paragraphs": [
+                "Historical recovery identified a verified core documentation package containing 16 permanent documentation categories. These are categories of required human-readable records, not a verified numbered upload sequence.",
+                "The existence of these 16 categories does not mean that all 16 Google documents have already been populated. Each category must be recovered, reconciled, created in the correct form, placed in the correct folder, and verified."
+            ],
+            "items": [
+                "Current system state",
+                "Roadmap",
+                "Documentation state",
+                "Documentation index",
+                "Historical timeline",
+                "Architecture",
+                "Architecture evolution",
+                "Decisions",
+                "Standards",
+                "Work sessions",
+                "Milestones",
+                "Procedures",
+                "Bugs and fixes",
+                "Lessons learned",
+                "Technical debt",
+                "Enhancement ideas"
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Current Population Status",
+            "paragraphs": [
+                "At this checkpoint, five permanent human-readable documents have been verified in the Google Headquarters structure. The broader 16-category package remains under controlled recovery and population."
+            ],
+            "items": [
+                "Verified permanent documents: 5",
+                "Verified top-level Headquarters structure: Complete",
+                "Enhancement history baseline: Established and preserved in ENH-LOG-001",
+                "Historical documentation recovery: In progress",
+                "Automatic Google publishing: Deferred enhancement; not yet active",
+                "Documentation synchronization: Not yet automated"
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Historical Recovery Requirement",
+            "paragraphs": [
+                "Documentation must be reconstructed from the earliest available Two Marshalls Studios project history. Recovery must not begin only with the current StudioDB architecture or the current chat.",
+                "The historical reconstruction must preserve:"
+            ],
+            "items": [
+                "What was built and when",
+                "Why major choices were made",
+                "Changes in direction",
+                "Work-session history",
+                "Bugs, root causes, fixes, and tests",
+                "Decisions and standards",
+                "Procedures",
+                "Milestones",
+                "Lessons learned",
+                "Technical debt",
+                "Enhancement ideas from the beginning of the project",
+                "Deferred work and future direction"
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Source-of-Truth and Supporting-System Roles",
+            "tables": [
+                {
+                    "headers": [
+                        "System",
+                        "Role"
+                    ],
+                    "rows": [
+                        [
+                            "TMS-OS / StudioDB",
+                            "Governs structured studio records and relationships."
+                        ],
+                        [
+                            "Google Headquarters",
+                            "Permanent human-readable documentation layer."
+                        ],
+                        [
+                            "GitHub",
+                            "Preserves source code, commits, versions, and project history."
+                        ],
+                        [
+                            "ChatGPT conversations",
+                            "Recovery evidence and working assistance; not a permanent sole source of truth."
+                        ],
+                        [
+                            "Screenshots, local files, ZIPs, and exports",
+                            "Supporting evidence and transfer material until reconciled into permanent records."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Documentation Control Process",
+            "paragraphs": [
+                "Every permanent document must follow this sequence:",
+                "1. Identify the verified source material.",
+                "2. Determine the correct permanent document type and ID.",
+                "3. Reconcile duplicate, conflicting, or outdated information.",
+                "4. Create the complete formatted document.",
+                "5. Place it in the approved Google Headquarters folder.",
+                "6. Convert it to a Google Doc when required.",
+                "7. Verify title, content, location, and visible formatting.",
+                "8. Remove temporary duplicate upload files after conversion.",
+                "9. Update documentation state and index records.",
+                "10. Preserve any newly identified enhancement ideas without interrupting current work."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Current Risks",
+            "items": [
+                "Mistaking documentation categories for a fixed numbered upload sequence.",
+                "Assuming a document is populated because its category exists in a backup.",
+                "Losing historical reasoning by documenting only current outcomes.",
+                "Allowing important information to remain only in chat.",
+                "Creating duplicate Google and Word copies after conversion.",
+                "Building enhancements during foundation or recovery work without explicit approval.",
+                "Failing to capture enhancement ideas from the beginning of the project."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Current Priority",
+            "paragraphs": [
+                "Complete the human-readable Google documentation layer without creating a competing source of truth.",
+                "The controlled sequence is to continue recovering the verified core documentation package, create each permanent document in the approved format, place it in the correct Headquarters folder, verify it, and update the documentation state as the package becomes complete."
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Next Controlled Documentation Action",
+            "paragraphs": [
+                "After DOC-STATE-001 is uploaded, converted, and verified, the next document must be selected from the remaining verified documentation categories based on recovery priority and available source evidence. No assumed numbering sequence should be used."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Completion Checklist",
+            "items": [
+                "Document ID and title verified",
+                "Google Headquarters structure recorded",
+                "Currently verified documents recorded",
+                "16 documentation categories distinguished from upload sequence",
+                "Current population status recorded",
+                "Historical recovery requirement recorded",
+                "Source-of-truth roles recorded",
+                "Control process recorded",
+                "Current risks recorded",
+                "Next action recorded"
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "The Two Marshalls Studios documentation system must preserve the complete history of the studio from the beginning of the project forward. Permanent documentation is built through verified recovery, controlled publication, and continuous session closeout—not by relying on memory, chat history, or a single workstation."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

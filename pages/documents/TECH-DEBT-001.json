@@ -1,0 +1,147 @@
+{
+    "id": "TECH-DEBT-001",
+    "title": "Studio Technical Debt Register",
+    "documentType": "Permanent Studio Technical Debt Register",
+    "organization": "Two Marshalls Studios - Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Technical Debt",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Provides the permanent register for verified unresolved technical limitations and corrective obligations.",
+    "keywords": [
+        "TECH-DEBT-001",
+        "Studio Technical Debt Register",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document is the permanent technical debt register for Two Marshalls Studios. It records verified unresolved technical limitations, deferred corrective work, and debt status so known issues are not lost between work sessions.",
+                "Technical debt is recorded only when the debt itself can be verified. Missing historical details, causes, dates, or remediation plans are not reconstructed by assumption."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Technical Debt Verification Rule",
+            "paragraphs": [
+                "Only technical debt supported by verified records or direct approved observation is entered as confirmed.",
+                "A feature idea is not technical debt. A completed bug fix is not active technical debt. An unverified historical reference remains a recovery item until enough evidence exists to classify it."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Technical Debt Status Definitions",
+            "paragraphs": [
+                "Open — verified debt exists and remains unresolved.",
+                "Controlled — verified debt exists, but an approved workaround or containment method is in place.",
+                "Planned — remediation has been approved for a future controlled work session.",
+                "Resolved — the debt has been corrected and verified.",
+                "Recovery Required — historical evidence suggests debt may exist, but the record is not sufficient for confirmation."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Verified Technical Debt Register",
+            "tables": [
+                {
+                    "headers": [
+                        "Debt ID",
+                        "Affected System / Component",
+                        "Verified Description",
+                        "Status",
+                        "Verified Evidence",
+                        "Next Controlled Action"
+                    ],
+                    "rows": [
+                        [
+                            "None yet verified",
+                            "—",
+                            "No historical technical debt item has yet been verified for permanent entry.",
+                            "Recovery Required",
+                            "Recovered documentation category requirement only",
+                            "Review evidence before creating the first numbered debt record."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Technical Debt Entry Requirements",
+            "paragraphs": [
+                "Every future technical debt entry must include a unique debt ID, affected system or component, verified description, current status, evidence source, operational impact, and next controlled action.",
+                "Do not add estimated causes, dates, severity, ownership, or solutions unless they are verified or explicitly approved."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Relationship to Bugs, Enhancements, and Decisions",
+            "paragraphs": [
+                "PROC-002 governs active bug-fix handling. ENH-LOG-001 stores enhancement ideas that are not approved current work. DEC-LOG-001 preserves approved studio decisions.",
+                "TECH-DEBT-001 is used when a verified limitation or deferred corrective obligation remains after the immediate work session. Cross-reference another permanent document when it governs the item."
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Historical Recovery Boundary",
+            "paragraphs": [
+                "No historical technical debt items are marked verified solely because the recovered 16-category documentation package identified Technical debt as a required category.",
+                "Historical technical debt remains open for controlled recovery. Evidence must be reviewed before any recovered item is promoted to the verified register."
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Future Technical Debt Entry Process",
+            "paragraphs": [
+                "1. Identify a verified unresolved technical limitation or deferred corrective obligation.",
+                "2. Confirm that the item is not only a bug, enhancement idea, or decision record.",
+                "3. Assign the next sequential technical debt ID.",
+                "4. Record the verified facts and evidence source.",
+                "5. Set the current status.",
+                "6. Record the next controlled action without expanding scope.",
+                "7. Update related permanent documents when the item changes status."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Current State",
+            "paragraphs": [
+                "The permanent technical debt category is now established through TECH-DEBT-001.",
+                "No historical technical debt items are verified in this initial register. Historical recovery and future verified entries remain controlled work."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Next Controlled Action",
+            "paragraphs": [
+                "Continue the recovered 16-category documentation package by creating the next missing permanent category document. Add technical debt entries only when supported by verified evidence."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "TECH-DEBT-001 is the permanent human-readable register for verified Two Marshalls Studios technical debt. It must preserve facts, distinguish debt from bugs and enhancements, and prevent unresolved technical obligations from being lost or invented."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}

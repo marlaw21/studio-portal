@@ -1,0 +1,19 @@
+<header class="tms-document-header">
+  <p class="section-label">Permanent Studio Document</p>
+  <h1>ARCH-001 — Current Studio Architecture</h1>
+  <p>Two Marshalls Studios — Studio Operating System (TMS-OS)</p>
+</header>
+<section><h2>1. Purpose</h2><p>This document defines the verified current architecture of TMS-OS and the operating layers that allow studio data, shared engines, department pages, and permanent documentation to work together.</p></section>
+<section><h2>2. Current Architecture</h2><p><strong>Architecture State:</strong> Fully Modular StudioDB</p><p>TMS-OS separates structured records from the code that renders them. Record files define studio information, loader.js registers those records, StudioDB provides shared access methods, and page-specific renderers display the approved information.</p></section>
+<section><h2>3. Operating Layers</h2><div class="project-list">
+<div class="project-item"><div><h3>Presentation Layer</h3><p>HTML pages and shared CSS provide the interface for Headquarters and studio departments.</p></div></div>
+<div class="project-item"><div><h3>Shared Layout Layer</h3><p>layout.js provides the shared header, global navigation, and footer.</p></div></div>
+<div class="project-item"><div><h3>Renderer Layer</h3><p>app.js and department-specific renderer files transform StudioDB records into visible content.</p></div></div>
+<div class="project-item"><div><h3>Shared Component Layer</h3><p>components.js provides reusable interface components across departments.</p></div></div>
+<div class="project-item"><div><h3>StudioDB Access Layer</h3><p>loader.js assembles records and exposes query, validation, search, and export functions through window.StudioDB.</p></div></div>
+<div class="project-item"><div><h3>Modular Record Layer</h3><p>Files under js/studio-data/records store structured studio records separately from rendering code.</p></div></div>
+</div></section>
+<section><h2>4. Documentation Architecture</h2><p>Permanent documents are registered as a StudioDB record type. The Documentation Catalog Engine displays those records, and the TMS Document Viewer Engine loads approved internal content files without placing document bodies inside documents.js.</p></section>
+<section><h2>5. Source-of-Truth Boundaries</h2><p>GitHub preserves source code and project history. Google Headquarters preserves permanent human-readable governance documents. StudioDB provides the structured operating data used by the portal.</p></section>
+<section><h2>6. Current Verification</h2><p>The dashboard, global navigation, shared search, Documentation Catalog, grouped catalog, and first embedded viewer connection have passed controlled functional testing during the Version 1.0 completion audit.</p></section>
+<section><h2>7. Permanent Statement</h2><p>TMS-OS uses a modular architecture so data, rendering, interface components, permanent documentation, and future automation remain separated, testable, and maintainable across workstations.</p></section>

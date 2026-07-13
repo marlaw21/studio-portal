@@ -1,0 +1,634 @@
+{
+    "id": "DEC-LOG-001",
+    "title": "Studio Decision Log",
+    "documentType": "Permanent Studio Decision Log",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Governance",
+    "category": "Decisions",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Historical recovery",
+    "lastUpdated": "Work Session 042",
+    "summary": "Preserves major verified studio decisions and their operating effects.",
+    "keywords": [
+        "DEC-LOG-001",
+        "Studio Decision Log",
+        "Studio Governance"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This document is the permanent Studio Decision Log for Two Marshalls Studios. It preserves major verified decisions recovered from the beginning of the project and provides the controlled location for future approved studio decisions.",
+                "The log exists so important decisions do not remain only in chat history, temporary notes, screenshots, local files, or one person's memory."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Permanent Rule",
+            "paragraphs": [
+                "Major studio decisions must be preserved as permanent records and must not depend on chat history for future recovery.",
+                "A decision belongs in this log when it materially affects studio direction, architecture, operating rules, documentation, development practice, access, recovery, or future work."
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Historical Recovery Rule",
+            "items": [
+                "Historical decisions are recorded only when supported by recovered project evidence or explicit approved direction.",
+                "Exact dates are not invented when the recovered evidence does not verify them.",
+                "Future ideas are not recorded as completed decisions.",
+                "Unapproved improvements remain in ENH-LOG-001 until Stephen approves a path.",
+                "When a later verified decision replaces an earlier decision, the earlier record remains preserved and its status is updated rather than deleted."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Recovered Baseline Decisions",
+            "paragraphs": [
+                "The following decisions form the verified historical baseline recovered from the project to date."
+            ]
+        },
+        {
+            "number": "4.1",
+            "title": "DEC-2026-0001 — Establish Two Marshalls Studios and TMS-OS",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Studio Foundation"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Operate Two Marshalls Studios through a central Studio Operating System called TMS-OS."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "The studio requires one governed operating foundation for projects, systems, publishing, documentation, and studio operations."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.2",
+            "title": "DEC-2026-0002 — Use the Studio Portal as the Command Center",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Studio Interface"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Use the Studio Portal as the visible command center for Two Marshalls Studios."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "The portal provides a common place to access and present governed studio information."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.3",
+            "title": "DEC-2026-0003 — Establish StudioDB as the Structured Data Foundation",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Data Architecture"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Move studio information toward governed StudioDB records rather than allowing individual pages or disconnected files to become permanent data authorities."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "A shared structured data foundation improves consistency, reuse, search, validation, and long-term control."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.4",
+            "title": "DEC-2026-0004 — Evolve to Fully Modular StudioDB",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Architecture"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Separate studio data responsibilities into modular data files and combine them through the shared studio data model."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "The modular architecture reduces dependence on one large data file and supports clearer ownership, maintenance, and growth."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.5",
+            "title": "DEC-2026-0005 — Use Shared Rendering and Shared Search",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Portal Architecture"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Use shared system behavior for supported rendering and search rather than creating isolated page-specific versions."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "Shared behavior reduces duplication and allows supported information to work consistently across departments."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.6",
+            "title": "DEC-2026-0006 — Make Studio Work Accessible from Multiple Workstations",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Access and Continuity"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Important Two Marshalls Studios work must be accessible from multiple locations and workstations and must not be limited to one computer."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "The studio requires continuity, recoverability, and a clear process for working from more than one location."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.7",
+            "title": "DEC-2026-0007 — Preserve Source Code and Project History in GitHub",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Source Control"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Use GitHub to preserve source code and project history."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "Source control protects development history and supports work across computers without making one local workstation the only copy."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.8",
+            "title": "DEC-2026-0008 — Establish Google Headquarters",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Permanent Documentation"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Use the approved Google Headquarters structure as the permanent human-readable documentation layer."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "Important human-readable studio knowledge must be available outside temporary chat and local files."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.9",
+            "title": "DEC-2026-0009 — Prevent Competing Sources of Truth",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Information Governance"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "TMS-OS and StudioDB govern structured records; GitHub preserves source code and project history; Google Headquarters preserves permanent human-readable documentation."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "Clear system roles prevent temporary files, chat records, screenshots, and duplicate documents from becoming competing permanent authorities."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.10",
+            "title": "DEC-2026-0010 — Use Controlled Work Sessions",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Studio Operations"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Use a controlled work-session process and preserve the active goal, completed work, tests, decisions, lessons, and next action."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "Important work must remain recoverable and transferable between sessions."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.11",
+            "title": "DEC-2026-0011 — Stop New Work When a Bug Appears",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Bug Fixing"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "When a bug appears, stop unrelated new work, identify the source, fix the source, and retest before continuing."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "This prevents known problems from being buried under new features or unrelated changes."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.12",
+            "title": "DEC-2026-0012 — Do Not Add Unapproved Enhancements During Build Sessions",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Scope Control"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Stay strictly focused on the agreed studio vision and current approved work. Do not add unrelated systems or enhancements unless Stephen explicitly approves them."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "Foundation work must not be derailed by attractive but unapproved improvements."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.13",
+            "title": "DEC-2026-0013 — Maintain a Permanent Enhancement Ideas Log",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Enhancement Governance"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Capture enhancement ideas from the beginning of the project in ENH-LOG-001 and defer them until a controlled review or approved work path."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "Ideas should not be lost, but they also should not interrupt approved foundation work."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.14",
+            "title": "DEC-2026-0014 — Create Permanent Documentation from Completed Work",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Documentation Governance"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Completed important work must be converted into structured permanent documentation through the controlled documentation process."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "Chat history, temporary notes, screenshots, local files, and a single workstation cannot be the only place important knowledge exists."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.15",
+            "title": "DEC-2026-0015 — Complete Historical Recovery Before Normal Forward Development",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Recovery Priority"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Complete the controlled historical recovery and documentation reconciliation milestone before returning to normal forward development."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "The studio must preserve and reconcile important knowledge already created before continuing to build on top of it."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.16",
+            "title": "DEC-2026-0016 — Recover the 16-Category Documentation Package",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Documentation Coverage"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Use the recovered 16-category package as the required coverage model for the permanent human-readable documentation layer."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "The category model identifies missing permanent knowledge without treating the categories as a simple numbered upload sequence."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.17",
+            "title": "DEC-2026-0017 — Verify Permanent Documents Before Counting Them",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Documentation Verification"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Count a permanent document as verified only after it is placed in its approved Google Headquarters location and visually confirmed."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "This prevents temporary uploads, backups, chat records, screenshots, or unverified references from being counted as permanent documentation."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.18",
+            "title": "DEC-2026-0018 — Use Full Files for Code Changes",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Development Practice"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "When code changes are required, provide the complete updated file rather than partial snippets or fragments."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "Complete files reduce placement errors and make changes easier to apply and verify."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "4.19",
+            "title": "DEC-2026-0019 — Use Exact Step-by-Step Instructions",
+            "tables": [
+                {
+                    "headers": [
+                        "Decision Area",
+                        "Execution Standard"
+                    ],
+                    "rows": [
+                        [
+                            "Decision",
+                            "Studio build instructions must state exactly where to go, what to click or enter, how to test, and what result to expect without skipping steps."
+                        ],
+                        [
+                            "Reason / Operating Effect",
+                            "The process must remain repeatable and easy to follow during active work."
+                        ],
+                        [
+                            "Current Status",
+                            "Active / Verified"
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Current Decision-Control State",
+            "items": [
+                "Historical baseline decisions: Recovered and established in this document.",
+                "Future major decisions: Must be added to this log when approved.",
+                "Enhancement ideas: Continue to be captured in ENH-LOG-001 until approved.",
+                "Architecture changes: Must also update ARCH-001 and ARCH-EVO-001 when applicable.",
+                "Roadmap effects: Must also update ROADMAP-001 when applicable.",
+                "Current-state effects: Must also update STATE-001 when applicable."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Required Fields for Future Decisions",
+            "items": [
+                "Decision ID",
+                "Decision title",
+                "Decision area",
+                "Decision",
+                "Reason or operating effect",
+                "Source work session or supporting record when available",
+                "Status",
+                "Related permanent records that require updates"
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Future Decision Statuses",
+            "items": [
+                "Proposed — identified but not approved.",
+                "Approved — explicitly accepted for action.",
+                "Active / Verified — implemented or established and confirmed.",
+                "Superseded — replaced by a later verified decision.",
+                "Retired — intentionally no longer active."
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Decision Update Procedure",
+            "items": [
+                "Identify the major decision.",
+                "Confirm that it is approved or historically verified.",
+                "Assign the next controlled decision ID.",
+                "Record the decision and its operating effect.",
+                "Identify every permanent record affected by the decision.",
+                "Update those records through PROC-003.",
+                "Verify the final Google Headquarters locations and control records."
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Relationship to Other Permanent Records",
+            "items": [
+                "STATE-001 records the current system checkpoint.",
+                "ROADMAP-001 records completed, active, and future direction.",
+                "HIST-001 preserves the broader historical sequence.",
+                "ARCH-001 describes the current architecture.",
+                "ARCH-EVO-001 preserves verified architectural evolution.",
+                "ENH-LOG-001 preserves unapproved or deferred enhancement ideas.",
+                "PROC-003 controls how completed work and decisions become permanent documentation."
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Permanent Statement",
+            "paragraphs": [
+                "Two Marshalls Studios will preserve major decisions as governed permanent records so future work can understand not only what exists, but what was deliberately decided and why.",
+                "The decision log must continue from the beginning-of-project historical baseline established here and must be updated as future major decisions are approved and verified."
+            ]
+        }
+    ],
+    "relatedDocuments": [],
+    "revisionHistory": [
+        {
+            "version": "1.0",
+            "date": "Work Session 042",
+            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "status": "Verified"
+        }
+    ],
+    "verification": {
+        "status": "Source Document Verified",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+    }
+}
