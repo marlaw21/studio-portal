@@ -1,0 +1,449 @@
+{
+    "id": "PROC-004",
+    "title": "End Session Procedure",
+    "documentType": "Permanent Studio Procedure",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Studio Operations",
+    "category": "Procedures",
+    "owner": "Two Marshalls Studios",
+    "status": "Verified",
+    "version": "1.0",
+    "created": "Work Session 044",
+    "lastUpdated": "Work Session 044",
+    "summary": "Defines the controlled two-phase process for preparing, reviewing, approving, documenting, and formally closing every TMS-OS work session.",
+    "keywords": [
+        "PROC-004",
+        "End Session Procedure",
+        "Prepare Session",
+        "Approve & Close",
+        "Human Approval Gate",
+        "Studio Operations"
+    ],
+    "sections": [
+        {
+            "number": "1",
+            "title": "Purpose",
+            "paragraphs": [
+                "This procedure defines the official process for closing every Two Marshalls Studios work session. It ensures that completed work is tested, documented, reviewed, approved, packaged, and preserved before the session becomes part of the permanent studio record.",
+                "The Studio Operating System manages the closing workflow. The studio owner reviews and approves the results. Automation prepares the work but does not assume approval."
+            ]
+        },
+        {
+            "number": "2",
+            "title": "Scope",
+            "paragraphs": [
+                "This procedure applies to every controlled TMS-OS work session, department, module, milestone, bug fix, production change, and release-related session."
+            ],
+            "items": [
+                "Studio Governance",
+                "Studio Operations",
+                "Core Architecture",
+                "Development",
+                "Assets",
+                "Publishing",
+                "Marketing",
+                "Business Operations",
+                "Knowledge Base"
+            ]
+        },
+        {
+            "number": "3",
+            "title": "Core Operating Principles",
+            "items": [
+                "The Studio Operating System manages the workflow.",
+                "The studio owner approves the results.",
+                "Documentation precedes automation.",
+                "Session Context is maintained throughout the work session.",
+                "Sessions end only at logical checkpoints.",
+                "Permanent actions require a Human Approval Gate.",
+                "Session closing uses a two-phase Prepare, Review, Approve, and Close process.",
+                "Git commit, Git push, version changes, release tags, and final session closure require explicit approval."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Session Boundary Management",
+            "paragraphs": [
+                "The assistant is responsible for monitoring progress and identifying logical checkpoints. The studio owner is not expected to remember when to begin the closing process."
+            ],
+            "items": [
+                "When a logical checkpoint is reached, the assistant explicitly instructs the studio owner to type Prepare Session.",
+                "After the review package is generated, the assistant explicitly instructs the studio owner to choose Approve & Close, Revise, or Cancel.",
+                "A session should not normally close in the middle of an untested or incomplete logical unit of work."
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Required Preconditions",
+            "paragraphs": [
+                "Before the Prepare Session phase begins, the current logical unit of work should be complete enough to review."
+            ],
+            "items": [
+                "Current files are saved.",
+                "Approved changes are complete.",
+                "Required testing has been performed.",
+                "Actual test results are known.",
+                "Verified bugs and fixes are recorded.",
+                "Known remaining bugs are identified.",
+                "Decisions, lessons, risks, technical debt, and enhancement ideas are captured when applicable.",
+                "The exact next-session continuation point is known."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Two-Phase Session Closing"
+        },
+        {
+            "number": "6.1",
+            "title": "Phase 1 — Prepare Session",
+            "paragraphs": [
+                "At a logical checkpoint, the assistant tells the studio owner exactly when to type Prepare Session. This command begins preparation only. Nothing is finalized, committed, pushed, tagged, or formally closed during this phase."
+            ],
+            "items": [
+                "Collect the current Session Context.",
+                "Review objectives and completed work.",
+                "Identify deferred work.",
+                "Record files added, modified, and removed.",
+                "Record tests and actual results.",
+                "Record bugs fixed and known bugs.",
+                "Record decisions, lessons, risks, and technical debt.",
+                "Record enhancement ideas without implementing unapproved enhancements.",
+                "Identify permanent documentation updates.",
+                "Prepare version and milestone recommendations.",
+                "Prepare the session package, README-FIRST.md, Git commit notes, and next-session continuation point."
+            ]
+        },
+        {
+            "number": "6.2",
+            "title": "Review Gate",
+            "paragraphs": [
+                "After preparation, the assistant presents the complete review package and explicitly tells the studio owner which command to use."
+            ],
+            "tables": [
+                {
+                    "headers": [
+                        "Command",
+                        "Result"
+                    ],
+                    "rows": [
+                        [
+                            "Approve & Close",
+                            "Approve the prepared package and proceed to formal closure."
+                        ],
+                        [
+                            "Revise",
+                            "Return to active work so the package or project can be corrected."
+                        ],
+                        [
+                            "Cancel",
+                            "Stop the closing process and keep the session open without finalizing it."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "6.3",
+            "title": "Phase 2 — Approve & Close",
+            "paragraphs": [
+                "Only the exact command Approve & Close authorizes formal session closure. The assistant then finalizes the session records and prepares the approved Git actions."
+            ],
+            "items": [
+                "Finalize the work-session summary.",
+                "Finalize permanent documentation updates.",
+                "Finalize README-FIRST.md and the session ZIP package.",
+                "Finalize the file-change list and test report.",
+                "Finalize the next-session starting point.",
+                "Prepare the approved Git commit message and push instructions.",
+                "Mark the session closed only after the approval gate has been satisfied."
+            ]
+        },
+        {
+            "number": "7",
+            "title": "Session Context Record",
+            "paragraphs": [
+                "A live Session Context must be maintained throughout the work session so the closing package does not depend on reconstructing the session from memory."
+            ],
+            "tables": [
+                {
+                    "headers": [
+                        "Field",
+                        "Required Content"
+                    ],
+                    "rows": [
+                        [
+                            "Session Number",
+                            "Official work-session identifier."
+                        ],
+                        [
+                            "Session Date",
+                            "Date of the controlled session."
+                        ],
+                        [
+                            "Version",
+                            "Current or recommended project version."
+                        ],
+                        [
+                            "Milestone",
+                            "Active milestone and completion state."
+                        ],
+                        [
+                            "Module",
+                            "Current module or subsystem."
+                        ],
+                        [
+                            "Objectives",
+                            "Approved goals for the session."
+                        ],
+                        [
+                            "Completed",
+                            "Verified work completed."
+                        ],
+                        [
+                            "Deferred",
+                            "Work intentionally left for later."
+                        ],
+                        [
+                            "Files Added",
+                            "Complete list of added files."
+                        ],
+                        [
+                            "Files Modified",
+                            "Complete list of modified files."
+                        ],
+                        [
+                            "Files Removed",
+                            "Complete list of removed files."
+                        ],
+                        [
+                            "Tests Performed",
+                            "Tests actually executed."
+                        ],
+                        [
+                            "Test Results",
+                            "Observed pass, fail, warning, or blocked results."
+                        ],
+                        [
+                            "Bugs Fixed",
+                            "Verified bugs corrected."
+                        ],
+                        [
+                            "Known Bugs",
+                            "Verified unresolved bugs."
+                        ],
+                        [
+                            "Technical Debt",
+                            "New or changed technical debt."
+                        ],
+                        [
+                            "Enhancement Ideas",
+                            "Deferred ideas preserved in the Enhancement Ideas Log."
+                        ],
+                        [
+                            "Decisions",
+                            "Approved decisions and reasoning."
+                        ],
+                        [
+                            "Lessons Learned",
+                            "Reusable lessons from the work."
+                        ],
+                        [
+                            "Risks",
+                            "New or changed risks."
+                        ],
+                        [
+                            "Documentation Updated",
+                            "Permanent records requiring update."
+                        ],
+                        [
+                            "Next Session",
+                            "Exact continuation point."
+                        ],
+                        [
+                            "Session Status",
+                            "Open, Preparing, Review, Revised, Cancelled, or Closed."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "8",
+            "title": "Permanent Documentation Updates",
+            "paragraphs": [
+                "The closing process must determine which permanent documents require an append operation, a current-state replacement, or no change."
+            ],
+            "tables": [
+                {
+                    "headers": [
+                        "Document",
+                        "Action"
+                    ],
+                    "rows": [
+                        [
+                            "WS-HIST-001",
+                            "Append the verified work-session record."
+                        ],
+                        [
+                            "MILE-HIST-001",
+                            "Append only when a milestone or checkpoint is completed or materially changed."
+                        ],
+                        [
+                            "DEC-LOG-001",
+                            "Append approved decisions when applicable."
+                        ],
+                        [
+                            "BUG-HIST-001",
+                            "Append verified bugs and fixes when applicable."
+                        ],
+                        [
+                            "LESSON-001",
+                            "Append verified reusable lessons when applicable."
+                        ],
+                        [
+                            "TECH-DEBT-001",
+                            "Append or update verified technical debt when applicable."
+                        ],
+                        [
+                            "ENH-LOG-001",
+                            "Append deferred enhancement ideas when applicable."
+                        ],
+                        [
+                            "RISK-001",
+                            "Append or update verified risks when applicable."
+                        ],
+                        [
+                            "HIST-001",
+                            "Append only when the session is historically significant."
+                        ],
+                        [
+                            "STATE-001",
+                            "Replace the current-state snapshot with the newly verified state."
+                        ],
+                        [
+                            "DOC-STATE-001",
+                            "Replace the documentation-state snapshot when documentation status changes."
+                        ],
+                        [
+                            "DOC-INDEX-001",
+                            "Update when a permanent document is added, renamed, moved, superseded, archived, or verified."
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "number": "9",
+            "title": "Session Package Requirements",
+            "items": [
+                "README-FIRST.md",
+                "Work-session summary",
+                "Files added, modified, and removed",
+                "Tests performed and actual results",
+                "Bugs fixed and known bugs",
+                "Decisions and lessons",
+                "Technical debt and risks",
+                "Enhancement ideas logged",
+                "Permanent documentation updates",
+                "Installation instructions when files must be replaced",
+                "Rollback instructions",
+                "Git commit recommendation",
+                "Git push instructions after approval",
+                "Next-session continuation package"
+            ]
+        },
+        {
+            "number": "10",
+            "title": "Version and Git Control",
+            "paragraphs": [
+                "The closing process may recommend a version number, commit message, release note, branch action, push, or release tag, but it may not treat those recommendations as approved actions."
+            ],
+            "items": [
+                "The assistant prepares the proposed Git commit message.",
+                "The assistant tells the studio owner exactly when to commit and push.",
+                "The studio owner must explicitly approve any commit, push, version change, or tag.",
+                "GitHub becomes the shared code checkpoint only after the approved push succeeds."
+            ]
+        },
+        {
+            "number": "11",
+            "title": "Validation Requirements",
+            "paragraphs": [
+                "Before closure is recommended, the final project state and generated documentation must be validated."
+            ],
+            "items": [
+                "Required files are present.",
+                "JSON files parse successfully.",
+                "StudioDB loads without invalid records or duplicate IDs.",
+                "Document catalog and connected content counts are correct.",
+                "Shared Search operates.",
+                "Embedded Viewer operates.",
+                "Shared Document Template Engine operates.",
+                "Browser console contains no new JavaScript errors.",
+                "All required manual tests have been performed and recorded."
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Closure Standard",
+            "paragraphs": [
+                "A work session is officially closed only after the assistant has prepared the review package, the studio owner has entered Approve & Close, required documentation has been finalized, and the resulting Git instructions have been issued.",
+                "After closure, the assistant provides the exact next work-session starting point and tells the studio owner when Git commit and push should occur."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Verification",
+            "paragraphs": [
+                "This procedure is verified when it is connected to the Documentation Catalog, renders through the Shared Document Template Engine and Embedded Viewer, appears in Shared Search, and the catalog reports the expected permanent document count without JavaScript errors."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Revision History",
+            "tables": [
+                {
+                    "headers": [
+                        "Version",
+                        "Work Session",
+                        "Change"
+                    ],
+                    "rows": [
+                        [
+                            "1.0",
+                            "Work Session 044",
+                            "Created the permanent End Session Procedure with Session Context, explicit operator commands, two-phase closing, and Human Approval Gate."
+                        ]
+                    ]
+                }
+            ]
+        }
+    ],
+    "relatedDocuments": [
+        "PROC-001",
+        "PROC-003",
+        "WS-HIST-001",
+        "STATE-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "MILE-HIST-001",
+        "DEC-LOG-001",
+        "BUG-HIST-001",
+        "LESSON-001",
+        "TECH-DEBT-001",
+        "ENH-LOG-001",
+        "RISK-001",
+        "HIST-001"
+    ],
+    "verification": {
+        "status": "Pending Installation Test",
+        "requirements": [
+            "Register PROC-004 in StudioDB permanent document records.",
+            "Confirm Documentation Catalog reports 20 documents and 20 connected content files.",
+            "Open PROC-004 in the Embedded Viewer.",
+            "Verify tables, lists, metadata, and related documents render correctly.",
+            "Verify Shared Search finds End Session Procedure, Prepare Session, and Approve & Close.",
+            "Confirm no new JavaScript errors."
+        ]
+    }
+}

@@ -1,6 +1,7 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 049U — Modular Procedures Records
+Work Session 044 — End Session Automation
+Step 1 — End Session Procedure Registration
 File: js/studio-data/records/procedures.js
 */
 
@@ -28,5 +29,13 @@ window.studioRecordProcedures = [
         department: "Documentation",
         status: "Active",
         summary: "Each completed work session should be added to the structured documentation records."
+    },
+    {
+        id: "PROC-2026-0004",
+        title: "End Session Procedure",
+        name: "Procedure 004 — End Session",
+        department: "Studio Operations",
+        status: "Active",
+        summary: "Prepare, review, approve, document, and formally close each work session through a two-phase process with a Human Approval Gate."
     }
 ];

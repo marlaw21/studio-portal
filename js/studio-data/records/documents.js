@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 041 — Documentation Catalog Engine
+Work Session 044 — End Session Automation
 Step 1 — Permanent Document Records
 File: js/studio-data/records/documents.js
 
@@ -83,6 +83,18 @@ window.studioRecordDocuments = [
         googleFolder: "02 - Studio Operations",
         sourceType: "Google Doc",
         documentDataFile: "documents/PROC-003.json"
+    },
+    {
+        id: "PROC-004",
+        title: "End Session Procedure",
+        name: "PROC-004 — End Session Procedure",
+        department: "Studio Operations",
+        category: "Procedures",
+        status: "Verified",
+        summary: "Defines the controlled two-phase process for preparing, reviewing, approving, documenting, and formally closing every TMS-OS work session.",
+        googleFolder: "02 - Studio Operations",
+        sourceType: "Google Doc",
+        documentDataFile: "documents/PROC-004.json"
     },
     {
         id: "ENH-LOG-001",

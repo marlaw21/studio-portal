@@ -12,7 +12,7 @@ Purpose:
 (function () {
     "use strict";
 
-    const TMS_SEARCH_VERSION = "0.43.0";
+    const TMS_SEARCH_VERSION = "0.44.1";
 
     const DEPARTMENT_ICONS = {
         "Headquarters": "🏠",
@@ -93,7 +93,9 @@ Purpose:
             });
         });
 
-        return found;
+        return found.filter(function (input) {
+            return input.id !== "documentation-search";
+        });
     }
 
     function getOrCreateResultsBox(input) {
