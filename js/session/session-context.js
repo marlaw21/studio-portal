@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 045 — Session Context Engine v1.1
+Work Session 046 — Session Context Engine v1.2
 File: js/session/session-context.js
 
 Purpose:
@@ -12,9 +12,9 @@ operations, create ZIP packages, or synchronize data across computers.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.1.0";
+    const ENGINE_VERSION = "1.2.0";
     const STORAGE_SCHEMA_VERSION = 1;
-    const DEFAULT_SESSION_NUMBER = "045";
+    const DEFAULT_SESSION_NUMBER = "046";
     const STORAGE_KEY = "tms-os:session-context:" + DEFAULT_SESSION_NUMBER + ":v" + STORAGE_SCHEMA_VERSION;
 
     const COLLECTION_NAMES = [
@@ -66,8 +66,8 @@ operations, create ZIP packages, or synchronize data across computers.
             schemaVersion: STORAGE_SCHEMA_VERSION,
             sessionNumber: DEFAULT_SESSION_NUMBER,
             version: "v0.28.1",
-            milestone: "End Session Automation Foundation",
-            module: "Session Context Engine v1",
+            milestone: "End Session Automation",
+            module: "Permanent Output Generation Foundation",
             status: "Active",
             startedAt: now,
             updatedAt: now,
