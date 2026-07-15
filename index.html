@@ -45,47 +45,101 @@
   </section>
 
   <section class="dashboard-card full-width">
-    <div class="card-header"><span class="card-icon">🧠</span><div><p class="section-label">Studio Operating System</p><h2>Studio State</h2></div></div>
+    <div class="card-header">
+      <span class="card-icon">🧠</span>
+      <div>
+        <p class="section-label">Studio Operating System</p>
+        <h2>Studio State</h2>
+      </div>
+    </div>
     <div class="status-list" id="studio-state-list"></div>
   </section>
 
   <section class="dashboard-card full-width">
-    <div class="card-header"><span class="card-icon">🩺</span><div><p class="section-label">Database Health</p><h2>StudioDB Health</h2></div></div>
+    <div class="card-header">
+      <span class="card-icon">🩺</span>
+      <div>
+        <p class="section-label">Database Health</p>
+        <h2>StudioDB Health</h2>
+      </div>
+    </div>
     <div class="status-list" id="studiodb-health-list"></div>
   </section>
 
   <section class="dashboard-card projects-card">
-    <div class="card-header"><span class="card-icon">🔔</span><div><p class="section-label">System Alerts</p><h2>Notifications</h2></div></div>
+    <div class="card-header">
+      <span class="card-icon">🔔</span>
+      <div>
+        <p class="section-label">System Alerts</p>
+        <h2>Notifications</h2>
+      </div>
+    </div>
     <div class="project-list" id="notification-list"></div>
   </section>
 
   <section class="dashboard-card status-card">
-    <div class="card-header"><span class="card-icon">⚡</span><div><p class="section-label">Core Engine</p><h2>Studio Commands</h2></div></div>
+    <div class="card-header">
+      <span class="card-icon">⚡</span>
+      <div>
+        <p class="section-label">Core Engine</p>
+        <h2>Studio Commands</h2>
+      </div>
+    </div>
     <div class="project-list" id="studio-command-list"></div>
   </section>
 
   <section class="dashboard-card full-width">
-    <div class="card-header"><span class="card-icon">⚙️</span><div><p class="section-label">System Configuration</p><h2>Studio OS Configuration</h2></div></div>
+    <div class="card-header">
+      <span class="card-icon">⚙️</span>
+      <div>
+        <p class="section-label">System Configuration</p>
+        <h2>Studio OS Configuration</h2>
+      </div>
+    </div>
     <div class="status-list" id="system-config-list"></div>
   </section>
 
   <section class="dashboard-card projects-card">
-    <div class="card-header"><span class="card-icon">🎮</span><div><p class="section-label">Active Work</p><h2>Current Projects</h2></div></div>
+    <div class="card-header">
+      <span class="card-icon">🎮</span>
+      <div>
+        <p class="section-label">Active Work</p>
+        <h2>Current Projects</h2>
+      </div>
+    </div>
     <div class="project-list" id="project-list"></div>
   </section>
 
   <section class="dashboard-card status-card">
-    <div class="card-header"><span class="card-icon">📊</span><div><p class="section-label">System Health</p><h2>Studio Status</h2></div></div>
+    <div class="card-header">
+      <span class="card-icon">📊</span>
+      <div>
+        <p class="section-label">System Health</p>
+        <h2>Studio Status</h2>
+      </div>
+    </div>
     <div class="status-list" id="status-list"></div>
   </section>
 
   <section class="dashboard-card full-width">
-    <div class="card-header"><span class="card-icon">📈</span><div><p class="section-label">Build Progress</p><h2>Foundation Progress</h2></div></div>
+    <div class="card-header">
+      <span class="card-icon">📈</span>
+      <div>
+        <p class="section-label">Build Progress</p>
+        <h2>Foundation Progress</h2>
+      </div>
+    </div>
     <div class="status-list" id="progress-list"></div>
   </section>
 
   <section class="dashboard-card full-width">
-    <div class="card-header"><span class="card-icon">🏢</span><div><p class="section-label">Studio Navigation</p><h2>Studio Areas</h2></div></div>
+    <div class="card-header">
+      <span class="card-icon">🏢</span>
+      <div>
+        <p class="section-label">Studio Navigation</p>
+        <h2>Studio Areas</h2>
+      </div>
+    </div>
     <div class="area-grid" id="department-list"></div>
   </section>
 </main>
@@ -99,6 +153,7 @@
 <script src="js/studio-data/documentation.js"></script>
 <script src="js/studio-data/departments.js"></script>
 <script src="js/studio-data/database.js"></script>
+
 <script src="js/studio-data/records/projects.js"></script>
 <script src="js/studio-data/records/workSessions.js"></script>
 <script src="js/studio-data/records/milestones.js"></script>
@@ -131,9 +186,11 @@
 <script src="js/studio-data/records/publishingPipeline.js"></script>
 <script src="js/studio-data/records/marketingChannels.js"></script>
 <script src="js/studio-data/records/marketingPipeline.js"></script>
+
 <script src="js/studio-data/loader.js"></script>
 <script src="js/studio-data/knowledge.js"></script>
 <script src="js/studio-data/migration.js"></script>
+
 <script src="js/session/session-context.js"></script>
 <script src="js/session/session-manager.js"></script>
 <script src="js/session/prepare-session.js"></script>
@@ -145,8 +202,10 @@
 <script src="js/session/current-state-writer.js"></script>
 <script src="js/session/documentation-state-writer.js"></script>
 <script src="js/session/decision-log-writer.js"></script>
-    <script src="js/session/milestone-history-writer.js"></script>
+<script src="js/session/milestone-history-writer.js"></script>
 <script src="js/session/permanent-transaction-manager.js"></script>
+<script src="js/session/rollback-package-generator.js"></script>
+
 <script src="js/search.js"></script>
 <script src="js/app.js"></script>
 </body>
