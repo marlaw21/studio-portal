@@ -2,8 +2,8 @@
 
 **Current Version:** v0.28.1  
 **Milestone:** Controlled Permanent Output Execution  
-**Current Module:** Permanent Transaction Integrity Analyzer  
-**Current Work Session:** WS078
+**Current Module:** Permanent Transaction Checksum Generator  
+**Current Work Session:** WS079
 
 ---
 
@@ -11,7 +11,7 @@
 
 The permanent documentation subsystem provides a controlled, reviewable, auditable path from session evidence to future permanent-document output.
 
-The subsystem is intentionally separated into small components so that planning, validation, approval, authorization, execution, rollback, verification, integrity analysis, and documentation can be independently tested.
+The subsystem is intentionally separated into small components so planning, validation, approval, authorization, execution, rollback, verification, integrity analysis, checksum generation, and documentation can be independently tested.
 
 No component may bypass the established human-approval boundary.
 
@@ -89,6 +89,12 @@ Permanent Transaction Manifest Generator
 Permanent Transaction Integrity Analyzer
         │
         ▼
+Permanent Transaction Checksum Generator
+        │
+        ▼
+Future Digital Signature Boundary
+        │
+        ▼
 Future Controlled Execution Boundary
 ```
 
@@ -130,24 +136,29 @@ The manifest consolidates session, transaction, Writer Registry, execution-plan,
 
 The Permanent Transaction Integrity Analyzer treats the canonical manifest as its single source of truth.
 
-It verifies:
-
-- Manifest schema metadata
-- Expected-document coverage
-- Registered-writer cross-references
-- Execution-order cross-references
-- Dependency-graph cross-references
-- Orphaned dependency references
-- Duplicate identifiers
-- Registry, execution-plan, dependency-analysis, and readiness validity
-- Checksum and digital-signature placeholder presence
-- Disabled Mode safety state
-
-The analyzer does not calculate a checksum, verify a digital signature, accept a transaction, authorize execution, perform permanent writes, roll back, restore, or apply state changes.
+It verifies schema metadata, permanent-document coverage, registered-writer references, execution-order references, dependency references, duplicates, orphaned references, upstream validity, placeholder presence, and Disabled Mode safety state.
 
 ---
 
-## 10. Current Safety Boundary
+## 10. Checksum Generator
+
+The Permanent Transaction Checksum Generator creates a deterministic SHA-256 checksum from a normalized canonical representation of the immutable manifest.
+
+Canonicalization:
+
+- Sorts object keys.
+- Preserves array order.
+- Excludes volatile timestamp fields.
+- Excludes checksum and digital-signature placeholder values to prevent self-reference.
+- Does not mutate the manifest.
+
+The checksum report verifies checksum format and deterministic repeatability. It creates a read-only placeholder-population proposal only.
+
+The generator does not accept a transaction, authorize execution, modify the manifest, write permanent documents, roll back, restore, generate a digital signature, or apply state changes.
+
+---
+
+## 11. Current Safety Boundary
 
 The architecture remains in Disabled Mode.
 
@@ -157,6 +168,7 @@ Current components may:
 - Generate analyses
 - Generate immutable manifests
 - Validate manifest integrity
+- Generate deterministic checksum reports
 - Format review reports
 - Record session evidence
 
@@ -166,12 +178,12 @@ Current components may not:
 - Execute permanent writes
 - Apply state changes
 - Perform rollback or restore
-- Calculate or verify a production checksum
+- Mutate the immutable manifest
 - Generate or verify an execution signature
 - Bypass human approval
 
 ---
 
-## 11. Permanent Statement
+## 12. Permanent Statement
 
-The Controlled Permanent Output Execution architecture is a safety-first framework. A valid integrity analysis means the canonical manifest is complete and internally consistent according to the current read-only rules. It does not mean that execution is approved, authorized, enabled, or performed.
+The Controlled Permanent Output Execution architecture is a safety-first framework. A valid checksum confirms that the normalized canonical manifest content produced a deterministic SHA-256 value under the current canonicalization rules. It does not mean the transaction is approved, authorized, signed, enabled, or executed.
