@@ -2,8 +2,8 @@
 
 **Current Version:** v0.28.1  
 **Milestone:** Controlled Permanent Output Execution  
-**Current Module:** Permanent Transaction Readiness Analyzer  
-**Current Work Session:** WS076
+**Current Module:** Permanent Transaction Manifest Generator  
+**Current Work Session:** WS077
 
 ---
 
@@ -83,6 +83,12 @@ Permanent Transaction Dependency Analyzer
 Permanent Transaction Readiness Analyzer
         │
         ▼
+Permanent Transaction Manifest Generator
+        │
+        ▼
+Future Permanent Transaction Integrity Analyzer
+        │
+        ▼
 Future Controlled Execution Boundary
 ```
 
@@ -92,16 +98,7 @@ Future Controlled Execution Boundary
 
 The Permanent Transaction Execution Plan Generator creates a read-only, reviewable plan for the five expected permanent documents.
 
-It identifies:
-
-- Expected documents
-- Registered writers
-- Proposed execution order
-- Validation checkpoints
-- Rollback checkpoints
-- Safety state
-
-The generator operates in Disabled Mode and does not authorize or perform writes.
+It identifies expected documents, registered writers, proposed execution order, validation checkpoints, rollback checkpoints, and safety state.
 
 ---
 
@@ -109,15 +106,7 @@ The generator operates in Disabled Mode and does not authorize or perform writes
 
 The Permanent Transaction Dependency Analyzer verifies that the proposed execution order is dependency-safe.
 
-It detects:
-
-- Missing dependencies
-- Duplicate dependencies
-- Self-dependencies
-- Circular dependencies
-- Execution-order violations
-
-The analyzer operates in Disabled Mode and does not authorize or perform writes.
+It detects missing, duplicate, self, circular, and order-violating dependencies.
 
 ---
 
@@ -125,22 +114,34 @@ The analyzer operates in Disabled Mode and does not authorize or perform writes.
 
 The Permanent Transaction Readiness Analyzer consolidates the structural results of the preceding components into one read-only readiness report.
 
-It verifies:
-
-- Session Context availability
-- Writer Registry availability and validity
-- Expected permanent-document coverage
-- Permanent Transaction Manager availability
-- Execution Plan availability and validity
-- Dependency Analysis availability and validity
-- Disabled Mode
-- Zero authorization, execution, writes, rollback, restore, or state changes
-
 A structurally ready result does not constitute human approval, execution authorization, or permission to modify permanent documentation.
 
 ---
 
-## 8. Current Safety Boundary
+## 8. Manifest Generator
+
+The Permanent Transaction Manifest Generator creates one canonical, immutable, read-only description of the complete transaction state.
+
+The manifest consolidates:
+
+- Session metadata
+- Latest transaction snapshot
+- Expected permanent-document identifiers
+- Registered writer snapshot
+- Writer Registry validation
+- Execution order and execution-plan snapshot
+- Dependency graph and dependency-analysis snapshot
+- Readiness state and readiness-report snapshot
+- Validation summaries
+- Future checksum placeholder
+- Future digital-signature placeholder
+- Safety state
+
+The manifest is frozen after generation. It does not calculate a checksum, generate a digital signature, accept a transaction, authorize execution, or perform permanent writes.
+
+---
+
+## 9. Current Safety Boundary
 
 The architecture remains in Disabled Mode.
 
@@ -148,6 +149,7 @@ Current components may:
 
 - Generate plans
 - Generate analyses
+- Generate immutable manifests
 - Validate structures
 - Format review reports
 - Record session evidence
@@ -158,10 +160,11 @@ Current components may not:
 - Execute permanent writes
 - Apply state changes
 - Perform rollback or restore
+- Generate an execution signature
 - Bypass human approval
 
 ---
 
-## 9. Permanent Statement
+## 10. Permanent Statement
 
-The Controlled Permanent Output Execution architecture is a safety-first framework. Structural readiness means that the planned transaction is internally complete and dependency-safe. It does not mean that execution is approved, authorized, or enabled.
+The Controlled Permanent Output Execution architecture is a safety-first framework. A complete, valid manifest means the transaction has one internally organized canonical representation. It does not mean that execution is approved, authorized, or enabled.
