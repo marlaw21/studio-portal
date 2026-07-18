@@ -2,8 +2,8 @@
 
 **Current Version:** v0.28.1  
 **Milestone:** Controlled Permanent Output Execution  
-**Current Module:** Permanent Transaction Manifest Generator  
-**Current Work Session:** WS077
+**Current Module:** Permanent Transaction Integrity Analyzer  
+**Current Work Session:** WS078
 
 ---
 
@@ -11,7 +11,7 @@
 
 The permanent documentation subsystem provides a controlled, reviewable, auditable path from session evidence to future permanent-document output.
 
-The subsystem is intentionally separated into small components so that planning, validation, approval, authorization, execution, rollback, verification, and documentation can be independently tested.
+The subsystem is intentionally separated into small components so that planning, validation, approval, authorization, execution, rollback, verification, integrity analysis, and documentation can be independently tested.
 
 No component may bypass the established human-approval boundary.
 
@@ -86,7 +86,7 @@ Permanent Transaction Readiness Analyzer
 Permanent Transaction Manifest Generator
         │
         ▼
-Future Permanent Transaction Integrity Analyzer
+Permanent Transaction Integrity Analyzer
         │
         ▼
 Future Controlled Execution Boundary
@@ -122,26 +122,32 @@ A structurally ready result does not constitute human approval, execution author
 
 The Permanent Transaction Manifest Generator creates one canonical, immutable, read-only description of the complete transaction state.
 
-The manifest consolidates:
-
-- Session metadata
-- Latest transaction snapshot
-- Expected permanent-document identifiers
-- Registered writer snapshot
-- Writer Registry validation
-- Execution order and execution-plan snapshot
-- Dependency graph and dependency-analysis snapshot
-- Readiness state and readiness-report snapshot
-- Validation summaries
-- Future checksum placeholder
-- Future digital-signature placeholder
-- Safety state
-
-The manifest is frozen after generation. It does not calculate a checksum, generate a digital signature, accept a transaction, authorize execution, or perform permanent writes.
+The manifest consolidates session, transaction, Writer Registry, execution-plan, dependency-analysis, readiness, validation, placeholder, and safety snapshots.
 
 ---
 
-## 9. Current Safety Boundary
+## 9. Integrity Analyzer
+
+The Permanent Transaction Integrity Analyzer treats the canonical manifest as its single source of truth.
+
+It verifies:
+
+- Manifest schema metadata
+- Expected-document coverage
+- Registered-writer cross-references
+- Execution-order cross-references
+- Dependency-graph cross-references
+- Orphaned dependency references
+- Duplicate identifiers
+- Registry, execution-plan, dependency-analysis, and readiness validity
+- Checksum and digital-signature placeholder presence
+- Disabled Mode safety state
+
+The analyzer does not calculate a checksum, verify a digital signature, accept a transaction, authorize execution, perform permanent writes, roll back, restore, or apply state changes.
+
+---
+
+## 10. Current Safety Boundary
 
 The architecture remains in Disabled Mode.
 
@@ -150,7 +156,7 @@ Current components may:
 - Generate plans
 - Generate analyses
 - Generate immutable manifests
-- Validate structures
+- Validate manifest integrity
 - Format review reports
 - Record session evidence
 
@@ -160,11 +166,12 @@ Current components may not:
 - Execute permanent writes
 - Apply state changes
 - Perform rollback or restore
-- Generate an execution signature
+- Calculate or verify a production checksum
+- Generate or verify an execution signature
 - Bypass human approval
 
 ---
 
-## 10. Permanent Statement
+## 11. Permanent Statement
 
-The Controlled Permanent Output Execution architecture is a safety-first framework. A complete, valid manifest means the transaction has one internally organized canonical representation. It does not mean that execution is approved, authorized, or enabled.
+The Controlled Permanent Output Execution architecture is a safety-first framework. A valid integrity analysis means the canonical manifest is complete and internally consistent according to the current read-only rules. It does not mean that execution is approved, authorized, enabled, or performed.
