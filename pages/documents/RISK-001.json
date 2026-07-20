@@ -7,59 +7,98 @@
     "category": "Risks",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Records verified studio risks, current controls, priorities, and next controlled actions.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Records verified TMS-OS risks, active controls, priorities, ownership boundaries, and next controlled actions under repository-first studio governance.",
     "keywords": [
         "RISK-001",
         "Studio Risk Register",
-        "Studio Governance"
+        "Studio Governance",
+        "TMS-OS",
+        "Repository Governance",
+        "Risk Control",
+        "Permanent Documentation",
+        "Source of Truth",
+        "Controlled Execution",
+        "Work Session 086"
     ],
     "sections": [
         {
             "number": "1",
             "title": "Purpose",
             "paragraphs": [
-                "This document is the permanent risk register for Two Marshalls Studios. It records verified studio risks, the current control in place, and the next controlled action so important risks are not lost between work sessions."
+                "This document is the permanent risk register for Two Marshalls Studios and the Studio Operating System.",
+                "It records verified risks that could affect source-of-truth integrity, repository continuity, permanent documentation, controlled execution, recovery, testing, deployment, or studio operations.",
+                "The register exists so material risks are not left only in chat history, screenshots, temporary files, workstation memory, or individual recollection.",
+                "Each risk entry identifies the verified condition, priority, current status, active control, and next controlled action."
             ]
         },
         {
             "number": "2",
-            "title": "Risk Verification Rule",
+            "title": "Repository-First Governance Boundary",
             "paragraphs": [
-                "Only risks supported by verified studio records or direct approved observation are entered as confirmed.",
-                "A possible concern is not automatically a verified risk. Missing dates, causes, owners, probabilities, impacts, or mitigation plans are not reconstructed by assumption."
+                "The TMS-OS repository is the authoritative permanent source for approved code, structured documentation, StudioDB records, transaction components, lifecycle components, state-transition components, and version-controlled project history.",
+                "The Studio Portal is a presentation and operating interface over approved repository content. It does not replace the repository as the permanent source of truth.",
+                "External storage, exported documents, chat history, screenshots, and temporary packages may support recovery or distribution, but they do not override verified repository records.",
+                "A risk control is not considered permanent until the controlling artifact is installed, tested, and preserved in the approved repository path."
             ]
         },
         {
             "number": "3",
-            "title": "Risk Status Definitions",
+            "title": "Risk Verification Rule",
             "paragraphs": [
-                "Open - the verified risk currently exists.",
-                "Controlled - the risk exists, but an approved control or containment method is active.",
-                "Planned - a corrective or preventive action has been approved for future controlled work.",
-                "Resolved - the risk has been removed and the result verified.",
-                "Recovery Required - historical evidence suggests a risk may have existed, but the record is not sufficient for confirmation."
+                "Only risks supported by verified repository evidence, approved permanent documents, test results, session records, or direct approved observation are entered as confirmed risks.",
+                "Possible concerns must not be converted into confirmed risks by assumption.",
+                "Missing dates, causes, probabilities, impacts, owners, controls, or mitigation details must be marked Unknown - Needs Input rather than reconstructed.",
+                "A risk may be revised only when new verified evidence changes its condition, priority, status, control, or required action.",
+                "Resolved risks remain preserved in the register or permanent history and are not deleted merely because the immediate condition has ended."
             ]
         },
         {
             "number": "4",
-            "title": "Risk Priority Definitions",
+            "title": "Risk Status Definitions",
             "paragraphs": [
-                "Critical - could stop core studio operations, cause major permanent data loss, or create an unrecoverable source-of-truth failure.",
-                "High - could materially disrupt approved work, damage continuity, or create significant recovery effort.",
-                "Moderate - could slow work, create confusion, or require avoidable rework.",
-                "Low - limited operational effect that remains worth monitoring."
+                "Open - the verified risk currently exists and is not yet sufficiently contained.",
+                "Controlled - the risk exists, but an approved containment or prevention control is active.",
+                "Planned - the risk exists and an approved corrective or preventive action has been scheduled for controlled work.",
+                "Monitoring - the risk is currently contained or reduced but requires continued observation and verification.",
+                "Resolved - the verified condition has been removed and the result has been tested or otherwise confirmed.",
+                "Blocked - the risk cannot be reduced further until a required dependency, decision, approval, or technical capability is available.",
+                "Recovery Required - evidence suggests a material historical condition may exist, but the available record is insufficient for confirmation."
             ]
         },
         {
             "number": "5",
+            "title": "Risk Priority Definitions",
+            "paragraphs": [
+                "Critical - could stop core studio operations, authorize unsafe permanent writes, cause major permanent data loss, corrupt the source of truth, or make recovery unreliable.",
+                "High - could materially disrupt approved work, damage continuity, invalidate permanent records, or create significant recovery and verification effort.",
+                "Moderate - could slow work, create conflicting information, cause avoidable rework, weaken traceability, or produce incomplete operational records.",
+                "Low - has limited operational effect but remains worth recording and monitoring.",
+                "Priority is based on verified potential effect, not convenience, urgency alone, or unsupported probability estimates."
+            ]
+        },
+        {
+            "number": "6",
+            "title": "Risk Domains",
+            "paragraphs": [
+                "Repository Integrity - risks affecting approved files, version control, paths, branching, commits, pushes, or source-of-truth preservation.",
+                "Documentation Governance - risks affecting permanent JSON documents, inventories, relationships, revision history, verification, or reconciliation.",
+                "Execution Safety - risks affecting transaction authorization, rollback readiness, lifecycle enforcement, state transitions, or permanent output execution.",
+                "Continuity and Recovery - risks affecting workstation independence, backups, historical reconstruction, continuation packages, or restoration.",
+                "Testing and Verification - risks affecting validation completeness, browser behavior, search, rendering, viewer operation, StudioDB behavior, or false-positive acceptance.",
+                "Scope and Change Control - risks caused by unapproved enhancements, skipped procedures, undocumented decisions, or work outside the approved milestone."
+            ]
+        },
+        {
+            "number": "7",
             "title": "Verified Studio Risk Register",
             "tables": [
                 {
                     "headers": [
                         "Risk ID",
+                        "Risk Domain",
                         "Verified Risk",
                         "Priority",
                         "Current Status",
@@ -69,144 +108,265 @@
                     "rows": [
                         [
                             "RISK-2026-0001",
-                            "Important studio knowledge may remain only in chat history, screenshots, temporary files, or memory.",
+                            "Documentation Governance",
+                            "Important studio knowledge may remain only in chat history, screenshots, temporary files, exported packages, or individual memory.",
                             "High",
                             "Controlled",
-                            "Permanent Google documentation, PROC-003, DOC-INDEX-001, and STATE-001 are being used to preserve verified knowledge.",
-                            "Continue MILE-014 until remaining historical knowledge is reconciled."
+                            "The permanent JSON document set, work-session history, current-state record, roadmap, decision log, milestone history, and repository history preserve verified knowledge.",
+                            "Complete the WS086 permanent-document reconciliation and verify every installed document through the Studio Portal."
                         ],
                         [
                             "RISK-2026-0002",
-                            "Competing or duplicate sources of truth may cause conflicting studio information.",
+                            "Repository Integrity",
+                            "Competing or duplicate sources of truth may produce conflicting studio information.",
                             "High",
                             "Controlled",
-                            "TMS-OS / StudioDB govern structured records; GitHub preserves source code and project history; Google Headquarters preserves permanent human-readable documentation.",
-                            "Continue verification and reconciliation before counting or changing permanent records."
+                            "Repository-first governance establishes the TMS-OS repository and StudioDB as authoritative. The Studio Portal is treated as the presentation layer.",
+                            "Remove or revise remaining language that assigns permanent authority to external presentation or storage locations."
                         ],
                         [
                             "RISK-2026-0003",
-                            "Important studio work may become limited to one workstation or location.",
+                            "Continuity and Recovery",
+                            "Important studio work may become limited to one workstation, one browser profile, or one local folder.",
                             "High",
                             "Controlled",
-                            "GitHub and Google Headquarters provide shared preservation and access across workstations.",
-                            "Maintain shared-system use and avoid workstation-only permanent records."
+                            "GitHub preserves code and repository history, approved documentation is stored in the repository, and continuation packages preserve session context.",
+                            "Continue committing and pushing only after approved session closure and confirm access from the required workstations."
                         ],
                         [
                             "RISK-2026-0004",
-                            "Historical recovery may introduce invented or unsupported facts.",
+                            "Continuity and Recovery",
+                            "Historical recovery may introduce invented, merged, or unsupported facts.",
                             "High",
                             "Controlled",
-                            "Historical documents use verified evidence only and explicitly mark unresolved gaps.",
-                            "Continue controlled recovery without reconstructing missing details by assumption."
+                            "Recovery work uses verified evidence only, preserves uncertainty explicitly, and forbids reconstruction by assumption.",
+                            "Continue one-document-at-a-time reconciliation and mark unresolved facts as Unknown - Needs Input."
                         ],
                         [
                             "RISK-2026-0005",
-                            "Unapproved enhancements may interrupt foundation or recovery work.",
+                            "Scope and Change Control",
+                            "Unapproved enhancements may interrupt foundation, reconciliation, or stabilization work.",
                             "Moderate",
                             "Controlled",
-                            "Enhancement ideas are captured in ENH-LOG-001 and deferred unless Stephen explicitly approves a separate path.",
-                            "Keep current work limited to the approved milestone and record new ideas separately."
+                            "Enhancement ideas are recorded in ENH-LOG-001 and remain outside the current build unless explicitly approved.",
+                            "Keep WS086 limited to approved documentation reconciliation and record unrelated ideas without implementing them."
                         ],
                         [
                             "RISK-2026-0006",
-                            "Known bugs may be buried under unrelated new development.",
+                            "Testing and Verification",
+                            "Known bugs may be hidden by unrelated development or accepted without source-level correction.",
                             "High",
                             "Controlled",
-                            "PROC-002 requires stopping unrelated new work, fixing the source, and retesting.",
-                            "Continue using the controlled bug-fix procedure and BUG-HIST-001 for verified history."
+                            "PROC-002 requires stopping unrelated work, correcting the source, retesting, and preserving verified bug history in BUG-HIST-001.",
+                            "Continue using full replacement files, controlled tests, and explicit expected results for every correction."
                         ],
                         [
                             "RISK-2026-0007",
-                            "Permanent documentation counts and category status may become inconsistent across control records.",
-                            "Moderate",
+                            "Documentation Governance",
+                            "Permanent-document counts, identifiers, categories, relationships, or statuses may become inconsistent across governance records.",
+                            "High",
                             "Controlled",
-                            "DOC-INDEX-001 and STATE-001 are updated and visually verified after each permanent document.",
-                            "Continue one-document-at-a-time reconciliation and checkpoint verification."
+                            "DOC-INDEX-001, DOC-STATE-001, STATE-001, and repository inventory checks are used as coordinated controls.",
+                            "After every reconciled document, validate its identifier, version, relationship list, viewer rendering, and search availability before updating the checkpoint."
                         ],
                         [
                             "RISK-2026-0008",
-                            "Google synchronization is not yet established.",
+                            "Execution Safety",
+                            "A permanent write could be attempted without an accepted transaction, original-document capture, rollback readiness, authorization, or lifecycle approval.",
+                            "Critical",
+                            "Controlled",
+                            "The transaction framework, rollback package generator, capture components, lifecycle framework, and state-transition framework enforce controlled execution boundaries.",
+                            "Maintain fail-closed behavior and do not bypass validation gates during future permanent-output work."
+                        ],
+                        [
+                            "RISK-2026-0009",
+                            "Execution Safety",
+                            "Rollback data may be incomplete, stale, mismatched, or unavailable when restoration is required.",
+                            "Critical",
+                            "Controlled",
+                            "Rollback packages require original-document capture, proposed-document capture, validation, authorization status, and document-level traceability.",
+                            "Continue validating rollback package completeness before any future permanent write authorization."
+                        ],
+                        [
+                            "RISK-2026-0010",
+                            "Repository Integrity",
+                            "Partial code snippets or incomplete replacement files may create mismatched modules or installation errors.",
+                            "High",
+                            "Controlled",
+                            "TMS-OS work requires complete replacement files and ZIP packages with README-FIRST.md installation instructions when files are large.",
+                            "Continue delivering and installing complete files only, using exact paths and explicit replacement steps."
+                        ],
+                        [
+                            "RISK-2026-0011",
+                            "Testing and Verification",
+                            "A document may be syntactically valid but fail rendering, shared search, shared viewer, or relationship expectations.",
                             "Moderate",
                             "Open",
-                            "Google Headquarters structure is complete and documents are being populated manually.",
-                            "Complete historical recovery first, then establish the approved permanent synchronization process."
+                            "Repository reconciliation includes JSON review and an installation-test requirement.",
+                            "Test each reconciled document in the Studio Portal, confirm search and viewer behavior, and record the result before final verification."
+                        ],
+                        [
+                            "RISK-2026-0012",
+                            "Documentation Governance",
+                            "Revision history may state that a document is verified before installation and operational testing are complete.",
+                            "Moderate",
+                            "Controlled",
+                            "WS086 reconciled documents use the verification status Repository Reconciled - Installation Test Required until repository installation is tested.",
+                            "Change verification to fully verified only after the document is installed and all required tests pass."
+                        ],
+                        [
+                            "RISK-2026-0013",
+                            "Scope and Change Control",
+                            "Session boundaries may be skipped, causing incomplete summaries, missing continuation context, or premature commits.",
+                            "High",
+                            "Controlled",
+                            "The approved session workflow uses Prepare Session, Approve & Close, and End Session checkpoints with documented closure outputs.",
+                            "Continue using the full closure sequence and do not commit or push reconciliation work before approval."
+                        ],
+                        [
+                            "RISK-2026-0014",
+                            "Repository Integrity",
+                            "Manual file replacement may target the wrong path or overwrite the wrong permanent document.",
+                            "High",
+                            "Controlled",
+                            "Every delivery package includes README-FIRST.md, the exact target path, backup instructions, replacement instructions, and validation steps.",
+                            "Confirm the file identifier inside the JSON and the destination filename before every replacement."
                         ]
                     ]
                 }
             ]
         },
         {
-            "number": "6",
-            "title": "Risk Review Requirements",
-            "paragraphs": [
-                "Review the risk register when a verified risk appears, changes status, or is resolved.",
-                "Do not change priority, status, control, or next action without verified evidence or explicit approval.",
-                "Update related permanent records when a risk affects architecture, standards, decisions, roadmap, procedures, technical debt, bugs, or current state.",
-                "Preserve resolved risks as history rather than deleting them."
-            ]
-        },
-        {
-            "number": "7",
-            "title": "Relationship to Other Permanent Records",
-            "paragraphs": [
-                "RISK-001 records verified studio risks. DEC-LOG-001 records major decisions. STD-001 records required standards. TECH-DEBT-001 records verified technical debt. BUG-HIST-001 records verified bug and fix history. ENH-LOG-001 records deferred enhancements. ROADMAP-001 and STATE-001 record approved direction and the current checkpoint."
-            ]
-        },
-        {
             "number": "8",
-            "title": "Historical Recovery Boundary",
+            "title": "Risk Ownership and Approval",
             "paragraphs": [
-                "Earlier historical risks may exist outside the verified records currently available. They remain eligible for controlled recovery but must not be added as confirmed risks until supporting evidence is verified."
+                "Two Marshalls Studios owns the permanent risk register.",
+                "Stephen Marshall provides human approval for material risk-status changes, priority changes, permanent-document acceptance, and changes to approved studio direction.",
+                "The operating system may detect, validate, summarize, or propose risk changes, but it must not silently change the permanent risk record without the required approval and documentation path.",
+                "When a risk crosses document boundaries, the controlling updates must also be reflected in the appropriate current-state, decision, roadmap, technical-debt, bug-history, procedure, or enhancement record."
             ]
         },
         {
             "number": "9",
-            "title": "Future Risk Entry Process",
+            "title": "Risk Review Requirements",
             "paragraphs": [
-                "1. Identify the verified risk.",
-                "2. Confirm the evidence source.",
-                "3. Assign the next sequential risk ID.",
-                "4. Record only verified facts.",
-                "5. Set the priority and current status.",
-                "6. Record the current control and next controlled action.",
-                "7. Update related permanent records when required.",
-                "8. Reverify the risk after any status change."
+                "Review this register whenever a verified risk appears, materially changes, becomes blocked, is reduced, or is resolved.",
+                "Review the register during major architecture changes, permanent-output execution work, documentation reconciliation, recovery activity, and session closure when relevant.",
+                "Do not change priority, status, control, or next action without verified evidence or explicit approval.",
+                "Preserve resolved risks as permanent history rather than deleting them.",
+                "When a risk remains open across multiple milestones, verify that its current control still exists and still operates as described."
             ]
         },
         {
             "number": "10",
-            "title": "Current State",
+            "title": "Risk Change Procedure",
             "paragraphs": [
-                "RISK-001 establishes the permanent Studio Risk Register. Eight verified current risks are recorded at this checkpoint. Historical risk recovery remains controlled and incomplete."
+                "1. Identify the verified risk condition or verified change.",
+                "2. Confirm the evidence source.",
+                "3. Determine whether the risk already exists in the register.",
+                "4. If new, assign the next sequential risk ID.",
+                "5. Record only verified facts and mark unknown information explicitly.",
+                "6. Assign the risk domain, priority, and current status.",
+                "7. Record the active control and next controlled action.",
+                "8. Update related permanent records when required.",
+                "9. Install the revised JSON file in the approved repository path.",
+                "10. Test document rendering, shared search, shared viewer access, and browser-console behavior.",
+                "11. Record the verification result before changing the document to fully verified.",
+                "12. Preserve the change in revision history and the appropriate work-session record."
             ]
         },
         {
             "number": "11",
-            "title": "Next Controlled Action",
+            "title": "Relationship to Other Permanent Records",
             "paragraphs": [
-                "Place this document in the approved Google Headquarters location, visually verify the converted Google Doc, then update DOC-INDEX-001 and STATE-001 only after verification."
+                "RISK-001 records verified studio risks and active controls.",
+                "STATE-001 records the current approved operating checkpoint.",
+                "ARCH-001 records the approved system architecture and source-of-truth boundaries.",
+                "ROADMAP-001 records approved direction and sequencing.",
+                "DOC-STATE-001 records the state of permanent documentation.",
+                "DOC-INDEX-001 records the permanent-document inventory and relationships.",
+                "DEC-LOG-001 records approved decisions that create, accept, or resolve material risk.",
+                "TECH-DEBT-001 records verified deferred technical obligations.",
+                "BUG-HIST-001 records verified defects, fixes, and test outcomes.",
+                "ENH-LOG-001 records deferred improvement ideas that are not part of current approved work.",
+                "PROC-001 through PROC-004 and STD-001 define required operating and documentation controls."
             ]
         },
         {
             "number": "12",
+            "title": "Historical Recovery Boundary",
+            "paragraphs": [
+                "Earlier risks may exist outside the currently verified repository and permanent records.",
+                "Those possible risks remain eligible for controlled recovery but must not be entered as confirmed risks until supporting evidence is verified.",
+                "Recovery work must preserve the distinction between confirmed history, inferred possibility, and missing information.",
+                "Historical source wording may be retained in revision history, but current controls and governance statements must reflect the verified repository-first architecture."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Work Session 086 Reconciliation State",
+            "paragraphs": [
+                "RISK-001 has been reconciled to the Work Session 086 repository-first governance baseline.",
+                "The prior Google Headquarters-centered control language has been replaced with repository authority, StudioDB authority, Studio Portal presentation boundaries, and controlled external-support roles.",
+                "The risk register now includes documentation reconciliation, permanent-output execution, rollback readiness, installation testing, session governance, and full-file replacement risks.",
+                "The content is repository reconciled but still requires installation and operational testing in the Studio Portal before final verification."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Next Controlled Action",
+            "paragraphs": [
+                "Install this complete replacement file at pages/documents/RISK-001.json.",
+                "Validate JSON loading, Documentation Catalog visibility, Shared Document Viewer rendering, Shared Search results, related-document display behavior, and browser-console status.",
+                "Do not commit or push the replacement until the installation test passes and the current reconciliation checkpoint is approved.",
+                "After successful testing, update the verification status through the approved documentation workflow and continue to ENH-LOG-001."
+            ]
+        },
+        {
+            "number": "15",
             "title": "Permanent Statement",
             "paragraphs": [
-                "RISK-001 is the permanent human-readable risk register for Two Marshalls Studios. It must preserve verified risks, current controls, and next actions without inventing unsupported history."
+                "RISK-001 is the permanent repository-controlled risk register for Two Marshalls Studios.",
+                "It must preserve verified risks, priorities, statuses, controls, ownership boundaries, and next controlled actions without inventing unsupported history.",
+                "The register must remain aligned with the approved architecture, current state, roadmap, document inventory, and controlled execution framework."
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "ARCH-001",
+        "ROADMAP-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "DEC-LOG-001",
+        "TECH-DEBT-001",
+        "BUG-HIST-001",
+        "ENH-LOG-001",
+        "STD-001",
+        "PROC-001",
+        "PROC-002",
+        "PROC-003",
+        "PROC-004",
+        "WS-HIST-001",
+        "MILE-HIST-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Fully reconciled the Studio Risk Register to repository-first governance, expanded the verified risk domains and register, updated permanent-document relationships, and established installation testing as the next required control.",
+            "status": "Repository Reconciled - Installation Test Required"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled - Installation Test Required",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified TMS-OS repository architecture, the 20-document permanent documentation set, current repository-first governance records, and the approved Work Session 086 reconciliation baseline."
     }
 }

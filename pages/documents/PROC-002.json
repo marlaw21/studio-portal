@@ -7,10 +7,10 @@
     "category": "Procedures",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Defines the controlled process for investigating, correcting, testing, and closing verified bugs.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Defines the controlled repository-based process for investigating, correcting, testing, documenting, and closing verified bugs.",
     "keywords": [
         "PROC-002",
         "Bug Fix Procedure",
@@ -198,9 +198,9 @@
                 "Repeat the exact failed action.",
                 "Confirm the expected result.",
                 "Confirm the original error is gone.",
-                "Check related functionality for regressions.",
-                "Use screenshots or console results when visual evidence is useful.",
-                "Do not commit and push until the fix is stable."
+                "Regression test related functionality.",
+                "Record evidence when appropriate.",
+                "Do not commit until the fix is verified and reconciliation records are updated."
             ]
         },
         {
@@ -213,7 +213,8 @@
                 "For code changes provided to Stephen, use complete replacement files rather than partial snippets.",
                 "Provide the exact file path and exact replacement instructions.",
                 "When a work-session package is needed, preserve the folder structure and include clear install and test instructions.",
-                "Keep enhancement ideas separate from the active bug fix."
+                "Keep enhancement ideas separate from the active bug fix.",
+                "Update affected permanent documentation when the bug changes architecture, procedures, state, or governance."
             ]
         },
         {
@@ -265,7 +266,8 @@
             "number": "9",
             "title": "Relationship to the Work Session Procedure",
             "paragraphs": [
-                "PROC-001 defines how a focused work session is run. PROC-002 applies whenever a bug interrupts that work. The bug-fix procedure temporarily becomes the active path until the problem is verified as fixed. After verification, work returns to the planned session goal."
+                "PROC-001 governs overall work sessions. PROC-002 governs the temporary bug-resolution workflow whenever verified defects interrupt planned work.",
+                "After successful verification, work returns to the approved work-session objective."
             ]
         },
         {
@@ -292,18 +294,35 @@
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "PROC-001",
+        "PROC-003",
+        "STD-001",
+        "STATE-001",
+        "ARCH-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "DEC-LOG-001",
+        "BUG-HIST-001",
+        "LESSON-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled bug-fix procedure with repository governance and documentation reconciliation workflow.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against verified repository during WS086."
     }
 }

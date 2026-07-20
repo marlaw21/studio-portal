@@ -7,10 +7,10 @@
     "category": "Procedures",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Work Session 044",
-    "lastUpdated": "Work Session 044",
-    "summary": "Defines the controlled two-phase process for preparing, reviewing, approving, documenting, and formally closing every TMS-OS work session.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Defines the controlled end-session workflow for preparing, reviewing, approving, documenting, and closing TMS-OS work sessions during repository reconciliation.",
     "keywords": [
         "PROC-004",
         "End Session Procedure",
@@ -57,7 +57,8 @@
                 "Sessions end only at logical checkpoints.",
                 "Permanent actions require a Human Approval Gate.",
                 "Session closing uses a two-phase Prepare, Review, Approve, and Close process.",
-                "Git commit, Git push, version changes, release tags, and final session closure require explicit approval."
+                "Git commit, Git push, version changes, release tags, and final session closure require explicit approval.",
+                "Repository reconciliation must complete before approval when permanent documentation is affected."
             ]
         },
         {
@@ -271,7 +272,7 @@
             "number": "8",
             "title": "Permanent Documentation Updates",
             "paragraphs": [
-                "The closing process must determine which permanent documents require an append operation, a current-state replacement, or no change."
+                "The closing process determines which permanent repository documents require append, replace, or no-change operations based on verified session results."
             ],
             "tables": [
                 {
@@ -380,7 +381,8 @@
                 "Embedded Viewer operates.",
                 "Shared Document Template Engine operates.",
                 "Browser console contains no new JavaScript errors.",
-                "All required manual tests have been performed and recorded."
+                "All required manual tests have been performed and recorded.",
+                "Repository reconciliation status is verified before recommending session closure."
             ]
         },
         {
@@ -420,30 +422,45 @@
         }
     ],
     "relatedDocuments": [
-        "PROC-001",
-        "PROC-003",
-        "WS-HIST-001",
-        "STATE-001",
-        "DOC-STATE-001",
-        "DOC-INDEX-001",
-        "MILE-HIST-001",
-        "DEC-LOG-001",
+        "ARCH-001",
         "BUG-HIST-001",
-        "LESSON-001",
-        "TECH-DEBT-001",
+        "DEC-LOG-001",
+        "DOC-INDEX-001",
+        "DOC-STATE-001",
         "ENH-LOG-001",
+        "HIST-001",
+        "LESSON-001",
+        "MILE-HIST-001",
+        "PROC-001",
+        "PROC-002",
+        "PROC-003",
+        "PROC-004",
         "RISK-001",
-        "HIST-001"
+        "ROADMAP-001",
+        "STATE-001",
+        "STD-001",
+        "TECH-DEBT-001",
+        "WS-HIST-001"
     ],
     "verification": {
-        "status": "Pending Installation Test",
+        "status": "Repository Reconciled",
+        "verifiedBy": "Stephen Marshall",
+        "method": "Reconciled against verified repository during WS086.",
         "requirements": [
-            "Register PROC-004 in StudioDB permanent document records.",
-            "Confirm Documentation Catalog reports 20 documents and 20 connected content files.",
-            "Open PROC-004 in the Embedded Viewer.",
-            "Verify tables, lists, metadata, and related documents render correctly.",
-            "Verify Shared Search finds End Session Procedure, Prepare Session, and Approve & Close.",
-            "Confirm no new JavaScript errors."
+            "Render correctly in Studio Portal",
+            "Search locates PROC-004",
+            "No new JavaScript errors",
+            "Repository reconciliation complete before closure"
         ]
-    }
+    },
+    "revisionHistory": [
+        {
+            "version": "1.0"
+        },
+        {
+            "version": "1.1",
+            "workSession": "Work Session 086",
+            "change": "Reconciled end-session procedure with repository-first documentation governance and WS086 reconciliation."
+        }
+    ]
 }

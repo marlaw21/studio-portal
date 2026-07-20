@@ -7,10 +7,10 @@
     "category": "Standards",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Defines the permanent studio-wide standards governing focused, repeatable, verified work.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Defines the permanent studio-wide standards governing focused, repeatable, verified work across the reconciled TMS-OS repository and documentation system.",
     "keywords": [
         "STD-001",
         "Studio Standards",
@@ -124,12 +124,13 @@
         },
         {
             "number": "11",
-            "title": "Standard 009 — Use the Modular Studio Architecture",
+            "title": "Standard 009 — Preserve the Verified Modular TMS-OS Architecture",
             "items": [
-                "The current verified architecture is Fully Modular StudioDB.",
+                "ARCH-001 is the authoritative description of the current verified architecture.",
+                "The architecture includes the Studio Portal, modular StudioDB records, shared rendering, shared search, structured permanent documents, work-session governance, document writers, transaction analysis, rollback support, lifecycle controls, and state-transition controls.",
                 "Data responsibilities must remain separated according to the approved modular structure.",
-                "Shared behavior should be used where the architecture already provides shared rendering, search, or data access.",
-                "Do not create isolated competing systems without explicit approval."
+                "Shared behavior must be used where the architecture already provides shared rendering, search, document access, session control, or governed output handling.",
+                "Do not create isolated competing systems, duplicate sources of truth, or uncontrolled permanent-write paths without explicit approval."
             ]
         },
         {
@@ -154,14 +155,14 @@
         },
         {
             "number": "14",
-            "title": "Standard 012 — Verify Permanent Google Documents",
+            "title": "Standard 012 — Verify Permanent Documentation in Every Approved Source",
             "items": [
-                "Upload the prepared document to its approved Google Headquarters folder.",
-                "Convert it to a permanent Google Doc.",
-                "Verify the exact document name.",
-                "Remove only the temporary Word upload after the Google Doc is confirmed.",
-                "Visually verify the final permanent document before counting it.",
-                "Update DOC-INDEX-001 and STATE-001 only after verification."
+                "The structured JSON document in pages/documents is the repository implementation record for each portal document.",
+                "The Studio Portal viewer must render the permanent document correctly before the repository checkpoint is accepted.",
+                "The document catalog, search behavior, title, version, last-updated value, and related metadata must be verified when applicable.",
+                "Google Headquarters may continue to preserve permanent human-readable documentation, but its publication status must be tracked separately from repository verification.",
+                "Temporary uploads, local copies, screenshots, chat records, and backups must not be counted as verified permanent records.",
+                "Update DOC-INDEX-001, DOC-STATE-001, and STATE-001 only after the applicable verification evidence exists."
             ]
         },
         {
@@ -228,23 +229,29 @@
         },
         {
             "number": "21",
-            "title": "Standard 019 — Maintain Recovery Before Uncontrolled Forward Development",
+            "title": "Standard 019 — Complete Documentation Reconciliation Before Uncontrolled Forward Development",
             "items": [
-                "MILE-014 - Complete Historical Recovery remains the current active milestone.",
-                "Historical recovery and documentation reconciliation must continue through the controlled process.",
-                "Do not abandon the recovery sequence for unrelated forward development unless Stephen explicitly changes the approved priority."
+                "Documentation Reconciliation is the current approved milestone for Work Session 086.",
+                "Permanent documentation must be reconciled against verified repository evidence while preserving architecture, history, governance, and document responsibilities.",
+                "Feature development and unrelated enhancements remain paused until the approved reconciliation checkpoint is complete.",
+                "Do not abandon the controlled reconciliation sequence unless Stephen explicitly changes the approved priority."
             ]
         },
         {
             "number": "22",
             "title": "Current Standards Checkpoint",
             "items": [
-                "Current architecture: Fully Modular StudioDB",
-                "Last completed development milestone: MILE-013 - Fully Modular StudioDB",
-                "Current active milestone: MILE-014 - Complete Historical Recovery",
-                "Google Headquarters structure: Complete",
-                "Historical documentation recovery: In Progress",
-                "Google synchronization: Not Started"
+                "Current repository version: v0.28.1",
+                "Current work session: WS086 — Enterprise Documentation Reconciliation",
+                "Current milestone: Documentation Reconciliation",
+                "Current phase: Permanent Documentation Alignment",
+                "Verified structured permanent document inventory: 20 JSON documents",
+                "Current architecture authority: ARCH-001",
+                "Current state authority: STATE-001",
+                "Current roadmap authority: ROADMAP-001",
+                "Documentation health authority: DOC-STATE-001",
+                "Documentation inventory authority: DOC-INDEX-001",
+                "Feature development: Paused pending completion of the approved reconciliation checkpoint"
             ]
         },
         {
@@ -267,12 +274,19 @@
                 "PROC-001 governs controlled work sessions.",
                 "PROC-002 governs bug fixing.",
                 "PROC-003 governs documentation updates.",
+                "PROC-004 governs its assigned controlled operating workflow.",
                 "DEC-LOG-001 preserves major decisions.",
                 "ENH-LOG-001 preserves deferred enhancement ideas.",
                 "ARCH-001 defines the current architecture.",
                 "ARCH-EVO-001 preserves architecture evolution.",
                 "STATE-001 records the current system checkpoint.",
-                "DOC-INDEX-001 controls the verified permanent document index."
+                "ROADMAP-001 records approved strategic direction and milestone sequencing.",
+                "DOC-STATE-001 records documentation health and reconciliation status.",
+                "DOC-INDEX-001 controls the permanent document inventory and document responsibilities.",
+                "WS-HIST-001 preserves work-session history.",
+                "MILE-HIST-001 preserves milestone history.",
+                "RISK-001 preserves active and historical risks.",
+                "TECH-DEBT-001 preserves technical debt."
             ]
         },
         {
@@ -284,18 +298,41 @@
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "ARCH-001",
+        "ROADMAP-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "PROC-001",
+        "PROC-002",
+        "PROC-003",
+        "PROC-004",
+        "DEC-LOG-001",
+        "ENH-LOG-001",
+        "ARCH-EVO-001",
+        "WS-HIST-001",
+        "MILE-HIST-001",
+        "RISK-001",
+        "TECH-DEBT-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled studio standards with the verified v0.28.1 repository, 20-document permanent documentation inventory, current architecture, documentation reconciliation milestone, and source-of-truth boundaries.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified studio-portal repository inventory and the WS086 permanent documentation alignment record."
     }
 }

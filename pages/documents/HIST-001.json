@@ -7,10 +7,10 @@
     "category": "Historical Timeline",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Preserves the verified development sequence of Two Marshalls Studios and TMS-OS.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Preserves the verified development sequence of Two Marshalls Studios and TMS-OS together with the WS086 repository reconciliation checkpoint.",
     "keywords": [
         "HIST-001",
         "Studio Historical Timeline",
@@ -112,8 +112,8 @@
                 "After the modular StudioDB milestone, the studio identified a critical need to preserve and reconcile historical knowledge that still existed across chat history, temporary files, screenshots, backups, and other non-permanent sources."
             ],
             "items": [
-                "Current work session: WS-049AR",
-                "Current work: Historical Recovery and Documentation Reconciliation",
+                "Current work session: WS-086",
+                "Current work: Enterprise Documentation Reconciliation",
                 "Current active milestone: MILE-014 - Complete Historical Recovery"
             ]
         },
@@ -143,8 +143,8 @@
             "number": "11",
             "title": "Permanent Documentation Population Begins",
             "paragraphs": [
-                "The studio then began a controlled process for creating permanent human-readable Google documents from verified recovery evidence.",
-                "At this checkpoint, 8 permanent Google documents were verified before HIST-001 was created."
+                "The studio is continuing the controlled reconciliation of permanent human-readable documentation with the verified repository.",
+                "During WS086, standards, procedures, work-session history, milestone history, and decision history are being reconciled before forward development resumes."
             ],
             "items": [
                 "STATE-001 - Current System State",
@@ -201,8 +201,8 @@
             "items": [
                 "Last completed development milestone: MILE-013 - Fully Modular StudioDB",
                 "Current active milestone: MILE-014 - Complete Historical Recovery",
-                "Current architecture: Fully Modular StudioDB",
-                "Historical documentation recovery: In Progress",
+                "Repository version: v0.28.1",
+                "Permanent documentation reconciliation: In Progress",
                 "Google Headquarters structure: Complete",
                 "Google synchronization: Not Started"
             ]
@@ -238,18 +238,37 @@
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "ROADMAP-001",
+        "WS-HIST-001",
+        "MILE-HIST-001",
+        "DEC-LOG-001",
+        "ARCH-001",
+        "ARCH-EVO-001",
+        "STD-001",
+        "PROC-001",
+        "PROC-003"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled the historical timeline with the verified repository checkpoint.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified v0.28.1 repository during Work Session 086."
     }
 }

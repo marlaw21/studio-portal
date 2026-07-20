@@ -7,100 +7,83 @@
     "category": "Enhancement Ideas",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Preserves deferred enhancement ideas from the beginning of the project without interrupting approved work.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Preserves verified and deferred enhancement ideas under repository-first governance without interrupting the current approved TMS-OS work path.",
     "keywords": [
         "ENH-LOG-001",
         "Enhancement Ideas Log",
-        "Documentation / Knowledge Base"
+        "TMS-OS",
+        "Studio Governance",
+        "Repository Governance",
+        "Deferred Enhancements",
+        "Backlog",
+        "Change Control",
+        "Work Session 086"
     ],
     "sections": [
         {
             "number": "1",
             "title": "Purpose",
             "paragraphs": [
-                "This document is the permanent Enhancement Ideas Log for Two Marshalls Studios. It preserves future improvement ideas without allowing them to interrupt the current approved work path. Enhancement ideas are captured, categorized, deferred when needed, and reviewed later under a controlled process."
+                "This document is the permanent Enhancement Ideas Log for Two Marshalls Studios and the Studio Operating System.",
+                "It preserves future improvement ideas without allowing them to interrupt the current approved milestone, work-session objective, stabilization activity, documentation reconciliation, or bug-fix path.",
+                "The log provides a controlled location where enhancement ideas can be captured, classified, related to permanent records, reviewed later, and either approved, rejected, deferred, or closed.",
+                "An entry in this log records an idea. It does not authorize implementation."
             ]
         },
         {
             "number": "2",
-            "title": "Permanent Rule",
+            "title": "Repository-First Governance Boundary",
             "paragraphs": [
-                "Enhancement ideas must be captured from the beginning of the project, not only from the date this log was created.",
-                "The log exists so valuable ideas are not lost, but also so the active foundation build is not derailed by unrelated improvements."
+                "ENH-LOG-001 is a permanent repository-controlled document.",
+                "The TMS-OS repository is the authoritative source for the approved enhancement log, related structured records, implementation history, and final status.",
+                "The Studio Portal presents the approved log but does not independently authorize, modify, or replace the repository record.",
+                "Chat history, screenshots, temporary notes, exported files, and external storage may provide evidence or recovery support, but enhancement ideas must be reconciled into this repository document before they are treated as permanently captured."
             ]
         },
         {
             "number": "3",
-            "title": "How Enhancement Ideas Are Handled",
-            "items": [
-                "Capture the idea as soon as it appears.",
-                "Do not build the idea during the current work session unless Stephen explicitly approves it.",
-                "Record the idea with a clear title, description, source, priority, status, and related records.",
-                "Keep the current work-session goal focused.",
-                "Review the Enhancement Ideas Log later during planning, roadmap, or dedicated enhancement sessions."
+            "title": "Permanent Enhancement Rule",
+            "paragraphs": [
+                "Enhancement ideas must be preserved from the beginning of the project forward.",
+                "A valuable idea must not be lost merely because it is outside the current scope.",
+                "A valuable idea must also not be implemented merely because it has been captured.",
+                "The approved current milestone, current work-session objective, active bug fix, and stabilization requirements take priority unless Stephen explicitly approves a scope change.",
+                "When an enhancement is not part of the current approved work, record it here and continue the approved path."
             ]
         },
         {
             "number": "4",
-            "title": "Historical Baseline Enhancements",
+            "title": "Enhancement Versus Required Work",
             "paragraphs": [
-                "The following enhancement records are recovered from the existing TMS-OS backup and become the starting baseline for the permanent Enhancement Ideas Log."
-            ]
-        },
-        {
-            "number": "4.1",
-            "title": "ENH-2026-0001 - Google Drive Publishing",
-            "paragraphs": [
-                "Department: Documentation",
-                "Status: Deferred",
-                "Priority: High",
-                "Summary: Publish structured documentation into the future Google Drive documentation hierarchy.",
-                "Source / Notes: Recovered StudioDB enhancement record."
-            ]
-        },
-        {
-            "number": "4.2",
-            "title": "ENH-2026-0002 - Interactive Documentation Forms",
-            "paragraphs": [
-                "Department: Documentation",
-                "Status: Deferred",
-                "Priority: Medium",
-                "Summary: Allow records to be added through the Studio Portal interface.",
-                "Source / Notes: Recovered StudioDB enhancement record."
-            ]
-        },
-        {
-            "number": "4.3",
-            "title": "ENH-2026-0003 - Command Palette",
-            "paragraphs": [
-                "Department: Core Architecture",
-                "Status: Deferred",
-                "Priority: Medium",
-                "Summary: Add a command palette for fast navigation and studio actions.",
-                "Source / Notes: Recovered StudioDB enhancement record."
+                "An enhancement adds, expands, improves, automates, redesigns, or accelerates capability beyond the currently approved requirement.",
+                "A bug fix restores approved behavior that is broken.",
+                "A documentation correction aligns a permanent record with verified repository facts.",
+                "A required completion item finishes work already approved in the roadmap, milestone, procedure, or current-state record.",
+                "A risk control may be required work when it is necessary to preserve safety, rollback readiness, source-of-truth integrity, or controlled execution.",
+                "When classification is uncertain, stop and obtain approval rather than silently treating an enhancement as required work."
             ]
         },
         {
             "number": "5",
-            "title": "New Enhancement Captured During Google Documentation Recovery"
-        },
-        {
-            "number": "5.1",
-            "title": "ENH-2026-0004 - Automated Work Session Closeout and Google Documentation Publishing",
-            "paragraphs": [
-                "Department: Documentation / Core Architecture",
-                "Status: Deferred",
-                "Priority: High",
-                "Summary: Create a controlled end-of-session process that reviews the session, updates records, generates formatted documents, places them in the correct Google folder, updates current state, and records the next action.",
-                "Source / Notes: Captured from Stephen clarification during Google documentation recovery. Do not build until the current recovery foundation is complete."
+            "title": "How Enhancement Ideas Are Handled",
+            "items": [
+                "Capture the idea as soon as it appears.",
+                "Assign or confirm a unique enhancement ID.",
+                "Record the title, department, status, priority, summary, reason, source, and related records.",
+                "State whether the idea is historical, newly captured, approved, deferred, rejected, or built.",
+                "Do not build the idea during the current work session unless Stephen explicitly approves it.",
+                "Keep the current work-session objective focused.",
+                "Record dependencies, risks, technical debt, and required decisions when known.",
+                "Review the enhancement later during planning, roadmap review, or a dedicated approved enhancement session.",
+                "When implemented, preserve the implementation session, tests, files, decisions, and final result."
             ]
         },
         {
             "number": "6",
-            "title": "Enhancement Review Status Definitions",
+            "title": "Enhancement Status Definitions",
             "tables": [
                 {
                     "headers": [
@@ -110,19 +93,31 @@
                     "rows": [
                         [
                             "Captured",
-                            "The idea has been recorded but not evaluated."
+                            "The idea has been recorded but has not yet been evaluated."
                         ],
                         [
                             "Deferred",
-                            "The idea is valuable but not part of the current approved work."
+                            "The idea remains potentially valuable but is not part of the current approved work."
                         ],
                         [
                             "Under Review",
-                            "The idea is being evaluated for timing, scope, and risk."
+                            "The idea is being evaluated for purpose, scope, timing, dependencies, risk, and value."
                         ],
                         [
                             "Approved",
-                            "The idea has been approved for a future work session or roadmap item."
+                            "Stephen has approved the idea for a future milestone, roadmap item, or work session."
+                        ],
+                        [
+                            "Planned",
+                            "The approved idea has been sequenced into a defined future implementation path."
+                        ],
+                        [
+                            "In Progress",
+                            "Implementation has begun within an approved work session."
+                        ],
+                        [
+                            "Blocked",
+                            "The idea cannot proceed until a required dependency, decision, resource, or technical capability is available."
                         ],
                         [
                             "Rejected",
@@ -131,6 +126,10 @@
                         [
                             "Built",
                             "The idea has been implemented, tested, documented, and closed."
+                        ],
+                        [
+                            "Superseded",
+                            "The idea was replaced by a newer approved design, decision, or implementation."
                         ]
                     ]
                 }
@@ -138,106 +137,277 @@
         },
         {
             "number": "7",
-            "title": "Required Fields for Future Enhancement Records",
-            "items": [
-                "Unique ID",
-                "Title",
-                "Department",
-                "Status",
-                "Priority",
-                "Summary",
-                "Why it matters",
-                "Source or trigger",
-                "Related work sessions",
-                "Related decisions, standards, procedures, bugs, lessons, or technical debt",
-                "Owner or review area if known",
-                "Review date when scheduled",
-                "Final decision and result"
+            "title": "Enhancement Priority Definitions",
+            "paragraphs": [
+                "Critical - reserved for an approved enhancement that becomes necessary to preserve core operation, data integrity, controlled execution, or recovery. A critical classification does not bypass approval.",
+                "High - offers substantial strategic, operational, governance, continuity, or efficiency value.",
+                "Medium - offers meaningful improvement but can wait until higher-priority approved work is complete.",
+                "Low - offers limited or convenience-focused improvement and may remain deferred indefinitely.",
+                "Priority reflects potential value and sequencing importance. It does not itself authorize implementation."
             ]
         },
         {
             "number": "8",
-            "title": "Current Enhancement Backlog",
-            "paragraphs": [
-                "This is the current recovered backlog. It should be expanded as more historical enhancement ideas are recovered and as new ideas appear during future sessions."
-            ]
-        },
-        {
-            "number": "8.1",
-            "title": "ENH-2026-0001 - Google Drive Publishing",
-            "paragraphs": [
-                "Status: Deferred",
-                "Priority: High",
-                "Next Review Action: Review after local documentation package and Google document recovery are stable."
-            ]
-        },
-        {
-            "number": "8.2",
-            "title": "ENH-2026-0002 - Interactive Documentation Forms",
-            "paragraphs": [
-                "Status: Deferred",
-                "Priority: Medium",
-                "Next Review Action: Review after the documentation model is stable."
-            ]
-        },
-        {
-            "number": "8.3",
-            "title": "ENH-2026-0003 - Command Palette",
-            "paragraphs": [
-                "Status: Deferred",
-                "Priority: Medium",
-                "Next Review Action: Review after core navigation and search foundations are stable."
-            ]
-        },
-        {
-            "number": "8.4",
-            "title": "ENH-2026-0004 - Automated Work Session Closeout and Google Documentation Publishing",
-            "paragraphs": [
-                "Status: Deferred",
-                "Priority: High",
-                "Next Review Action: Review after the 16-document recovery/population process is complete."
+            "title": "Required Fields for Enhancement Records",
+            "items": [
+                "Unique enhancement ID",
+                "Title",
+                "Department or functional area",
+                "Current status",
+                "Priority",
+                "Summary",
+                "Why the enhancement matters",
+                "Source or trigger",
+                "Date or work session captured when known",
+                "Related work sessions",
+                "Related roadmap items or milestones",
+                "Related decisions, standards, procedures, risks, bugs, lessons, or technical debt",
+                "Dependencies",
+                "Owner or review area when known",
+                "Next review action",
+                "Approval record when approved",
+                "Implementation result when built",
+                "Verification or test result when built"
             ]
         },
         {
             "number": "9",
-            "title": "Relationship to Current Work",
-            "paragraphs": [
-                "This log does not authorize building enhancements immediately. It protects the current foundation work by giving every good idea a safe place to live until it can be reviewed. The current active path remains the Google documentation recovery and permanent document population process."
+            "title": "Permanent Enhancement Backlog",
+            "tables": [
+                {
+                    "headers": [
+                        "Enhancement ID",
+                        "Title",
+                        "Department",
+                        "Status",
+                        "Priority",
+                        "Why It Matters",
+                        "Source",
+                        "Next Review Action"
+                    ],
+                    "rows": [
+                        [
+                            "ENH-2026-0001",
+                            "Repository Documentation Publishing and Distribution",
+                            "Documentation",
+                            "Deferred",
+                            "High",
+                            "Would provide controlled publishing or distribution of approved repository documentation to external human-readable locations without changing repository authority.",
+                            "Recovered StudioDB enhancement record; reconciled from the earlier Google Drive Publishing concept.",
+                            "Review after the WS086 permanent-document reconciliation and repository verification process is complete."
+                        ],
+                        [
+                            "ENH-2026-0002",
+                            "Interactive Documentation Forms",
+                            "Documentation",
+                            "Deferred",
+                            "Medium",
+                            "Would allow approved structured records to be proposed through the Studio Portal while preserving validation, approval, transaction, and repository-write controls.",
+                            "Recovered StudioDB enhancement record.",
+                            "Review only after the documentation model, controlled write framework, lifecycle framework, and authorization process are stable."
+                        ],
+                        [
+                            "ENH-2026-0003",
+                            "Command Palette",
+                            "Core Architecture",
+                            "Deferred",
+                            "Medium",
+                            "Would provide fast navigation and approved studio actions from a central keyboard-accessible interface.",
+                            "Recovered StudioDB enhancement record.",
+                            "Review after core navigation, shared search, routing, and portal interaction patterns are fully stable."
+                        ],
+                        [
+                            "ENH-2026-0004",
+                            "Automated Work Session Closeout and Permanent Documentation Update",
+                            "Documentation / Core Architecture",
+                            "Built",
+                            "High",
+                            "Provides controlled preparation, approval, transaction planning, permanent-document proposal generation, rollback support, and work-session continuity.",
+                            "Captured during historical documentation recovery and implemented progressively through the End Session Automation and Controlled Permanent Output Execution milestones.",
+                            "Preserve as built history and continue validating later controlled execution components through approved roadmap work."
+                        ],
+                        [
+                            "ENH-2026-0005",
+                            "Cross-Workstation Studio Continuity Package",
+                            "Studio Operations",
+                            "Deferred",
+                            "High",
+                            "Would standardize repository access, continuation packages, setup verification, and recovery instructions across approved workstations.",
+                            "Recovered from the standing requirement that studio work remain accessible from multiple locations and computers.",
+                            "Review after documentation reconciliation and repository operating procedures are finalized."
+                        ],
+                        [
+                            "ENH-2026-0006",
+                            "Permanent Documentation Relationship Visualization",
+                            "Documentation",
+                            "Deferred",
+                            "Medium",
+                            "Would visually show relationships among the 20 permanent documents, their governance roles, and their update dependencies.",
+                            "Captured during WS086 documentation reconciliation.",
+                            "Review after all permanent documents are reconciled, installed, and verified."
+                        ],
+                        [
+                            "ENH-2026-0007",
+                            "Controlled Documentation Health Dashboard",
+                            "Documentation / StudioDB",
+                            "Deferred",
+                            "High",
+                            "Would show document version, verification status, last update, relationship integrity, reconciliation state, and failed installation tests.",
+                            "Captured during WS086 reconciliation of DOC-STATE-001, DOC-INDEX-001, and RISK-001.",
+                            "Review after the permanent-document inventory and verification workflow are stable."
+                        ],
+                        [
+                            "ENH-2026-0008",
+                            "Enhancement Review Workspace",
+                            "Studio Governance",
+                            "Deferred",
+                            "Medium",
+                            "Would provide a dedicated controlled workspace for filtering, reviewing, approving, rejecting, sequencing, and closing enhancement ideas.",
+                            "Captured during ENH-LOG-001 reconciliation.",
+                            "Review after current foundation, reconciliation, and risk-control work is complete."
+                        ]
+                    ]
+                }
             ]
         },
         {
             "number": "10",
-            "title": "Completion Checklist",
-            "items": [
-                "Historical enhancements recovered from available backup material.",
-                "Current enhancement idea captured and deferred.",
-                "Enhancement process rule documented.",
-                "Backlog started.",
-                "Future review action recorded.",
-                "Current work path preserved."
+            "title": "Historical Baseline Reconciliation",
+            "paragraphs": [
+                "The original recovered enhancement baseline contained four records.",
+                "ENH-2026-0001 has been reframed from Google Drive Publishing to repository-controlled documentation publishing and distribution so external locations remain secondary to the repository.",
+                "ENH-2026-0002 remains deferred but now explicitly requires controlled validation, approval, lifecycle, transaction, and repository-write boundaries.",
+                "ENH-2026-0003 remains deferred pending stable navigation and search foundations.",
+                "ENH-2026-0004 is now recorded as Built because the work-session closeout, documentation proposal, transaction, rollback, lifecycle, and state-control foundations were implemented across later approved work sessions.",
+                "Four additional verified enhancement ideas have been added to preserve current governance and continuity opportunities without expanding the active WS086 scope."
             ]
         },
         {
             "number": "11",
+            "title": "Enhancement Review Procedure",
+            "paragraphs": [
+                "1. Select the enhancement for review.",
+                "2. Verify that the enhancement record is complete enough for evaluation.",
+                "3. Confirm whether the idea still solves a current verified need.",
+                "4. Review its relationship to the roadmap, architecture, current state, risks, technical debt, and active milestone.",
+                "5. Identify dependencies and whether required foundations already exist.",
+                "6. Determine the effect on source-of-truth integrity, controlled execution, testing, documentation, and recovery.",
+                "7. Assign or confirm status and priority.",
+                "8. Record Stephen's approval when the idea is approved.",
+                "9. Place approved work into the roadmap or a dedicated work-session plan.",
+                "10. Do not begin implementation until the approved session starts.",
+                "11. After implementation, record files, tests, decisions, risks, documentation changes, and final outcome.",
+                "12. Change the enhancement to Built only after implementation and verification are complete."
+            ]
+        },
+        {
+            "number": "12",
+            "title": "Relationship to Current Work",
+            "paragraphs": [
+                "This log does not authorize immediate implementation.",
+                "Its purpose is to protect the active work path by giving valuable ideas a permanent controlled location.",
+                "At the Work Session 086 checkpoint, the active path is permanent-document reconciliation, installation testing, governance alignment, and controlled completion of the verified repository documentation set.",
+                "New enhancements discovered during this work must be recorded and deferred unless Stephen explicitly changes the approved scope."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Relationship to Other Permanent Records",
+            "paragraphs": [
+                "ROADMAP-001 controls approved sequencing and future milestones.",
+                "STATE-001 records the current approved checkpoint and active work.",
+                "ARCH-001 controls architecture and source-of-truth boundaries.",
+                "DOC-STATE-001 records the state of permanent documentation.",
+                "DOC-INDEX-001 records the permanent-document inventory and relationships.",
+                "RISK-001 records risks that may affect an enhancement or result from implementing it.",
+                "TECH-DEBT-001 records verified deferred technical obligations, which are not automatically enhancements.",
+                "BUG-HIST-001 records defects and fixes, which must not be mislabeled as enhancements.",
+                "DEC-LOG-001 records approvals, rejections, and major design decisions.",
+                "LESSON-001 records verified lessons that may generate future enhancement ideas.",
+                "STD-001 and PROC-001 through PROC-004 define the standards and procedures governing capture, review, implementation, testing, and documentation."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Work Session 086 Reconciliation State",
+            "paragraphs": [
+                "ENH-LOG-001 has been reconciled to the repository-first Work Session 086 governance baseline.",
+                "The earlier Google documentation recovery wording has been replaced with repository authority and controlled external publishing language.",
+                "The enhancement statuses, priorities, required fields, review process, and relationships have been expanded.",
+                "The backlog now contains eight preserved enhancement records, including one verified built enhancement and seven deferred enhancements.",
+                "This content is repository reconciled but requires installation and operational testing before final verification."
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Installation Verification Requirements",
+            "items": [
+                "Confirm ENH-LOG-001 loads from the approved repository path.",
+                "Confirm the Documentation Catalog displays the document.",
+                "Confirm Shared Search finds the document by ID, title, backlog terms, and repository-first terms.",
+                "Confirm the Shared Document Viewer renders all sections and the enhancement backlog table.",
+                "Confirm related documents and revision history display correctly.",
+                "Confirm the browser console reports no new JSON, search, viewer, or rendering errors.",
+                "Do not change the document to fully verified until all required tests pass."
+            ]
+        },
+        {
+            "number": "16",
+            "title": "Next Controlled Action",
+            "paragraphs": [
+                "Install this complete replacement file at pages/documents/ENH-LOG-001.json.",
+                "Perform the required catalog, search, viewer, relationship, revision-history, and browser-console tests.",
+                "Do not commit or push until the installation test passes and the documentation reconciliation checkpoint is approved.",
+                "After successful testing, verify whether the 20-document permanent repository set is fully reconciled and prepare the appropriate controlled session checkpoint."
+            ]
+        },
+        {
+            "number": "17",
             "title": "Permanent Statement",
             "paragraphs": [
-                "Two Marshalls Studios will preserve enhancement ideas from the beginning of the project forward. Ideas will be captured, organized, and reviewed later without interrupting the current approved work-session path.",
-                "Two Marshalls Studios | TMS-OS Permanent Documentation"
+                "Two Marshalls Studios will preserve enhancement ideas from the beginning of the project forward.",
+                "Ideas will be captured, organized, reviewed, approved, rejected, deferred, implemented, and closed through a controlled repository-first process.",
+                "No enhancement record overrides the approved roadmap, current milestone, work-session objective, bug-fix requirement, risk control, or human approval boundary.",
+                "ENH-LOG-001 is the permanent repository-controlled enhancement record for TMS-OS."
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "ARCH-001",
+        "ROADMAP-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "RISK-001",
+        "TECH-DEBT-001",
+        "BUG-HIST-001",
+        "DEC-LOG-001",
+        "LESSON-001",
+        "STD-001",
+        "PROC-001",
+        "PROC-002",
+        "PROC-003",
+        "PROC-004",
+        "WS-HIST-001",
+        "MILE-HIST-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Fully reconciled the Enhancement Ideas Log to repository-first governance, expanded enhancement controls and review states, reconciled the historical backlog, recorded the automated closeout enhancement as built, and added verified deferred enhancement opportunities.",
+            "status": "Repository Reconciled - Installation Test Required"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled - Installation Test Required",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified TMS-OS repository architecture, permanent documentation set, roadmap, current-state records, implemented session-automation history, and the approved Work Session 086 repository-first governance baseline."
     }
 }

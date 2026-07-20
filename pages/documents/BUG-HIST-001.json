@@ -1,155 +1,287 @@
 {
-    "id": "BUG-HIST-001",
-    "title": "Studio Bug and Fix History",
-    "documentType": "Permanent Studio Bug and Fix History",
-    "organization": "Two Marshalls Studios - Studio Operating System (TMS-OS)",
-    "department": "Studio Governance",
-    "category": "Bugs and Fixes",
+    "id": "ARCH-EVO-001",
+    "title": "Studio Architecture Evolution",
+    "documentType": "Permanent Architecture Evolution Record",
+    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "department": "Core Architecture",
+    "category": "Architecture Evolution",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Provides the permanent history structure for verified bugs and completed fixes.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Provides the permanent history structure for verified bugs and completed fixes aligned with the WS086 repository reconciliation.",
     "keywords": [
-        "BUG-HIST-001",
-        "Studio Bug and Fix History",
-        "Studio Governance"
+        "ARCH-EVO-001",
+        "Studio Architecture Evolution",
+        "Studio Governance / Core Architecture"
     ],
     "sections": [
         {
             "number": "1",
             "title": "Purpose",
             "paragraphs": [
-                "This document is the permanent bug and fix history for Two Marshalls Studios. It preserves verified defects and their verified correction status so completed troubleshooting is not lost between work sessions.",
-                "This history does not reconstruct missing bug numbers, dates, causes, or fixes by assumption."
+                "This document preserves the verified evolution of the Two Marshalls Studios architecture from an early portal-centered structure to the current Fully Modular StudioDB operating model.",
+                "Its purpose is to explain how the architecture changed, why major structural changes mattered, and how the current system was reached without inventing unsupported dates or development stages."
             ]
         },
         {
             "number": "2",
-            "title": "Bug and Fix Verification Rule",
+            "title": "Historical Control Rule",
             "paragraphs": [
-                "Only bugs and fixes supported by verified records or direct approved observation are recorded as confirmed.",
-                "PROC-002 governs the bug-fix process. BUG-HIST-001 preserves the permanent history of verified bug and fix outcomes."
+                "Architecture evolution must be recorded from verified completed work and recovered evidence, not from assumptions about what may have happened.",
+                "Where an exact calendar date is not verified, the development sequence is preserved without inventing a date. Future architecture ideas remain in ENH-LOG-001 until approved, completed, and verified."
             ]
         },
         {
             "number": "3",
-            "title": "Bug and Fix Status Definitions",
+            "title": "Starting Architecture — Portal-Centered Foundation",
             "paragraphs": [
-                "Open — a verified defect exists and remains unresolved.",
-                "Fix in Progress — corrective work is actively underway in an approved work session.",
-                "Fixed — the correction has been completed.",
-                "Verified Fixed — the correction has been tested and the expected result confirmed.",
-                "Recovery Required — historical evidence suggests a bug or fix existed, but the available record is not sufficient for permanent confirmation."
+                "The early verified architecture centered on establishing the Studio Portal as the visible command center for Two Marshalls Studios."
+            ],
+            "items": [
+                "Studio information was presented through the portal.",
+                "Individual pages and local files carried more responsibility than they do in the current architecture.",
+                "The studio needed a stronger shared data foundation so important information would not remain scattered across separate pages or workstations.",
+                "The long-term operating requirement was for studio work to remain accessible from multiple locations and computers."
             ]
         },
         {
             "number": "4",
-            "title": "Verified Bug and Fix History",
-            "tables": [
-                {
-                    "headers": [
-                        "Bug ID",
-                        "Affected Project / Component",
-                        "Verified Problem",
-                        "Status",
-                        "Verified Fix",
-                        "Evidence / Verification"
-                    ],
-                    "rows": [
-                        [
-                            "None yet verified",
-                            "—",
-                            "Historical bug and fix records still require controlled recovery.",
-                            "Recovery Required",
-                            "—",
-                            "PROC-002 confirms bug-fix governance, but individual permanent history records require evidence review."
-                        ]
-                    ]
-                }
+            "title": "Evolution to a Central Studio Database",
+            "paragraphs": [
+                "The architecture evolved by establishing StudioDB as the structured data foundation of TMS-OS.",
+                "This changed the architecture from primarily page-centered information handling toward a governed structured record system."
+            ],
+            "items": [
+                "Studio Database Foundation — Complete",
+                "Studio Database Engine — Complete",
+                "StudioDB v1 — Complete"
             ]
         },
         {
             "number": "5",
-            "title": "Bug History Entry Requirements",
+            "title": "Documentation Integration",
             "paragraphs": [
-                "Every future permanent bug-history entry must include a unique bug ID, affected project or component, verified problem, verified status, evidence source, fix summary when applicable, and verification result.",
-                "Do not add estimated dates, root causes, severity, ownership, or technical details unless they are verified."
+                "The next verified architectural change connected documentation to the shared StudioDB structure.",
+                "This reduced the need for separate page-specific information sources and moved the studio toward a shared operating model."
+            ],
+            "items": [
+                "Documentation Uses StudioDB — Complete",
+                "Headquarters Uses StudioDB — Complete"
             ]
         },
         {
             "number": "6",
-            "title": "Relationship to PROC-002",
+            "title": "Data Consolidation",
             "paragraphs": [
-                "PROC-002 - Bug Fix Procedure governs how active bugs are investigated, corrected, tested, and closed.",
-                "BUG-HIST-001 does not replace PROC-002. It preserves the verified historical record after a bug or fix has enough evidence for permanent entry."
+                "This stage reduced fragmentation, improved consistency, and prepared the structured data for broader shared use."
+            ],
+            "items": [
+                "Data Consolidation — Complete",
+                "Core Data Cleanup — Complete"
             ]
         },
         {
             "number": "7",
-            "title": "Relationship to Technical Debt and Enhancements",
+            "title": "Evolution of Search",
             "paragraphs": [
-                "A verified unresolved corrective obligation may also require tracking in TECH-DEBT-001. A requested improvement that is not a defect belongs in ENH-LOG-001.",
-                "Items must not be moved between these records by assumption. Classification must be supported by verified evidence or approved direction."
+                "Search evolved from a local page function into a shared studio capability across supported departments."
+            ],
+            "items": [
+                "Global Search Integration — Complete",
+                "Cross-Department Global Search — Complete"
             ]
         },
         {
             "number": "8",
-            "title": "Historical Recovery Boundary",
+            "title": "Transition to Modular Studio Data",
             "paragraphs": [
-                "Historical recovery confirmed that bug-fix handling existed and that PROC-002 governs the process. Historical bug records still require controlled recovery.",
-                "No individual historical bug or fix is promoted to the verified permanent history solely because a prior work session mentioned troubleshooting."
+                "Historical recovery confirmed that bug-fix handling existed and that PROC-002 governs the process.",
+                "Work Session 086 continues repository-first reconciliation. Individual historical bug records will be added only when supported by verified evidence."
+            ],
+            "items": [
+                "Core studio data",
+                "Documentation data",
+                "Department data"
             ]
         },
         {
             "number": "9",
-            "title": "Future Bug History Entry Process",
+            "title": "MILE-013 — Fully Modular StudioDB",
             "paragraphs": [
-                "1. Confirm that a defect is verified.",
-                "2. Follow PROC-002 for active correction and testing.",
-                "3. Assign the next sequential permanent bug-history ID when the record is ready for preservation.",
-                "4. Record only verified facts and evidence.",
-                "5. Record the fix and verification result when confirmed.",
-                "6. Cross-reference TECH-DEBT-001, ENH-LOG-001, DEC-LOG-001, or WS-HIST-001 when applicable.",
-                "7. Update the permanent record when status changes."
+                "MILE-013 - Fully Modular StudioDB is the last verified completed development milestone.",
+                "This milestone established the current Fully Modular StudioDB architecture."
+            ],
+            "items": [
+                "32 record types",
+                "127 records",
+                "0 invalid records",
+                "0 duplicate IDs"
             ]
         },
         {
             "number": "10",
-            "title": "Current State",
+            "title": "Evolution of the Source-of-Truth Model",
+            "items": [
+                "TMS-OS and StudioDB govern structured studio records.",
+                "The Studio Portal renders and exposes governed information.",
+                "GitHub preserves source code and project history.",
+                "Google Headquarters preserves permanent human-readable documentation.",
+                "Temporary chat, screenshots, local files, and uploads may provide evidence but must not become competing permanent sources of truth."
+            ],
             "paragraphs": [
-                "The permanent Bugs and fixes documentation category is now established through BUG-HIST-001.",
+                "The permanent Bugs and Fixes documentation category is established through BUG-HIST-001.",
+                "Repository reconciliation is in progress during Work Session 086.",
                 "Historical bug and fix records remain subject to controlled recovery before individual entries are marked verified."
             ]
         },
         {
             "number": "11",
-            "title": "Next Controlled Action",
+            "title": "Establishment of Google Headquarters",
             "paragraphs": [
-                "Update the permanent documentation index and current system state after this document is visually verified in the approved Google Headquarters location."
+                "Continue repository reconciliation with LESSON-001 after BUG-HIST-001 is verified.",
+                "Update documentation state and index after repository verification."
+            ],
+            "items": [
+                "01 - Studio Governance",
+                "02 - Studio Operations",
+                "03 - Game Projects",
+                "04 - Development",
+                "05 - Assets",
+                "06 - Publishing",
+                "07 - Marketing",
+                "08 - Business Operations",
+                "09 - Knowledge Base",
+                "10 - Meetings",
+                "99 - Archive",
+                "START HERE"
             ]
         },
         {
             "number": "12",
+            "title": "Evolution Through Historical Recovery",
+            "paragraphs": [
+                "After MILE-013, the studio entered MILE-014 - Complete Historical Recovery.",
+                "This period strengthened the architecture by recovering important knowledge from temporary or fragmented sources and converting verified information into permanent governed records."
+            ]
+        },
+        {
+            "number": "13",
+            "title": "Permanent Procedures Added to the Architecture",
+            "items": [
+                "PROC-001 established the controlled Work Session Procedure.",
+                "PROC-002 established the controlled Bug Fix Procedure.",
+                "PROC-003 established the Documentation Update Procedure.",
+                "ENH-LOG-001 established permanent enhancement tracking from the beginning of the project.",
+                "DOC-STATE-001 established documentation-state control.",
+                "DOC-INDEX-001 established permanent document indexing and verification.",
+                "HIST-001 established the verified studio historical timeline.",
+                "ARCH-001 established the verified current architecture."
+            ]
+        },
+        {
+            "number": "14",
+            "title": "Major Architectural Shifts",
+            "items": [
+                "From portal-centered information toward structured StudioDB records.",
+                "From isolated page data toward shared governed data.",
+                "From a large central data structure toward modular studio-data files.",
+                "From local search toward cross-department shared search.",
+                "From workstation dependence toward shared source control and permanent cloud documentation.",
+                "From temporary knowledge preservation toward controlled permanent records.",
+                "From enhancement ideas interrupting active work toward deferred controlled enhancement tracking."
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Current Architecture Result",
+            "paragraphs": [
+                "The verified result of this evolution is the Fully Modular StudioDB operating model."
+            ],
+            "items": [
+                "Studio Portal — visible command center",
+                "StudioDB — structured record foundation",
+                "Modular studio-data files — separated data responsibilities",
+                "Shared studio data object — unified portal data access",
+                "Shared rendering — reusable presentation behavior",
+                "Shared search engine — cross-department discovery",
+                "GitHub — source code and project history",
+                "Google Headquarters — permanent human-readable documentation",
+                "Enhancement Ideas Log — controlled deferred improvement tracking"
+            ]
+        },
+        {
+            "number": "16",
+            "title": "Current Evolution Checkpoint",
+            "items": [
+                "Last completed development milestone: MILE-013 - Fully Modular StudioDB",
+                "Current active milestone: MILE-014 - Complete Historical Recovery",
+                "Current architecture: Fully Modular StudioDB",
+                "Historical documentation recovery: In Progress",
+                "Google Headquarters structure: Complete",
+                "Google synchronization: Not Started"
+            ]
+        },
+        {
+            "number": "17",
+            "title": "Architecture Change Control Going Forward",
+            "paragraphs": [
+                "Future architecture changes must not be mixed into unrelated work sessions or bug fixes unless Stephen explicitly approves a separate path.",
+                "A proposed architecture improvement must first be captured in ENH-LOG-001 when it is not part of approved current work. Once approved and completed, the change must be reflected in the appropriate permanent records."
+            ]
+        },
+        {
+            "number": "18",
+            "title": "Relationship to Other Permanent Records",
+            "items": [
+                "ARCH-001 describes the architecture that exists now.",
+                "ARCH-EVO-001 explains how the verified architecture changed over time.",
+                "HIST-001 preserves the broader studio historical sequence.",
+                "STATE-001 records the current system checkpoint.",
+                "ROADMAP-001 separates completed, active, and future direction.",
+                "ENH-LOG-001 preserves future improvement ideas that are not yet verified history."
+            ]
+        },
+        {
+            "number": "19",
             "title": "Permanent Statement",
             "paragraphs": [
-                "BUG-HIST-001 is the permanent human-readable history for verified Two Marshalls Studios bugs and fixes. It must preserve confirmed outcomes, remain separate from active bug-fix procedure, and prevent missing historical details from being invented."
+                "Two Marshalls Studios evolved from a portal-centered foundation into a Fully Modular StudioDB operating model through verified stages of database creation, documentation integration, data consolidation, shared search, modularization, source control, and permanent documentation governance.",
+                "This record must continue to preserve actual architectural change without confusing future ideas with completed evolution."
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "PROC-002",
+        "PROC-003",
+        "STATE-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "WS-HIST-001",
+        "DEC-LOG-001",
+        "TECH-DEBT-001",
+        "ENH-LOG-001",
+        "LESSON-001",
+        "STD-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled bug and fix history with the verified repository governance model.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified v0.28.1 repository during Work Session 086."
     }
 }

@@ -7,10 +7,10 @@
     "category": "Procedures",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Defines the controlled process for starting, executing, verifying, documenting, and closing studio work sessions.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Defines the controlled process for starting, executing, verifying, documenting, and closing studio work sessions during the WS086 documentation reconciliation phase.",
     "keywords": [
         "PROC-001",
         "TWO MARSHALLS STUDIOS",
@@ -46,10 +46,11 @@
             "title": "Source-of-Truth Rule",
             "paragraphs": [
                 "The approved operating model is:",
-                "TMS-OS / StudioDB = Structured Source of Truth",
-                "Google Workspace = Human-Readable Documentation Layer",
-                "Chat = Working Environment",
-                "No one layer should silently replace the purpose of another. Work performed in chat is not considered permanently preserved until the required studio records and human-readable documentation are updated and verified."
+                "TMS-OS / StudioDB = Structured source of truth.",
+                "Studio Portal = Governed presentation layer.",
+                "Google Headquarters = Human-readable documentation layer (when used).",
+                "Chat = Collaborative working environment.",
+                "Repository reconciliation and documentation updates must remain synchronized."
             ]
         },
         {
@@ -164,11 +165,11 @@
                 "When required, update:"
             ],
             "items": [
-                "structured TMS-OS / StudioDB records;",
-                "the relevant permanent Google document;",
-                "the current-state reference;",
-                "work session and milestone records;",
-                "the Enhancement Ideas Log for deferred ideas."
+                "Structured permanent JSON documents.",
+                "Applicable permanent human-readable documentation.",
+                "STATE-001, DOC-STATE-001, DOC-INDEX-001 as appropriate.",
+                "WS-HIST-001, MILE-HIST-001, and DEC-LOG-001 when affected.",
+                "Enhancement ideas in ENH-LOG-001."
             ]
         },
         {
@@ -243,20 +244,17 @@
         },
         {
             "number": "17",
-            "title": "Procedure Test",
+            "title": "Procedure Validation",
             "paragraphs": [
-                "PROC-001 is the first permanent procedure population test for the Google Headquarters documentation layer.",
-                "The procedure test passes when:",
-                "No additional core document should be populated until this procedure test passes."
+                "PROC-001 is governed through the repository reconciliation process.",
+                "The procedure is considered validated when it renders correctly in the Studio Portal and reflects the approved workflow."
             ],
             "items": [
-                "the complete formatted document is created;",
-                "the document is uploaded to the correct Google Headquarters folder;",
-                "the file is converted to a native Google Doc;",
-                "formatting and navigation survive conversion;",
-                "temporary upload files are removed;",
-                "only the final approved Google Doc remains;",
-                "the final document is visually verified."
+                "Version 1.1 displayed.",
+                "Last Updated shows Work Session 086.",
+                "Portal rendering verified.",
+                "Repository metadata verified.",
+                "Documentation search locates PROC-001."
             ]
         },
         {
@@ -284,18 +282,37 @@
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "ARCH-001",
+        "ROADMAP-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "STD-001",
+        "PROC-002",
+        "PROC-003",
+        "PROC-004",
+        "WS-HIST-001",
+        "MILE-HIST-001",
+        "DEC-LOG-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled work session procedure with current repository governance and documentation reconciliation workflow.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified repository during WS086."
     }
 }

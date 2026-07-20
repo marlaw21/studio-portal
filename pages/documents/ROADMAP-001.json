@@ -7,212 +7,379 @@
     "category": "Roadmap",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Records the verified completed path, active milestone, and controlled future direction of TMS-OS.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Records the verified completed path, current approved reconciliation work, controlled execution queue, and long-term direction of TMS-OS.",
     "keywords": [
         "ROADMAP-001",
         "Studio Roadmap",
-        "Studio Governance"
+        "TMS-OS",
+        "Studio Governance",
+        "Documentation Reconciliation",
+        "Approved Direction"
     ],
     "sections": [
         {
             "number": "1",
             "title": "Purpose",
             "paragraphs": [
-                "This document records the verified roadmap state of the Two Marshalls Studios Operating System. It preserves what has been completed, what is active now, and what may happen only after the current recovery milestone is completed and verified.",
-                "The roadmap is a control document. It must not be used to invent work, accelerate into unrelated enhancements, or replace the structured records governed by TMS-OS and StudioDB."
+                "This document records the approved strategic direction of the Two Marshalls Studios Operating System. It separates completed foundations, current approved work, the controlled execution queue, deferred ideas, and long-term studio direction.",
+                "ROADMAP-001 is a strategic control document. STATE-001 records the current operating checkpoint, ARCH-001 records the implemented architecture, historical documents preserve completed work, and ENH-LOG-001 preserves unapproved improvements."
             ]
         },
         {
             "number": "2",
-            "title": "Roadmap Control Rule",
-            "paragraphs": [
-                "Only verified milestones, active work, and approved future direction may appear as committed roadmap items.",
-                "Enhancement ideas are preserved separately in ENH-LOG-001. They do not become active roadmap commitments unless Stephen explicitly approves them through the studio planning and decision process."
+            "title": "Roadmap Control Rules",
+            "items": [
+                "Only verified completed work may be listed as complete.",
+                "Only explicitly approved work may appear in the active execution queue.",
+                "Repository file existence does not by itself authorize execution or prove a module is operational.",
+                "Current-state detail belongs in STATE-001; architecture detail belongs in ARCH-001.",
+                "Historical sequence belongs in WS-HIST-001, MILE-HIST-001, HIST-001, and ARCH-EVO-001.",
+                "Unapproved enhancements belong in ENH-LOG-001 and must not interrupt approved work.",
+                "A new active milestone requires an explicit decision after the current milestone reaches its completion standard."
             ]
         },
         {
             "number": "3",
-            "title": "Verified Current Roadmap State",
+            "title": "Long-Term Studio Direction",
+            "paragraphs": [
+                "TMS-OS is intended to become the internal command center for every major Two Marshalls Studios function while preserving clear governance, recoverability, and controlled change.",
+                "The long-term direction includes studio governance, documentation, development, game production, assets, publishing, marketing, business operations, knowledge management, and future approved automation."
+            ],
+            "items": [
+                "Maintain one governed studio operating environment.",
+                "Preserve project knowledge independently of chat history and any single workstation.",
+                "Support repeatable work sessions with traceable decisions, tests, file changes, and closure.",
+                "Provide governed permanent documentation with human approval and rollback protection.",
+                "Support studio development and game-production planning.",
+                "Support asset, publishing, marketing, and business operations through shared architecture.",
+                "Introduce automation only through approved, testable, reversible implementation."
+            ]
+        },
+        {
+            "number": "4",
+            "title": "Verified Completed Foundation Path",
+            "paragraphs": [
+                "The following foundation capabilities are verified by the uploaded repository and recovered project history. Detailed dates and session-level history remain governed by the permanent history documents."
+            ],
+            "items": [
+                "Headquarters dashboard and shared studio navigation",
+                "Department pages for Documentation, Development, Assets, Publishing, Marketing, and Business",
+                "Shared visual and component architecture",
+                "StudioDB foundation, database engine, modular data loading, and record architecture",
+                "Documentation catalog, structured JSON documents, shared document template, and embedded viewer",
+                "Shared search and cross-department search presentation",
+                "Session Context Engine and persistent work-session context",
+                "Session Manager, Prepare Session review, and human approval-controlled closure",
+                "Document Update Engine and generic permanent-document writer framework",
+                "Document Writer Registry",
+                "Permanent writers for WS-HIST-001, STATE-001, DOC-STATE-001, DEC-LOG-001, and MILE-HIST-001",
+                "Permanent Transaction Manager",
+                "Rollback Package Generator and Original Document Capture foundation",
+                "Transaction planning, dependency, readiness, manifest, integrity, checksum, and deterministic signature-proposal modules",
+                "Controlled-output, authorization, approval, verification, rollback, lifecycle, and state-transition module foundations",
+                "Permanent-document inventory and repository reconciliation audit"
+            ]
+        },
+        {
+            "number": "5",
+            "title": "Approved Current Roadmap State",
             "tables": [
                 {
                     "headers": [
                         "Roadmap Control Point",
-                        "Verified State"
+                        "Approved State"
                     ],
                     "rows": [
                         [
                             "Current Work Session",
-                            "WS-049AR"
+                            "WS086"
                         ],
                         [
-                            "Current Work",
-                            "Historical Recovery and Documentation Reconciliation"
-                        ],
-                        [
-                            "Last Completed Development Milestone",
-                            "MILE-013 - Fully Modular StudioDB"
+                            "Session Title",
+                            "Enterprise Documentation Reconciliation"
                         ],
                         [
                             "Current Active Milestone",
-                            "MILE-014 - Complete Historical Recovery"
+                            "Documentation Reconciliation"
                         ],
                         [
-                            "Current Architecture",
-                            "Fully Modular StudioDB"
+                            "Current Phase",
+                            "Permanent Documentation Alignment"
                         ],
                         [
-                            "Historical Documentation Recovery",
-                            "In Progress"
+                            "Repository Version",
+                            "v0.28.1"
                         ],
                         [
-                            "Google Headquarters Structure",
-                            "Complete"
+                            "Evidence Baseline",
+                            "Uploaded studio-portal repository"
                         ],
                         [
-                            "Google Synchronization",
-                            "Not Started"
+                            "Feature Development",
+                            "Paused during core permanent-document reconciliation"
+                        ],
+                        [
+                            "Permanent Execution Safety State",
+                            "Disabled unless later controlled verification proves otherwise"
                         ]
                     ]
                 }
             ]
         },
         {
-            "number": "4",
-            "title": "Completed Foundation Path",
-            "paragraphs": [
-                "The verified historical record shows that the studio operating system progressed through the following completed foundation path:",
-                "The last completed development milestone is MILE-013 - Fully Modular StudioDB."
-            ],
-            "items": [
-                "Studio Database Foundation — Complete",
-                "Studio Database Engine — Complete",
-                "StudioDB v1 — Complete",
-                "Documentation Uses StudioDB — Complete",
-                "Headquarters Uses StudioDB — Complete",
-                "Data Consolidation — Complete",
-                "Core Data Cleanup — Complete",
-                "Global Search Integration — Complete",
-                "Cross-Department Global Search — Complete"
-            ]
-        },
-        {
-            "number": "5",
+            "number": "6",
             "title": "Current Active Milestone",
             "paragraphs": [
-                "MILE-014 - Complete Historical Recovery",
-                "The current priority is to reconstruct and reconcile the studio's verified historical knowledge so that important information does not remain dependent on chat history, temporary files, screenshots, memory, or a single workstation."
-            ]
-        },
-        {
-            "number": "6",
-            "title": "Current Recovery Workstream",
-            "items": [
-                "Preserve and verify the stable StudioDB checkpoint.",
-                "Maintain the permanent Google Headquarters structure.",
-                "Recover the human-readable documentation layer.",
-                "Populate permanent documents one controlled document at a time.",
-                "Verify each document's title, format, location, and permanent Google Doc state.",
-                "Remove temporary Word files after successful conversion and verification.",
-                "Maintain DOC-STATE-001 as the documentation-state record.",
-                "Maintain DOC-INDEX-001 as the permanent documentation control index.",
-                "Maintain ENH-LOG-001 so future ideas are preserved without interrupting approved foundation work.",
-                "Continue historical reconciliation until MILE-014 can be verified as complete."
+                "Documentation Reconciliation",
+                "The current milestone aligns the core permanent documents with the verified repository while preserving established architecture, governance, and history.",
+                "The milestone does not authorize redesign of stable systems or creation of additional permanent-document categories without evidence of an unowned governance responsibility."
             ]
         },
         {
             "number": "7",
-            "title": "Verified Documentation Recovery Checkpoint",
-            "paragraphs": [
-                "At the current checkpoint, 7 permanent Google documents were verified before creation of this roadmap:",
-                "The historical recovery identified 16 documentation categories. Those categories define required documentation coverage; they are not a numbered sequence of 16 individual files."
-            ],
-            "items": [
-                "STATE-001 - Current System State",
-                "PROC-001 - Work Session Procedure",
-                "PROC-002 - Bug Fix Procedure",
-                "PROC-003 - Documentation Update Procedure",
-                "ENH-LOG-001 - Enhancement Ideas Log",
-                "DOC-STATE-001 - Documentation State",
-                "DOC-INDEX-001 - Documentation Index"
+            "title": "Approved Reconciliation Queue",
+            "tables": [
+                {
+                    "headers": [
+                        "Order",
+                        "Controlled Work Item",
+                        "Roadmap Status"
+                    ],
+                    "rows": [
+                        [
+                            "1",
+                            "Repository audit and permanent-document inventory",
+                            "Complete"
+                        ],
+                        [
+                            "2",
+                            "STATE-001 reconciliation",
+                            "Installed and visually verified; final session validation pending"
+                        ],
+                        [
+                            "3",
+                            "ARCH-001 reconciliation",
+                            "Approved controlled installation and verification"
+                        ],
+                        [
+                            "4",
+                            "ROADMAP-001 reconciliation",
+                            "Current controlled work item"
+                        ],
+                        [
+                            "5",
+                            "DOC-STATE-001 reconciliation",
+                            "Next"
+                        ],
+                        [
+                            "6",
+                            "DOC-INDEX-001 reconciliation",
+                            "Planned"
+                        ],
+                        [
+                            "7",
+                            "Core procedures and standards reconciliation",
+                            "Planned"
+                        ],
+                        [
+                            "8",
+                            "Historical and register documents through the reconciliation checkpoint",
+                            "Planned"
+                        ],
+                        [
+                            "9",
+                            "Permanent-document catalog, viewer, search, registry, and console validation",
+                            "Planned"
+                        ],
+                        [
+                            "10",
+                            "Close the Documentation Reconciliation milestone",
+                            "Pending successful validation"
+                        ],
+                        [
+                            "11",
+                            "Select and approve the next software milestone from verified roadmap and history evidence",
+                            "Blocked until reconciliation closes"
+                        ]
+                    ]
+                }
             ]
         },
         {
             "number": "8",
-            "title": "Immediate Roadmap Priority",
-            "paragraphs": [
-                "Complete the human-readable Google documentation layer without creating a competing source of truth.",
-                "Recover verified source evidence → Create the permanent document → Upload to the approved Headquarters location → Convert to native Google Docs → Verify title, formatting, and location → Remove the temporary Word file → Update the documentation control records → Continue to the next verified recovery item."
+            "title": "Core Documentation Reconciliation Scope",
+            "items": [
+                "STATE-001 — approved current operating state",
+                "ARCH-001 — verified current repository architecture",
+                "ROADMAP-001 — approved strategic direction and execution queue",
+                "DOC-STATE-001 — documentation health and reconciliation status",
+                "DOC-INDEX-001 — permanent-document inventory and control index",
+                "STD-001 and PROC-001 through PROC-004 — governance standards and operating procedures",
+                "WS-HIST-001, MILE-HIST-001, DEC-LOG-001, HIST-001, ARCH-EVO-001, BUG-HIST-001, and LESSON-001 — verified history",
+                "RISK-001, TECH-DEBT-001, and ENH-LOG-001 — current controlled registers"
             ]
         },
         {
             "number": "9",
-            "title": "Work That Must Not Interrupt the Current Milestone",
+            "title": "Documentation Reconciliation Completion Standard",
+            "paragraphs": [
+                "The current milestone may close only when the core permanent documents accurately reflect the repository, their responsibilities do not conflict, required history is preserved, and the Studio Portal can load, render, search, and catalog the reconciled documents without new errors.",
+                "Completion also requires a controlled session review and explicit human approval. A document may be installed for testing without being permanently accepted."
+            ],
             "items": [
-                "Unrelated feature development",
-                "Unapproved architecture changes",
-                "Convenience improvements that are not required to complete recovery",
-                "Deferred enhancements already captured in ENH-LOG-001",
-                "Automatic Google publishing or synchronization work before the current recovery milestone is complete and a separate implementation path is approved"
+                "Core document content reconciled against repository evidence",
+                "Structured JSON validity confirmed",
+                "Document Viewer rendering confirmed",
+                "Search behavior confirmed",
+                "Catalog metadata confirmed",
+                "Browser Console contains no new reconciliation-related errors",
+                "Git change scope contains only approved files",
+                "Session review package prepared",
+                "Human approval recorded before commit and push",
+                "Current and historical records updated consistently"
             ]
         },
         {
             "number": "10",
-            "title": "Deferred Enhancement Relationship",
+            "title": "Post-Reconciliation Decision Gate",
             "paragraphs": [
-                "ENH-LOG-001 - Enhancement Ideas Log is the permanent holding location for future improvements. Enhancement ideas must be captured from the beginning of the project, preserved, and reviewed later without automatically becoming active roadmap work.",
-                "A deferred enhancement becomes active only after explicit approval and controlled roadmap placement."
+                "No next software module is automatically activated by completing documentation reconciliation.",
+                "After the milestone closes, the verified permanent roadmap, current state, milestone history, architecture map, enhancement log, and repository must be reviewed together. Stephen must then approve one next milestone and one first module.",
+                "Until that decision is recorded, the next software milestone remains Pending Selection rather than invented."
             ]
         },
         {
             "number": "11",
-            "title": "Roadmap Decision Gates",
+            "title": "Verified Strategic Development Areas",
+            "paragraphs": [
+                "The repository and recovered roadmap establish the following long-term development areas. They are strategic direction, not automatically active commitments."
+            ],
             "items": [
-                "Gate 1 — Is the current historical recovery item supported by verified evidence?",
-                "Gate 2 — Has the permanent document or record been created in the correct location?",
-                "Gate 3 — Has the result been verified before the next item begins?",
-                "Gate 4 — Have documentation state and index records been updated when required?",
-                "Gate 5 — Has any new enhancement idea been captured without derailing current work?",
-                "Gate 6 — Is MILE-014 fully complete and verified before a new active milestone is declared?"
+                "Studio Portal and shared command-center capabilities",
+                "Documentation and studio knowledge management",
+                "Project and task management",
+                "Game-development management",
+                "Dead Roads design and production records",
+                "Quest, asset, and build tracking",
+                "Publishing operations",
+                "Marketing operations",
+                "Business operations",
+                "Approved AI and automation capabilities"
             ]
         },
         {
             "number": "12",
-            "title": "Current Next Action",
+            "title": "Future Milestone Framework",
             "paragraphs": [
-                "Continue MILE-014 - Complete Historical Recovery by recovering the next documentation category from verified source evidence and the permanent Documentation Index.",
-                "No future milestone, project, document ID, or implementation sequence should be invented. The next item must be selected from the recovered record and verified before population."
+                "Future milestones must be selected one at a time after reconciliation. The following framework preserves known strategic direction without declaring an unsupported implementation order."
+            ],
+            "items": [
+                "Studio Operations Management — project, task, assignment, progress, and notification capabilities",
+                "Game Production Management — game design, quest, asset, build, and release tracking",
+                "Publishing Operations — publishing workflows and release support",
+                "Marketing Operations — campaign, content, and performance support",
+                "Business Operations — studio administration and operating controls",
+                "Knowledge and Automation — governed recommendations, research, AI assistance, and approved automation"
             ]
         },
         {
             "number": "13",
-            "title": "Completion Standard for the Current Milestone",
+            "title": "Deferred Governance Proposals",
             "paragraphs": [
-                "MILE-014 may be marked complete only when the historical recovery and documentation reconciliation work has been reviewed against the verified source records, required permanent knowledge has been preserved, documentation controls are current, and no known critical recovery gap remains unrecorded."
+                "The WS086 audit did not establish a current need to create the following separate permanent documents. Their responsibilities are already fully or partially covered by the existing document system.",
+                "They remain deferred proposals and may be reconsidered only after a specific unowned responsibility is demonstrated."
+            ],
+            "items": [
+                "VISION-001",
+                "CONSTITUTION-001",
+                "PROGRAMS-001",
+                "CATALOG-001",
+                "GOVERNANCE-TRANSITION-001"
             ]
         },
         {
             "number": "14",
+            "title": "Deferred Enhancement Relationship",
+            "paragraphs": [
+                "ENH-LOG-001 is the permanent holding location for future improvements that are not part of the current approved work.",
+                "An enhancement becomes active roadmap work only after explicit approval, dependency review, roadmap placement, and selection as part of a controlled milestone."
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Work That Must Not Interrupt the Current Milestone",
+            "items": [
+                "Unrelated feature development",
+                "Unapproved architecture expansion",
+                "Activation of permanent writes or rollback execution",
+                "Creation of duplicate governance documents",
+                "Convenience improvements not required for reconciliation",
+                "Unapproved automation",
+                "Deferred ideas already controlled by ENH-LOG-001"
+            ]
+        },
+        {
+            "number": "16",
+            "title": "Roadmap Decision Gates",
+            "items": [
+                "Gate 1 — Is the proposed item supported by repository evidence, permanent records, or an explicit approved decision?",
+                "Gate 2 — Does the item belong in the roadmap rather than STATE-001, ARCH-001, history, or ENH-LOG-001?",
+                "Gate 3 — Are dependencies and safety boundaries known?",
+                "Gate 4 — Is the current milestone complete and approved before a new milestone begins?",
+                "Gate 5 — Has one first module been selected without silently activating the entire future program?",
+                "Gate 6 — Are testing, documentation, rollback, session closure, commit, and push requirements defined?"
+            ]
+        },
+        {
+            "number": "17",
+            "title": "Current Next Action",
+            "paragraphs": [
+                "Complete controlled installation and verification of ROADMAP-001, then reconcile DOC-STATE-001.",
+                "After the core control documents are aligned, reconcile DOC-INDEX-001, procedures, standards, history, and registers. Do not resume feature development until the Documentation Reconciliation completion standard is met and the milestone is explicitly closed."
+            ]
+        },
+        {
+            "number": "18",
             "title": "Permanent Statement",
             "paragraphs": [
-                "The Studio Roadmap records the verified path of Two Marshalls Studios. It separates completed work, active work, and deferred ideas so the studio can move forward without losing history, duplicating sources of truth, or abandoning the approved foundation path."
+                "The Studio Roadmap preserves the approved path of Two Marshalls Studios by separating completed foundations, current controlled work, future strategic direction, and deferred ideas.",
+                "TMS-OS will move forward one approved milestone and one controlled module at a time, using repository evidence, permanent documentation, testing, human approval, recoverability, and explicit session closure."
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "ARCH-001",
+        "ARCH-EVO-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "DEC-LOG-001",
+        "MILE-HIST-001",
+        "WS-HIST-001",
+        "ENH-LOG-001",
+        "RISK-001",
+        "TECH-DEBT-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
-            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "summary": "Connected the verified permanent roadmap to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled the roadmap with the verified repository, established Documentation Reconciliation as the active milestone, defined the controlled reconciliation queue, and separated strategic direction from current state and architecture.",
+            "status": "Approved for Controlled Installation"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled — Installation Test Required",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the uploaded studio-portal repository, VERSION.md, the existing permanent roadmap, the legacy repository roadmap, PERMANENT-ARCHITECTURE-MAP.md, and the approved WS086 project state."
     }
 }

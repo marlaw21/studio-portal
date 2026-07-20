@@ -7,10 +7,10 @@
     "category": "Decisions",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Preserves major verified studio decisions and their operating effects.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Preserves major verified studio decisions together with the current WS086 repository reconciliation checkpoint.",
     "keywords": [
         "DEC-LOG-001",
         "Studio Decision Log",
@@ -550,11 +550,11 @@
             "title": "Current Decision-Control State",
             "items": [
                 "Historical baseline decisions: Recovered and established in this document.",
-                "Future major decisions: Must be added to this log when approved.",
+                "Repository reconciliation: In progress during Work Session 086.",
+                "Future major decisions: Must be added only after approval.",
                 "Enhancement ideas: Continue to be captured in ENH-LOG-001 until approved.",
-                "Architecture changes: Must also update ARCH-001 and ARCH-EVO-001 when applicable.",
-                "Roadmap effects: Must also update ROADMAP-001 when applicable.",
-                "Current-state effects: Must also update STATE-001 when applicable."
+                "Architecture changes: Update ARCH-001 and ARCH-EVO-001 when applicable.",
+                "Current-state effects: Update STATE-001 and DOC-STATE-001 when applicable."
             ]
         },
         {
@@ -592,7 +592,7 @@
                 "Record the decision and its operating effect.",
                 "Identify every permanent record affected by the decision.",
                 "Update those records through PROC-003.",
-                "Verify the final Google Headquarters locations and control records."
+                "Verify the repository records and any required human-readable documentation."
             ]
         },
         {
@@ -617,18 +617,37 @@
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "WS-HIST-001",
+        "MILE-HIST-001",
+        "ROADMAP-001",
+        "HIST-001",
+        "ARCH-001",
+        "ARCH-EVO-001",
+        "PROC-003",
+        "STD-001",
+        "ENH-LOG-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled the decision log with the verified repository governance model.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified v0.28.1 repository during Work Session 086."
     }
 }

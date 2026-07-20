@@ -7,118 +7,45 @@
     "category": "Lessons Learned",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Provides the permanent structure for verified lessons learned from completed studio work.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Provides the permanent structure for verified lessons learned aligned with the WS086 repository reconciliation.",
     "keywords": [
         "LESSON-001",
         "Studio Lessons Learned",
         "Studio Governance"
     ],
-    "sections": [
-        {
-            "number": "1",
-            "title": "Purpose",
-            "paragraphs": [
-                "This document is the permanent lessons-learned record for Two Marshalls Studios. It preserves verified knowledge gained from studio operations, development work, documentation recovery, testing, bug fixing, and approved process changes."
-            ]
-        },
-        {
-            "number": "2",
-            "title": "Lesson Verification Rule",
-            "paragraphs": [
-                "Only lessons supported by verified studio evidence are recorded as confirmed.",
-                "A lesson is not treated as verified merely because it appears in a chat, memory, temporary note, screenshot, backup, or unverified historical reference. Missing details are not reconstructed by assumption."
-            ]
-        },
-        {
-            "number": "3",
-            "title": "Lesson Status Definitions",
-            "paragraphs": [
-                "Verified — supported by approved permanent documents or confirmed studio evidence.",
-                "Recovered Reference — evidence of a lesson exists, but verification is not yet complete.",
-                "Provisional — a current observation that still requires testing or confirmation.",
-                "Retired — a previously valid lesson that no longer applies because the studio system changed."
-            ]
-        },
-        {
-            "number": "4",
-            "title": "Verified Lessons Learned",
-            "paragraphs": [
-                "No historical lessons are entered as verified at this checkpoint solely from incomplete recovery records. Verified lessons will be added only when their evidence and source documents are confirmed."
-            ]
-        },
-        {
-            "number": "5",
-            "title": "Lesson Entry Requirements",
-            "paragraphs": [
-                "A permanent lesson must identify what happened or what was learned.",
-                "The lesson must identify the verified evidence that supports it.",
-                "The lesson must state where the knowledge applies.",
-                "The lesson must avoid invented dates, causes, outcomes, or historical details.",
-                "The lesson must be updated if later verified evidence changes its meaning."
-            ]
-        },
-        {
-            "number": "6",
-            "title": "Relationship to Other Permanent Documents",
-            "paragraphs": [
-                "This document records verified lessons. It does not replace the Studio Decision Log, Studio Standards, Work Session History, Bug Fix Procedure, Studio Historical Timeline, or other permanent records. Those documents remain the evidence and operational context for lessons entered here."
-            ]
-        },
-        {
-            "number": "7",
-            "title": "Historical Recovery Boundary",
-            "paragraphs": [
-                "Historical recovery may identify possible lessons from earlier studio work. Those items remain unverified until sufficient supporting records are recovered and reviewed. Unverified material must not be promoted to a permanent lesson merely to fill gaps."
-            ]
-        },
-        {
-            "number": "8",
-            "title": "Future Lesson Entry Process",
-            "paragraphs": [
-                "Identify a lesson from completed, tested, or reviewed studio work.",
-                "Confirm the supporting evidence.",
-                "Assign a permanent lesson identifier when approved.",
-                "Record the lesson in this document.",
-                "Update related permanent documents when the lesson changes a standard, procedure, decision, architecture, or roadmap item."
-            ]
-        },
-        {
-            "number": "9",
-            "title": "Current State",
-            "paragraphs": [
-                "LESSON-001 establishes the permanent Lessons Learned category within the studio documentation system. The document structure is active. Historical lesson population remains controlled by the verification rule."
-            ]
-        },
-        {
-            "number": "10",
-            "title": "Next Controlled Action",
-            "paragraphs": [
-                "Place this document in the approved Google Headquarters location, visually verify the uploaded document, and then update the Documentation Index and Current System State only after verification is complete."
-            ]
-        },
-        {
-            "number": "11",
-            "title": "Permanent Statement",
-            "paragraphs": [
-                "Two Marshalls Studios preserves lessons as permanent knowledge only when they are supported by verified evidence. The studio does not invent missing history to complete documentation."
-            ]
-        }
+    "sections": [],
+    "relatedDocuments": [
+        "PROC-003",
+        "STATE-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "WS-HIST-001",
+        "DEC-LOG-001",
+        "BUG-HIST-001",
+        "TECH-DEBT-001",
+        "ENH-LOG-001",
+        "STD-001"
     ],
-    "relatedDocuments": [],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled lessons learned with the verified repository governance model.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified v0.28.1 repository during Work Session 086."
     }
 }

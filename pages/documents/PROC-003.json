@@ -7,10 +7,10 @@
     "category": "Procedures",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Defines how completed studio work becomes permanent structured and human-readable documentation.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Defines the controlled process for converting verified work into permanent repository and documentation records during WS086 reconciliation.",
     "keywords": [
         "PROC-003",
         "Documentation Update Procedure",
@@ -36,7 +36,11 @@
             "number": "3",
             "title": "Source-of-Truth Rule",
             "paragraphs": [
-                "TMS-OS and StudioDB govern structured studio records. Google Workspace is the human-readable documentation layer. Chat, screenshots, local files, and temporary exports may provide evidence, but they must not become competing permanent sources of truth."
+                "TMS-OS and StudioDB govern structured records.",
+                "The Studio Portal is the governed presentation layer.",
+                "Repository JSON documents are the implementation record for permanent portal documentation.",
+                "Google Headquarters may preserve human-readable documentation where applicable.",
+                "Chat and temporary artifacts provide evidence but are not permanent sources of truth."
             ],
             "items": [
                 "Structured records remain governed by TMS-OS / StudioDB.",
@@ -132,7 +136,7 @@
             "number": "6.7",
             "title": "Step 7 — Update Human-Readable Documentation",
             "paragraphs": [
-                "Create or update the approved Google document when the record belongs in the permanent human-readable documentation layer."
+                "Update the structured permanent repository document and any required human-readable documentation after verification."
             ]
         },
         {
@@ -153,7 +157,7 @@
             "number": "6.10",
             "title": "Step 10 — Record the Final Result",
             "paragraphs": [
-                "Update the current-state record, documentation count, session record, or checkpoint information as required."
+                "Update STATE-001, DOC-STATE-001, DOC-INDEX-001, work-session history, milestone history, decision log, or other affected permanent records as required."
             ]
         },
         {
@@ -255,19 +259,16 @@
         },
         {
             "number": "9",
-            "title": "Google Documentation Publishing Rule",
+            "title": "Documentation Publication and Repository Verification",
             "paragraphs": [
                 "When a permanent Google document is required, use the controlled publishing process:"
             ],
             "items": [
-                "Create the complete formatted .docx file.",
-                "Upload it to the approved Studio Headquarters folder.",
-                "Open the uploaded Word file.",
-                "Save it as a native Google Doc.",
-                "Verify the title, formatting, headings, navigation, and content.",
-                "Return to the folder and remove only the temporary .docx file.",
-                "Confirm that the permanent native Google Doc remains.",
-                "Record the successful population result before moving to the next document."
+                "Verify the repository document.",
+                "Verify Studio Portal rendering.",
+                "Verify search and metadata.",
+                "If applicable, publish or update the approved human-readable document.",
+                "Record successful reconciliation before continuing."
             ]
         },
         {
@@ -315,18 +316,35 @@
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "PROC-001",
+        "PROC-002",
+        "PROC-004",
+        "STATE-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "WS-HIST-001",
+        "MILE-HIST-001",
+        "DEC-LOG-001",
+        "STD-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled documentation update procedure with repository-first documentation governance.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against verified repository during WS086."
     }
 }

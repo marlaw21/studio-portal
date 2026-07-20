@@ -7,245 +7,369 @@
     "category": "Architecture",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Defines the verified current Fully Modular StudioDB architecture and its operating layers.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Defines the verified repository architecture of TMS-OS at the Enterprise Documentation Reconciliation checkpoint.",
     "keywords": [
         "ARCH-001",
         "Current Studio Architecture",
-        "Studio Governance / Core Architecture"
+        "TMS-OS",
+        "Studio Portal",
+        "StudioDB",
+        "Permanent Documentation",
+        "Session Governance",
+        "Controlled Permanent Output"
     ],
     "sections": [
         {
             "number": "1",
             "title": "Purpose",
             "paragraphs": [
-                "This document defines the verified current architecture of the Two Marshalls Studios Operating System (TMS-OS). It records how the studio's portal, structured data, documentation, search, source code, and permanent human-readable records relate to one another at the current historical recovery checkpoint.",
-                "This document describes the architecture that is verified now. Historical changes belong in the separate Architecture Evolution record."
+                "This document records the verified current architecture of the Two Marshalls Studios Operating System (TMS-OS) at the Work Session 086 Enterprise Documentation Reconciliation checkpoint.",
+                "It describes the architecture evidenced by the uploaded studio-portal repository. It does not authorize future components, replace repository evidence, or rewrite architectural history. Verified architectural changes over time belong in ARCH-EVO-001."
             ]
         },
         {
             "number": "2",
-            "title": "Architecture Control Rule",
+            "title": "Architecture Evidence Rule",
             "paragraphs": [
-                "The current architecture must be described from verified system behavior and approved records, not assumptions about future work.",
-                "TMS-OS and StudioDB govern structured studio records. Google Workspace provides the permanent human-readable documentation layer. GitHub preserves source code and project history. Chat, screenshots, temporary files, and local working copies may provide evidence or working context, but they must not become competing permanent sources of truth."
+                "Current architecture must be documented from repository evidence, tested behavior, approved project decisions, and controlled permanent records.",
+                "The repository is the evidence baseline for implemented source code. STATE-001 records the approved operating checkpoint. ROADMAP-001 governs approved direction. ARCH-EVO-001 preserves architectural change history.",
+                "Chat history, screenshots, ZIP copies, temporary files, and personal memory may support investigation, but they do not independently become permanent architecture truth."
             ]
         },
         {
             "number": "3",
-            "title": "Current Architecture Summary",
-            "paragraphs": [
-                "The verified current architecture is:",
-                "Fully Modular StudioDB",
-                "The architecture is organized around a shared Studio Operating System in which structured studio information is separated into modular data files and combined into a common studio data object for use across the Studio Portal."
+            "title": "Verified Repository Baseline",
+            "items": [
+                "Repository: studio-portal",
+                "Repository version recorded in VERSION.md: v0.28.1",
+                "Root application entry point: index.html",
+                "Primary stylesheet: css/styles.css",
+                "Top-level portal JavaScript files: 12",
+                "Session and permanent-document governance modules: 48 JavaScript files",
+                "Structured StudioDB record modules: 33 JavaScript files",
+                "Structured permanent-document JSON files: 20",
+                "Department and functional HTML pages under pages/: 6",
+                "Legacy architecture companion file: pages/documents/ARCH-001.html"
             ]
         },
         {
             "number": "4",
-            "title": "Core Architecture Layers",
-            "items": [
-                "Studio Portal — visible command center and user-facing operating interface.",
-                "StudioDB — structured studio record system.",
-                "Modular studio-data files — separated data sources organized by studio information area.",
-                "Shared render layer — reusable rendering behavior for portal content.",
-                "Shared search engine — cross-department search across supported studio knowledge.",
-                "GitHub — source code and project history preservation.",
-                "Google Headquarters — permanent human-readable documentation and operational reference layer.",
-                "Enhancement Ideas Log — controlled holding location for future improvements that are not active work."
+            "title": "Current Architecture Summary",
+            "paragraphs": [
+                "TMS-OS is a browser-based studio operating system composed of a shared Studio Portal, modular StudioDB data, reusable rendering and search services, a structured permanent-document library, and a layered work-session and controlled-permanent-output governance system.",
+                "The architecture has progressed beyond the earlier Fully Modular StudioDB milestone. Fully Modular StudioDB remains a foundational data architecture, while the current repository also includes extensive session governance, permanent-document drafting, transaction analysis, approval, authorization, execution-boundary, verification, rollback, lifecycle, and state-transition modules."
             ]
         },
         {
             "number": "5",
-            "title": "Studio Portal Layer",
+            "title": "User Interface and Portal Layer",
             "paragraphs": [
-                "The Studio Portal is the visible command center for Two Marshalls Studios. It presents studio status, current work, system health, notifications, commands, projects, progress, departments, documentation, and shared search.",
-                "The portal is not intended to create separate copies of studio truth. Its role is to render and expose information from the governed studio data structure."
+                "The Studio Portal is the user-facing command center. index.html loads the shared data, record modules, governance modules, search, and application behavior in a controlled script order.",
+                "Functional portal pages provide dedicated views for Documentation, Development, Assets, Publishing, Marketing, and Business. Shared layout, components, document rendering, and department-specific JavaScript support these views."
+            ],
+            "items": [
+                "index.html — primary headquarters entry point",
+                "pages/documentation.html — permanent-document catalog and viewer access",
+                "pages/development.html — development area",
+                "pages/assets.html — asset area",
+                "pages/publishing.html — publishing area",
+                "pages/marketing.html — marketing area",
+                "pages/business.html — business operations area",
+                "js/layout.js and js/components.js — shared interface construction",
+                "css/styles.css — shared visual system"
             ]
         },
         {
             "number": "6",
-            "title": "StudioDB Layer",
+            "title": "StudioDB Data Layer",
             "paragraphs": [
-                "StudioDB is the structured data foundation of TMS-OS.",
-                "The verified stable checkpoint contains:",
-                "The last completed development milestone, MILE-013 - Fully Modular StudioDB, established the current modular architecture."
+                "StudioDB is the structured data foundation of the portal. Its architecture separates core configuration, documentation metadata, departments, database behavior, knowledge behavior, migration behavior, and individual record types into modular JavaScript files.",
+                "The loader combines supported modules for portal use. Database validation and record behavior are implemented separately from page presentation."
             ],
             "items": [
-                "32 record types",
-                "127 records",
-                "0 invalid records",
-                "0 duplicate IDs"
+                "js/studio-data/core.js — core studio metadata and state",
+                "js/studio-data/documentation.js — documentation data",
+                "js/studio-data/departments.js — department data",
+                "js/studio-data/database.js — shared database assembly",
+                "js/studio-data/database-engine.js — database behavior and validation",
+                "js/studio-data/loader.js — modular data loading",
+                "js/studio-data/knowledge.js — knowledge-layer behavior",
+                "js/studio-data/migration.js — migration support",
+                "js/studio-data/records/ — 33 modular record files"
             ]
         },
         {
             "number": "7",
-            "title": "Modular Data Structure",
+            "title": "Record Module Architecture",
             "paragraphs": [
-                "The current architecture separates studio data into modular files rather than maintaining one large permanent data file.",
-                "The modular data sources are combined into the shared studio data object used by the portal. This allows the system to remain organized while still presenting a unified operating view."
+                "Each major information responsibility is separated into a dedicated record module. This prevents one oversized data file from becoming the sole maintenance point and allows shared systems to consume a unified set of structured records."
             ],
             "items": [
-                "Core studio data",
-                "Documentation data",
-                "Department data"
+                "Governance records: decisions, standards, procedures, risks, technical debt, enhancements, status, milestones, work sessions",
+                "Knowledge records: lessons learned, research, recommendations, AI conversations, meeting notes, knowledge packages, studio chronicle",
+                "Operational records: projects, progress, notifications, studio commands, system configuration, releases, bugs",
+                "Studio function records: departments, assets, publishing, marketing, migration packages",
+                "Permanent-document catalog records: documents"
             ]
         },
         {
             "number": "8",
-            "title": "Shared Rendering Architecture",
+            "title": "Rendering and Document Viewer Layer",
             "paragraphs": [
-                "The portal uses shared rendering behavior so supported content can be displayed through common components and layouts rather than requiring unrelated page-specific systems.",
-                "This architecture supports consistency across studio areas and reduces the risk that individual pages become separate sources of truth."
+                "Structured permanent documents are stored as JSON and rendered through shared document services rather than maintained as unrelated page-specific HTML.",
+                "The documentation page uses the catalog metadata in js/studio-data/records/documents.js to locate documentDataFile paths and open the structured records through the common viewer and template."
+            ],
+            "items": [
+                "js/documentation.js — documentation-page behavior",
+                "js/document-viewer.js — document loading and viewer behavior",
+                "js/document-template.js — shared structured-document rendering",
+                "js/studio-data/records/documents.js — permanent-document catalog metadata",
+                "pages/documents/*.json — structured permanent-document content"
             ]
         },
         {
             "number": "9",
             "title": "Shared Search Architecture",
             "paragraphs": [
-                "The shared search engine is a verified cross-department capability.",
-                "The search architecture is intended to search supported studio knowledge across departments rather than remaining isolated to a single page."
+                "The shared search engine is loaded after the data and governance modules and before the main application script.",
+                "Its role is to provide cross-department discovery of supported studio knowledge while preserving the underlying governed records as the source content."
             ],
             "items": [
-                "Global Search Integration — Complete",
-                "Cross-Department Global Search — Complete"
+                "js/search.js — shared search behavior",
+                "Cross-department search — implemented",
+                "Clickable search-result presentation — implemented",
+                "Search result styling — shared through css/styles.css"
             ]
         },
         {
             "number": "10",
-            "title": "Documentation Architecture",
+            "title": "Permanent Documentation Library",
             "paragraphs": [
-                "The documentation architecture has two distinct governed layers:",
-                "These layers must support one another without becoming competing sources of truth.",
-                "The permanent procedures governing this relationship include PROC-003 - Documentation Update Procedure, DOC-STATE-001 - Documentation State, and DOC-INDEX-001 - Documentation Index."
+                "The repository contains 20 structured permanent-document JSON files under pages/documents. The library includes current-state, architecture, roadmap, documentation-control, procedure, standard, history, decision, risk, technical-debt, lesson, bug, milestone, work-session, and enhancement records.",
+                "The JSON documents are the canonical portal-rendered records. ARCH-001.html is a legacy companion and must not supersede ARCH-001.json."
             ],
             "items": [
-                "Structured records governed by TMS-OS and StudioDB.",
-                "Permanent human-readable documents published to the approved Google Headquarters structure."
+                "Current control: STATE-001, ARCH-001, ROADMAP-001, DOC-STATE-001, DOC-INDEX-001",
+                "Architecture history: ARCH-EVO-001",
+                "Governance: STD-001, PROC-001, PROC-002, PROC-003, PROC-004",
+                "History and audit: HIST-001, WS-HIST-001, MILE-HIST-001, DEC-LOG-001, BUG-HIST-001, LESSON-001",
+                "Registers: RISK-001, TECH-DEBT-001, ENH-LOG-001"
             ]
         },
         {
             "number": "11",
-            "title": "Google Headquarters Architecture",
+            "title": "Work Session Governance Layer",
             "paragraphs": [
-                "The verified permanent top-level Google Headquarters structure is:",
-                "This structure is complete. Population of the permanent human-readable documentation layer remains in progress."
+                "The session architecture provides persistent session context, controlled recording of objectives and outcomes, preparation for review, and a human approval gate before formal closure.",
+                "These modules create the operating context used by permanent-document writers and downstream transaction controls."
             ],
             "items": [
-                "01 - Studio Governance",
-                "02 - Studio Operations",
-                "03 - Game Projects",
-                "04 - Development",
-                "05 - Assets",
-                "06 - Publishing",
-                "07 - Marketing",
-                "08 - Business Operations",
-                "09 - Knowledge Base",
-                "10 - Meetings",
-                "99 - Archive",
-                "START HERE"
+                "session-context.js — active work-session context and persistence",
+                "session-manager.js — objectives, completed work, file changes, tests, decisions, and summary records",
+                "prepare-session.js — review-readiness validation and review package preparation",
+                "close-session.js — approval-controlled session closure",
+                "document-update-engine.js — proposed permanent-document update planning"
             ]
         },
         {
             "number": "12",
-            "title": "Source Code and Project History",
+            "title": "Permanent Document Writer Architecture",
             "paragraphs": [
-                "GitHub preserves source code and project history. The studio architecture must remain accessible from multiple workstations and must not depend on one computer for important work.",
-                "Local files may be used during active work, but important source code, records, and permanent documentation must be preserved in their approved shared systems."
+                "The writer framework creates reviewable document proposals and drafts. The registry validates compatible writer contracts, enforces one writer per registered document, orders writers deterministically, and assembles a draft package.",
+                "The writer registry does not itself write permanent files."
+            ],
+            "items": [
+                "document-writer-framework.js — shared writer contract and behavior",
+                "document-writer-registry.js — registration, validation, ordering, and draft-package collection",
+                "work-session-history-writer.js — WS-HIST-001 append writer",
+                "current-state-writer.js — STATE-001 replace writer",
+                "documentation-state-writer.js — DOC-STATE-001 replace writer",
+                "decision-log-writer.js — DEC-LOG-001 append writer",
+                "milestone-history-writer.js — MILE-HIST-001 append writer"
             ]
         },
         {
             "number": "13",
-            "title": "Current Architecture Relationships",
+            "title": "Permanent Transaction Analysis Layer",
+            "paragraphs": [
+                "After accepted document drafts are available, the permanent-transaction architecture builds and analyzes a controlled transaction before any permanent state change is permitted.",
+                "The repository separates transaction creation, execution planning, dependency analysis, readiness analysis, manifest generation, integrity analysis, checksums, deterministic signature proposals, and manifest building into distinct modules."
+            ],
             "items": [
-                "TMS-OS provides the overall studio operating framework.",
-                "StudioDB governs structured studio records.",
-                "Modular data files separate major data responsibilities.",
-                "The shared data object combines supported modular data for portal use.",
-                "The render layer displays governed information.",
-                "The shared search engine finds supported knowledge across studio areas.",
-                "GitHub preserves code and project history.",
-                "Google Headquarters preserves permanent human-readable documentation.",
-                "ENH-LOG-001 preserves deferred improvements without interrupting approved work."
+                "permanent-transaction-manager.js",
+                "permanent-transaction-execution-plan-generator.js",
+                "permanent-transaction-dependency-analyzer.js",
+                "permanent-transaction-readiness-analyzer.js",
+                "permanent-transaction-manifest-generator.js",
+                "permanent-transaction-integrity-analyzer.js",
+                "permanent-transaction-checksum-generator.js",
+                "permanent-transaction-digital-signature-generator.js",
+                "permanent-transaction-manifest-builder.js"
             ]
         },
         {
             "number": "14",
-            "title": "Current Architecture Boundaries",
+            "title": "Controlled Output and Rollback Layer",
             "paragraphs": [
-                "The following must not become independent permanent sources of truth:",
-                "These items may provide evidence, recovery material, or temporary working context, but verified knowledge must be reconciled into the governed architecture."
+                "The repository contains separate components for original-document capture, rollback-package generation, controlled execution, file-writing boundaries, execution verification, authorization, permanent-write execution, rollback execution, orchestration, review packaging, and final human approval.",
+                "The separation is intended to prevent draft generation or transaction analysis from silently becoming a permanent write."
             ],
             "items": [
-                "Chat history",
-                "Screenshots",
-                "Temporary Word uploads",
-                "Unverified backup exports",
-                "Personal memory",
-                "Files available only on one workstation"
+                "original-document-capture-engine.js",
+                "rollback-package-generator.js",
+                "controlled-execution-engine.js",
+                "permanent-file-writer.js",
+                "execution-verification-engine.js",
+                "execution-authorization-engine.js",
+                "permanent-write-execution-engine.js",
+                "rollback-execution-engine.js",
+                "permanent-output-orchestrator.js",
+                "pipeline-review-package-generator.js",
+                "final-human-approval-gateway.js"
             ]
         },
         {
             "number": "15",
-            "title": "Current Architecture Status",
+            "title": "Permanent Documentation Lifecycle and State Control",
+            "paragraphs": [
+                "The latest repository architecture includes coordinating, workflow, lifecycle, state-management, transition, authorization, approval, execution, recording, and validation controllers for permanent-document state changes.",
+                "These components are intentionally separated so that a proposed transition, an approved transition, an authorized transition, and an executed transition remain distinguishable."
+            ],
             "items": [
-                "Current architecture: Fully Modular StudioDB",
-                "Last completed development milestone: MILE-013 - Fully Modular StudioDB",
-                "Current active milestone: MILE-014 - Complete Historical Recovery",
-                "Historical documentation recovery: In Progress",
-                "Google Headquarters structure: Complete",
-                "Google synchronization: Not Started"
+                "permanent-documentation-workflow-manager.js",
+                "permanent-documentation-operations-controller.js",
+                "permanent-documentation-system-coordinator.js",
+                "permanent-documentation-lifecycle-controller.js",
+                "permanent-documentation-state-manager.js",
+                "permanent-documentation-state-transition-controller.js",
+                "permanent-documentation-transition-authorization-controller.js",
+                "permanent-documentation-transition-approval-controller.js",
+                "permanent-documentation-transition-approval-execution-controller.js",
+                "permanent-documentation-transition-execution-controller.js",
+                "permanent-documentation-state-change-execution-controller.js",
+                "permanent-documentation-state-change-authorization-controller.js",
+                "permanent-documentation-state-change-approval-recorder.js",
+                "permanent-documentation-state-change-approval-validation-controller.js"
             ]
         },
         {
             "number": "16",
-            "title": "Change Control",
+            "title": "Script Loading and Dependency Order",
             "paragraphs": [
-                "Architecture changes must not be introduced during unrelated work or bug-fix activity unless Stephen explicitly approves a separate path.",
-                "A proposed architecture improvement must be captured as an enhancement when it is not part of approved current work. Approved architecture changes must later be preserved in the appropriate decision, architecture evolution, work session, milestone, and documentation records."
+                "index.html establishes a deliberate dependency order. Core StudioDB modules and record files load first, followed by loader, knowledge, and migration services. Session context and governance modules load next. Search loads after those dependencies, and js/app.js initializes the main portal behavior last.",
+                "Changes to script order are architectural changes and must be tested because downstream modules depend on earlier globals being available."
             ]
         },
         {
             "number": "17",
-            "title": "Relationship to Other Permanent Records",
+            "title": "Safety and Execution Boundary",
+            "paragraphs": [
+                "Repository presence does not automatically prove that permanent writes, rollback execution, or state changes are enabled in production behavior.",
+                "PERMANENT-ARCHITECTURE-MAP.md records a disabled safety state at its documented checkpoint: execution authorization, permanent execution, permanent writes, rollback and restore execution, permanent state changes, and manifest mutation were disabled. Private-key signing and certificate trust validation were not implemented.",
+                "Until a later controlled test proves otherwise, documentation must distinguish implemented modules from authorized permanent execution."
+            ],
             "items": [
-                "STATE-001 records the current system state.",
-                "ROADMAP-001 records completed, active, and controlled future direction.",
-                "HIST-001 records the verified historical sequence.",
-                "DOC-STATE-001 records documentation status.",
-                "DOC-INDEX-001 controls the permanent document index.",
-                "ENH-LOG-001 preserves deferred enhancement ideas.",
-                "The future Architecture Evolution record will preserve verified changes from earlier architecture states to the current architecture."
+                "Draft creation is not a permanent write.",
+                "Transaction creation is not execution authorization.",
+                "A deterministic signature proposal is not a real PKI signature.",
+                "Approval, authorization, execution, verification, and rollback are separate control responsibilities.",
+                "No permanent execution state should be inferred solely from file existence."
             ]
         },
         {
             "number": "18",
-            "title": "Current Architecture Completion Standard",
+            "title": "External Preservation and Multi-Workstation Boundary",
             "paragraphs": [
-                "The current architecture record is complete when it accurately describes the verified operating layers, their responsibilities, their relationships, and their boundaries without inventing unsupported components or future systems."
+                "GitHub is the approved source-code and project-history preservation layer reflected in the repository workflow.",
+                "Existing governance records also describe a Google Headquarters human-readable documentation layer. The WS086 repository audit verified references to that layer but did not independently inspect or certify the external Google Drive contents.",
+                "Important project information must not depend on one workstation or an untracked local copy."
             ]
         },
         {
             "number": "19",
+            "title": "Architecture Relationships",
+            "items": [
+                "STATE-001 records the approved current operating checkpoint.",
+                "ARCH-001 records the verified current architecture.",
+                "ARCH-EVO-001 records verified architecture evolution.",
+                "ROADMAP-001 governs approved future direction.",
+                "DOC-INDEX-001 catalogs permanent documents.",
+                "DOC-STATE-001 records documentation health and reconciliation status.",
+                "DEC-LOG-001 preserves approved decisions.",
+                "WS-HIST-001 and MILE-HIST-001 preserve session and milestone history.",
+                "ENH-LOG-001 holds unapproved future improvements without changing current architecture."
+            ]
+        },
+        {
+            "number": "20",
+            "title": "Architecture Change Control",
+            "paragraphs": [
+                "Architecture changes must be approved as intentional project work. Bug fixes must not silently expand architecture, and unapproved enhancements must be recorded in ENH-LOG-001.",
+                "A verified architecture change should be reflected, as applicable, in source code, tests, STATE-001, ARCH-001, ARCH-EVO-001, DEC-LOG-001, WS-HIST-001, MILE-HIST-001, DOC-STATE-001, and ROADMAP-001.",
+                "Permanent-document reconciliation must preserve historical truth while correcting stale current-state descriptions."
+            ]
+        },
+        {
+            "number": "21",
+            "title": "Current Reconciliation Status",
+            "items": [
+                "Work Session: WS086 — Enterprise Documentation Reconciliation",
+                "Current phase: Permanent Documentation Alignment",
+                "STATE-001 reconciliation: installed and visually verified in the Studio Portal",
+                "ARCH-001 reconciliation: current controlled module",
+                "ROADMAP-001 reconciliation: next after architecture approval",
+                "DOC-STATE-001 reconciliation: planned after roadmap reconciliation",
+                "Feature development: paused until core permanent-document reconciliation is complete"
+            ]
+        },
+        {
+            "number": "22",
+            "title": "Completion Standard",
+            "paragraphs": [
+                "ARCH-001 is complete when it accurately identifies the implemented repository layers, their responsibilities, their dependency order, their safety boundaries, and their relationship to permanent records without presenting untested capabilities as active.",
+                "The document must remain readable as a technical blueprint while deferring historical sequence to ARCH-EVO-001 and current operating status to STATE-001."
+            ]
+        },
+        {
+            "number": "23",
             "title": "Permanent Statement",
             "paragraphs": [
-                "The current Two Marshalls Studios architecture is a Fully Modular StudioDB operating model. Structured records, portal rendering, shared search, source control, and permanent human-readable documentation must remain coordinated so the studio can work across locations without losing history or creating competing sources of truth."
+                "The current TMS-OS architecture is a modular browser-based studio operating system that combines the Studio Portal, StudioDB, structured permanent documents, shared rendering and search, work-session governance, permanent-document writers, transaction analysis, controlled-output boundaries, rollback preparation, and lifecycle and state-transition controls.",
+                "Its governing architectural rule is separation of responsibility: evidence, drafts, approvals, authorizations, execution, verification, rollback, current state, history, and future direction must remain distinct and traceable."
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "ARCH-EVO-001",
+        "ROADMAP-001",
+        "DOC-INDEX-001",
+        "DOC-STATE-001",
+        "DEC-LOG-001",
+        "WS-HIST-001",
+        "MILE-HIST-001",
+        "ENH-LOG-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
-            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "summary": "Connected the verified recovered architecture document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled the current architecture with the uploaded repository, including StudioDB, permanent-document rendering, session governance, transaction analysis, controlled-output, rollback, lifecycle, and state-control layers.",
+            "status": "Approved for Controlled Installation"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled — Installation Test Required",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the uploaded studio-portal repository during Work Session 086. Final verification requires Studio Portal rendering, search, console, and Git change-scope tests."
     }
 }

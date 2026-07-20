@@ -7,10 +7,10 @@
     "category": "Technical Debt",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Provides the permanent register for verified unresolved technical limitations and corrective obligations.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Provides the permanent register for verified unresolved technical limitations aligned with the WS086 repository reconciliation.",
     "keywords": [
         "TECH-DEBT-001",
         "Studio Technical Debt Register",
@@ -90,8 +90,8 @@
             "number": "7",
             "title": "Historical Recovery Boundary",
             "paragraphs": [
-                "No historical technical debt items are marked verified solely because the recovered 16-category documentation package identified Technical debt as a required category.",
-                "Historical technical debt remains open for controlled recovery. Evidence must be reviewed before any recovered item is promoted to the verified register."
+                "Historical technical debt remains open for controlled recovery.",
+                "Work Session 086 continues repository-first reconciliation. Technical debt is recorded only after verified evidence confirms the obligation."
             ]
         },
         {
@@ -111,15 +111,17 @@
             "number": "9",
             "title": "Current State",
             "paragraphs": [
-                "The permanent technical debt category is now established through TECH-DEBT-001.",
-                "No historical technical debt items are verified in this initial register. Historical recovery and future verified entries remain controlled work."
+                "The permanent Technical Debt category is established through TECH-DEBT-001.",
+                "Repository reconciliation is in progress during Work Session 086.",
+                "No historical technical debt items are yet verified."
             ]
         },
         {
             "number": "10",
             "title": "Next Controlled Action",
             "paragraphs": [
-                "Continue the recovered 16-category documentation package by creating the next missing permanent category document. Add technical debt entries only when supported by verified evidence."
+                "Continue repository reconciliation after TECH-DEBT-001 verification.",
+                "Add technical debt entries only when supported by verified evidence."
             ]
         },
         {
@@ -130,18 +132,35 @@
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "PROC-002",
+        "PROC-003",
+        "STATE-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "BUG-HIST-001",
+        "LESSON-001",
+        "DEC-LOG-001",
+        "ENH-LOG-001",
+        "STD-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled the technical debt register with the verified repository governance model.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified v0.28.1 repository during Work Session 086."
     }
 }

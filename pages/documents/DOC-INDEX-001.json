@@ -2,15 +2,15 @@
     "id": "DOC-INDEX-001",
     "title": "Documentation Index",
     "documentType": "Permanent Documentation Index",
-    "organization": "Two Marshalls Studios — Studio Operating System (TMS-OS)",
+    "organization": "Two Marshalls Studios \u2014 Studio Operating System (TMS-OS)",
     "department": "Studio Governance",
     "category": "Documentation Index",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Provides the permanent master index of verified human-readable studio documents.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Provides the permanent master index of the verified 20-document structured repository documentation and its governance relationships.",
     "keywords": [
         "DOC-INDEX-001",
         "Documentation Index",
@@ -275,7 +275,7 @@
             "number": "10",
             "title": "Next Controlled Action",
             "paragraphs": [
-                "Upload DOC-INDEX-001 to Studio Headquarters → 01 - Studio Governance, convert it to a native Google Doc, verify the title, formatting, and location, remove the temporary Word file, and then record the result.",
+                "Upload DOC-INDEX-001 to Studio Headquarters \u2192 01 - Studio Governance, convert it to a native Google Doc, verify the title, formatting, and location, remove the temporary Word file, and then record the result.",
                 "After verification, the next documentation item must be selected from the remaining recovered categories based on verified source evidence and recovery priority. No document name, ID, or sequence should be invented."
             ]
         },
@@ -303,18 +303,42 @@
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "ARCH-001",
+        "ROADMAP-001",
+        "DOC-STATE-001",
+        "ARCH-EVO-001",
+        "STD-001",
+        "PROC-001",
+        "PROC-002",
+        "PROC-003",
+        "PROC-004",
+        "WS-HIST-001",
+        "MILE-HIST-001",
+        "DEC-LOG-001",
+        "HIST-001",
+        "RISK-001",
+        "TECH-DEBT-001",
+        "ENH-LOG-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled the documentation index with the verified repository inventory, updated governance relationships, and aligned the document with repository-first documentation control.",
+            "status": "Approved for Controlled Installation"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled \u2014 Installation Test Required",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the uploaded studio-portal repository, verified permanent-document inventory, repository governance documents, and approved WS086 project state."
     }
 }

@@ -7,10 +7,10 @@
     "category": "Work Sessions",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Preserves the verified historical work-session sequence and major session outcomes.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Preserves the verified historical work-session sequence, major session outcomes, and the current WS086 enterprise documentation reconciliation checkpoint.",
     "keywords": [
         "WS-HIST-001",
         "Studio Work Session History",
@@ -44,10 +44,13 @@
             "items": [
                 "PROC-001 governs the work-session process.",
                 "PROC-003 governs permanent documentation updates.",
+                "PROC-004 governs Prepare Session, review, approval, and formal closure.",
                 "HIST-001 preserves the broader studio historical timeline.",
                 "ROADMAP-001 preserves milestone direction and sequence.",
                 "STATE-001 records the current verified system checkpoint.",
+                "DOC-STATE-001 records the current documentation checkpoint.",
                 "DEC-LOG-001 preserves major decisions.",
+                "MILE-HIST-001 preserves milestone and checkpoint history.",
                 "ARCH-EVO-001 preserves architecture evolution.",
                 "This document preserves the work-session layer of studio history."
             ]
@@ -110,6 +113,13 @@
                             "Historical Recovery",
                             "Historical Recovery and Documentation Reconciliation",
                             "Current controlled recovery session; permanent Google documentation population and reconciliation in progress",
+                            "Verified current session"
+                        ],
+                        [
+                            "WS-086",
+                            "Enterprise Documentation Reconciliation",
+                            "Permanent Documentation Alignment",
+                            "Repository-first reconciliation of the 20 permanent JSON documents is in progress; standards and procedures have been reconciled through PROC-004",
                             "Verified current session"
                         ]
                     ]
@@ -262,14 +272,32 @@
             "title": "Current Recovery Status",
             "items": [
                 "Work-session category: Historical recovery record established.",
-                "Verified recent session identifiers preserved: WS-026, WS-027, WS-028, and WS-049AR.",
+                "Verified recent session identifiers preserved: WS-026, WS-027, WS-028, WS-049AR, and WS-086.",
                 "Earlier session-by-session recovery: Incomplete and controlled.",
-                "Current active recovery milestone: MILE-014 - Complete Historical Recovery.",
-                "Next requirement: continue recovering permanent documentation categories without inventing unsupported history."
+                "Current active phase: WS086 Enterprise Documentation Reconciliation — Permanent Documentation Alignment.",
+                "Verified repository checkpoint: v0.28.1 with 20 permanent JSON documents.",
+                "Next requirement: continue reconciliation with MILE-HIST-001 without inventing unsupported history."
             ]
         },
         {
             "number": "16",
+            "title": "Verified Work Session 086",
+            "paragraphs": [
+                "Session ID: WS-086"
+            ],
+            "items": [
+                "Primary area: Enterprise Documentation Reconciliation.",
+                "Phase: Permanent Documentation Alignment.",
+                "Verified repository version: v0.28.1.",
+                "Verified permanent document inventory: 20 JSON documents under pages/documents.",
+                "Verified shared systems: Document Viewer, Document Template Engine, Shared Search, shared rendering, StudioDB, transaction framework, lifecycle framework, and state-transition framework.",
+                "Verified reconciliation packages completed during this session: STD-001, PROC-001, PROC-002, PROC-003, and PROC-004.",
+                "Current controlled action: reconcile WS-HIST-001 without inventing unsupported historical sessions.",
+                "Next approved document after WS-HIST-001: MILE-HIST-001."
+            ]
+        },
+        {
+            "number": "17",
             "title": "Permanent Statement",
             "paragraphs": [
                 "Two Marshalls Studios work sessions are part of the permanent operating history of the studio. Important session outcomes must remain recoverable across chat threads, computers, and time.",
@@ -277,18 +305,38 @@
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "PROC-001",
+        "PROC-003",
+        "PROC-004",
+        "STATE-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "ROADMAP-001",
+        "HIST-001",
+        "MILE-HIST-001",
+        "DEC-LOG-001",
+        "ARCH-001",
+        "ARCH-EVO-001",
+        "STD-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled the work-session history with the verified repository checkpoint and added the WS086 documentation reconciliation record.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified v0.28.1 repository and 20-document permanent documentation inventory during Work Session 086."
     }
 }

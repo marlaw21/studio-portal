@@ -7,96 +7,127 @@
     "category": "Documentation State",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Records the verified state, control rules, and remaining recovery work for permanent studio documentation.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Records the verified permanent-document inventory, reconciliation status, control rules, risks, and remaining documentation work for TMS-OS.",
     "keywords": [
         "DOC-STATE-001",
         "Documentation State",
-        "Studio Governance / Documentation"
+        "Permanent Documentation",
+        "Documentation Reconciliation",
+        "Studio Governance",
+        "TMS-OS"
     ],
     "sections": [
         {
             "number": "1",
             "title": "Purpose",
             "paragraphs": [
-                "This document is the permanent control record for the current state of Two Marshalls Studios documentation. It records what has been verified, what has already been published into the Google Headquarters structure, what still requires historical recovery, and the rules that prevent documentation from becoming fragmented or dependent on chat history."
+                "This document is the permanent control record for the current state of Two Marshalls Studios documentation.",
+                "It records the verified permanent-document inventory, the current reconciliation milestone, the status of core control documents, source-of-truth roles, remaining work, risks, and completion requirements.",
+                "It does not replace DOC-INDEX-001, which catalogs the documents themselves, or STATE-001, which records the operating state of TMS-OS."
             ]
         },
         {
             "number": "2",
-            "title": "Core Rule",
+            "title": "Core Documentation Rule",
             "paragraphs": [
-                "No documentation item is considered permanently established until its content, identity, destination, and status have been verified.",
-                "TMS-OS and StudioDB govern structured studio records. The approved Google Headquarters structure is the permanent human-readable documentation layer. GitHub preserves source code and project history. Chat, screenshots, temporary files, and local exports may provide evidence, but they must not become the only location of important studio knowledge."
+                "No documentation item is considered permanently established merely because a file exists, a draft was generated, or a document rendered successfully.",
+                "Permanent documentation must have a verified identity, an approved responsibility, valid structured content, a controlled destination, successful tests, an authorized session decision, and an auditable change history.",
+                "Repository evidence, permanent records, controlled tests, and explicit human approval govern documentation truth. Chat, screenshots, ZIP files, local exports, and memory may provide evidence, but must not remain the only location of important studio knowledge."
             ]
         },
         {
             "number": "3",
-            "title": "Verified Google Headquarters Structure",
-            "paragraphs": [
-                "The permanent top-level Studio Headquarters structure has been created and verified:"
-            ],
-            "items": [
-                "01 - Studio Governance",
-                "02 - Studio Operations",
-                "03 - Game Projects",
-                "04 - Development",
-                "05 - Assets",
-                "06 - Publishing",
-                "07 - Marketing",
-                "08 - Business Operations",
-                "09 - Knowledge Base",
-                "10 - Meetings",
-                "99 - Archive",
-                "START HERE"
+            "title": "Current Documentation Milestone",
+            "tables": [
+                {
+                    "headers": [
+                        "Control Point",
+                        "Current State"
+                    ],
+                    "rows": [
+                        [
+                            "Work Session",
+                            "WS086"
+                        ],
+                        [
+                            "Session Title",
+                            "Enterprise Documentation Reconciliation"
+                        ],
+                        [
+                            "Active Milestone",
+                            "Documentation Reconciliation"
+                        ],
+                        [
+                            "Current Phase",
+                            "Permanent Documentation Alignment"
+                        ],
+                        [
+                            "Repository Version",
+                            "v0.28.1"
+                        ],
+                        [
+                            "Evidence Baseline",
+                            "Uploaded studio-portal repository"
+                        ],
+                        [
+                            "Feature Development",
+                            "Paused until core documentation reconciliation closes"
+                        ],
+                        [
+                            "Overall Documentation State",
+                            "Structurally complete; content reconciliation in progress"
+                        ]
+                    ]
+                }
             ]
         },
         {
             "number": "4",
-            "title": "Verified Permanent Documents Currently Established",
+            "title": "Verified Permanent Document Inventory",
             "paragraphs": [
-                "The following documents have been created, uploaded, converted to Google Docs where applicable, and visually verified during the current controlled population process:"
+                "The repository contains 20 structured permanent-document JSON files under pages/documents. No permanent JSON document was identified for immediate removal or merger during the WS086 inventory.",
+                "The repository also contains ARCH-001.html as a legacy companion file. ARCH-001.json remains the canonical structured record for the shared document viewer."
             ],
             "tables": [
                 {
                     "headers": [
-                        "Document",
-                        "Location",
-                        "Status",
-                        "Purpose"
+                        "Governance Group",
+                        "Documents",
+                        "Count"
                     ],
                     "rows": [
                         [
-                            "STATE-001 - Current System State",
-                            "01 - Studio Governance",
-                            "Verified",
-                            "Records the current operating state and checkpoint of TMS-OS."
+                            "Strategic and Current Control",
+                            "ROADMAP-001, STATE-001, ARCH-001, ARCH-EVO-001",
+                            "4"
                         ],
                         [
-                            "PROC-001 - Work Session Procedure",
-                            "02 - Studio Operations",
-                            "Verified",
-                            "Defines the controlled work-session process."
+                            "Documentation Control",
+                            "DOC-INDEX-001, DOC-STATE-001",
+                            "2"
                         ],
                         [
-                            "PROC-002 - Bug Fix Procedure",
-                            "02 - Studio Operations",
-                            "Verified",
-                            "Defines the required bug investigation, correction, and retest sequence."
+                            "Standards and Procedures",
+                            "STD-001, PROC-001, PROC-002, PROC-003, PROC-004",
+                            "5"
                         ],
                         [
-                            "PROC-003 - Documentation Update Procedure",
-                            "02 - Studio Operations",
-                            "Verified",
-                            "Defines how completed work becomes permanent structured documentation."
+                            "History and Audit",
+                            "DEC-LOG-001, MILE-HIST-001, WS-HIST-001, HIST-001, BUG-HIST-001, LESSON-001",
+                            "6"
                         ],
                         [
-                            "ENH-LOG-001 - Enhancement Ideas Log",
-                            "09 - Knowledge Base",
-                            "Verified",
-                            "Preserves enhancement ideas from the beginning of the project without interrupting approved foundation work."
+                            "Controlled Registers",
+                            "RISK-001, TECH-DEBT-001, ENH-LOG-001",
+                            "3"
+                        ],
+                        [
+                            "Total Structured Permanent Documents",
+                            "All JSON documents listed above",
+                            "20"
                         ]
                     ]
                 }
@@ -104,65 +135,119 @@
         },
         {
             "number": "5",
-            "title": "The 16-Document Documentation Package",
+            "title": "Documentation Architecture Assessment",
             "paragraphs": [
-                "Historical recovery identified a verified core documentation package containing 16 permanent documentation categories. These are categories of required human-readable records, not a verified numbered upload sequence.",
-                "The existence of these 16 categories does not mean that all 16 Google documents have already been populated. Each category must be recovered, reconciled, created in the correct form, placed in the correct folder, and verified."
+                "The WS086 repository audit determined that the permanent-document architecture is structurally sound.",
+                "The primary issue is documentation freshness and cross-document reconciliation, not missing document categories.",
+                "Existing documents already cover current state, roadmap, architecture, documentation control, standards, procedures, history, decisions, risks, technical debt, lessons, bugs, milestones, work sessions, and enhancements."
             ],
             "items": [
-                "Current system state",
-                "Roadmap",
-                "Documentation state",
-                "Documentation index",
-                "Historical timeline",
-                "Architecture",
-                "Architecture evolution",
-                "Decisions",
-                "Standards",
-                "Work sessions",
-                "Milestones",
-                "Procedures",
-                "Bugs and fixes",
-                "Lessons learned",
-                "Technical debt",
-                "Enhancement ideas"
+                "Preserve the existing 20-document structured library.",
+                "Reconcile stale content rather than replace the documentation architecture.",
+                "Avoid duplicate governance documents unless a specific unowned responsibility is proven.",
+                "Keep strategic direction, current state, architecture, documentation health, and historical records separate.",
+                "Populate related-document relationships where useful and supported."
             ]
         },
         {
             "number": "6",
-            "title": "Current Population Status",
-            "paragraphs": [
-                "At this checkpoint, five permanent human-readable documents have been verified in the Google Headquarters structure. The broader 16-category package remains under controlled recovery and population."
-            ],
-            "items": [
-                "Verified permanent documents: 5",
-                "Verified top-level Headquarters structure: Complete",
-                "Enhancement history baseline: Established and preserved in ENH-LOG-001",
-                "Historical documentation recovery: In progress",
-                "Automatic Google publishing: Deferred enhancement; not yet active",
-                "Documentation synchronization: Not yet automated"
+            "title": "Core Control Document Reconciliation Status",
+            "tables": [
+                {
+                    "headers": [
+                        "Document",
+                        "Responsibility",
+                        "WS086 Status",
+                        "Required Before Acceptance"
+                    ],
+                    "rows": [
+                        [
+                            "STATE-001",
+                            "Approved current operating checkpoint",
+                            "Replacement installed and visually verified in the Studio Portal",
+                            "Console, search, Git scope, and session-close validation"
+                        ],
+                        [
+                            "ARCH-001",
+                            "Verified current repository architecture",
+                            "Complete replacement package prepared for controlled installation",
+                            "Viewer, search, console, Git scope, and content verification"
+                        ],
+                        [
+                            "ROADMAP-001",
+                            "Approved strategic direction and execution queue",
+                            "Complete replacement package prepared for controlled installation",
+                            "Viewer, table, search, console, Git scope, and content verification"
+                        ],
+                        [
+                            "DOC-STATE-001",
+                            "Documentation health and reconciliation status",
+                            "Current controlled reconciliation item",
+                            "Installation and all required validation tests"
+                        ],
+                        [
+                            "DOC-INDEX-001",
+                            "Permanent-document catalog and inventory control",
+                            "Next after DOC-STATE-001",
+                            "Reconcile catalog metadata and relationship state"
+                        ]
+                    ]
+                }
             ]
         },
         {
             "number": "7",
-            "title": "Historical Recovery Requirement",
-            "paragraphs": [
-                "Documentation must be reconstructed from the earliest available Two Marshalls Studios project history. Recovery must not begin only with the current StudioDB architecture or the current chat.",
-                "The historical reconstruction must preserve:"
-            ],
-            "items": [
-                "What was built and when",
-                "Why major choices were made",
-                "Changes in direction",
-                "Work-session history",
-                "Bugs, root causes, fixes, and tests",
-                "Decisions and standards",
-                "Procedures",
-                "Milestones",
-                "Lessons learned",
-                "Technical debt",
-                "Enhancement ideas from the beginning of the project",
-                "Deferred work and future direction"
+            "title": "Remaining Reconciliation Scope",
+            "tables": [
+                {
+                    "headers": [
+                        "Order",
+                        "Documentation Group",
+                        "Planned Action"
+                    ],
+                    "rows": [
+                        [
+                            "1",
+                            "DOC-INDEX-001",
+                            "Reconcile the permanent-document catalog with the verified 20-document JSON inventory."
+                        ],
+                        [
+                            "2",
+                            "STD-001 and PROC-001 through PROC-004",
+                            "Align standards and procedures with the implemented session and permanent-document governance system."
+                        ],
+                        [
+                            "3",
+                            "WS-HIST-001, MILE-HIST-001, DEC-LOG-001",
+                            "Append verified reconciliation history and approved decisions."
+                        ],
+                        [
+                            "4",
+                            "HIST-001 and ARCH-EVO-001",
+                            "Preserve the high-level recovery and architecture-reconciliation chronology."
+                        ],
+                        [
+                            "5",
+                            "BUG-HIST-001 and LESSON-001",
+                            "Record verified defects, corrections, and lessons from the recovery and reconciliation work."
+                        ],
+                        [
+                            "6",
+                            "RISK-001, TECH-DEBT-001, ENH-LOG-001",
+                            "Reconcile active risks, technical debt, and deferred enhancement ideas."
+                        ],
+                        [
+                            "7",
+                            "Portal-wide documentation validation",
+                            "Validate catalog, viewer, template, search, console, script loading, and document relationships."
+                        ],
+                        [
+                            "8",
+                            "Milestone closeout",
+                            "Prepare Session, human review, Approve & Close, commit, and push."
+                        ]
+                    ]
+                }
             ]
         },
         {
@@ -171,29 +256,37 @@
             "tables": [
                 {
                     "headers": [
-                        "System",
-                        "Role"
+                        "System or Artifact",
+                        "Governed Role"
                     ],
                     "rows": [
                         [
                             "TMS-OS / StudioDB",
-                            "Governs structured studio records and relationships."
+                            "Governs structured studio records, relationships, portal behavior, and repository-based implementation."
+                        ],
+                        [
+                            "Structured JSON permanent documents",
+                            "Canonical portal-rendered permanent documentation records."
                         ],
                         [
                             "Google Headquarters",
-                            "Permanent human-readable documentation layer."
+                            "Approved human-readable documentation and multi-workstation access layer; external contents were not independently re-audited during WS086."
                         ],
                         [
                             "GitHub",
-                            "Preserves source code, commits, versions, and project history."
+                            "Preserves source code, commits, versions, and recoverable project history."
+                        ],
+                        [
+                            "Work-session governance modules",
+                            "Capture current work, testing, decisions, review readiness, approval, and controlled closure."
                         ],
                         [
                             "ChatGPT conversations",
-                            "Recovery evidence and working assistance; not a permanent sole source of truth."
+                            "Working assistance and recovery evidence; not a permanent sole source of truth."
                         ],
                         [
-                            "Screenshots, local files, ZIPs, and exports",
-                            "Supporting evidence and transfer material until reconciled into permanent records."
+                            "Screenshots, ZIPs, local files, and exports",
+                            "Supporting evidence and transfer material until reconciled into governed records."
                         ]
                     ]
                 }
@@ -201,85 +294,161 @@
         },
         {
             "number": "9",
-            "title": "Documentation Control Process",
+            "title": "Permanent Document Lifecycle",
             "paragraphs": [
-                "Every permanent document must follow this sequence:",
-                "1. Identify the verified source material.",
-                "2. Determine the correct permanent document type and ID.",
-                "3. Reconcile duplicate, conflicting, or outdated information.",
-                "4. Create the complete formatted document.",
-                "5. Place it in the approved Google Headquarters folder.",
-                "6. Convert it to a Google Doc when required.",
-                "7. Verify title, content, location, and visible formatting.",
-                "8. Remove temporary duplicate upload files after conversion.",
-                "9. Update documentation state and index records.",
-                "10. Preserve any newly identified enhancement ideas without interrupting current work."
+                "Every permanent-document change must follow a controlled lifecycle. Installing a replacement for testing does not by itself make that replacement permanently accepted."
+            ],
+            "items": [
+                "Identify the document responsibility and verified source evidence.",
+                "Read the existing document and preserve its compatible schema.",
+                "Reconcile duplicate, conflicting, stale, or unsupported content.",
+                "Create the complete replacement or append proposal.",
+                "Validate JSON structure or required file format.",
+                "Install only the approved target file.",
+                "Verify document catalog access and viewer rendering.",
+                "Verify search behavior and browser Console state.",
+                "Verify Git change scope and absence of unrelated changes.",
+                "Record tests, decisions, files, risks, lessons, and remaining work in the active session.",
+                "Prepare the session review package.",
+                "Obtain explicit human approval before permanent closeout.",
+                "Commit and push only after approved closure.",
+                "Update dependent current, index, history, and register documents as required."
             ]
         },
         {
             "number": "10",
-            "title": "Current Risks",
-            "items": [
-                "Mistaking documentation categories for a fixed numbered upload sequence.",
-                "Assuming a document is populated because its category exists in a backup.",
-                "Losing historical reasoning by documenting only current outcomes.",
-                "Allowing important information to remain only in chat.",
-                "Creating duplicate Google and Word copies after conversion.",
-                "Building enhancements during foundation or recovery work without explicit approval.",
-                "Failing to capture enhancement ideas from the beginning of the project."
+            "title": "Writer and Execution Boundary",
+            "paragraphs": [
+                "The repository includes a permanent-document writer framework, five registered writers, transaction-analysis modules, controlled-output modules, rollback preparation, lifecycle controllers, and state-transition controls.",
+                "The presence of these modules does not establish that permanent writes or rollback execution are enabled. Draft generation, approval, authorization, execution, verification, rollback, and state recording remain separate responsibilities.",
+                "Until later controlled verification proves otherwise, documentation must preserve the disabled permanent-execution safety boundary recorded by the repository architecture map."
             ]
         },
         {
             "number": "11",
-            "title": "Current Priority",
-            "paragraphs": [
-                "Complete the human-readable Google documentation layer without creating a competing source of truth.",
-                "The controlled sequence is to continue recovering the verified core documentation package, create each permanent document in the approved format, place it in the correct Headquarters folder, verify it, and update the documentation state as the package becomes complete."
+            "title": "Current Documentation Risks",
+            "items": [
+                "Treating a rendered draft as a permanently accepted document.",
+                "Allowing core documents to disagree about the current milestone, phase, architecture, or next action.",
+                "Leaving current-state statements frozen at older work sessions.",
+                "Confusing the 20 structured repository documents with earlier recovery-package counts or Google publication counts.",
+                "Assuming external Google Headquarters contents were reverified when WS086 audited only the repository copy.",
+                "Maintaining duplicate or competing roadmap and architecture records without reconciliation.",
+                "Failing to reconcile the legacy docs/roadmap/ROADMAP.md after the permanent control documents are aligned.",
+                "Allowing important reasoning to remain only in chat.",
+                "Activating permanent writes, rollback, or state transitions based solely on module existence.",
+                "Adding deferred governance layers or enhancements during the current milestone without approval.",
+                "Committing unrelated files together with controlled documentation replacements."
             ]
         },
         {
             "number": "12",
-            "title": "Next Controlled Documentation Action",
+            "title": "Deferred Governance Proposals",
             "paragraphs": [
-                "After DOC-STATE-001 is uploaded, converted, and verified, the next document must be selected from the remaining verified documentation categories based on recovery priority and available source evidence. No assumed numbering sequence should be used."
+                "The following proposed documents remain deferred because the audit did not prove that their responsibilities are currently unowned:"
+            ],
+            "items": [
+                "VISION-001",
+                "CONSTITUTION-001",
+                "PROGRAMS-001",
+                "CATALOG-001",
+                "GOVERNANCE-TRANSITION-001"
             ]
         },
         {
             "number": "13",
-            "title": "Completion Checklist",
+            "title": "Documentation Relationship Rules",
             "items": [
-                "Document ID and title verified",
-                "Google Headquarters structure recorded",
-                "Currently verified documents recorded",
-                "16 documentation categories distinguished from upload sequence",
-                "Current population status recorded",
-                "Historical recovery requirement recorded",
-                "Source-of-truth roles recorded",
-                "Control process recorded",
-                "Current risks recorded",
-                "Next action recorded"
+                "STATE-001 answers where the project is now.",
+                "ARCH-001 answers how the current system is built.",
+                "ROADMAP-001 answers where approved work goes next.",
+                "DOC-STATE-001 answers how healthy and current the documentation system is.",
+                "DOC-INDEX-001 answers which permanent documents exist and how they are cataloged.",
+                "ARCH-EVO-001, HIST-001, WS-HIST-001, and MILE-HIST-001 preserve change over time.",
+                "DEC-LOG-001 preserves approved decisions.",
+                "BUG-HIST-001 and LESSON-001 preserve verified problems, corrections, and learning.",
+                "RISK-001 and TECH-DEBT-001 preserve unresolved exposure.",
+                "ENH-LOG-001 preserves future ideas without activating them."
             ]
         },
         {
             "number": "14",
+            "title": "Documentation Reconciliation Completion Standard",
+            "paragraphs": [
+                "The Documentation Reconciliation milestone is complete only when the permanent documentation set accurately reflects the verified repository and approved history, required relationships are consistent, and the Studio Portal presents the reconciled documents without new errors."
+            ],
+            "items": [
+                "All core control documents reconciled and approved.",
+                "DOC-INDEX-001 matches the verified permanent-document inventory.",
+                "Standards and procedures match the implemented governance workflow.",
+                "Historical and register documents are current through the reconciliation closeout.",
+                "All JSON documents validate.",
+                "Document catalog entries resolve to the correct files.",
+                "The shared viewer renders all reconciled documents.",
+                "Search returns supported document results.",
+                "No new browser Console errors are introduced.",
+                "Git change scope contains only approved files.",
+                "Current, strategic, architectural, documentation-state, and historical statements do not conflict.",
+                "Prepare Session validation passes.",
+                "Human Approve & Close authorization is recorded.",
+                "Commit and push complete only after approved closure."
+            ]
+        },
+        {
+            "number": "15",
+            "title": "Current Next Controlled Action",
+            "paragraphs": [
+                "Install and verify this DOC-STATE-001 replacement.",
+                "After successful validation, reconcile DOC-INDEX-001 against the verified 20-document structured library.",
+                "Do not resume feature development or activate a new software milestone until the Documentation Reconciliation completion standard is met and the milestone is explicitly closed."
+            ]
+        },
+        {
+            "number": "16",
             "title": "Permanent Statement",
             "paragraphs": [
-                "The Two Marshalls Studios documentation system must preserve the complete history of the studio from the beginning of the project forward. Permanent documentation is built through verified recovery, controlled publication, and continuous session closeout—not by relying on memory, chat history, or a single workstation."
+                "The Two Marshalls Studios documentation system is structurally established and governed by permanent identities, controlled responsibilities, repository evidence, shared rendering, work-session review, human approval, recoverability, and auditable history.",
+                "Its current obligation is reconciliation: preserve verified architecture and history, correct stale current information, prevent duplicate governance, and ensure that no important studio knowledge depends solely on chat, memory, or one workstation."
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "ARCH-001",
+        "ROADMAP-001",
+        "DOC-INDEX-001",
+        "ARCH-EVO-001",
+        "STD-001",
+        "PROC-001",
+        "PROC-003",
+        "PROC-004",
+        "DEC-LOG-001",
+        "MILE-HIST-001",
+        "WS-HIST-001",
+        "HIST-001",
+        "BUG-HIST-001",
+        "LESSON-001",
+        "RISK-001",
+        "TECH-DEBT-001",
+        "ENH-LOG-001"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
-            "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
+            "summary": "Connected the verified recovered documentation-state record to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled documentation state with the verified 20-document repository inventory, established the Documentation Reconciliation milestone status, defined remaining work and completion standards, and clarified source-of-truth and execution boundaries.",
+            "status": "Approved for Controlled Installation"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled — Installation Test Required",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the uploaded studio-portal repository, the verified pages/documents inventory, the existing DOC-STATE-001 record, the approved WS086 project state, and the prepared STATE-001, ARCH-001, and ROADMAP-001 reconciliation packages."
     }
 }

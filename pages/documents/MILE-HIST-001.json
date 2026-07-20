@@ -7,10 +7,10 @@
     "category": "Milestones",
     "owner": "Two Marshalls Studios",
     "status": "Verified",
-    "version": "1.0",
+    "version": "1.1",
     "created": "Historical recovery",
-    "lastUpdated": "Work Session 042",
-    "summary": "Preserves verified completed and active studio milestones without inventing missing history.",
+    "lastUpdated": "Work Session 086",
+    "summary": "Preserves verified completed and active studio milestones together with the current WS086 reconciliation checkpoint.",
     "keywords": [
         "MILE-HIST-001",
         "Studio Milestone History",
@@ -59,15 +59,15 @@
                             "MILE-013",
                             "Fully Modular StudioDB",
                             "Completed",
-                            "STATE-001 Current State Summary",
-                            "Last completed development milestone at the verified recovery checkpoint."
+                            "Verified repository checkpoint",
+                            "Last completed development milestone."
                         ],
                         [
                             "MILE-014",
                             "Complete Historical Recovery",
                             "Active",
-                            "STATE-001 Current State Summary",
-                            "Current active milestone during WS-049AR. Historical recovery and documentation reconciliation are in progress."
+                            "Verified repository checkpoint",
+                            "Historical recovery and documentation reconciliation remain active during WS086."
                         ]
                     ]
                 }
@@ -87,13 +87,21 @@
             "tables": [
                 {
                     "headers": [
-                        "Current Work Session",
-                        "WS-049AR"
+                        "Current Item",
+                        "Value"
                     ],
                     "rows": [
                         [
+                            "Current Work Session",
+                            "WS-086"
+                        ],
+                        [
                             "Current Work",
-                            "Historical Recovery and Documentation Reconciliation"
+                            "Enterprise Documentation Reconciliation"
+                        ],
+                        [
+                            "Current Phase",
+                            "Permanent Documentation Alignment"
                         ],
                         [
                             "Last Completed Development Milestone",
@@ -104,8 +112,8 @@
                             "MILE-014 - Complete Historical Recovery"
                         ],
                         [
-                            "Current Architecture",
-                            "Fully Modular StudioDB"
+                            "Repository Version",
+                            "v0.28.1"
                         ]
                     ]
                 }
@@ -115,7 +123,7 @@
             "number": "7",
             "title": "Historical Recovery Boundary",
             "paragraphs": [
-                "Milestones before MILE-013 are not yet listed as verified because the available recovery checkpoint does not provide enough confirmed detail to recreate them safely. They remain eligible for later controlled recovery from source records."
+                "Milestones before MILE-013 remain eligible for controlled recovery only when supported by verified evidence."
             ]
         },
         {
@@ -137,36 +145,52 @@
                 "Verified completed milestones: 1",
                 "Verified active milestones: 1",
                 "Verified milestone records in this document: 2",
-                "Historical milestone recovery before MILE-013: Unresolved / controlled recovery required"
+                "Historical milestone recovery before MILE-013: Controlled recovery required"
             ]
         },
         {
             "number": "10",
             "title": "Next Controlled Action",
             "paragraphs": [
-                "Continue historical recovery using verified source material. Add earlier milestones only when their identity, status, and supporting evidence can be confirmed."
+                "Continue reconciliation with DEC-LOG-001 after milestone history verification."
             ]
         },
         {
             "number": "11",
             "title": "Permanent Statement",
             "paragraphs": [
-                "This document is the permanent milestone-history record for Two Marshalls Studios. It must remain evidence-based and must not be expanded through assumption."
+                "This document is the permanent milestone-history record for Two Marshalls Studios. It remains evidence-based and is expanded only from verified records."
             ]
         }
     ],
-    "relatedDocuments": [],
+    "relatedDocuments": [
+        "STATE-001",
+        "DOC-STATE-001",
+        "DOC-INDEX-001",
+        "ROADMAP-001",
+        "WS-HIST-001",
+        "DEC-LOG-001",
+        "ARCH-EVO-001",
+        "STD-001",
+        "PROC-003"
+    ],
     "revisionHistory": [
         {
             "version": "1.0",
             "date": "Work Session 042",
             "summary": "Connected the verified permanent document to the shared structured Document Template Engine.",
             "status": "Verified"
+        },
+        {
+            "version": "1.1",
+            "date": "Work Session 086",
+            "summary": "Reconciled milestone history with the verified repository checkpoint.",
+            "status": "Verified"
         }
     ],
     "verification": {
-        "status": "Source Document Verified",
+        "status": "Repository Reconciled",
         "verifiedBy": "Stephen Marshall",
-        "method": "Converted from the recovered DOCX source used to create the verified Google Headquarters document."
+        "method": "Reconciled against the verified v0.28.1 repository during Work Session 086."
     }
 }
