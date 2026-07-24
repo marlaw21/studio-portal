@@ -1,12 +1,12 @@
 /**
  * TMS-OS Permanent Documentation State Change Approval Validation Controller
- * Work Session 073
- * Version 1.0.0
+ * Work Session 087
+ * Version 1.0.2
  */
 (function (global) {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.0.2";
     const VALIDATION_MODE = "Disabled";
     const REPORT_TYPE = "TMS-OS Permanent Documentation State Change Approval Validation Report";
     let lastValidationReport = null;
@@ -16,11 +16,16 @@
         "State Change Approval Record type is valid",
         "State Change Approval Record engine version is present",
         "State Change Approval Record mode is Disabled",
-        "State Change Approval Record is rejected",
+        "State Change Approval Record is accepted",
         "State Change Approval Record session number is present",
-        "State Change Approval Record source authorization is not accepted",
-        "State-change approval prerequisites are not satisfied",
-        "State-change approval review is not eligible",
+        "Current state is present",
+        "Requested state is present",
+        "Current state and requested state differ",
+        "State identity is satisfied",
+        "State Change Approval Record source authorization is accepted",
+        "State Change Approval Record source authorization validation is accepted",
+        "State-change approval prerequisites are satisfied",
+        "State-change approval review is eligible",
         "Approval request is not recorded",
         "Approval record is not created",
         "Approval decision is not recorded",
@@ -81,10 +86,16 @@
             engineVersion: source.engineVersion || "Unavailable",
             approvalMode: source.approvalMode || "Unavailable",
             recordId: source.recordId || "Unavailable",
-            sessionNumber: source.sessionNumber === undefined || source.sessionNumber === null || source.sessionNumber === "" ? "Unavailable" : String(source.sessionNumber),
+            sessionNumber: source.sessionNumber === undefined || source.sessionNumber === null || source.sessionNumber === ""
+                ? "Unavailable"
+                : String(source.sessionNumber),
             accepted: source.accepted === true,
             stateChangeApprovalStatus: source.stateChangeApprovalStatus || "Unavailable",
+            currentState: source.currentState || "Unavailable",
+            requestedState: source.requestedState || "Unavailable",
+            stateIdentitySatisfied: source.stateIdentitySatisfied === true,
             sourceStateChangeAuthorizationAccepted: source.sourceStateChangeAuthorizationAccepted === true,
+            sourceStateChangeAuthorizationValidationAccepted: source.sourceStateChangeAuthorizationValidationAccepted === true,
             stateChangeApprovalPrerequisitesSatisfied: source.stateChangeApprovalPrerequisitesSatisfied === true,
             stateChangeApprovalReviewEligible: source.stateChangeApprovalReviewEligible === true,
             approvalRequestRecorded: source.approvalRequestRecorded === true,
@@ -129,12 +140,23 @@
             { name: "Approval record type is valid", passed: source.reportType === "TMS-OS Permanent Documentation State Change Approval Record" },
             { name: "Approval record engine version is present", passed: typeof source.engineVersion === "string" && source.engineVersion !== "Unavailable" },
             { name: "Approval record mode is Disabled", passed: source.approvalMode === "Disabled" },
-            { name: "Approval record is rejected", passed: source.accepted === false },
-            { name: "Approval record status is Rejected", passed: source.stateChangeApprovalStatus === "Rejected" },
+            { name: "Approval record is accepted", passed: source.accepted === true },
+            { name: "Approval record status is review-eligible and locked", passed: source.stateChangeApprovalStatus === "Eligible for State Change Approval Review — Approval Locked" },
             { name: "Approval record session number is present", passed: source.sessionNumber !== "Unavailable" },
-            { name: "Source authorization is not accepted", passed: source.sourceStateChangeAuthorizationAccepted === false },
-            { name: "Approval prerequisites are not satisfied", passed: source.stateChangeApprovalPrerequisitesSatisfied === false },
-            { name: "Approval review is not eligible", passed: source.stateChangeApprovalReviewEligible === false },
+            { name: "Current state is present", passed: source.currentState !== "Unavailable" },
+            { name: "Requested state is present", passed: source.requestedState !== "Unavailable" },
+            {
+                name: "Current state and requested state differ",
+                passed:
+                    source.currentState !== "Unavailable" &&
+                    source.requestedState !== "Unavailable" &&
+                    source.currentState !== source.requestedState
+            },
+            { name: "State identity is satisfied", passed: source.stateIdentitySatisfied === true },
+            { name: "Source authorization is accepted", passed: source.sourceStateChangeAuthorizationAccepted === true },
+            { name: "Source authorization validation is accepted", passed: source.sourceStateChangeAuthorizationValidationAccepted === true },
+            { name: "Approval prerequisites are satisfied", passed: source.stateChangeApprovalPrerequisitesSatisfied === true },
+            { name: "Approval review is eligible", passed: source.stateChangeApprovalReviewEligible === true },
             { name: "Approval request is not recorded", passed: source.approvalRequestRecorded === false },
             { name: "Approval record is not created", passed: source.approvalRecordCreated === false },
             { name: "Approval decision is not recorded", passed: source.approvalDecisionRecorded === false },
@@ -182,16 +204,22 @@
             version: snapshot.version || "Unknown",
             milestone: snapshot.milestone || "Unknown",
             module: snapshot.module || "Unknown",
-            accepted: false,
-            stateChangeApprovalValidationStatus: integritySatisfied ? "Validated - Disabled" : "Rejected",
+            accepted: integritySatisfied,
+            stateChangeApprovalValidationStatus: integritySatisfied
+                ? "Eligible for State Change Approval Validation Review — Validation Locked"
+                : "Rejected",
             sourceApprovalRecordExists: source.exists,
             sourceApprovalRecordId: source.recordId,
             sourceApprovalRecordAccepted: source.accepted,
             sourceApprovalRecordSessionNumber: source.sessionNumber,
+            currentState: source.currentState,
+            requestedState: source.requestedState,
+            stateIdentitySatisfied: source.stateIdentitySatisfied,
             sourceStateChangeAuthorizationAccepted: source.sourceStateChangeAuthorizationAccepted,
+            sourceStateChangeAuthorizationValidationAccepted: source.sourceStateChangeAuthorizationValidationAccepted,
             approvalRecordIntegritySatisfied: integritySatisfied,
-            approvalValidationPrerequisitesSatisfied: false,
-            approvalValidationReviewEligible: false,
+            approvalValidationPrerequisitesSatisfied: integritySatisfied,
+            approvalValidationReviewEligible: integritySatisfied,
             approvalValidationRecorded: false,
             approvalValidationGranted: false,
             approvalRecordApproved: false,
@@ -216,7 +244,7 @@
             restoreExecuted: false,
             checks,
             requiredNextAction: integritySatisfied
-                ? "Review the validated Disabled Mode approval record without recording approval or changing documentation state."
+                ? "Review the eligible Disabled Mode approval validation report without recording approval or changing documentation state."
                 : "Correct the failed approval-record integrity or validation prerequisite checks."
         };
 
@@ -230,9 +258,27 @@
             { name: "Validation report type is correct", passed: candidate.reportType === REPORT_TYPE },
             { name: "Engine version is correct", passed: candidate.engineVersion === ENGINE_VERSION },
             { name: "Validation mode is Disabled", passed: candidate.validationMode === VALIDATION_MODE },
-            { name: "Validation report is not accepted", passed: candidate.accepted === false },
-            { name: "Approval validation prerequisites are not satisfied", passed: candidate.approvalValidationPrerequisitesSatisfied === false },
-            { name: "Approval validation review is not eligible", passed: candidate.approvalValidationReviewEligible === false },
+            { name: "Validation report is accepted", passed: candidate.accepted === true },
+            { name: "Approval record integrity is satisfied", passed: candidate.approvalRecordIntegritySatisfied === true },
+            { name: "Approval validation prerequisites are satisfied", passed: candidate.approvalValidationPrerequisitesSatisfied === true },
+            { name: "Approval validation review is eligible", passed: candidate.approvalValidationReviewEligible === true },
+            { name: "Source approval record is accepted", passed: candidate.sourceApprovalRecordAccepted === true },
+            { name: "Current state is present", passed: typeof candidate.currentState === "string" && candidate.currentState !== "" && candidate.currentState !== "Unavailable" },
+            { name: "Requested state is present", passed: typeof candidate.requestedState === "string" && candidate.requestedState !== "" && candidate.requestedState !== "Unavailable" },
+            {
+                name: "Current state and requested state differ",
+                passed:
+                    typeof candidate.currentState === "string" &&
+                    typeof candidate.requestedState === "string" &&
+                    candidate.currentState !== "" &&
+                    candidate.requestedState !== "" &&
+                    candidate.currentState !== "Unavailable" &&
+                    candidate.requestedState !== "Unavailable" &&
+                    candidate.currentState !== candidate.requestedState
+            },
+            { name: "State identity is satisfied", passed: candidate.stateIdentitySatisfied === true },
+            { name: "Source authorization is accepted", passed: candidate.sourceStateChangeAuthorizationAccepted === true },
+            { name: "Source authorization validation is accepted", passed: candidate.sourceStateChangeAuthorizationValidationAccepted === true },
             { name: "Approval validation is not recorded", passed: candidate.approvalValidationRecorded === false },
             { name: "Approval validation is not granted", passed: candidate.approvalValidationGranted === false },
             { name: "Approval record is not approved", passed: candidate.approvalRecordApproved === false },
@@ -254,7 +300,7 @@
 
         return {
             validatorVersion: ENGINE_VERSION,
-            accepted: false,
+            accepted: checks.every((check) => check.passed),
             checks
         };
     }
@@ -277,7 +323,11 @@
             "Source Approval Record ID: " + candidate.sourceApprovalRecordId,
             "Source Approval Record Accepted: " + yesNo(candidate.sourceApprovalRecordAccepted),
             "Source Approval Record Session: " + candidate.sourceApprovalRecordSessionNumber,
+            "Current State: " + candidate.currentState,
+            "Requested State: " + candidate.requestedState,
+            "State Identity Satisfied: " + yesNo(candidate.stateIdentitySatisfied),
             "Source State Change Authorization Accepted: " + yesNo(candidate.sourceStateChangeAuthorizationAccepted),
+            "Source State Change Authorization Validation Accepted: " + yesNo(candidate.sourceStateChangeAuthorizationValidationAccepted),
             "Approval Record Integrity Satisfied: " + yesNo(candidate.approvalRecordIntegritySatisfied),
             "Approval Validation Prerequisites Satisfied: " + yesNo(candidate.approvalValidationPrerequisitesSatisfied),
             "Approval Validation Review Eligible: " + yesNo(candidate.approvalValidationReviewEligible),
@@ -331,6 +381,6 @@
     console.info(
         "Permanent Documentation State Change Approval Validation Controller v" +
             ENGINE_VERSION +
-            " initialized in Disabled Mode for Work Session 073."
+            " initialized in Disabled Mode for Work Session 087."
     );
 })(window);

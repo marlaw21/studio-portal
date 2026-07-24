@@ -1,11 +1,11 @@
 /**
  * TMS-OS Permanent Documentation State Change Approval Recorder
- * Work Session 072 | Version 1.0.0 | Disabled Mode
+ * Work Session 087 | Version 1.0.2 | Disabled Mode
  */
 (function (global) {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.0.2";
     const APPROVAL_MODE = "Disabled";
     const RECORD_TYPE = "TMS-OS Permanent Documentation State Change Approval Record";
     let lastApprovalRecord = null;
@@ -81,8 +81,77 @@
         const now = new Date();
         const sessionNumber = String(snapshot.sessionNumber || "UNKNOWN");
 
-        const sourceAccepted = source.accepted === true &&
-            (source.validationAccepted === true || source.sourceValidationAccepted === true);
+        const authorizationController =
+            global.TMSPermanentDocumentationStateChangeAuthorizationController;
+
+        const sourceValidation =
+            authorizationController &&
+            typeof authorizationController.validateStateChangeAuthorizationReport === "function"
+                ? authorizationController.validateStateChangeAuthorizationReport(source)
+                : {
+                    validatorVersion: "Unavailable",
+                    accepted: false,
+                    checks: []
+                };
+
+        const sourceAccepted =
+            source.accepted === true &&
+            sourceValidation.accepted === true;
+
+        const transitionRequest =
+            source.sourceTransitionRequest &&
+            typeof source.sourceTransitionRequest === "object"
+                ? source.sourceTransitionRequest
+                : {};
+
+        const currentState =
+            transitionRequest.currentState ||
+            source.currentState ||
+            "Session Start";
+
+        const requestedState =
+            transitionRequest.requestedState ||
+            source.requestedState ||
+            "Unavailable";
+
+        const stateIdentitySatisfied =
+            typeof currentState === "string" &&
+            currentState.trim().length > 0 &&
+            currentState !== "Unavailable" &&
+            typeof requestedState === "string" &&
+            requestedState.trim().length > 0 &&
+            requestedState !== "Unavailable";
+
+        const prerequisitesSatisfied =
+            sourceAccepted &&
+            source.authorizationMode === "Disabled" &&
+            source.stateChangeAuthorizationPrerequisitesSatisfied === true &&
+            source.stateChangeAuthorizationReviewEligible === true &&
+            stateIdentitySatisfied &&
+            source.authorizationRequestRecorded === false &&
+            source.stateChangeAuthorizationGranted === false &&
+            source.stateChangeAuthorized === false &&
+            source.stateChangeExecuted === false &&
+            source.transitionExecutionAuthorized === false &&
+            source.transitionExecuted === false &&
+            source.transitionApplied === false &&
+            source.approvalExecuted === false &&
+            source.approvalGranted === false &&
+            source.humanApprovalGranted === false &&
+            source.executionAuthorized === false &&
+            source.writeAuthorized === false &&
+            source.rollbackAuthorized === false &&
+            source.restoreAuthorized === false &&
+            source.actualStateChangeAuthorizationAttempted === false &&
+            source.actualStateChangeAuthorizationGranted === false &&
+            source.actualStateChangeExecutionAttempted === false &&
+            source.actualStateChangeExecutionCompleted === false &&
+            source.actualStateChangeAttempted === false &&
+            source.actualStateChangeApplied === false &&
+            source.actualWritesAttempted === false &&
+            source.actualRestoresAttempted === false &&
+            source.permanentWritesExecuted === false &&
+            source.restoreExecuted === false;
 
         const record = {
             reportType: RECORD_TYPE,
@@ -94,18 +163,26 @@
             version: snapshot.version || "Unknown",
             milestone: snapshot.milestone || "Unknown",
             module: snapshot.module || "Unknown",
-            accepted: false,
-            stateChangeApprovalStatus: "Rejected",
-            currentState: source.currentState || "Session Start",
-            requestedState: source.requestedState || "Unavailable",
+            accepted: prerequisitesSatisfied,
+            stateChangeApprovalStatus:
+                prerequisitesSatisfied
+                    ? "Eligible for State Change Approval Review — Approval Locked"
+                    : "Rejected",
+            currentState,
+            requestedState,
+            stateIdentitySatisfied,
             priorStateChangeAction:
                 (source.authorizationRequest && source.authorizationRequest.action) ||
                 source.requestedAuthorizationAction ||
                 "Authorize Documentation State Change",
             sourceAuthorizationReportId: source.reportId || "Unavailable",
             sourceStateChangeAuthorizationAccepted: sourceAccepted,
-            stateChangeApprovalPrerequisitesSatisfied: false,
-            stateChangeApprovalReviewEligible: false,
+            sourceStateChangeAuthorizationValidationAccepted:
+                sourceValidation.accepted === true,
+            sourceStateChangeAuthorizationValidatorVersion:
+                sourceValidation.validatorVersion || "Unavailable",
+            stateChangeApprovalPrerequisitesSatisfied: prerequisitesSatisfied,
+            stateChangeApprovalReviewEligible: prerequisitesSatisfied,
             approvalRequest: request,
             requestedApprovalAction: request.action,
             approvalRequestRecorded: false,
@@ -142,7 +219,9 @@
             permanentWritesExecuted: false,
             restoreExecuted: false,
             requiredNextAction:
-                "Correct the failed state-change authorization report or approval prerequisite checks."
+                prerequisitesSatisfied
+                    ? "Human review is required. Version 1.0.1 cannot record or grant a state-change approval decision."
+                    : "Correct the failed state-change authorization report or approval prerequisite checks."
         };
 
         lastApprovalRecord = Object.freeze(record);
@@ -155,11 +234,44 @@
             ["Record type is correct", value.reportType === RECORD_TYPE],
             ["Engine version is correct", value.engineVersion === ENGINE_VERSION],
             ["Approval mode is Disabled", value.approvalMode === APPROVAL_MODE],
-            ["Record is rejected", value.accepted === false],
-            ["Approval status is Rejected", value.stateChangeApprovalStatus === "Rejected"],
-            ["Source authorization is not accepted", value.sourceStateChangeAuthorizationAccepted === false],
-            ["Approval prerequisites are not satisfied", value.stateChangeApprovalPrerequisitesSatisfied === false],
-            ["Approval review is not eligible", value.stateChangeApprovalReviewEligible === false],
+            ["Record is accepted", value.accepted === true],
+            [
+                "Current state is present and valid",
+                typeof value.currentState === "string" &&
+                value.currentState.trim().length > 0 &&
+                value.currentState !== "Unavailable"
+            ],
+            [
+                "Requested state is present and valid",
+                typeof value.requestedState === "string" &&
+                value.requestedState.trim().length > 0 &&
+                value.requestedState !== "Unavailable"
+            ],
+            [
+                "State identity is satisfied",
+                value.stateIdentitySatisfied === true
+            ],
+            [
+                "Approval status is review-eligible and locked",
+                value.stateChangeApprovalStatus ===
+                    "Eligible for State Change Approval Review — Approval Locked"
+            ],
+            [
+                "Source authorization is accepted",
+                value.sourceStateChangeAuthorizationAccepted === true
+            ],
+            [
+                "Source authorization validation is accepted",
+                value.sourceStateChangeAuthorizationValidationAccepted === true
+            ],
+            [
+                "Approval prerequisites are satisfied",
+                value.stateChangeApprovalPrerequisitesSatisfied === true
+            ],
+            [
+                "Approval review is eligible",
+                value.stateChangeApprovalReviewEligible === true
+            ],
             ["Approval request is not recorded", value.approvalRequestRecorded === false],
             ["Approval record is not created", value.approvalRecordCreated === false],
             ["Approval decision is not recorded", value.approvalDecisionRecorded === false],
@@ -174,15 +286,46 @@
             ["Approval is not executed", value.approvalExecuted === false],
             ["Approval is not granted", value.approvalGranted === false],
             ["Human approval is not granted", value.humanApprovalGranted === false],
+            ["Authorization is not granted", value.authorizationGranted === false],
             ["Execution is not authorized", value.executionAuthorized === false],
             ["Permanent write is not authorized", value.writeAuthorized === false],
             ["Rollback is not authorized", value.rollbackAuthorized === false],
             ["Restore is not authorized", value.restoreAuthorized === false],
-            ["No actual approval record was created", value.actualApprovalRecordAttempted === false && value.actualApprovalRecordCreated === false],
-            ["No actual approval decision was recorded", value.actualApprovalDecisionAttempted === false && value.actualApprovalDecisionRecorded === false],
-            ["No actual state change was attempted", value.actualStateChangeAttempted === false && value.actualStateChangeApplied === false],
-            ["No permanent writes were executed", value.actualWritesAttempted === false && value.permanentWritesExecuted === false],
-            ["No restore was executed", value.actualRestoresAttempted === false && value.restoreExecuted === false]
+            [
+                "No actual approval record was created",
+                value.actualApprovalRecordAttempted === false &&
+                value.actualApprovalRecordCreated === false
+            ],
+            [
+                "No actual approval decision was recorded",
+                value.actualApprovalDecisionAttempted === false &&
+                value.actualApprovalDecisionRecorded === false
+            ],
+            [
+                "No actual state-change approval was granted",
+                value.actualStateChangeApprovalAttempted === false &&
+                value.actualStateChangeApprovalGranted === false
+            ],
+            [
+                "No actual state-change execution occurred",
+                value.actualStateChangeExecutionAttempted === false &&
+                value.actualStateChangeExecutionCompleted === false
+            ],
+            [
+                "No actual state change was applied",
+                value.actualStateChangeAttempted === false &&
+                value.actualStateChangeApplied === false
+            ],
+            [
+                "No permanent writes were executed",
+                value.actualWritesAttempted === false &&
+                value.permanentWritesExecuted === false
+            ],
+            [
+                "No restore was executed",
+                value.actualRestoresAttempted === false &&
+                value.restoreExecuted === false
+            ]
         ].map(([name, passed]) => ({ name, passed }));
 
         return {
@@ -212,12 +355,14 @@
             `State Change Approval Status: ${value.stateChangeApprovalStatus}`,
             `Current State: ${value.currentState}`,
             `Requested State: ${value.requestedState}`,
+            `State Identity Satisfied: ${yesNo(value.stateIdentitySatisfied)}`,
             `Prior State Change Action: ${value.priorStateChangeAction}`,
             `Requested Approval Action: ${value.requestedApprovalAction}`,
             `Requested By: ${request.requestedBy}`,
             `Approver: ${request.approver}`,
             `Requested Decision: ${request.decision}`,
             `Source State Change Authorization Accepted: ${yesNo(value.sourceStateChangeAuthorizationAccepted)}`,
+            `Source State Change Authorization Validation Accepted: ${yesNo(value.sourceStateChangeAuthorizationValidationAccepted)}`,
             `Approval Prerequisites Satisfied: ${yesNo(value.stateChangeApprovalPrerequisitesSatisfied)}`,
             `Approval Review Eligible: ${yesNo(value.stateChangeApprovalReviewEligible)}`,
             `Approval Request Recorded: ${yesNo(value.approvalRequestRecorded)}`,
@@ -276,6 +421,6 @@
     });
 
     console.info(
-        "Permanent Documentation State Change Approval Recorder v1.0.0 initialized in Disabled Mode for Work Session 072."
+        "Permanent Documentation State Change Approval Recorder v1.0.2 initialized in Disabled Mode for Work Session 087."
     );
 })(window);

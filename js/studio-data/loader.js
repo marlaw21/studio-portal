@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 041 — Documentation Catalog Engine — Step 2
+Work Session 087 — Operations Workspace Data Foundation
 File: js/studio-data/loader.js
 */
 
@@ -24,6 +24,18 @@ File: js/studio-data/loader.js
 
     if (Array.isArray(window.studioRecordProjects)) {
         window.studioData.records.projects = window.studioRecordProjects;
+    }
+
+    if (Array.isArray(window.studioRecordTasks)) {
+        window.studioData.records.tasks = window.studioRecordTasks;
+    }
+
+    if (Array.isArray(window.studioRecordAssignments)) {
+        window.studioData.records.assignments = window.studioRecordAssignments;
+    }
+
+    if (Array.isArray(window.studioRecordActivity)) {
+        window.studioData.records.activity = window.studioRecordActivity;
     }
 
     if (Array.isArray(window.studioRecordWorkSessions)) {
@@ -158,7 +170,10 @@ File: js/studio-data/loader.js
 
     const recordSchemas = {
         workSessions: ["id", "title", "status", "version"],
-        projects: ["id", "title", "status"],
+        projects: ["id", "title", "department", "status", "priority", "owner"],
+        tasks: ["id", "projectId", "title", "status", "priority", "assignee"],
+        assignments: ["id", "taskId", "projectId", "assignee", "status"],
+        activity: ["id", "projectId", "activityType", "title", "activityDate", "status"],
         status: ["id", "name", "value"],
         notifications: ["id", "title", "status"],
         studioCommands: ["id", "title", "status"],
