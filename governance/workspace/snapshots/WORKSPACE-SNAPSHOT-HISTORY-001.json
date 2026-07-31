@@ -1,0 +1,21 @@
+{
+  "documentId": "WORKSPACE-SNAPSHOT-HISTORY-001",
+  "version": "1.0.0",
+  "status": "Foundation",
+  "documentType": "Workspace Snapshot History",
+  "generatedAt": null,
+  "generatedBy": null,
+
+  "summary": {
+    "totalSnapshots": 0,
+    "latestSnapshot": null,
+    "previousSnapshot": null
+  },
+
+  "snapshots": [],
+
+  "validation": {
+    "validated": false,
+    "accepted": false
+  }
+}

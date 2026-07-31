@@ -1,0 +1,35 @@
+{
+    "documentId": "WORKSPACE-INVENTORY-INTAKE-001",
+    "version": "1.0.0",
+    "status": "Foundation",
+
+    "intakeType": "Workspace Inventory Intake",
+
+    "generatedAt": null,
+    "generatedBy": null,
+
+    "workspace": {
+        "rootPath": null,
+        "repositoryPath": null
+    },
+
+    "source": {
+        "captureMethod": null,
+        "capturedBy": null,
+        "operatingSystem": null
+    },
+
+    "summary": {
+        "folderCount": 0,
+        "fileCount": 0
+    },
+
+    "folders": [],
+
+    "files": [],
+
+    "validation": {
+        "validated": false,
+        "accepted": false
+    }
+}

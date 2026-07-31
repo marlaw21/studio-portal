@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 046 — Generic Document Writer Framework v1.0.0
+Generic Document Writer Framework v1.1.0
 File: js/session/document-writer-framework.js
 
 Purpose:
@@ -8,15 +8,23 @@ Provide shared, review-only permanent-document draft services for document-speci
 writers. This framework loads source documents, validates approved proposals,
 preserves metadata, manages revision history, freezes returned drafts, and never
 writes permanent files.
+
+Version 1.1.0:
+Adds controlled support for approved "No Change" proposals. A no-change proposal
+returns an accepted reviewable draft containing an unchanged clone of the current
+source document. No transform is invoked and no permanent file is changed.
 */
 
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.1.0";
+    const NO_CHANGE_ACTION = "No Change";
 
     if (!window.TMSDocumentUpdateEngine || !window.TMSSessionContext) {
-        console.error("Generic Document Writer Framework could not initialize because its dependencies are unavailable.");
+        console.error(
+            "Generic Document Writer Framework could not initialize because its dependencies are unavailable."
+        );
         return;
     }
 
@@ -28,9 +36,11 @@ writes permanent files.
         if (!value || typeof value !== "object" || Object.isFrozen(value)) {
             return value;
         }
+
         Object.keys(value).forEach(function (key) {
             deepFreeze(value[key]);
         });
+
         return Object.freeze(value);
     }
 
@@ -40,16 +50,26 @@ writes permanent files.
         const projectRootPath = pageFolderIndex >= 0
             ? path.slice(0, pageFolderIndex + 1)
             : path.slice(0, path.lastIndexOf("/") + 1);
-        return window.location.origin + projectRootPath + "pages/documents/" + fileName;
+
+        return window.location.origin +
+            projectRootPath +
+            "pages/documents/" +
+            fileName;
     }
 
     function normalizedText(entry) {
         if (typeof entry === "string") {
             return entry;
         }
+
         if (entry && typeof entry === "object") {
-            return entry.description || entry.name || entry.title || entry.path || JSON.stringify(entry);
+            return entry.description ||
+                entry.name ||
+                entry.title ||
+                entry.path ||
+                JSON.stringify(entry);
         }
+
         return String(entry);
     }
 
@@ -58,35 +78,59 @@ writes permanent files.
             const parsed = parseInt(section.number, 10);
             return Number.isFinite(parsed) ? parsed : 0;
         });
-        return String((numbers.length ? Math.max.apply(null, numbers) : 0) + 1);
+
+        return String(
+            (numbers.length ? Math.max.apply(null, numbers) : 0) + 1
+        );
     }
 
     function getProposal(plan, documentId) {
         if (!plan || !plan.accepted || !Array.isArray(plan.proposals)) {
             return null;
         }
+
         return plan.proposals.find(function (item) {
             return item.documentId === documentId;
         }) || null;
     }
 
     async function loadSourceDocument(documentId) {
-        const response = await fetch(documentUrl(documentId + ".json"), { cache: "no-store" });
+        const response = await fetch(
+            documentUrl(documentId + ".json"),
+            { cache: "no-store" }
+        );
+
         if (!response.ok) {
-            throw new Error("HTTP " + response.status + " while loading " + documentId + ".json");
+            throw new Error(
+                "HTTP " +
+                response.status +
+                " while loading " +
+                documentId +
+                ".json"
+            );
         }
 
         const sourceDocument = await response.json();
-        if (!sourceDocument || sourceDocument.id !== documentId || !Array.isArray(sourceDocument.sections)) {
-            throw new Error("The source document does not match the expected permanent-document schema.");
+
+        if (
+            !sourceDocument ||
+            sourceDocument.id !== documentId ||
+            !Array.isArray(sourceDocument.sections)
+        ) {
+            throw new Error(
+                "The source document does not match the expected permanent-document schema."
+            );
         }
+
         return sourceDocument;
     }
 
     function appendRevisionHistory(proposedDocument, revisionEntry) {
-        proposedDocument.revisionHistory = Array.isArray(proposedDocument.revisionHistory)
-            ? proposedDocument.revisionHistory
-            : [];
+        proposedDocument.revisionHistory =
+            Array.isArray(proposedDocument.revisionHistory)
+                ? proposedDocument.revisionHistory
+                : [];
+
         proposedDocument.revisionHistory.push(clone(revisionEntry));
     }
 
@@ -100,33 +144,111 @@ writes permanent files.
             accepted: false,
             message: message,
             sourceLoaded: false,
+            proposalAction: null,
+            requiredAction: config.requiredAction,
+            transformExecuted: false,
+            documentChanged: false,
+            permanentWriteRequired: false,
             reviewRequired: true,
             permanentWriteExecuted: false,
             proposedDocument: null
         });
     }
 
+    function createNoChangeDraft(config, proposal, sourceDocument) {
+        const proposedDocument = clone(sourceDocument);
+        const sectionCount = Array.isArray(sourceDocument.sections)
+            ? sourceDocument.sections.length
+            : 0;
+
+        return deepFreeze({
+            draftType: "TMS-OS Permanent Document Draft",
+            frameworkVersion: ENGINE_VERSION,
+            writerVersion: config.writerVersion,
+            documentId: config.documentId,
+            generatedAt: new Date().toISOString(),
+            accepted: true,
+            message:
+                "Approved No Change proposal validated. " +
+                "The unchanged source document was retained as the reviewable proposed document.",
+            sourceLoaded: true,
+            proposalAction: NO_CHANGE_ACTION,
+            requiredAction: config.requiredAction,
+            updateMode: NO_CHANGE_ACTION,
+            transformExecuted: false,
+            documentChanged: false,
+            permanentWriteRequired: false,
+            sourceSectionCount: sectionCount,
+            proposedSectionCount: sectionCount,
+            proposedDocument: proposedDocument,
+            reviewRequired: true,
+            reviewChoices: [
+                "Approve Draft",
+                "Revise Session",
+                "Cancel Draft"
+            ],
+            permanentWriteExecuted: false
+        });
+    }
+
     async function createDraft(config) {
         if (!config || typeof config !== "object") {
-            throw new Error("A document writer configuration object is required.");
+            throw new Error(
+                "A document writer configuration object is required."
+            );
         }
-        if (!config.documentId || !config.requiredAction || typeof config.transform !== "function") {
-            throw new Error("Document writer configuration requires documentId, requiredAction, and transform.");
+
+        if (
+            !config.documentId ||
+            !config.requiredAction ||
+            typeof config.transform !== "function"
+        ) {
+            throw new Error(
+                "Document writer configuration requires documentId, requiredAction, and transform."
+            );
         }
 
         const plan = window.TMSDocumentUpdateEngine.generatePlan();
         const proposal = getProposal(plan, config.documentId);
 
-        if (!proposal || proposal.action !== config.requiredAction || !proposal.payload) {
+        if (!proposal) {
             return rejectedDraft(
                 config,
-                "An approved " + config.documentId + " " + config.requiredAction + " proposal is required before a draft can be generated."
+                "An approved proposal for " +
+                config.documentId +
+                " is required before a draft can be generated."
             );
         }
 
         try {
-            const sourceDocument = await loadSourceDocument(config.documentId);
+            const sourceDocument = await loadSourceDocument(
+                config.documentId
+            );
+
+            if (proposal.action === NO_CHANGE_ACTION) {
+                return createNoChangeDraft(
+                    config,
+                    proposal,
+                    sourceDocument
+                );
+            }
+
+            if (
+                proposal.action !== config.requiredAction ||
+                !proposal.payload
+            ) {
+                return rejectedDraft(
+                    config,
+                    "An approved " +
+                    config.documentId +
+                    " " +
+                    config.requiredAction +
+                    " proposal is required before a draft can be generated."
+                );
+            }
+
             const proposedDocument = clone(sourceDocument);
+
             const transformResult = await config.transform({
                 proposal: clone(proposal),
                 sourceDocument: clone(sourceDocument),
@@ -140,7 +262,12 @@ writes permanent files.
             });
 
             const generatedAt = new Date().toISOString();
-            const resultDetails = transformResult && typeof transformResult === "object" ? transformResult : {};
+            const resultDetails =
+                transformResult &&
+                typeof transformResult === "object"
+                    ? transformResult
+                    : {};
+
             const draft = Object.assign({
                 draftType: "TMS-OS Permanent Document Draft",
                 frameworkVersion: ENGINE_VERSION,
@@ -148,19 +275,35 @@ writes permanent files.
                 documentId: config.documentId,
                 generatedAt: generatedAt,
                 accepted: true,
-                message: "Reviewable replacement-document draft generated. No permanent file was changed.",
+                message:
+                    "Reviewable replacement-document draft generated. " +
+                    "No permanent file was changed.",
                 sourceLoaded: true,
+                proposalAction: proposal.action,
+                requiredAction: config.requiredAction,
+                transformExecuted: true,
+                documentChanged: true,
+                permanentWriteRequired: true,
                 sourceSectionCount: sourceDocument.sections.length,
                 proposedSectionCount: proposedDocument.sections.length,
                 proposedDocument: proposedDocument,
                 reviewRequired: true,
-                reviewChoices: ["Approve Draft", "Revise Session", "Cancel Draft"],
+                reviewChoices: [
+                    "Approve Draft",
+                    "Revise Session",
+                    "Cancel Draft"
+                ],
                 permanentWriteExecuted: false
             }, resultDetails);
 
             return deepFreeze(clone(draft));
         } catch (error) {
-            return rejectedDraft(config, error.message);
+            return rejectedDraft(
+                config,
+                error && error.message
+                    ? error.message
+                    : "Draft generation failed for an unknown reason."
+            );
         }
     }
 
@@ -174,7 +317,10 @@ writes permanent files.
     });
 
     console.log(
-        "Generic Document Writer Framework v" + ENGINE_VERSION +
-        " initialized for Work Session " + window.TMSSessionContext.getSnapshot().sessionNumber + "."
+        "Generic Document Writer Framework v" +
+        ENGINE_VERSION +
+        " initialized for Work Session " +
+        window.TMSSessionContext.getSnapshot().sessionNumber +
+        "."
     );
 }());

@@ -1,0 +1,45 @@
+{
+    "documentId": "WORKSPACE-INVENTORY-001",
+    "version": "1.1.0",
+    "status": "Foundation",
+
+    "inventoryType": "Workspace Inventory",
+
+    "generatedAt": null,
+    "generatedBy": "Workspace Inventory Engine",
+    "engineVersion": "1.2.0",
+
+    "accepted": false,
+
+    "workspace": {
+        "rootPath": null,
+        "repositoryPath": null
+    },
+
+    "summary": {
+        "folderCount": 0,
+        "fileCount": 0,
+        "classifiedItems": 0,
+        "unclassifiedItems": 0
+    },
+
+    "folders": [],
+
+    "files": [],
+
+    "classification": {
+        "officialRepositories": [],
+        "officialGovernance": [],
+        "officialDocumentation": [],
+        "recoveryCopies": [],
+        "backups": [],
+        "archives": [],
+        "temporary": [],
+        "unknown": []
+    },
+
+    "validation": {
+        "validated": false,
+        "accepted": false
+    }
+}

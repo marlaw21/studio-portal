@@ -1,0 +1,31 @@
+{
+    "documentId": "WORKSPACE-CONFIG-001",
+    "version": "1.0.0",
+    "status": "Approved",
+
+    "workspace": {
+        "name": "Two Marshalls Studios",
+        "rootPath": "C:\\Two Marshalls Studios"
+    },
+
+    "repository": {
+        "name": "studio-portal",
+        "path": "C:\\Two Marshalls Studios\\studio-portal",
+        "branch": "main",
+        "remote": "https://github.com/marlaw21/studio-portal.git",
+        "status": "Official Development Repository"
+    },
+
+    "validation": {
+        "expectedWorkspaceRoot": "C:\\Two Marshalls Studios",
+        "expectedRepository": "studio-portal",
+        "expectedBranch": "main"
+    },
+
+    "workspaceManagementSystem": {
+        "enabled": true,
+        "mode": "Read-Only",
+        "allowAutomaticCleanup": false,
+        "allowAutomaticDeletion": false
+    }
+}

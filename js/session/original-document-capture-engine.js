@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 050 — Original Document Capture Engine v1.0.0
+Work Session 093 — Original Document Capture Engine v1.1.0
 File: js/session/original-document-capture-engine.js
 
 Purpose:
@@ -16,7 +16,7 @@ files. Write authorization remains locked.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.1.0";
     const CAPTURE_TYPE = "TMS-OS Original Permanent Document Capture";
     const EXPECTED_DOCUMENTS = Object.freeze([
         "WS-HIST-001",
@@ -377,6 +377,13 @@ files. Write authorization remains locked.
         rollbackEntry,
         captureResult
     ) {
+        const proposedChecksum = calculateChecksum(
+            rollbackEntry.proposedDocument
+        );
+
+        const documentChanged =
+            captureResult.originalChecksum !== proposedChecksum;
+
         return {
             order: rollbackEntry.order,
             documentId: rollbackEntry.documentId,
@@ -411,16 +418,23 @@ files. Write authorization remains locked.
             originalChecksum:
                 captureResult.originalChecksum,
             proposedChecksum:
-                calculateChecksum(
-                    rollbackEntry.proposedDocument
-                ),
+                proposedChecksum,
 
-            rollbackRequiredBeforeWrite: true,
+            documentChanged:
+                documentChanged,
+            permanentWriteRequired:
+                documentChanged,
+
+            rollbackRequiredBeforeWrite:
+                documentChanged,
             rollbackSource:
                 "Captured current live permanent JSON document",
 
             backupStatus: "Captured and Verified",
-            executionStatus: "Not Started",
+            executionStatus:
+                documentChanged
+                    ? "Not Started"
+                    : "No Write Required",
             restoreStatus: "Not Required",
             verificationStatus: "Passed",
 
@@ -729,6 +743,15 @@ files. Write authorization remains locked.
                     document.originalChecksum.length > 0 &&
                     typeof document.proposedChecksum === "string" &&
                     document.proposedChecksum.length > 0 &&
+                    typeof document.documentChanged === "boolean" &&
+                    document.permanentWriteRequired ===
+                        document.documentChanged &&
+                    document.rollbackRequiredBeforeWrite ===
+                        document.documentChanged &&
+                    document.executionStatus ===
+                        (document.documentChanged
+                            ? "Not Started"
+                            : "No Write Required") &&
                     document.backupStatus ===
                         "Captured and Verified" &&
                     document.verificationStatus === "Passed" &&
@@ -800,7 +823,10 @@ files. Write authorization remains locked.
                 document.backupStatus +
                 " | " +
                 document.originalChecksum +
-                " | WRITE LOCKED"
+                " | " +
+                (document.permanentWriteRequired
+                    ? "WRITE REQUIRED — LOCKED"
+                    : "NO WRITE REQUIRED")
             );
         });
 

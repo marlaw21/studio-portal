@@ -1,0 +1,33 @@
+{
+    "documentId": "WORKSPACE-CHANGE-REPORT-001",
+    "version": "1.0.0",
+    "status": "Foundation",
+    "reportType": "Workspace Change Report",
+    "reportNumber": 1,
+    "generatedAt": null,
+    "generatedBy": null,
+
+    "comparison": {
+        "baselineSnapshot": null,
+        "currentSnapshot": null,
+        "comparisonMethod": null
+    },
+
+    "summary": {
+        "totalChanges": 0,
+        "newFolders": 0,
+        "deletedFolders": 0,
+        "newFiles": 0,
+        "deletedFiles": 0,
+        "modifiedFiles": 0,
+        "renamedItems": 0,
+        "movedItems": 0
+    },
+
+    "changes": [],
+
+    "validation": {
+        "validated": false,
+        "accepted": false
+    }
+}

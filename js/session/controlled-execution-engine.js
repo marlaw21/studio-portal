@@ -1,12 +1,17 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 051 — Controlled Execution Engine v1.0.0
+Work Session 093 — Controlled Execution Engine v1.1.1
 File: js/session/controlled-execution-engine.js
 
 Purpose:
 Coordinate the approved permanent-document transaction, rollback package,
 and original-document capture package into one deterministic, review-only
 execution plan.
+
+Version 1.1.1 preserves the document-change decision metadata produced by the
+Original Document Capture Engine. Unchanged documents remain in the controlled
+plan for traceability, but they are explicitly marked as requiring no permanent
+write.
 
 This engine validates execution prerequisites and prepares the ordered
 permanent-output plan. It does not write, replace, delete, restore, download,
@@ -18,7 +23,7 @@ Write authorization and rollback authorization remain locked.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.1.1";
     const PLAN_TYPE = "TMS-OS Controlled Permanent Output Execution Plan";
 
     const EXPECTED_DOCUMENTS = Object.freeze([
@@ -86,6 +91,39 @@ Write authorization and rollback authorization remain locked.
             String(sessionNumber).padStart(3, "0"),
             timestamp
         ].join("-");
+    }
+
+    function validateDocumentDecisionState(document) {
+        if (
+            typeof document.documentChanged !== "boolean" ||
+            typeof document.permanentWriteRequired !== "boolean" ||
+            typeof document.rollbackRequiredBeforeWrite !== "boolean"
+        ) {
+            return false;
+        }
+
+        const checksumsMatch =
+            document.originalChecksum === document.proposedChecksum;
+
+        if (checksumsMatch) {
+            return (
+                document.documentChanged === false &&
+                document.permanentWriteRequired === false &&
+                document.rollbackRequiredBeforeWrite === false &&
+                document.executionStatus === "No Write Required"
+            );
+        }
+
+        return (
+            document.documentChanged === true &&
+            document.permanentWriteRequired === true &&
+            document.rollbackRequiredBeforeWrite === true &&
+            (
+                document.executionStatus === "Not Started" ||
+                document.executionStatus === "Ready for Controlled Execution" ||
+                document.executionStatus === "Write Required"
+            )
+        );
     }
 
     function validateCapturePackage(capturePackage) {
@@ -216,6 +254,7 @@ Write authorization and rollback authorization remain locked.
                     document.proposedChecksum.length > 0 &&
                     document.backupStatus === "Captured and Verified" &&
                     document.verificationStatus === "Passed" &&
+                    validateDocumentDecisionState(document) &&
                     document.writeAuthorized === false &&
                     document.rollbackAuthorized === false &&
                     document.permanentWriteExecuted === false &&
@@ -226,7 +265,7 @@ Write authorization and rollback authorization remain locked.
         checks.push(buildCheck(
             "Captured document safety state",
             documentSafetyValid,
-            "Every permanent document must include verified original and proposed copies while remaining execution-locked."
+            "Every permanent document must include verified copies, valid change metadata, and locked execution controls."
         ));
 
         return {
@@ -239,6 +278,9 @@ Write authorization and rollback authorization remain locked.
     }
 
     function buildExecutionStep(document, sequenceIndex) {
+        const writeRequired =
+            document.permanentWriteRequired === true;
+
         return {
             sequence: sequenceIndex + 1,
             order: document.order,
@@ -259,6 +301,13 @@ Write authorization and rollback authorization remain locked.
             proposedChecksum:
                 document.proposedChecksum,
 
+            documentChanged:
+                document.documentChanged,
+            permanentWriteRequired:
+                document.permanentWriteRequired,
+            rollbackRequiredBeforeWrite:
+                document.rollbackRequiredBeforeWrite,
+
             sourceVersion:
                 document.sourceVersion,
             proposedVersion:
@@ -269,20 +318,38 @@ Write authorization and rollback authorization remain locked.
             proposedSectionCount:
                 document.proposedSectionCount,
 
-            prerequisites: [
-                "Original permanent document captured",
-                "Original checksum verified",
-                "Proposed replacement document captured",
-                "Proposed checksum verified",
-                "Rollback package ready",
-                "Human execution authorization not yet granted"
-            ],
+            prerequisites: writeRequired
+                ? [
+                    "Original permanent document captured",
+                    "Original checksum verified",
+                    "Proposed replacement document captured",
+                    "Proposed checksum verified",
+                    "Document change confirmed",
+                    "Rollback package ready",
+                    "Human execution authorization not yet granted"
+                ]
+                : [
+                    "Original permanent document captured",
+                    "Original checksum verified",
+                    "Proposed replacement document captured",
+                    "Proposed checksum verified",
+                    "No document change detected",
+                    "No permanent write required"
+                ],
 
             prerequisiteStatus: "Passed",
-            executionAction:
-                "Replace complete permanent JSON file",
-            executionStatus: "Planned — Not Authorized",
-            verificationStatus: "Pending Execution",
+
+            executionAction: writeRequired
+                ? "Replace complete permanent JSON file"
+                : "No Write Required",
+
+            executionStatus: writeRequired
+                ? "Planned — Not Authorized"
+                : "No Write Required",
+
+            verificationStatus: writeRequired
+                ? "Pending Execution"
+                : "Passed — No Write Required",
 
             writeAuthorized: false,
             rollbackAuthorized: false,
@@ -337,6 +404,8 @@ Write authorization and rollback authorization remain locked.
             expectedDocumentCount:
                 EXPECTED_DOCUMENTS.length,
             plannedDocumentCount: 0,
+            writeRequiredDocumentCount: 0,
+            noWriteRequiredDocumentCount: 0,
             executionSteps: [],
 
             originalDocumentsCaptured: false,
@@ -395,6 +464,15 @@ Write authorization and rollback authorization remain locked.
                 );
             });
 
+        const writeRequiredDocumentCount =
+            executionSteps.filter(function (step) {
+                return step.permanentWriteRequired === true;
+            }).length;
+
+        const noWriteRequiredDocumentCount =
+            executionSteps.length -
+            writeRequiredDocumentCount;
+
         const snapshot =
             window.TMSSessionContext.getSnapshot();
 
@@ -414,7 +492,8 @@ Write authorization and rollback authorization remain locked.
             accepted: true,
             message:
                 "Controlled execution plan generated for review. " +
-                "All prerequisites passed, but no permanent writes were authorized or executed.",
+                "Document change decisions were preserved. " +
+                "No permanent writes were authorized or executed.",
 
             sourceCaptureAccepted: true,
             sourceCaptureId:
@@ -437,6 +516,10 @@ Write authorization and rollback authorization remain locked.
                 EXPECTED_DOCUMENTS.length,
             plannedDocumentCount:
                 executionSteps.length,
+            writeRequiredDocumentCount:
+                writeRequiredDocumentCount,
+            noWriteRequiredDocumentCount:
+                noWriteRequiredDocumentCount,
             executionSteps:
                 executionSteps,
 
@@ -453,10 +536,14 @@ Write authorization and rollback authorization remain locked.
             restoreExecuted: false,
 
             planStatus:
-                "Validated — Awaiting Execution Authorization",
+                writeRequiredDocumentCount > 0
+                    ? "Validated — Awaiting Execution Authorization"
+                    : "Validated — No Permanent Writes Required",
 
             requiredNextAction:
-                "Submit this plan to the future human-controlled execution authorization gate.",
+                writeRequiredDocumentCount > 0
+                    ? "Submit only write-required steps to the future human-controlled execution authorization gate."
+                    : "Record that all five permanent documents are unchanged; no execution authorization is required.",
 
             reviewRequired: true,
             reviewChoices: [
@@ -584,7 +671,7 @@ Write authorization and rollback authorization remain locked.
         const executionStepsValid =
             executionSteps.length === EXPECTED_DOCUMENTS.length &&
             executionSteps.every(function (step, index) {
-                return (
+                const baseValid =
                     step.sequence === index + 1 &&
                     EXPECTED_DOCUMENTS.includes(step.documentId) &&
                     typeof step.targetPath === "string" &&
@@ -595,22 +682,73 @@ Write authorization and rollback authorization remain locked.
                     step.originalChecksum.length > 0 &&
                     typeof step.proposedChecksum === "string" &&
                     step.proposedChecksum.length > 0 &&
+                    typeof step.documentChanged === "boolean" &&
+                    typeof step.permanentWriteRequired === "boolean" &&
+                    typeof step.rollbackRequiredBeforeWrite === "boolean" &&
                     step.originalDocumentCaptured === true &&
                     step.proposedDocumentCaptured === true &&
                     step.prerequisiteStatus === "Passed" &&
-                    step.executionStatus ===
-                        "Planned — Not Authorized" &&
                     step.writeAuthorized === false &&
                     step.rollbackAuthorized === false &&
                     step.permanentWriteExecuted === false &&
-                    step.restoreExecuted === false
+                    step.restoreExecuted === false;
+
+                if (!baseValid) {
+                    return false;
+                }
+
+                if (step.permanentWriteRequired === true) {
+                    return (
+                        step.documentChanged === true &&
+                        step.rollbackRequiredBeforeWrite === true &&
+                        step.executionAction ===
+                            "Replace complete permanent JSON file" &&
+                        step.executionStatus ===
+                            "Planned — Not Authorized" &&
+                        step.verificationStatus ===
+                            "Pending Execution"
+                    );
+                }
+
+                return (
+                    step.documentChanged === false &&
+                    step.rollbackRequiredBeforeWrite === false &&
+                    step.executionAction ===
+                        "No Write Required" &&
+                    step.executionStatus ===
+                        "No Write Required" &&
+                    step.verificationStatus ===
+                        "Passed — No Write Required"
                 );
             });
 
         checks.push(buildCheck(
             "Execution steps valid",
             executionStepsValid,
-            "Every execution step must be complete, ordered, verified, and authorization-locked."
+            "Every execution step must preserve its verified write decision and remain authorization-locked."
+        ));
+
+        const writeRequiredCount =
+            executionSteps.filter(function (step) {
+                return step.permanentWriteRequired === true;
+            }).length;
+
+        const noWriteRequiredCount =
+            executionSteps.filter(function (step) {
+                return step.permanentWriteRequired === false;
+            }).length;
+
+        checks.push(buildCheck(
+            "Execution decision counts valid",
+            Boolean(current) &&
+                current.writeRequiredDocumentCount ===
+                    writeRequiredCount &&
+                current.noWriteRequiredDocumentCount ===
+                    noWriteRequiredCount &&
+                writeRequiredCount +
+                    noWriteRequiredCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "The plan-level write decision counts must match the execution steps."
         ));
 
         return deepFreeze({
@@ -637,6 +775,10 @@ Write authorization and rollback authorization remain locked.
             "Plan Status: " + current.planStatus,
             "Planned Documents: " +
                 current.plannedDocumentCount,
+            "Write Required Documents: " +
+                current.writeRequiredDocumentCount,
+            "No Write Required Documents: " +
+                current.noWriteRequiredDocumentCount,
             "Original Documents Captured: " +
                 (
                     current.originalDocumentsCaptured
@@ -677,7 +819,12 @@ Write authorization and rollback authorization remain locked.
                 step.updateMode +
                 " | " +
                 step.executionStatus +
-                " | WRITE LOCKED"
+                " | " +
+                (
+                    step.permanentWriteRequired
+                        ? "WRITE LOCKED"
+                        : "NO WRITE"
+                )
             );
         });
 
