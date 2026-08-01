@@ -2,7 +2,7 @@
     "use strict";
 
     const MANAGER_NAME = "TMS Workspace Snapshot History Manager";
-    const MANAGER_VERSION = "1.0.0";
+    const MANAGER_VERSION = "1.1.0";
 
     const HISTORY_DOCUMENT_PATH =
         "governance/workspace/snapshots/WORKSPACE-SNAPSHOT-HISTORY-001.json";
@@ -11,6 +11,7 @@
     let governedHistoryDocument = null;
     let runtimeHistory = null;
     let validationReport = null;
+    const runtimeSnapshotCache = new Map();
 
     function clone(value) {
         if (value === undefined) {
@@ -203,31 +204,82 @@
             normalizeString(snapshot.snapshotId) ||
             normalizeString(snapshot.documentId);
 
+        const folderCount =
+            Number.isInteger(snapshot?.summary?.folderCount)
+                ? snapshot.summary.folderCount
+                : Array.isArray(snapshot.folders)
+                    ? snapshot.folders.length
+                    : 0;
+
+        const fileCount =
+            Number.isInteger(snapshot?.summary?.fileCount)
+                ? snapshot.summary.fileCount
+                : Array.isArray(snapshot.files)
+                    ? snapshot.files.length
+                    : 0;
+
+        const totalItemCount =
+            Number.isInteger(snapshot?.summary?.totalItemCount)
+                ? snapshot.summary.totalItemCount
+                : folderCount + fileCount;
+
         return {
             snapshotId,
             documentId:
                 normalizeString(snapshot.documentId) || snapshotId,
+            snapshotNumber:
+                Number.isInteger(snapshot.snapshotNumber)
+                    ? snapshot.snapshotNumber
+                    : null,
+            previousSnapshotNumber:
+                Number.isInteger(snapshot.previousSnapshotNumber)
+                    ? snapshot.previousSnapshotNumber
+                    : null,
+            previousDocumentId:
+                normalizeString(snapshot.previousDocumentId) || null,
             version: normalizeString(snapshot.version) || null,
             status: normalizeString(snapshot.status) || null,
+            snapshotType:
+                normalizeString(snapshot.snapshotType) || null,
             generatedAt: snapshot.generatedAt || null,
             generatedBy: snapshot.generatedBy || null,
             registeredAt: createTimestamp(),
-            summary: {
-                totalFolders: Array.isArray(snapshot.folders)
-                    ? snapshot.folders.length
-                    : 0,
-                totalFiles: Array.isArray(snapshot.files)
-                    ? snapshot.files.length
-                    : 0,
-                totalItems:
-                    (Array.isArray(snapshot.folders)
-                        ? snapshot.folders.length
-                        : 0) +
-                    (Array.isArray(snapshot.files)
-                        ? snapshot.files.length
-                        : 0)
+            snapshotPath:
+                "governance/workspace/snapshots/" +
+                snapshotId +
+                ".json",
+            workspace: {
+                rootPath:
+                    normalizeString(snapshot?.workspace?.rootPath) || null,
+                repositoryPath:
+                    normalizeString(snapshot?.workspace?.repositoryPath) || null
             },
-            sourceSnapshot: clone(snapshot)
+            generator: {
+                name:
+                    normalizeString(snapshot?.generator?.name) || null,
+                version:
+                    normalizeString(snapshot?.generator?.version) || null,
+                operatingMode:
+                    normalizeString(snapshot?.generator?.operatingMode) || null
+            },
+            summary: {
+                folderCount,
+                fileCount,
+                totalItemCount,
+                totalFileSizeBytes:
+                    Number.isFinite(snapshot?.summary?.totalFileSizeBytes)
+                        ? snapshot.summary.totalFileSizeBytes
+                        : null,
+                warningCount:
+                    Number.isInteger(snapshot?.summary?.warningCount)
+                        ? snapshot.summary.warningCount
+                        : 0,
+                excludedItemCount:
+                    Number.isInteger(snapshot?.summary?.excludedItemCount)
+                        ? snapshot.summary.excludedItemCount
+                        : 0
+            },
+            sourceSnapshotEmbedded: false
         };
     }
 
@@ -286,6 +338,7 @@
         }
 
         runtimeHistory.snapshots.push(snapshotRecord);
+        runtimeSnapshotCache.set(snapshotRecord.snapshotId, clone(snapshot));
         runtimeHistory.generatedAt = createTimestamp();
         runtimeHistory.generatedBy = MANAGER_NAME;
         runtimeHistory.status = "Runtime";
@@ -366,13 +419,25 @@
     function getLatestSnapshot() {
         const record = getLatestSnapshotRecord();
 
-        return record ? clone(record.sourceSnapshot) : null;
+        if (!record) {
+            return null;
+        }
+
+        const snapshot = runtimeSnapshotCache.get(record.snapshotId);
+
+        return snapshot ? clone(snapshot) : null;
     }
 
     function getPreviousSnapshot() {
         const record = getPreviousSnapshotRecord();
 
-        return record ? clone(record.sourceSnapshot) : null;
+        if (!record) {
+            return null;
+        }
+
+        const snapshot = runtimeSnapshotCache.get(record.snapshotId);
+
+        return snapshot ? clone(snapshot) : null;
     }
 
     function getHistoryDocument() {
@@ -401,6 +466,9 @@
                 runtimeHistory?.summary?.latestSnapshot || null,
             previousSnapshot:
                 runtimeHistory?.summary?.previousSnapshot || null,
+            cachedSnapshotCount:
+                runtimeSnapshotCache.size,
+            compactRecordMode: true,
             validationAccepted:
                 validationReport?.accepted || false
         };
@@ -430,6 +498,7 @@
         governedHistoryDocument = null;
         runtimeHistory = null;
         validationReport = null;
+        runtimeSnapshotCache.clear();
 
         return true;
     }
