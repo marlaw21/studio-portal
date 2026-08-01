@@ -1,0 +1,27 @@
+{
+    "documentId":  "WORKSPACE-SNAPSHOT-LATEST",
+    "version":  "1.0.0",
+    "status":  "Published",
+    "documentType":  "Workspace Latest Snapshot Pointer",
+    "generatedAt":  "2026-07-31T20:46:12.755Z",
+    "generatedBy":  "TMS-OS Workspace Snapshot Generator",
+    "latestSnapshot":  {
+                           "snapshotNumber":  3,
+                           "documentId":  "WORKSPACE-SNAPSHOT-003",
+                           "fileName":  "WORKSPACE-SNAPSHOT-003.json",
+                           "path":  "governance/workspace/snapshots/WORKSPACE-SNAPSHOT-003.json",
+                           "generatedAt":  "2026-07-31T20:46:10.341Z"
+                       },
+    "publisher":  {
+                      "name":  "TMS-OS Workspace Snapshot Generator",
+                      "version":  "2.3.0",
+                      "operatingMode":  "Governed Latest Snapshot Pointer Publication"
+                  },
+    "validation":  {
+                       "validated":  true,
+                       "accepted":  true,
+                       "snapshotDocumentIdMatches":  true,
+                       "snapshotFileNameMatches":  true,
+                       "snapshotValidationAccepted":  true
+                   }
+}

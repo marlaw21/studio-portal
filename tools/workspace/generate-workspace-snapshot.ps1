@@ -1,9 +1,9 @@
 <#
 TMS-OS Workspace Snapshot Generator
 Module: WMS Module 007
-Version: 2.2.1
+Version: 2.3.0
 Operating Mode: Read-Only Workspace Capture
-Module 010 Phase: Dynamic Versioned Snapshot Creation
+Module 011 Phase: Latest Snapshot Pointer Publication
 #>
 
 [CmdletBinding()]
@@ -17,13 +17,19 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $ScriptName = "TMS-OS Workspace Snapshot Generator"
-$ScriptVersion = "2.2.1"
+$ScriptVersion = "2.3.0"
 
 $SnapshotDirectory = "C:\Two Marshalls Studios\studio-portal\governance\workspace\snapshots"
 $SnapshotFilePattern = "WORKSPACE-SNAPSHOT-*.json"
 $SnapshotNamePattern = "^WORKSPACE-SNAPSHOT-(\d{3})\.json$"
 
+$LatestSnapshotPointerPath = Join-Path `
+    -Path $SnapshotDirectory `
+    -ChildPath "WORKSPACE-SNAPSHOT-LATEST.json"
+
 $FoundationDocumentId = "WORKSPACE-SNAPSHOT-001"
+$LatestSnapshotPointerDocumentId = "WORKSPACE-SNAPSHOT-LATEST"
+$LatestSnapshotPointerDocumentType = "Workspace Latest Snapshot Pointer"
 $ExpectedSnapshotType = "Workspace Snapshot"
 
 $nextSnapshotIdentity = $null
@@ -228,6 +234,153 @@ function Write-Utf8JsonFile {
     [System.IO.File]::WriteAllText($Path, $Json, $utf8WithoutBom)
 }
 
+function Read-LatestSnapshotPointerFoundation {
+    param(
+        [Parameter(Mandatory = $true)][string]$Path,
+        [Parameter(Mandatory = $true)][string]$ExpectedDocumentId,
+        [Parameter(Mandatory = $true)][string]$ExpectedDocumentType
+    )
+
+    Test-RequiredPath `
+        -Path $Path `
+        -Description "Governed latest snapshot pointer foundation" `
+        -PathType "Leaf"
+
+    try {
+        $pointerFoundation = Get-Content `
+            -LiteralPath $Path `
+            -Raw `
+            -Encoding UTF8 |
+            ConvertFrom-Json
+    }
+    catch {
+        throw "The governed latest snapshot pointer foundation could not be read. $($_.Exception.Message)"
+    }
+
+    if ($null -eq $pointerFoundation) {
+        throw "The governed latest snapshot pointer foundation returned no data."
+    }
+
+    if ($pointerFoundation.documentId -ne $ExpectedDocumentId) {
+        throw "Latest snapshot pointer documentId must be $ExpectedDocumentId."
+    }
+
+    if ($pointerFoundation.documentType -ne $ExpectedDocumentType) {
+        throw "Latest snapshot pointer documentType must be $ExpectedDocumentType."
+    }
+
+    return $pointerFoundation
+}
+
+function Write-LatestSnapshotPointer {
+    param(
+        [Parameter(Mandatory = $true)][string]$Path,
+        [Parameter(Mandatory = $true)][object]$Foundation,
+        [Parameter(Mandatory = $true)][object]$Snapshot,
+        [Parameter(Mandatory = $true)][string]$SnapshotPath,
+        [Parameter(Mandatory = $true)][string]$GeneratorName,
+        [Parameter(Mandatory = $true)][string]$GeneratorVersion
+    )
+
+    $snapshotFileName = Split-Path -Path $SnapshotPath -Leaf
+    $repositoryRelativePath =
+        "governance/workspace/snapshots/$snapshotFileName"
+
+    $pointerVersion = "1.0.0"
+
+    if (
+        $null -ne $Foundation.version -and
+        -not [string]::IsNullOrWhiteSpace([string]$Foundation.version)
+    ) {
+        $pointerVersion = [string]$Foundation.version
+    }
+
+    $pointerDocument = [ordered]@{
+        documentId = $LatestSnapshotPointerDocumentId
+        version = $pointerVersion
+        status = "Published"
+        documentType = $LatestSnapshotPointerDocumentType
+        generatedAt = [datetime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+        generatedBy = $GeneratorName
+
+        latestSnapshot = [ordered]@{
+            snapshotNumber = [int]$Snapshot.snapshotNumber
+            documentId = [string]$Snapshot.documentId
+            fileName = $snapshotFileName
+            path = $repositoryRelativePath
+            generatedAt = [string]$Snapshot.generatedAt
+        }
+
+        publisher = [ordered]@{
+            name = $GeneratorName
+            version = $GeneratorVersion
+            operatingMode = "Governed Latest Snapshot Pointer Publication"
+        }
+
+        validation = [ordered]@{
+            validated = $true
+            accepted = $true
+            snapshotDocumentIdMatches = [bool](
+                [string]$Snapshot.documentId -eq
+                ("WORKSPACE-SNAPSHOT-{0:D3}" -f [int]$Snapshot.snapshotNumber)
+            )
+            snapshotFileNameMatches = [bool](
+                $snapshotFileName -eq
+                ("WORKSPACE-SNAPSHOT-{0:D3}.json" -f [int]$Snapshot.snapshotNumber)
+            )
+            snapshotValidationAccepted = [bool]$Snapshot.validation.accepted
+        }
+    }
+
+    $pointerJson =
+        $pointerDocument |
+        ConvertTo-Json -Depth 8
+
+    Write-Utf8JsonFile `
+        -Path $Path `
+        -Json $pointerJson
+
+    try {
+        $writtenPointer =
+            Get-Content `
+                -LiteralPath $Path `
+                -Raw `
+                -Encoding UTF8 |
+                ConvertFrom-Json
+    }
+    catch {
+        throw "The written latest snapshot pointer could not be verified. $($_.Exception.Message)"
+    }
+
+    if ($writtenPointer.documentId -ne $LatestSnapshotPointerDocumentId) {
+        throw "Latest snapshot pointer verification failed. Unexpected documentId."
+    }
+
+    if ($writtenPointer.documentType -ne $LatestSnapshotPointerDocumentType) {
+        throw "Latest snapshot pointer verification failed. Unexpected documentType."
+    }
+
+    if (
+        [int]$writtenPointer.latestSnapshot.snapshotNumber -ne
+        [int]$Snapshot.snapshotNumber
+    ) {
+        throw "Latest snapshot pointer verification failed. Snapshot number does not match."
+    }
+
+    if (
+        [string]$writtenPointer.latestSnapshot.documentId -ne
+        [string]$Snapshot.documentId
+    ) {
+        throw "Latest snapshot pointer verification failed. Snapshot documentId does not match."
+    }
+
+    if (-not [bool]$writtenPointer.validation.accepted) {
+        throw "Latest snapshot pointer verification failed. Validation was not accepted."
+    }
+
+    return $writtenPointer
+}
+
 function Add-ScanWarning {
     param(
         [Parameter(Mandatory = $true)]
@@ -357,6 +510,7 @@ Write-Host "Workspace root       : $WorkspaceRoot"
 Write-Host "Repository path      : $RepositoryPath"
 Write-Host "Foundation snapshot  : $SnapshotFoundationPath"
 Write-Host "Versioned output     : $SnapshotOutputPath"
+Write-Host "Latest pointer       : $LatestSnapshotPointerPath"
 
 Write-Section -Title "Validating Approved Paths"
 
@@ -372,6 +526,7 @@ $normalizedRepositoryPath = Get-NormalizedFullPath -Path $RepositoryPath
 $normalizedSnapshotDirectory = Get-NormalizedFullPath -Path $snapshotDirectory
 $normalizedSnapshotFoundationPath = [System.IO.Path]::GetFullPath($SnapshotFoundationPath)
 $normalizedSnapshotOutputPath = [System.IO.Path]::GetFullPath($SnapshotOutputPath)
+$normalizedLatestSnapshotPointerPath = [System.IO.Path]::GetFullPath($LatestSnapshotPointerPath)
 
 if (-not (Test-PathIsInside -ParentPath $normalizedWorkspaceRoot -ChildPath $normalizedRepositoryPath)) {
     throw "The approved repository must be located inside the approved workspace root."
@@ -389,10 +544,15 @@ if (-not (Test-PathIsInside -ParentPath $normalizedSnapshotDirectory -ChildPath 
     throw "The snapshot output file must be located inside the approved snapshot directory."
 }
 
+if (-not (Test-PathIsInside -ParentPath $normalizedSnapshotDirectory -ChildPath $normalizedLatestSnapshotPointerPath)) {
+    throw "The latest snapshot pointer must be located inside the approved snapshot directory."
+}
+
 Write-Host "Workspace path validation passed."
 Write-Host "Repository path validation passed."
 Write-Host "Foundation path validation passed."
 Write-Host "Snapshot output validation passed."
+Write-Host "Latest pointer path validation passed."
 
 Write-Section -Title "Reading Governed Snapshot Foundation"
 
@@ -418,6 +578,18 @@ if ($snapshotFoundation.snapshotType -ne $ExpectedSnapshotType) {
 Write-Host "Governed snapshot foundation accepted."
 Write-Host "Document ID        : $($snapshotFoundation.documentId)"
 Write-Host "Snapshot type      : $($snapshotFoundation.snapshotType)"
+
+Write-Section -Title "Reading Latest Snapshot Pointer Foundation"
+
+$latestSnapshotPointerFoundation =
+    Read-LatestSnapshotPointerFoundation `
+        -Path $normalizedLatestSnapshotPointerPath `
+        -ExpectedDocumentId $LatestSnapshotPointerDocumentId `
+        -ExpectedDocumentType $LatestSnapshotPointerDocumentType
+
+Write-Host "Latest snapshot pointer foundation accepted."
+Write-Host "Pointer document ID : $($latestSnapshotPointerFoundation.documentId)"
+Write-Host "Pointer status      : $($latestSnapshotPointerFoundation.status)"
 
 Write-Section -Title "Scanning Approved Workspace"
 
@@ -495,11 +667,25 @@ foreach ($item in $allItems) {
             )
         }
 
-        if ($itemIsGovernedSnapshot) {
+        $itemIsLatestSnapshotPointer =
+            $itemPath.Equals(
+                $normalizedLatestSnapshotPointerPath,
+                [System.StringComparison]::OrdinalIgnoreCase
+            )
+
+        if ($itemIsGovernedSnapshot -or $itemIsLatestSnapshotPointer) {
+            $exclusionReason =
+                "Governed snapshot document excluded to prevent snapshot self-capture."
+
+            if ($itemIsLatestSnapshotPointer) {
+                $exclusionReason =
+                    "Latest snapshot pointer excluded to prevent pointer metadata from changing workspace comparisons."
+            }
+
             [void]$excludedItems.Add(
                 [ordered]@{
                     fullPath = $itemPath
-                    reason = "Governed snapshot document excluded to prevent snapshot self-capture."
+                    reason = $exclusionReason
                 }
             )
             continue
@@ -671,6 +857,22 @@ if (-not [bool]$writtenSnapshot.validation.nonEmptyCapture) {
 Write-Host "Snapshot successfully written and verified:"
 Write-Host $normalizedSnapshotOutputPath
 
+Write-Section -Title "Publishing Latest Snapshot Pointer"
+
+$writtenLatestSnapshotPointer =
+    Write-LatestSnapshotPointer `
+        -Path $normalizedLatestSnapshotPointerPath `
+        -Foundation $latestSnapshotPointerFoundation `
+        -Snapshot $writtenSnapshot `
+        -SnapshotPath $normalizedSnapshotOutputPath `
+        -GeneratorName $ScriptName `
+        -GeneratorVersion $ScriptVersion
+
+Write-Host "Latest snapshot pointer successfully written and verified:"
+Write-Host $normalizedLatestSnapshotPointerPath
+Write-Host "Latest snapshot ID  : $($writtenLatestSnapshotPointer.latestSnapshot.documentId)"
+Write-Host "Latest snapshot no. : $($writtenLatestSnapshotPointer.latestSnapshot.snapshotNumber)"
+
 Write-Section -Title "Snapshot Generation Complete"
 
 Write-Host "Document ID       : $ExpectedDocumentId"
@@ -684,5 +886,6 @@ Write-Host "Warnings recorded : $($sortedWarnings.Count)"
 Write-Host "Excluded items    : $($sortedExcludedItems.Count)"
 Write-Host "Workspace changed : No"
 Write-Host "Snapshot written  : Yes"
+Write-Host "Pointer published : Yes"
 Write-Host "Verification      : Passed"
 Write-Host ""
