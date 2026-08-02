@@ -1,23 +1,29 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 046 — Document Update Plan Foundation v1.0
+Work Session 101 — Six-Document Update Plan
 File: js/session/document-update-engine.js
 
 Purpose:
 Transform an approved Session Context into a read-only, reviewable Document
-Update Plan. This foundation decides what permanent documents should change and
-why. It does not write JSON files, modify StudioDB, create ZIP packages, perform
-Git operations, create release tags, or finalize permanent documentation.
+Update Plan for six governed documents. No permanent files are written.
 */
 
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.1.0";
     const REQUIRED_STATUS = "Closure Approved";
+    const SNAPSHOT_HISTORY_DOCUMENT_ID =
+        "WORKSPACE-SNAPSHOT-HISTORY-001";
 
-    if (!window.TMSSessionContext || !window.TMSSessionPreparer || !window.TMSSessionCloser) {
-        console.error("Document Update Engine could not initialize because its session dependencies are unavailable.");
+    if (
+        !window.TMSSessionContext ||
+        !window.TMSSessionPreparer ||
+        !window.TMSSessionCloser
+    ) {
+        console.error(
+            "Document Update Engine could not initialize because its session dependencies are unavailable."
+        );
         return;
     }
 
@@ -33,9 +39,11 @@ Git operations, create release tags, or finalize permanent documentation.
         if (!value || typeof value !== "object" || Object.isFrozen(value)) {
             return value;
         }
+
         Object.keys(value).forEach(function (key) {
             deepFreeze(value[key]);
         });
+
         return Object.freeze(value);
     }
 
@@ -78,8 +86,82 @@ Git operations, create release tags, or finalize permanent documentation.
         };
     }
 
+    function getSnapshotHistoryProposal() {
+        const manager = window.TMSWorkspaceSnapshotHistoryManager;
+
+        if (
+            !manager ||
+            typeof manager.getLatestSnapshotRecord !== "function" ||
+            typeof manager.getGovernedHistoryDocument !== "function"
+        ) {
+            return proposal(
+                SNAPSHOT_HISTORY_DOCUMENT_ID,
+                "No Change",
+                "Workspace Snapshot History Manager is unavailable, so no governed snapshot-history proposal can be generated.",
+                null,
+                false
+            );
+        }
+
+        const latestRecord = manager.getLatestSnapshotRecord();
+
+        if (!latestRecord) {
+            return proposal(
+                SNAPSHOT_HISTORY_DOCUMENT_ID,
+                "No Change",
+                "No runtime workspace snapshot record is available for permanent history evaluation.",
+                null,
+                false
+            );
+        }
+
+        const governedHistory = manager.getGovernedHistoryDocument();
+        const governedRecords = Array.isArray(governedHistory?.snapshots)
+            ? governedHistory.snapshots
+            : [];
+
+        const duplicateExists = governedRecords.some(function (record) {
+            return (
+                record?.snapshotId === latestRecord.snapshotId ||
+                record?.documentId === latestRecord.documentId
+            );
+        });
+
+        if (duplicateExists) {
+            return proposal(
+                SNAPSHOT_HISTORY_DOCUMENT_ID,
+                "No Change",
+                "The latest runtime workspace snapshot is already present in the governed snapshot history.",
+                null,
+                false
+            );
+        }
+
+        if (
+            latestRecord.sourceSnapshot ||
+            latestRecord.sourceSnapshotEmbedded !== false
+        ) {
+            return proposal(
+                SNAPSHOT_HISTORY_DOCUMENT_ID,
+                "No Change",
+                "The latest runtime workspace snapshot record is not a validated compact catalog entry.",
+                null,
+                false
+            );
+        }
+
+        return proposal(
+            SNAPSHOT_HISTORY_DOCUMENT_ID,
+            "Append",
+            "The latest validated compact workspace snapshot record is not yet present in the governed snapshot history.",
+            { snapshotRecord: clone(latestRecord) },
+            true
+        );
+    }
+
     function validateApproval() {
         const snapshot = context.getSnapshot();
+
         return deepFreeze({
             approved: snapshot.status === REQUIRED_STATUS,
             requiredStatus: REQUIRED_STATUS,
@@ -97,7 +179,8 @@ Git operations, create release tags, or finalize permanent documentation.
                 engineVersion: ENGINE_VERSION,
                 generatedAt: new Date().toISOString(),
                 accepted: false,
-                message: "Document Update Plan generation requires Closure Approved status.",
+                message:
+                    "Document Update Plan generation requires Closure Approved status.",
                 approval: approval,
                 session: null,
                 proposals: [],
@@ -109,12 +192,14 @@ Git operations, create release tags, or finalize permanent documentation.
                 },
                 permanentWritesExecuted: false
             };
+
             lastPlan = deepFreeze(rejected);
             return lastPlan;
         }
 
         const review = clone(preparer.generateReviewPackage());
         const sessionRecord = buildSessionRecord(review);
+
         const proposals = [
             proposal(
                 "WS-HIST-001",
@@ -153,7 +238,9 @@ Git operations, create release tags, or finalize permanent documentation.
                 hasEntries(review.decisions)
                     ? "The approved session contains decisions requiring permanent history entries."
                     : "The approved session contains no recorded decisions.",
-                hasEntries(review.decisions) ? { decisions: review.decisions } : null,
+                hasEntries(review.decisions)
+                    ? { decisions: review.decisions }
+                    : null,
                 hasEntries(review.decisions)
             ),
             proposal(
@@ -171,29 +258,44 @@ Git operations, create release tags, or finalize permanent documentation.
                     }
                     : null,
                 hasEntries(review.completedTasks)
-            )
+            ),
+            getSnapshotHistoryProposal()
         ];
 
-        const summary = proposals.reduce(function (counts, item) {
-            if (item.action === "Append") { counts.append += 1; }
-            if (item.action === "Replace") { counts.replace += 1; }
-            if (item.action === "No Change") { counts.noChange += 1; }
-            counts.total += 1;
-            return counts;
-        }, { append: 0, replace: 0, noChange: 0, total: 0 });
+        const summary = proposals.reduce(
+            function (counts, item) {
+                if (item.action === "Append") {
+                    counts.append += 1;
+                }
+                if (item.action === "Replace") {
+                    counts.replace += 1;
+                }
+                if (item.action === "No Change") {
+                    counts.noChange += 1;
+                }
+                counts.total += 1;
+                return counts;
+            },
+            { append: 0, replace: 0, noChange: 0, total: 0 }
+        );
 
         const plan = {
             planType: "TMS-OS Document Update Plan",
             engineVersion: ENGINE_VERSION,
             generatedAt: new Date().toISOString(),
             accepted: true,
-            message: "Reviewable proposals generated. No permanent files were changed.",
+            message:
+                "Reviewable proposals generated for six governed documents. No permanent files were changed.",
             approval: approval,
             session: review.session,
             proposals: proposals,
             summary: summary,
             reviewRequired: true,
-            reviewChoices: ["Approve Plan", "Revise Session", "Cancel Plan"],
+            reviewChoices: [
+                "Approve Plan",
+                "Revise Session",
+                "Cancel Plan"
+            ],
             permanentWritesExecuted: false
         };
 
@@ -206,14 +308,19 @@ Git operations, create release tags, or finalize permanent documentation.
         const lines = [
             "TMS-OS DOCUMENT UPDATE PLAN",
             "Accepted: " + (currentPlan.accepted ? "YES" : "NO"),
-            "Work Session: " + (currentPlan.session ? currentPlan.session.sessionNumber : currentPlan.approval.sessionNumber),
+            "Work Session: " +
+                (currentPlan.session
+                    ? currentPlan.session.sessionNumber
+                    : currentPlan.approval.sessionNumber),
             "Approval Status: " + currentPlan.approval.currentStatus,
             "Permanent Writes Executed: NO",
             ""
         ];
 
         currentPlan.proposals.forEach(function (item) {
-            lines.push(item.documentId + " | " + item.action + " | " + item.reason);
+            lines.push(
+                item.documentId + " | " + item.action + " | " + item.reason
+            );
         });
 
         if (currentPlan.accepted) {
@@ -221,7 +328,10 @@ Git operations, create release tags, or finalize permanent documentation.
             lines.push("Append: " + currentPlan.summary.append);
             lines.push("Replace: " + currentPlan.summary.replace);
             lines.push("No Change: " + currentPlan.summary.noChange);
-            lines.push("Review Choices: " + currentPlan.reviewChoices.join(" | "));
+            lines.push("Total Proposals: " + currentPlan.summary.total);
+            lines.push(
+                "Review Choices: " + currentPlan.reviewChoices.join(" | ")
+            );
         } else {
             lines.push(currentPlan.message);
         }
@@ -242,7 +352,10 @@ Git operations, create release tags, or finalize permanent documentation.
     });
 
     console.log(
-        "Document Update Engine v" + ENGINE_VERSION +
-        " initialized for Work Session " + context.getSnapshot().sessionNumber + "."
+        "Document Update Engine v" +
+            ENGINE_VERSION +
+            " initialized for Work Session " +
+            context.getSnapshot().sessionNumber +
+            "."
     );
 }());

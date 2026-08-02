@@ -1,3 +1,14 @@
+/*
+TMS-OS / Two Marshalls Studios Operating System
+Work Session 101 — Permanent Documentation Writer Coordinator v1.1.0
+File: js/session/permanent-documentation-writer-coordinator.js
+
+Purpose:
+Expand Disabled-Mode permanent-document writer coordination from five governed
+documents to six by adding WORKSPACE-SNAPSHOT-HISTORY-001 at writer order 60.
+No writers are invoked and no permanent files are changed.
+*/
+
 (function () {
     "use strict";
 
@@ -5,7 +16,7 @@
         "TMS Permanent Documentation Writer Coordinator";
 
     const ENGINE_VERSION =
-        "1.0.0";
+        "1.1.0";
 
     const VALIDATION_MODE =
         "Disabled";
@@ -41,6 +52,11 @@
             documentId: "MILE-HIST-001",
             writeMode: "Append",
             writerOrder: 50
+        }),
+        Object.freeze({
+            documentId: "WORKSPACE-SNAPSHOT-HISTORY-001",
+            writeMode: "Append",
+            writerOrder: 60
         })
     ]);
 
@@ -567,7 +583,7 @@
 
         checks.push(
             createCheck(
-                "Prepared write request count is five",
+                "Prepared write request count matches expected document count",
                 getNestedValue(
                     writerSummary,
                     ["preparedWriteRequestCount"]
@@ -608,7 +624,7 @@
 
         checks.push(
             createCheck(
-                "Write request count is five",
+                "Write request count matches expected document count",
                 getNestedValue(
                     writeSummary,
                     ["writeRequestCount"]
@@ -651,7 +667,7 @@
 
         checks.push(
             createCheck(
-                "Write request collection contains five entries",
+                "Write request collection matches expected document count",
                 Array.isArray(
                     writeRequests
                 ) &&
@@ -925,9 +941,9 @@
 
         checks.push(
             createCheck(
-                "Expected document count is five",
-                EXPECTED_DOCUMENTS.length === 5,
-                5,
+                "Expected document count is six",
+                EXPECTED_DOCUMENTS.length === 6,
+                6,
                 EXPECTED_DOCUMENTS.length
             )
         );
@@ -1464,7 +1480,12 @@
 
             message:
                 accepted
-                    ? "The Permanent Documentation Writer Coordinator prepared five writer coordination records in Disabled Mode. No writers were invoked and no permanent writes were performed."
+                    ? (
+                        "The Permanent Documentation Writer Coordinator prepared " +
+                        EXPECTED_DOCUMENTS.length +
+                        " writer coordination records in Disabled Mode. " +
+                        "No writers were invoked and no permanent writes were performed."
+                    )
                     : "The Permanent Documentation Writer Coordinator rejected coordination because source or coordination validation failed. No writers were invoked and no permanent writes were performed."
         };
     }

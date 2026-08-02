@@ -1,14 +1,14 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 053 — Execution Verification Engine v1.0.0
+Work Session 101 — Execution Verification Engine v1.1.0
 File: js/session/execution-verification-engine.js
 
 Purpose:
-Independently verify a completed Permanent File Writer simulation against its
-source Controlled Execution Plan.
+Independently verify a completed six-document Permanent File Writer simulation
+against its source Controlled Execution Plan.
 
-This engine validates the simulated five-document execution sequence,
-identities, ordering, checksums, completion state, and non-destructive safety
+This engine validates the six-document sequence, identities, ordering,
+checksums, write-decision state, completion state, and non-destructive safety
 controls.
 
 This component does not write, replace, delete, restore, download, authorize,
@@ -18,7 +18,8 @@ or otherwise modify any permanent file.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.1.0";
+
     const VERIFICATION_TYPE =
         "TMS-OS Permanent Documentation Execution Verification";
 
@@ -27,7 +28,8 @@ or otherwise modify any permanent file.
         "STATE-001",
         "DOC-STATE-001",
         "DEC-LOG-001",
-        "MILE-HIST-001"
+        "MILE-HIST-001",
+        "WORKSPACE-SNAPSHOT-HISTORY-001"
     ]);
 
     let lastVerification = null;
@@ -76,10 +78,14 @@ or otherwise modify any permanent file.
         };
     }
 
-    function createVerificationId(sessionNumber, generatedAt) {
-        const timestamp = generatedAt
-            .replace(/[-:.TZ]/g, "")
-            .slice(0, 14);
+    function createVerificationId(
+        sessionNumber,
+        generatedAt
+    ) {
+        const timestamp =
+            generatedAt
+                .replace(/[-:.TZ]/g, "")
+                .slice(0, 14);
 
         return [
             "TMS",
@@ -89,7 +95,68 @@ or otherwise modify any permanent file.
         ].join("-");
     }
 
-    function validateSourceSimulation(simulation) {
+    function validateSimulationStepState(
+        step,
+        index
+    ) {
+        const baseValid =
+            step.sequence === index + 1 &&
+            step.documentId ===
+                EXPECTED_DOCUMENTS[index] &&
+            typeof step.originalChecksum ===
+                "string" &&
+            step.originalChecksum.length > 0 &&
+            typeof step.proposedChecksum ===
+                "string" &&
+            step.proposedChecksum.length > 0 &&
+            typeof step.documentChanged ===
+                "boolean" &&
+            typeof step.permanentWriteRequired ===
+                "boolean" &&
+            typeof step.rollbackRequiredBeforeWrite ===
+                "boolean" &&
+            step.actualWriteAttempted === false &&
+            step.actualWriteExecuted === false &&
+            step.permanentWriteExecuted === false &&
+            step.executionAuthorized === false &&
+            step.writeAuthorized === false &&
+            step.rollbackAuthorized === false &&
+            step.restoreExecuted === false;
+
+        if (!baseValid) {
+            return false;
+        }
+
+        if (step.permanentWriteRequired === true) {
+            return (
+                step.documentChanged === true &&
+                step.rollbackRequiredBeforeWrite === true &&
+                step.excludedFromExecution === false &&
+                step.simulatedAction ===
+                    "Replace complete permanent JSON file" &&
+                step.simulationStatus ===
+                    "Simulated Successfully" &&
+                step.simulationDecision ===
+                    "Simulated but Not Executed"
+            );
+        }
+
+        return (
+            step.documentChanged === false &&
+            step.rollbackRequiredBeforeWrite === false &&
+            step.excludedFromExecution === true &&
+            step.simulatedAction ===
+                "No Write Required" &&
+            step.simulationStatus ===
+                "Excluded — No Write Required" &&
+            step.simulationDecision ===
+                "No Simulation Execution Required"
+        );
+    }
+
+    function validateSourceSimulation(
+        simulation
+    ) {
         const checks = [];
 
         let simulationValidation = {
@@ -100,7 +167,9 @@ or otherwise modify any permanent file.
         if (isPlainObject(simulation)) {
             simulationValidation =
                 window.TMSPermanentFileWriter
-                    .validateSimulation(simulation);
+                    .validateSimulation(
+                        simulation
+                    );
         }
 
         checks.push(buildCheck(
@@ -111,7 +180,10 @@ or otherwise modify any permanent file.
 
         checks.push(buildCheck(
             "Simulation accepted",
-            Boolean(simulation && simulation.accepted),
+            Boolean(
+                simulation &&
+                simulation.accepted
+            ),
             "The Permanent File Writer simulation must be accepted."
         ));
 
@@ -127,7 +199,8 @@ or otherwise modify any permanent file.
         checks.push(buildCheck(
             "Simulation mode confirmed",
             Boolean(simulation) &&
-                simulation.writerMode === "Simulation",
+                simulation.writerMode ===
+                    "Simulation",
             "The source must be a simulation-only execution result."
         ));
 
@@ -136,81 +209,97 @@ or otherwise modify any permanent file.
             Boolean(simulation) &&
                 simulation.simulatedDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "Exactly five document writes must be simulated."
+            "Exactly six permanent documents must be evaluated."
         ));
 
         checks.push(buildCheck(
             "Simulation completed",
             Boolean(simulation) &&
-                simulation.simulationCompleted === true,
+                simulation.simulationCompleted ===
+                    true,
             "The simulation must be complete."
         ));
 
         checks.push(buildCheck(
             "Simulation ready",
             Boolean(simulation) &&
-                simulation.simulationReady === true,
+                simulation.simulationReady ===
+                    true,
             "The simulation must have passed all prerequisites."
         ));
 
         checks.push(buildCheck(
             "Execution remains unauthorized",
             Boolean(simulation) &&
-                simulation.executionAuthorized === false,
+                simulation.executionAuthorized ===
+                    false,
             "Execution authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "Write remains unauthorized",
             Boolean(simulation) &&
-                simulation.writeAuthorized === false,
+                simulation.writeAuthorized ===
+                    false,
             "Permanent write authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "Rollback remains unauthorized",
             Boolean(simulation) &&
-                simulation.rollbackAuthorized === false,
+                simulation.rollbackAuthorized ===
+                    false,
             "Rollback authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "No actual writes attempted",
             Boolean(simulation) &&
-                simulation.actualWritesAttempted === false,
+                simulation.actualWritesAttempted ===
+                    false,
             "No actual permanent write may have been attempted."
         ));
 
         checks.push(buildCheck(
             "No permanent writes executed",
             Boolean(simulation) &&
-                simulation.permanentWritesExecuted === false,
+                simulation.permanentWritesExecuted ===
+                    false,
             "No permanent file may have been modified."
         ));
 
         checks.push(buildCheck(
             "No restore executed",
             Boolean(simulation) &&
-                simulation.restoreExecuted === false,
+                simulation.restoreExecuted ===
+                    false,
             "No rollback restore may have executed."
         ));
 
         const simulationSteps =
             simulation &&
-            Array.isArray(simulation.simulationSteps)
+            Array.isArray(
+                simulation.simulationSteps
+            )
                 ? simulation.simulationSteps
                 : [];
 
         const documentIds =
-            simulationSteps.map(function (step) {
+            simulationSteps.map(function (
+                step
+            ) {
                 return step.documentId;
             });
 
         const documentSetValid =
             simulationSteps.length ===
                 EXPECTED_DOCUMENTS.length &&
-            EXPECTED_DOCUMENTS.every(function (documentId) {
-                return documentIds.includes(documentId);
+            EXPECTED_DOCUMENTS.every(function (
+                documentId
+            ) {
+                return documentIds.includes(
+                    documentId
+                );
             }) &&
             new Set(documentIds).size ===
                 EXPECTED_DOCUMENTS.length;
@@ -218,57 +307,85 @@ or otherwise modify any permanent file.
         checks.push(buildCheck(
             "Expected simulated document set",
             documentSetValid,
-            "The simulation must contain the unique five-document permanent set."
+            "The simulation must contain the unique six-document permanent set."
         ));
 
         const stepStateValid =
             simulationSteps.length ===
                 EXPECTED_DOCUMENTS.length &&
-            simulationSteps.every(function (step, index) {
-                return (
-                    step.sequence === index + 1 &&
-                    EXPECTED_DOCUMENTS.includes(
-                        step.documentId
-                    ) &&
-                    step.simulationStatus ===
-                        "Simulated Successfully" &&
-                    step.actualWriteAttempted === false &&
-                    step.actualWriteExecuted === false &&
-                    step.permanentWriteExecuted === false &&
-                    step.writeAuthorized === false &&
-                    step.executionAuthorized === false &&
-                    step.rollbackAuthorized === false &&
-                    step.restoreExecuted === false &&
-                    typeof step.originalChecksum ===
-                        "string" &&
-                    step.originalChecksum.length > 0 &&
-                    typeof step.proposedChecksum ===
-                        "string" &&
-                    step.proposedChecksum.length > 0
+            simulationSteps.every(function (
+                step,
+                index
+            ) {
+                return validateSimulationStepState(
+                    step,
+                    index
                 );
             });
 
         checks.push(buildCheck(
             "Simulation step safety state",
             stepStateValid,
-            "Every simulated execution step must be successful, ordered, checksum-backed, and non-destructive."
+            "Every simulation entry must preserve ordering, checksums, write decisions, and non-destructive safety controls."
+        ));
+
+        const writeRequiredCount =
+            simulationSteps.filter(function (
+                step
+            ) {
+                return (
+                    step.permanentWriteRequired ===
+                    true
+                );
+            }).length;
+
+        const noWriteRequiredCount =
+            simulationSteps.filter(function (
+                step
+            ) {
+                return (
+                    step.permanentWriteRequired ===
+                    false
+                );
+            }).length;
+
+        checks.push(buildCheck(
+            "Simulation decision counts valid",
+            Boolean(simulation) &&
+                simulation.writeRequiredDocumentCount ===
+                    writeRequiredCount &&
+                simulation.noWriteRequiredDocumentCount ===
+                    noWriteRequiredCount &&
+                writeRequiredCount +
+                    noWriteRequiredCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "The simulation-level decision counts must match all six entries."
         ));
 
         return {
-            accepted: checks.every(function (check) {
-                return check.passed;
-            }),
-            checks: checks,
-            simulationValidation: simulationValidation
+            accepted:
+                checks.every(function (check) {
+                    return check.passed;
+                }),
+
+            checks:
+                checks,
+
+            simulationValidation:
+                simulationValidation
         };
     }
 
-    function buildVerificationStep(simulationStep, index) {
+    function buildVerificationStep(
+        simulationStep,
+        index
+    ) {
         const checks = [];
 
         checks.push(buildCheck(
             "Sequence matches expected order",
-            simulationStep.sequence === index + 1,
+            simulationStep.sequence ===
+                index + 1,
             "The simulated sequence must match the approved execution order."
         ));
 
@@ -276,21 +393,23 @@ or otherwise modify any permanent file.
             "Document ID matches expected order",
             simulationStep.documentId ===
                 EXPECTED_DOCUMENTS[index],
-            "The document must appear in the controlled permanent-document order."
+            "The document must appear in the approved six-document order."
         ));
 
         checks.push(buildCheck(
-            "Simulation completed successfully",
-            simulationStep.simulationStatus ===
-                "Simulated Successfully",
-            "The simulated document write must report successful completion."
+            "Simulation decision state valid",
+            validateSimulationStepState(
+                simulationStep,
+                index
+            ),
+            "The simulation entry must preserve its approved write decision and safety state."
         ));
 
         checks.push(buildCheck(
             "Original checksum preserved",
             typeof simulationStep.originalChecksum ===
                 "string" &&
-                simulationStep.originalChecksum.length > 0,
+            simulationStep.originalChecksum.length > 0,
             "The original-document checksum must remain present."
         ));
 
@@ -298,82 +417,131 @@ or otherwise modify any permanent file.
             "Proposed checksum preserved",
             typeof simulationStep.proposedChecksum ===
                 "string" &&
-                simulationStep.proposedChecksum.length > 0,
+            simulationStep.proposedChecksum.length > 0,
             "The proposed-document checksum must remain present."
         ));
 
         checks.push(buildCheck(
             "No actual write attempted",
-            simulationStep.actualWriteAttempted === false,
+            simulationStep.actualWriteAttempted ===
+                false,
             "The simulation must not attempt a real file write."
         ));
 
         checks.push(buildCheck(
             "No actual write executed",
-            simulationStep.actualWriteExecuted === false,
+            simulationStep.actualWriteExecuted ===
+                false,
             "The simulation must not execute a real file write."
         ));
 
         checks.push(buildCheck(
             "Permanent write remains false",
-            simulationStep.permanentWriteExecuted === false,
+            simulationStep.permanentWriteExecuted ===
+                false,
             "No permanent file change may be recorded."
         ));
 
         checks.push(buildCheck(
             "Authorization locks preserved",
-            simulationStep.writeAuthorized === false &&
-                simulationStep.executionAuthorized === false &&
-                simulationStep.rollbackAuthorized === false,
+            simulationStep.writeAuthorized ===
+                false &&
+            simulationStep.executionAuthorized ===
+                false &&
+            simulationStep.rollbackAuthorized ===
+                false,
             "Execution, write, and rollback authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "No restore executed",
-            simulationStep.restoreExecuted === false,
+            simulationStep.restoreExecuted ===
+                false,
             "The simulation must not perform restoration."
         ));
 
-        return {
-            sequence: index + 1,
-            documentId: simulationStep.documentId,
-            order: simulationStep.order,
-            updateMode: simulationStep.updateMode,
+        const accepted =
+            checks.every(function (check) {
+                return check.passed;
+            });
 
-            targetPath: simulationStep.targetPath,
-            backupPath: simulationStep.backupPath,
+        return {
+            sequence:
+                index + 1,
+
+            documentId:
+                simulationStep.documentId,
+
+            order:
+                simulationStep.order,
+
+            updateMode:
+                simulationStep.updateMode,
+
+            targetPath:
+                simulationStep.targetPath,
+
+            backupPath:
+                simulationStep.backupPath,
+
             proposedCopyPath:
                 simulationStep.proposedCopyPath,
 
             originalChecksum:
                 simulationStep.originalChecksum,
+
             proposedChecksum:
                 simulationStep.proposedChecksum,
 
-            simulationStatus:
+            documentChanged:
+                simulationStep.documentChanged,
+
+            permanentWriteRequired:
+                simulationStep.permanentWriteRequired,
+
+            rollbackRequiredBeforeWrite:
+                simulationStep.rollbackRequiredBeforeWrite,
+
+            excludedFromExecution:
+                simulationStep.excludedFromExecution,
+
+            sourceSimulationStatus:
                 simulationStep.simulationStatus,
 
-            accepted: checks.every(function (check) {
-                return check.passed;
-            }),
+            simulationDecision:
+                simulationStep.simulationDecision,
 
-            checks: checks,
+            accepted:
+                accepted,
+
+            checks:
+                checks,
 
             verificationStatus:
-                checks.every(function (check) {
-                    return check.passed;
-                })
+                accepted
                     ? "Verified"
                     : "Rejected",
 
-            actualWriteAttempted: false,
-            actualWriteExecuted: false,
-            permanentWriteExecuted: false,
+            actualWriteAttempted:
+                false,
 
-            executionAuthorized: false,
-            writeAuthorized: false,
-            rollbackAuthorized: false,
-            restoreExecuted: false
+            actualWriteExecuted:
+                false,
+
+            permanentWriteExecuted:
+                false,
+
+            executionAuthorized:
+                false,
+
+            writeAuthorized:
+                false,
+
+            rollbackAuthorized:
+                false,
+
+            restoreExecuted:
+                false
         };
     }
 
@@ -383,7 +551,8 @@ or otherwise modify any permanent file.
         validation
     ) {
         const snapshot =
-            window.TMSSessionContext.getSnapshot();
+            window.TMSSessionContext
+                .getSnapshot();
 
         const generatedAt =
             new Date().toISOString();
@@ -407,8 +576,11 @@ or otherwise modify any permanent file.
             sessionNumber:
                 snapshot.sessionNumber,
 
-            accepted: false,
-            message: message,
+            accepted:
+                false,
+
+            message:
+                message,
 
             sourceSimulationAccepted:
                 Boolean(
@@ -440,38 +612,75 @@ or otherwise modify any permanent file.
             expectedDocumentCount:
                 EXPECTED_DOCUMENTS.length,
 
-            verifiedDocumentCount: 0,
-            verificationSteps: [],
+            verifiedDocumentCount:
+                0,
 
-            executionOrderVerified: false,
-            documentSetVerified: false,
-            checksumPresenceVerified: false,
-            simulationCompletionVerified: false,
-            nonDestructiveStateVerified: false,
+            writeRequiredDocumentCount:
+                0,
 
-            verificationPassed: false,
+            noWriteRequiredDocumentCount:
+                0,
 
-            executionAuthorized: false,
-            writeAuthorized: false,
-            rollbackAuthorized: false,
+            verificationSteps:
+                [],
 
-            actualWritesAttempted: false,
-            permanentWritesExecuted: false,
-            restoreExecuted: false,
+            executionOrderVerified:
+                false,
 
-            verificationStatus: "Rejected",
+            documentSetVerified:
+                false,
+
+            checksumPresenceVerified:
+                false,
+
+            simulationCompletionVerified:
+                false,
+
+            writeDecisionStateVerified:
+                false,
+
+            nonDestructiveStateVerified:
+                false,
+
+            verificationPassed:
+                false,
+
+            executionAuthorized:
+                false,
+
+            writeAuthorized:
+                false,
+
+            rollbackAuthorized:
+                false,
+
+            actualWritesAttempted:
+                false,
+
+            permanentWritesExecuted:
+                false,
+
+            restoreExecuted:
+                false,
+
+            verificationStatus:
+                "Rejected",
 
             requiredNextAction:
                 "Correct the failed simulation or verification prerequisite checks.",
 
-            reviewRequired: true
+            reviewRequired:
+                true
         });
     }
 
-    async function generateVerification(simulation) {
+    async function generateVerification(
+        simulation
+    ) {
         const sourceSimulation =
             simulation ||
-            await window.TMSPermanentFileWriter
+            await window
+                .TMSPermanentFileWriter
                 .generateSimulation();
 
         const validation =
@@ -492,10 +701,16 @@ or otherwise modify any permanent file.
 
         const orderedSteps =
             clone(
-                sourceSimulation.simulationSteps
-            ).sort(function (first, second) {
-                return Number(first.sequence) -
-                    Number(second.sequence);
+                sourceSimulation
+                    .simulationSteps
+            ).sort(function (
+                first,
+                second
+            ) {
+                return (
+                    Number(first.sequence) -
+                    Number(second.sequence)
+                );
             });
 
         const verificationSteps =
@@ -510,16 +725,20 @@ or otherwise modify any permanent file.
             });
 
         const allVerified =
-            verificationSteps.every(function (step) {
-                return step.accepted === true &&
+            verificationSteps.every(function (
+                step
+            ) {
+                return (
+                    step.accepted === true &&
                     step.verificationStatus ===
-                        "Verified";
+                        "Verified"
+                );
             });
 
         if (!allVerified) {
             lastVerification =
                 rejectedVerification(
-                    "One or more simulated permanent document executions failed independent verification.",
+                    "One or more six-document simulation entries failed independent verification.",
                     sourceSimulation,
                     validation
                 );
@@ -527,8 +746,24 @@ or otherwise modify any permanent file.
             return lastVerification;
         }
 
+        const writeRequiredDocumentCount =
+            verificationSteps.filter(
+                function (step) {
+                    return (
+                        step
+                            .permanentWriteRequired ===
+                        true
+                    );
+                }
+            ).length;
+
+        const noWriteRequiredDocumentCount =
+            verificationSteps.length -
+            writeRequiredDocumentCount;
+
         const snapshot =
-            window.TMSSessionContext.getSnapshot();
+            window.TMSSessionContext
+                .getSnapshot();
 
         const generatedAt =
             new Date().toISOString();
@@ -553,24 +788,35 @@ or otherwise modify any permanent file.
                 sessionNumber:
                     snapshot.sessionNumber,
 
-                accepted: true,
+                accepted:
+                    true,
 
                 message:
-                    "All five simulated permanent document executions passed independent verification. No permanent files were changed.",
+                    "All six permanent-document simulation entries passed independent verification. " +
+                    writeRequiredDocumentCount +
+                    " write-required document(s) remain unexecuted, and " +
+                    noWriteRequiredDocumentCount +
+                    " document(s) require no permanent write. " +
+                    "No permanent files were changed.",
 
-                sourceSimulationAccepted: true,
+                sourceSimulationAccepted:
+                    true,
 
                 sourceSimulationId:
-                    sourceSimulation.simulationId,
+                    sourceSimulation
+                        .simulationId,
 
                 sourceSimulationStatus:
-                    sourceSimulation.simulationStatus,
+                    sourceSimulation
+                        .simulationStatus,
 
                 sourceSimulationEngineVersion:
-                    sourceSimulation.engineVersion,
+                    sourceSimulation
+                        .engineVersion,
 
                 sourceSimulationGeneratedAt:
-                    sourceSimulation.generatedAt,
+                    sourceSimulation
+                        .generatedAt,
 
                 sourceExecutionPlanId:
                     sourceSimulation
@@ -584,7 +830,8 @@ or otherwise modify any permanent file.
                     sourceSimulation
                         .sourceRollbackPackageId,
 
-                validationAccepted: true,
+                validationAccepted:
+                    true,
 
                 validationChecks:
                     validation.checks,
@@ -595,32 +842,62 @@ or otherwise modify any permanent file.
                 verifiedDocumentCount:
                     verificationSteps.length,
 
+                writeRequiredDocumentCount:
+                    writeRequiredDocumentCount,
+
+                noWriteRequiredDocumentCount:
+                    noWriteRequiredDocumentCount,
+
                 verificationSteps:
                     verificationSteps,
 
-                executionOrderVerified: true,
-                documentSetVerified: true,
-                checksumPresenceVerified: true,
-                simulationCompletionVerified: true,
-                nonDestructiveStateVerified: true,
+                executionOrderVerified:
+                    true,
 
-                verificationPassed: true,
+                documentSetVerified:
+                    true,
 
-                executionAuthorized: false,
-                writeAuthorized: false,
-                rollbackAuthorized: false,
+                checksumPresenceVerified:
+                    true,
 
-                actualWritesAttempted: false,
-                permanentWritesExecuted: false,
-                restoreExecuted: false,
+                simulationCompletionVerified:
+                    true,
+
+                writeDecisionStateVerified:
+                    true,
+
+                nonDestructiveStateVerified:
+                    true,
+
+                verificationPassed:
+                    true,
+
+                executionAuthorized:
+                    false,
+
+                writeAuthorized:
+                    false,
+
+                rollbackAuthorized:
+                    false,
+
+                actualWritesAttempted:
+                    false,
+
+                permanentWritesExecuted:
+                    false,
+
+                restoreExecuted:
+                    false,
 
                 verificationStatus:
-                    "Passed — Simulation Independently Verified",
+                    "Passed — Six-Document Simulation Independently Verified",
 
                 requiredNextAction:
-                    "Submit the independent verification report for human review before designing any future real-write authorization layer.",
+                    "Submit the six-document verification report to the Execution Authorization Engine.",
 
-                reviewRequired: true,
+                reviewRequired:
+                    true,
 
                 reviewChoices: [
                     "Approve Verification Results",
@@ -632,9 +909,12 @@ or otherwise modify any permanent file.
         return lastVerification;
     }
 
-    function validateVerification(verification) {
+    function validateVerification(
+        verification
+    ) {
         const current =
-            verification || lastVerification;
+            verification ||
+            lastVerification;
 
         const checks = [];
 
@@ -646,7 +926,10 @@ or otherwise modify any permanent file.
 
         checks.push(buildCheck(
             "Verification accepted",
-            Boolean(current && current.accepted),
+            Boolean(
+                current &&
+                current.accepted
+            ),
             "The Execution Verification package must be accepted."
         ));
 
@@ -655,101 +938,125 @@ or otherwise modify any permanent file.
             Boolean(current) &&
                 current.verifiedDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "Exactly five simulated document executions must be verified."
+            "Exactly six permanent-document simulation entries must be verified."
         ));
 
         checks.push(buildCheck(
             "Execution order verified",
             Boolean(current) &&
-                current.executionOrderVerified === true,
+                current.executionOrderVerified ===
+                    true,
             "The controlled execution order must be verified."
         ));
 
         checks.push(buildCheck(
             "Document set verified",
             Boolean(current) &&
-                current.documentSetVerified === true,
-            "The unique five-document permanent set must be verified."
+                current.documentSetVerified ===
+                    true,
+            "The unique six-document permanent set must be verified."
         ));
 
         checks.push(buildCheck(
             "Checksums verified",
             Boolean(current) &&
-                current.checksumPresenceVerified === true,
+                current.checksumPresenceVerified ===
+                    true,
             "Original and proposed checksum presence must be verified."
         ));
 
         checks.push(buildCheck(
             "Simulation completion verified",
             Boolean(current) &&
-                current.simulationCompletionVerified === true,
-            "Successful completion of the simulation must be verified."
+                current.simulationCompletionVerified ===
+                    true,
+            "Successful completion of the six-document simulation must be verified."
+        ));
+
+        checks.push(buildCheck(
+            "Write-decision state verified",
+            Boolean(current) &&
+                current.writeDecisionStateVerified ===
+                    true,
+            "Every verification step must preserve the approved write decision."
         ));
 
         checks.push(buildCheck(
             "Non-destructive state verified",
             Boolean(current) &&
-                current.nonDestructiveStateVerified === true,
+                current.nonDestructiveStateVerified ===
+                    true,
             "The verification must confirm no permanent file changes."
         ));
 
         checks.push(buildCheck(
             "Verification passed",
             Boolean(current) &&
-                current.verificationPassed === true,
+                current.verificationPassed ===
+                    true,
             "The independent execution verification must pass."
         ));
 
         checks.push(buildCheck(
             "Execution remains unauthorized",
             Boolean(current) &&
-                current.executionAuthorized === false,
+                current.executionAuthorized ===
+                    false,
             "Execution authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "Write remains unauthorized",
             Boolean(current) &&
-                current.writeAuthorized === false,
+                current.writeAuthorized ===
+                    false,
             "Permanent write authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "Rollback remains unauthorized",
             Boolean(current) &&
-                current.rollbackAuthorized === false,
+                current.rollbackAuthorized ===
+                    false,
             "Rollback authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "No actual writes attempted",
             Boolean(current) &&
-                current.actualWritesAttempted === false,
+                current.actualWritesAttempted ===
+                    false,
             "No actual permanent write may have been attempted."
         ));
 
         checks.push(buildCheck(
             "No permanent writes executed",
             Boolean(current) &&
-                current.permanentWritesExecuted === false,
+                current.permanentWritesExecuted ===
+                    false,
             "No permanent file may have been modified."
         ));
 
         checks.push(buildCheck(
             "No restore executed",
             Boolean(current) &&
-                current.restoreExecuted === false,
+                current.restoreExecuted ===
+                    false,
             "No rollback restoration may have occurred."
         ));
 
         const verificationSteps =
             current &&
-            Array.isArray(current.verificationSteps)
+            Array.isArray(
+                current.verificationSteps
+            )
                 ? current.verificationSteps
                 : [];
 
         const documentIds =
-            verificationSteps.map(function (step) {
+            verificationSteps.map(function (
+                step
+            ) {
                 return step.documentId;
             });
 
@@ -769,7 +1076,7 @@ or otherwise modify any permanent file.
         checks.push(buildCheck(
             "Expected verification document set",
             documentSetValid,
-            "The verification must contain the unique five-document permanent set."
+            "The verification must contain the unique six-document permanent set."
         ));
 
         const stepsValid =
@@ -779,8 +1086,9 @@ or otherwise modify any permanent file.
                 step,
                 index
             ) {
-                return (
-                    step.sequence === index + 1 &&
+                const baseValid =
+                    step.sequence ===
+                        index + 1 &&
                     step.documentId ===
                         EXPECTED_DOCUMENTS[index] &&
                     step.accepted === true &&
@@ -792,6 +1100,12 @@ or otherwise modify any permanent file.
                     typeof step.proposedChecksum ===
                         "string" &&
                     step.proposedChecksum.length > 0 &&
+                    typeof step.documentChanged ===
+                        "boolean" &&
+                    typeof step.permanentWriteRequired ===
+                        "boolean" &&
+                    typeof step.rollbackRequiredBeforeWrite ===
+                        "boolean" &&
                     step.actualWriteAttempted ===
                         false &&
                     step.actualWriteExecuted ===
@@ -804,14 +1118,80 @@ or otherwise modify any permanent file.
                         false &&
                     step.rollbackAuthorized ===
                         false &&
-                    step.restoreExecuted === false
+                    step.restoreExecuted ===
+                        false;
+
+                if (!baseValid) {
+                    return false;
+                }
+
+                if (
+                    step.permanentWriteRequired ===
+                    true
+                ) {
+                    return (
+                        step.documentChanged ===
+                            true &&
+                        step.rollbackRequiredBeforeWrite ===
+                            true &&
+                        step.excludedFromExecution ===
+                            false &&
+                        step.sourceSimulationStatus ===
+                            "Simulated Successfully"
+                    );
+                }
+
+                return (
+                    step.documentChanged ===
+                        false &&
+                    step.rollbackRequiredBeforeWrite ===
+                        false &&
+                    step.excludedFromExecution ===
+                        true &&
+                    step.sourceSimulationStatus ===
+                        "Excluded — No Write Required"
                 );
             });
 
         checks.push(buildCheck(
             "Verification steps valid",
             stepsValid,
-            "Every verification step must pass independently and preserve all non-destructive safety locks."
+            "Every verification step must pass independently, preserve its write decision, and retain all safety locks."
+        ));
+
+        const writeRequiredCount =
+            verificationSteps.filter(
+                function (step) {
+                    return (
+                        step
+                            .permanentWriteRequired ===
+                        true
+                    );
+                }
+            ).length;
+
+        const noWriteRequiredCount =
+            verificationSteps.filter(
+                function (step) {
+                    return (
+                        step
+                            .permanentWriteRequired ===
+                        false
+                    );
+                }
+            ).length;
+
+        checks.push(buildCheck(
+            "Verification decision counts valid",
+            Boolean(current) &&
+                current.writeRequiredDocumentCount ===
+                    writeRequiredCount &&
+                current.noWriteRequiredDocumentCount ===
+                    noWriteRequiredCount &&
+                writeRequiredCount +
+                    noWriteRequiredCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "The verification-level decision counts must match all six entries."
         ));
 
         return deepFreeze({
@@ -819,11 +1199,14 @@ or otherwise modify any permanent file.
                 ENGINE_VERSION,
 
             accepted:
-                checks.every(function (check) {
+                checks.every(function (
+                    check
+                ) {
                     return check.passed;
                 }),
 
-            checks: checks
+            checks:
+                checks
         });
     }
 
@@ -852,6 +1235,10 @@ or otherwise modify any permanent file.
                 current.verificationStatus,
             "Verified Documents: " +
                 current.verifiedDocumentCount,
+            "Write Required Documents: " +
+                current.writeRequiredDocumentCount,
+            "No Write Required Documents: " +
+                current.noWriteRequiredDocumentCount,
             "Execution Order Verified: " +
                 (
                     current.executionOrderVerified
@@ -873,6 +1260,12 @@ or otherwise modify any permanent file.
             "Simulation Completion Verified: " +
                 (
                     current.simulationCompletionVerified
+                        ? "YES"
+                        : "NO"
+                ),
+            "Write Decision State Verified: " +
+                (
+                    current.writeDecisionStateVerified
                         ? "YES"
                         : "NO"
                 ),
@@ -905,7 +1298,12 @@ or otherwise modify any permanent file.
                 step.documentId +
                 " | " +
                 step.verificationStatus +
-                " | NO FILE CHANGE"
+                " | " +
+                (
+                    step.permanentWriteRequired
+                        ? "WRITE REQUIRED — LOCKED"
+                        : "NO WRITE REQUIRED"
+                )
             );
         });
 

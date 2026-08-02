@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 095 — Permanent Write Execution Engine v2.0.0
+Work Session 101 — Permanent Write Execution Engine v2.1.0
 Human-Controlled Authorization Integration
 File: js/session/permanent-write-execution-engine-v2.js
 
@@ -15,7 +15,7 @@ delete, restore, download, or otherwise modify any permanent file.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "2.0.0";
+    const ENGINE_VERSION = "2.1.0";
     const EXECUTION_MODE = "Disabled";
     const MANIFEST_TYPE =
         "TMS-OS Permanent Documentation Write Execution Manifest";
@@ -25,7 +25,8 @@ delete, restore, download, or otherwise modify any permanent file.
         "STATE-001",
         "DOC-STATE-001",
         "DEC-LOG-001",
-        "MILE-HIST-001"
+        "MILE-HIST-001",
+        "WORKSPACE-SNAPSHOT-HISTORY-001"
     ]);
 
     let lastExecutionManifest = null;
@@ -35,7 +36,7 @@ delete, restore, download, or otherwise modify any permanent file.
         !window.TMSHumanControlledExecutionAuthorizationEngine
     ) {
         console.error(
-            "Permanent Write Execution Engine v2.0.0 could not initialize because its dependencies are unavailable."
+            "Permanent Write Execution Engine v2.1.0 could not initialize because its dependencies are unavailable."
         );
         return;
     }
@@ -241,7 +242,7 @@ delete, restore, download, or otherwise modify any permanent file.
             Boolean(authorization) &&
                 authorization.plannedDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "Exactly five permanent documents must be represented."
+            "Exactly six permanent documents must be represented."
         ));
 
         checks.push(buildCheck(
@@ -260,13 +261,13 @@ delete, restore, download, or otherwise modify any permanent file.
         checks.push(buildCheck(
             "Expected authorization document set",
             documentSetValid,
-            "The record must contain the unique five-document permanent set."
+            "The record must contain the unique six-document permanent set."
         ));
 
         checks.push(buildCheck(
             "Expected document order",
             sequenceValid,
-            "The five permanent documents must retain their approved sequence."
+            "The six permanent documents must retain their approved sequence."
         ));
 
         checks.push(buildCheck(
@@ -672,7 +673,7 @@ delete, restore, download, or otherwise modify any permanent file.
                 accepted: true,
 
                 message:
-                    "The five-document permanent write execution manifest was generated from an accepted Human Controlled Execution Authorization Record in Disabled mode. No files were changed.",
+                    "The " + EXPECTED_DOCUMENTS.length + "-document permanent write execution manifest was generated from an accepted Human Controlled Execution Authorization Record in Disabled mode. No files were changed.",
 
                 sourceAuthorizationAccepted: true,
                 sourceAuthorizationId:
@@ -768,7 +769,7 @@ delete, restore, download, or otherwise modify any permanent file.
             "Execution mode is disabled",
             Boolean(current) &&
                 current.executionMode === EXECUTION_MODE,
-            "Version 2.0.0 must remain in Disabled mode."
+            "Version 2.1.0 must remain in Disabled mode."
         ));
 
         checks.push(buildCheck(
@@ -783,7 +784,7 @@ delete, restore, download, or otherwise modify any permanent file.
             Boolean(current) &&
                 current.executionDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "Exactly five permanent documents must be represented."
+            "Exactly six permanent documents must be represented."
         ));
 
         checks.push(buildCheck(
@@ -883,7 +884,7 @@ delete, restore, download, or otherwise modify any permanent file.
         checks.push(buildCheck(
             "Expected execution document set",
             documentSetValid,
-            "The manifest must contain the unique five-document permanent set."
+            "The manifest must contain the unique six-document permanent set."
         ));
 
         const entriesValid =

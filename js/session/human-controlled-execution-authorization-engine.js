@@ -1,33 +1,73 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 094 — Human Controlled Execution Authorization Engine v1.0.0
+Work Session 101 — Human Controlled Execution Authorization Engine v1.1.0
 File: js/session/human-controlled-execution-authorization-engine.js
 
-This engine validates a Controlled Execution Plan and creates an immutable
-human authorization record. It performs no permanent writes or restores.
+Purpose:
+Consume an accepted six-document Execution Authorization package, record an
+explicit human authorization decision, separate write-required documents from
+no-write-required documents, and produce the immutable authorization record
+required by the Permanent Write Execution Engine v2.1.0.
+
+This engine remains non-destructive. It does not write, replace, rename, move,
+delete, restore, download, or otherwise modify any permanent file.
+
+The record may preserve human-approved source authorization intent for later
+Disabled Mode manifest planning, while no file operation is performed here.
 */
 
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
-    const RECORD_TYPE = "TMS-OS Human Controlled Execution Authorization Record";
-    const APPROVE = "Approve Execution Authorization";
-    const REVISE = "Revise Execution Plan";
-    const CANCEL = "Cancel Execution Authorization";
+    const ENGINE_NAME =
+        "TMSHumanControlledExecutionAuthorizationEngine";
+
+    const ENGINE_VERSION = "1.1.0";
+
+    const AUTHORIZATION_MODE = "Disabled";
+
+    const AUTHORIZATION_TYPE =
+        "TMS-OS Human Controlled Execution Authorization Record";
+
+    const APPROVE_DECISION =
+        "Approve Execution Authorization";
+
+    const ALLOWED_DECISIONS = Object.freeze([
+        APPROVE_DECISION,
+        "Reject Execution Authorization"
+    ]);
+
+    const EXPECTED_DOCUMENTS = Object.freeze([
+        "WS-HIST-001",
+        "STATE-001",
+        "DOC-STATE-001",
+        "DEC-LOG-001",
+        "MILE-HIST-001",
+        "WORKSPACE-SNAPSHOT-HISTORY-001"
+    ]);
 
     let lastAuthorizationRecord = null;
-    const authorizedPlanIds = new Set();
 
-    if (!window.TMSSessionContext || !window.TMSControlledExecutionEngine) {
+    if (
+        !window.TMSSessionContext ||
+        !window.TMSExecutionAuthorizationEngine
+    ) {
         console.error(
             "Human Controlled Execution Authorization Engine could not initialize because its dependencies are unavailable."
         );
         return;
     }
 
+    function clone(value) {
+        return JSON.parse(JSON.stringify(value));
+    }
+
     function deepFreeze(value) {
-        if (!value || typeof value !== "object" || Object.isFrozen(value)) {
+        if (
+            !value ||
+            typeof value !== "object" ||
+            Object.isFrozen(value)
+        ) {
             return value;
         }
 
@@ -38,13 +78,18 @@ human authorization record. It performs no permanent writes or restores.
         return Object.freeze(value);
     }
 
-    function isObject(value) {
+    function isPlainObject(value) {
         return Boolean(value) &&
             typeof value === "object" &&
             !Array.isArray(value);
     }
 
-    function check(name, passed, message) {
+    function hasText(value) {
+        return typeof value === "string" &&
+            value.trim().length > 0;
+    }
+
+    function buildCheck(name, passed, message) {
         return {
             name: name,
             passed: Boolean(passed),
@@ -52,399 +97,1091 @@ human authorization record. It performs no permanent writes or restores.
         };
     }
 
-    function getSessionNumber() {
-        return window.TMSSessionContext.getSnapshot().sessionNumber;
-    }
-
-    function createAuthorizationId(generatedAt) {
-        const stamp = generatedAt
-            .replace(/[-:.TZ]/g, "")
-            .slice(0, 14);
+    function createAuthorizationId(
+        sessionNumber,
+        generatedAt
+    ) {
+        const timestamp =
+            generatedAt
+                .replace(/[-:.TZ]/g, "")
+                .slice(0, 14);
 
         return [
             "TMS",
-            "EXECUTION",
-            "AUTHORIZATION",
-            String(getSessionNumber()).padStart(3, "0"),
-            stamp
+            "HUMAN-CONTROLLED-EXECUTION-AUTHORIZATION",
+            String(sessionNumber).padStart(3, "0"),
+            timestamp
         ].join("-");
     }
 
-    function validateSourceExecutionPlan(executionPlan) {
+    function normalizeOfficer(officer) {
+        return {
+            name:
+                hasText(officer && officer.name)
+                    ? officer.name.trim()
+                    : (
+                        hasText(
+                            officer &&
+                            officer.authorizationOfficerName
+                        )
+                            ? officer.authorizationOfficerName.trim()
+                            : ""
+                    ),
+
+            id:
+                hasText(officer && officer.id)
+                    ? officer.id.trim()
+                    : (
+                        hasText(
+                            officer &&
+                            officer.authorizationOfficerId
+                        )
+                            ? officer.authorizationOfficerId.trim()
+                            : ""
+                    ),
+
+            role:
+                hasText(officer && officer.role)
+                    ? officer.role.trim()
+                    : (
+                        hasText(
+                            officer &&
+                            officer.authorizationOfficerRole
+                        )
+                            ? officer.authorizationOfficerRole.trim()
+                            : ""
+                    )
+        };
+    }
+
+    function validateSourceEntry(entry, index) {
+        const baseValid =
+            isPlainObject(entry) &&
+            entry.sequence === index + 1 &&
+            entry.documentId ===
+                EXPECTED_DOCUMENTS[index] &&
+            entry.prerequisiteStatus ===
+                "Passed" &&
+            entry.authorizationDecision ===
+                "Not Granted" &&
+            typeof entry.originalChecksum ===
+                "string" &&
+            entry.originalChecksum.length > 0 &&
+            typeof entry.proposedChecksum ===
+                "string" &&
+            entry.proposedChecksum.length > 0 &&
+            typeof entry.documentChanged ===
+                "boolean" &&
+            typeof entry.permanentWriteRequired ===
+                "boolean" &&
+            typeof entry.rollbackRequiredBeforeWrite ===
+                "boolean" &&
+            entry.executionAuthorized === false &&
+            entry.writeAuthorized === false &&
+            entry.rollbackAuthorized === false &&
+            entry.actualWriteAttempted === false &&
+            entry.permanentWriteExecuted === false &&
+            entry.restoreExecuted === false &&
+            typeof entry.targetPath === "string" &&
+            entry.targetPath.length > 0;
+
+        if (!baseValid) {
+            return false;
+        }
+
+        if (entry.permanentWriteRequired === true) {
+            return (
+                entry.documentChanged === true &&
+                entry.rollbackRequiredBeforeWrite === true &&
+                entry.excludedFromExecution === false &&
+                entry.authorizationEligibility ===
+                    "Eligible for Human Authorization Review" &&
+                entry.authorizationStatus ===
+                    "Locked — Awaiting Separate Human Authorization" &&
+                typeof entry.backupPath === "string" &&
+                entry.backupPath.length > 0 &&
+                typeof entry.proposedCopyPath === "string" &&
+                entry.proposedCopyPath.length > 0
+            );
+        }
+
+        return (
+            entry.documentChanged === false &&
+            entry.rollbackRequiredBeforeWrite === false &&
+            entry.excludedFromExecution === true &&
+            entry.authorizationEligibility ===
+                "No Authorization Required" &&
+            entry.authorizationStatus ===
+                "Excluded — No Write Required"
+        );
+    }
+
+    function validateExecutionAuthorizationPackage(
+        authorization
+    ) {
         const checks = [];
-        const sourceValidation = isObject(executionPlan)
-            ? window.TMSControlledExecutionEngine
-                .validateExecutionPlan(executionPlan)
-            : { accepted: false, checks: [] };
 
-        checks.push(check(
-            "Execution plan exists",
-            isObject(executionPlan),
-            "A Controlled Execution Plan is required."
-        ));
+        let sourceValidation = {
+            accepted: false,
+            checks: []
+        };
 
-        checks.push(check(
-            "Execution plan accepted",
-            Boolean(executionPlan && executionPlan.accepted),
-            "The source execution plan must be accepted."
-        ));
+        if (isPlainObject(authorization)) {
+            sourceValidation =
+                window.TMSExecutionAuthorizationEngine
+                    .validateAuthorization(
+                        authorization
+                    );
+        }
 
-        checks.push(check(
-            "Execution plan validation accepted",
-            Boolean(sourceValidation.accepted),
-            "The source execution plan must pass validation."
-        ));
+        const entries =
+            authorization &&
+            Array.isArray(
+                authorization.authorizationEntries
+            )
+                ? authorization.authorizationEntries
+                : [];
 
-        checks.push(check(
-            "Execution plan ready",
-            Boolean(executionPlan && executionPlan.executionReady === true),
-            "The source execution plan must be ready."
-        ));
-
-        checks.push(check(
-            "Execution remains unauthorized",
-            Boolean(executionPlan && executionPlan.executionAuthorized === false),
-            "The source plan must not already be execution-authorized."
-        ));
-
-        checks.push(check(
-            "Write remains unauthorized",
-            Boolean(executionPlan && executionPlan.writeAuthorized === false),
-            "The source plan must not already be write-authorized."
-        ));
-
-        checks.push(check(
-            "No permanent writes executed",
-            Boolean(executionPlan && executionPlan.permanentWritesExecuted === false),
-            "No permanent writes may have occurred."
-        ));
-
-        checks.push(check(
-            "No restore executed",
-            Boolean(executionPlan && executionPlan.restoreExecuted === false),
-            "No restore may have occurred."
-        ));
-
-        const steps = executionPlan &&
-            Array.isArray(executionPlan.executionSteps)
-            ? executionPlan.executionSteps
-            : [];
-
-        const decisionsValid = steps.length > 0 &&
-            steps.every(function (step) {
-                if (step.permanentWriteRequired === true) {
-                    return step.documentChanged === true &&
-                        step.rollbackRequiredBeforeWrite === true &&
-                        step.executionAction ===
-                            "Replace complete permanent JSON file" &&
-                        step.executionStatus ===
-                            "Planned — Not Authorized" &&
-                        step.writeAuthorized === false &&
-                        step.permanentWriteExecuted === false;
-                }
-
-                return step.permanentWriteRequired === false &&
-                    step.documentChanged === false &&
-                    step.rollbackRequiredBeforeWrite === false &&
-                    step.executionAction === "No Write Required" &&
-                    step.executionStatus === "No Write Required" &&
-                    step.writeAuthorized === false &&
-                    step.permanentWriteExecuted === false;
+        const documentIds =
+            entries.map(function (entry) {
+                return entry.documentId;
             });
 
-        checks.push(check(
-            "Execution decisions valid",
-            decisionsValid,
-            "Every document must retain a valid write or no-write decision."
+        const documentSetValid =
+            entries.length ===
+                EXPECTED_DOCUMENTS.length &&
+            EXPECTED_DOCUMENTS.every(function (
+                documentId
+            ) {
+                return documentIds.includes(documentId);
+            }) &&
+            new Set(documentIds).size ===
+                EXPECTED_DOCUMENTS.length;
+
+        const entriesValid =
+            entries.length ===
+                EXPECTED_DOCUMENTS.length &&
+            entries.every(function (
+                entry,
+                index
+            ) {
+                return validateSourceEntry(
+                    entry,
+                    index
+                );
+            });
+
+        const writeRequiredCount =
+            entries.filter(function (entry) {
+                return (
+                    entry.permanentWriteRequired ===
+                    true
+                );
+            }).length;
+
+        const noWriteRequiredCount =
+            entries.filter(function (entry) {
+                return (
+                    entry.permanentWriteRequired ===
+                    false
+                );
+            }).length;
+
+        checks.push(buildCheck(
+            "Execution authorization package exists",
+            isPlainObject(authorization),
+            "An Execution Authorization package is required."
         ));
 
-        checks.push(check(
-            "Execution plan not previously authorized",
+        checks.push(buildCheck(
+            "Execution authorization package accepted",
             Boolean(
-                executionPlan &&
-                typeof executionPlan.planId === "string" &&
-                !authorizedPlanIds.has(executionPlan.planId)
+                authorization &&
+                authorization.accepted
             ),
-            "Only one accepted authorization may be created per execution plan."
+            "The source Execution Authorization package must be accepted."
         ));
 
-        return deepFreeze({
-            validatorVersion: ENGINE_VERSION,
-            accepted: checks.every(function (item) {
-                return item.passed;
-            }),
-            checks: checks,
-            sourceValidation: sourceValidation
-        });
-    }
+        checks.push(buildCheck(
+            "Execution authorization validation accepted",
+            Boolean(
+                sourceValidation &&
+                sourceValidation.accepted
+            ),
+            "The source Execution Authorization package must pass validation."
+        ));
 
-    function authorizedDocument(step) {
+        checks.push(buildCheck(
+            "Expected authorization document count",
+            Boolean(authorization) &&
+                authorization.authorizationDocumentCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "Exactly six permanent documents must be represented."
+        ));
+
+        checks.push(buildCheck(
+            "Expected authorization document set",
+            documentSetValid,
+            "The source package must contain the unique six-document permanent set."
+        ));
+
+        checks.push(buildCheck(
+            "Authorization entries valid",
+            entriesValid,
+            "Every source authorization entry must preserve order, checksums, write decisions, and locked operational controls."
+        ));
+
+        checks.push(buildCheck(
+            "Authorization decision counts valid",
+            Boolean(authorization) &&
+                authorization.writeRequiredDocumentCount ===
+                    writeRequiredCount &&
+                authorization.noWriteRequiredDocumentCount ===
+                    noWriteRequiredCount &&
+                writeRequiredCount +
+                    noWriteRequiredCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "The source authorization decision counts must match all six entries."
+        ));
+
+        checks.push(buildCheck(
+            "Source authorization remains ungranted",
+            Boolean(authorization) &&
+                authorization.authorizationGranted ===
+                    false,
+            "The source eligibility package must not have granted human authorization."
+        ));
+
+        checks.push(buildCheck(
+            "Source execution remains unauthorized",
+            Boolean(authorization) &&
+                authorization.executionAuthorized ===
+                    false,
+            "The source package must remain operationally locked."
+        ));
+
+        checks.push(buildCheck(
+            "Source write remains unauthorized",
+            Boolean(authorization) &&
+                authorization.writeAuthorized ===
+                    false,
+            "The source package must not authorize permanent writing."
+        ));
+
+        checks.push(buildCheck(
+            "Source rollback remains unauthorized",
+            Boolean(authorization) &&
+                authorization.rollbackAuthorized ===
+                    false,
+            "The source package must not authorize rollback execution."
+        ));
+
+        checks.push(buildCheck(
+            "No permanent writes executed",
+            Boolean(authorization) &&
+                authorization.permanentWritesExecuted ===
+                    false,
+            "No permanent file may have been modified."
+        ));
+
+        checks.push(buildCheck(
+            "No restore executed",
+            Boolean(authorization) &&
+                authorization.restoreExecuted ===
+                    false,
+            "No rollback restoration may have occurred."
+        ));
+
         return {
-            sequence: step.sequence,
-            order: step.order,
-            documentId: step.documentId,
-            updateMode: step.updateMode,
-            targetPath: step.targetPath,
-            backupPath: step.backupPath,
-            proposedCopyPath: step.proposedCopyPath,
-            originalChecksum: step.originalChecksum,
-            proposedChecksum: step.proposedChecksum,
+            accepted:
+                checks.every(function (check) {
+                    return check.passed;
+                }),
 
-            documentChanged: true,
-            permanentWriteRequired: true,
-            rollbackRequiredBeforeWrite: true,
+            checks:
+                checks,
 
-            executionAction: "Replace complete permanent JSON file",
-            authorizationStatus: "Human Authorized — Awaiting Execution",
-
-            executionAuthorized: true,
-            writeAuthorized: true,
-            rollbackAuthorized: true,
-
-            permanentWriteExecuted: false,
-            restoreExecuted: false
+            sourceValidation:
+                sourceValidation
         };
     }
 
-    function excludedDocument(step) {
+    function buildAuthorizedDocument(
+        entry
+    ) {
         return {
-            sequence: step.sequence,
-            order: step.order,
-            documentId: step.documentId,
-            updateMode: step.updateMode,
-            targetPath: step.targetPath,
-            originalChecksum: step.originalChecksum,
-            proposedChecksum: step.proposedChecksum,
+            sequence:
+                entry.sequence,
 
-            documentChanged: false,
-            permanentWriteRequired: false,
-            rollbackRequiredBeforeWrite: false,
+            order:
+                entry.order,
 
-            executionAction: "No Write Required",
-            authorizationStatus: "Excluded — No Write Required",
+            documentId:
+                entry.documentId,
 
-            executionAuthorized: false,
-            writeAuthorized: false,
-            rollbackAuthorized: false,
+            updateMode:
+                entry.updateMode,
 
-            permanentWriteExecuted: false,
-            restoreExecuted: false
+            documentChanged:
+                true,
+
+            permanentWriteRequired:
+                true,
+
+            rollbackRequiredBeforeWrite:
+                true,
+
+            excludedFromExecution:
+                false,
+
+            executionAction:
+                "Replace complete permanent JSON file",
+
+            targetPath:
+                entry.targetPath,
+
+            backupPath:
+                entry.backupPath,
+
+            proposedCopyPath:
+                entry.proposedCopyPath,
+
+            originalChecksum:
+                entry.originalChecksum,
+
+            proposedChecksum:
+                entry.proposedChecksum,
+
+            authorizationStatus:
+                "Human Authorized — Awaiting Execution",
+
+            executionAuthorized:
+                true,
+
+            writeAuthorized:
+                true,
+
+            rollbackAuthorized:
+                true,
+
+            permanentWriteExecuted:
+                false,
+
+            restoreExecuted:
+                false
         };
     }
 
-    function rejectedRecord(executionPlan, humanDecision, validation, status) {
-        const generatedAt = new Date().toISOString();
+    function buildExcludedDocument(
+        entry
+    ) {
+        return {
+            sequence:
+                entry.sequence,
+
+            order:
+                entry.order,
+
+            documentId:
+                entry.documentId,
+
+            updateMode:
+                entry.updateMode,
+
+            documentChanged:
+                false,
+
+            permanentWriteRequired:
+                false,
+
+            rollbackRequiredBeforeWrite:
+                false,
+
+            excludedFromExecution:
+                true,
+
+            executionAction:
+                "No Write Required",
+
+            targetPath:
+                entry.targetPath,
+
+            backupPath:
+                null,
+
+            proposedCopyPath:
+                null,
+
+            originalChecksum:
+                entry.originalChecksum,
+
+            proposedChecksum:
+                entry.proposedChecksum,
+
+            authorizationStatus:
+                "Excluded — No Write Required",
+
+            executionAuthorized:
+                false,
+
+            writeAuthorized:
+                false,
+
+            rollbackAuthorized:
+                false,
+
+            permanentWriteExecuted:
+                false,
+
+            restoreExecuted:
+                false
+        };
+    }
+
+    function rejectedAuthorizationRecord(
+        message,
+        sourceAuthorization,
+        validation,
+        officer,
+        humanDecision
+    ) {
+        const snapshot =
+            window.TMSSessionContext
+                .getSnapshot();
+
+        const generatedAt =
+            new Date().toISOString();
 
         return deepFreeze({
-            recordType: RECORD_TYPE,
-            engineVersion: ENGINE_VERSION,
-            authorizationId: createAuthorizationId(generatedAt),
-            generatedAt: generatedAt,
-            sessionNumber: getSessionNumber(),
+            authorizationType:
+                AUTHORIZATION_TYPE,
 
-            accepted: false,
-            message: "Explicit human execution authorization was not granted.",
+            engineName:
+                ENGINE_NAME,
 
-            humanDecision: humanDecision || null,
-            humanApprovalSatisfied: false,
+            engineVersion:
+                ENGINE_VERSION,
+
+            authorizationMode:
+                AUTHORIZATION_MODE,
+
+            authorizationId:
+                createAuthorizationId(
+                    snapshot.sessionNumber,
+                    generatedAt
+                ),
+
+            generatedAt:
+                generatedAt,
+
+            sessionNumber:
+                snapshot.sessionNumber,
+
+            accepted:
+                false,
+
+            message:
+                message,
+
+            sourceAuthorizationAccepted:
+                Boolean(
+                    sourceAuthorization &&
+                    sourceAuthorization.accepted
+                ),
+
+            sourceAuthorizationId:
+                sourceAuthorization
+                    ? sourceAuthorization.authorizationId
+                    : null,
+
+            sourceAuthorizationStatus:
+                sourceAuthorization
+                    ? sourceAuthorization.authorizationStatus
+                    : "Unavailable",
 
             sourceExecutionPlanId:
-                executionPlan ? executionPlan.planId : null,
-            sourceExecutionPlanAccepted:
-                Boolean(executionPlan && executionPlan.accepted),
-            sourceValidationAccepted:
-                Boolean(validation && validation.accepted),
+                sourceAuthorization
+                    ? sourceAuthorization.sourceExecutionPlanId
+                    : null,
+
+            validationAccepted:
+                Boolean(
+                    validation &&
+                    validation.accepted
+                ),
+
             validationChecks:
-                validation ? validation.checks : [],
+                validation
+                    ? validation.checks
+                    : [],
+
+            authorizationOfficerName:
+                officer.name,
+
+            authorizationOfficerId:
+                officer.id,
+
+            authorizationOfficerRole:
+                officer.role,
+
+            humanDecision:
+                humanDecision || "Unavailable",
+
+            humanApprovalSatisfied:
+                false,
+
+            expectedDocumentCount:
+                EXPECTED_DOCUMENTS.length,
 
             plannedDocumentCount:
-                executionPlan ? executionPlan.plannedDocumentCount : 0,
-            authorizedDocumentCount: 0,
-            excludedDocumentCount: 0,
+                0,
 
-            authorizedDocuments: [],
-            excludedDocuments: [],
+            authorizedDocumentCount:
+                0,
 
-            executionAuthorized: false,
-            writeAuthorized: false,
-            rollbackAuthorized: false,
+            excludedDocumentCount:
+                0,
 
-            permanentWritesExecuted: false,
-            restoreExecuted: false,
+            authorizedDocuments:
+                [],
 
-            authorizationStatus: status,
-            immutableRecord: true
+            excludedDocuments:
+                [],
+
+            executionAuthorized:
+                false,
+
+            writeAuthorized:
+                false,
+
+            rollbackAuthorized:
+                false,
+
+            permanentWritesExecuted:
+                false,
+
+            restoreExecuted:
+                false,
+
+            authorizationStatus:
+                "Rejected",
+
+            requiredNextAction:
+                "Correct the failed source, officer, decision, or document authorization checks.",
+
+            reviewRequired:
+                true
         });
     }
 
-    function createAuthorization(executionPlan, humanDecision) {
+    function createAuthorizationRecord(
+        configuration
+    ) {
+        const options =
+            isPlainObject(configuration)
+                ? configuration
+                : {};
+
+        const sourceAuthorization =
+            options.sourceAuthorization ||
+            window.TMSExecutionAuthorizationEngine
+                .getLastAuthorization();
+
+        const humanDecision =
+            hasText(options.humanDecision)
+                ? options.humanDecision.trim()
+                : "";
+
+        const officer =
+            normalizeOfficer(
+                options.authorizationOfficer ||
+                options.officer
+            );
+
         const validation =
-            validateSourceExecutionPlan(executionPlan);
-
-        if (!validation.accepted) {
-            lastAuthorizationRecord = rejectedRecord(
-                executionPlan,
-                humanDecision,
-                validation,
-                "Rejected"
+            validateExecutionAuthorizationPackage(
+                sourceAuthorization
             );
+
+        const officerValid =
+            hasText(officer.name) &&
+            hasText(officer.id) &&
+            hasText(officer.role);
+
+        const decisionValid =
+            ALLOWED_DECISIONS.includes(
+                humanDecision
+            );
+
+        const approvalRequested =
+            humanDecision ===
+                APPROVE_DECISION;
+
+        if (
+            !validation.accepted ||
+            !officerValid ||
+            !decisionValid ||
+            !approvalRequested
+        ) {
+            lastAuthorizationRecord =
+                rejectedAuthorizationRecord(
+                    "The Human Controlled Execution Authorization Record failed prerequisite validation or did not receive the exact approval decision.",
+                    sourceAuthorization,
+                    validation,
+                    officer,
+                    humanDecision
+                );
 
             return lastAuthorizationRecord;
         }
 
-        if (humanDecision !== APPROVE) {
-            const status = humanDecision === REVISE
-                ? "Revision Requested"
-                : humanDecision === CANCEL
-                    ? "Cancelled"
-                    : "Awaiting Explicit Human Approval";
-
-            lastAuthorizationRecord = rejectedRecord(
-                executionPlan,
-                humanDecision,
-                validation,
-                status
-            );
-
-            return lastAuthorizationRecord;
-        }
-
-        const generatedAt = new Date().toISOString();
+        const orderedEntries =
+            clone(
+                sourceAuthorization
+                    .authorizationEntries
+            ).sort(function (
+                first,
+                second
+            ) {
+                return (
+                    Number(first.sequence) -
+                    Number(second.sequence)
+                );
+            });
 
         const authorizedDocuments =
-            executionPlan.executionSteps
-                .filter(function (step) {
-                    return step.permanentWriteRequired === true;
+            orderedEntries
+                .filter(function (entry) {
+                    return (
+                        entry
+                            .permanentWriteRequired ===
+                        true
+                    );
                 })
-                .map(authorizedDocument);
+                .map(buildAuthorizedDocument);
 
         const excludedDocuments =
-            executionPlan.executionSteps
-                .filter(function (step) {
-                    return step.permanentWriteRequired === false;
+            orderedEntries
+                .filter(function (entry) {
+                    return (
+                        entry
+                            .permanentWriteRequired ===
+                        false
+                    );
                 })
-                .map(excludedDocument);
+                .map(buildExcludedDocument);
 
-        lastAuthorizationRecord = deepFreeze({
-            recordType: RECORD_TYPE,
-            engineVersion: ENGINE_VERSION,
-            authorizationId: createAuthorizationId(generatedAt),
-            generatedAt: generatedAt,
-            sessionNumber: getSessionNumber(),
+        const plannedDocumentCount =
+            authorizedDocuments.length +
+            excludedDocuments.length;
 
-            accepted: true,
-            message:
-                "Human-controlled authorization granted for write-required documents only. No permanent writes were executed.",
+        const documentIds =
+            authorizedDocuments
+                .concat(excludedDocuments)
+                .map(function (document) {
+                    return document.documentId;
+                });
 
-            humanDecision: humanDecision,
-            humanApprovalSatisfied: true,
+        const documentSetValid =
+            plannedDocumentCount ===
+                EXPECTED_DOCUMENTS.length &&
+            EXPECTED_DOCUMENTS.every(function (
+                documentId
+            ) {
+                return documentIds.includes(
+                    documentId
+                );
+            }) &&
+            new Set(documentIds).size ===
+                EXPECTED_DOCUMENTS.length;
 
-            sourceExecutionPlanId: executionPlan.planId,
-            sourceExecutionPlanAccepted: true,
-            sourceExecutionPlanStatus: executionPlan.planStatus,
-            sourceExecutionPlanEngineVersion: executionPlan.engineVersion,
-            sourceExecutionPlanGeneratedAt: executionPlan.generatedAt,
+        if (!documentSetValid) {
+            lastAuthorizationRecord =
+                rejectedAuthorizationRecord(
+                    "The generated human authorization document sets did not preserve the unique six-document contract.",
+                    sourceAuthorization,
+                    validation,
+                    officer,
+                    humanDecision
+                );
 
-            sourceValidationAccepted: true,
-            validationChecks: validation.checks,
+            return lastAuthorizationRecord;
+        }
 
-            plannedDocumentCount: executionPlan.plannedDocumentCount,
-            authorizedDocumentCount: authorizedDocuments.length,
-            excludedDocumentCount: excludedDocuments.length,
+        const snapshot =
+            window.TMSSessionContext
+                .getSnapshot();
 
-            authorizedDocuments: authorizedDocuments,
-            excludedDocuments: excludedDocuments,
+        const generatedAt =
+            new Date().toISOString();
 
-            executionAuthorized: true,
-            writeAuthorized: authorizedDocuments.length > 0,
-            rollbackAuthorized: authorizedDocuments.length > 0,
+        lastAuthorizationRecord =
+            deepFreeze({
+                authorizationType:
+                    AUTHORIZATION_TYPE,
 
-            permanentWritesExecuted: false,
-            restoreExecuted: false,
+                engineName:
+                    ENGINE_NAME,
 
-            authorizationStatus: authorizedDocuments.length > 0
-                ? "Human Authorized — Awaiting Controlled Execution"
-                : "Human Approved — No Permanent Writes Required",
+                engineVersion:
+                    ENGINE_VERSION,
 
-            requiredNextAction: authorizedDocuments.length > 0
-                ? "Submit this immutable record to the future Permanent Document Execution Engine."
-                : "Record completion without permanent execution.",
+                authorizationMode:
+                    AUTHORIZATION_MODE,
 
-            immutableRecord: true
-        });
+                authorizationId:
+                    createAuthorizationId(
+                        snapshot.sessionNumber,
+                        generatedAt
+                    ),
 
-        authorizedPlanIds.add(executionPlan.planId);
+                generatedAt:
+                    generatedAt,
+
+                sessionNumber:
+                    snapshot.sessionNumber,
+
+                accepted:
+                    true,
+
+                message:
+                    "Human execution authorization was recorded for the six-document controlled package. " +
+                    authorizedDocuments.length +
+                    " write-required document(s) were marked as human-authorized source inputs for Disabled Mode manifest planning, and " +
+                    excludedDocuments.length +
+                    " no-write document(s) remained excluded. No permanent files were changed.",
+
+                sourceAuthorizationAccepted:
+                    true,
+
+                sourceAuthorizationId:
+                    sourceAuthorization
+                        .authorizationId,
+
+                sourceAuthorizationStatus:
+                    sourceAuthorization
+                        .authorizationStatus,
+
+                sourceAuthorizationEngineVersion:
+                    sourceAuthorization
+                        .engineVersion,
+
+                sourceAuthorizationGeneratedAt:
+                    sourceAuthorization
+                        .generatedAt,
+
+                sourceVerificationId:
+                    sourceAuthorization
+                        .sourceVerificationId,
+
+                sourceSimulationId:
+                    sourceAuthorization
+                        .sourceSimulationId,
+
+                sourceExecutionPlanId:
+                    sourceAuthorization
+                        .sourceExecutionPlanId,
+
+                sourceCaptureId:
+                    sourceAuthorization
+                        .sourceCaptureId,
+
+                sourceRollbackPackageId:
+                    sourceAuthorization
+                        .sourceRollbackPackageId,
+
+                validationAccepted:
+                    true,
+
+                validationChecks:
+                    validation.checks,
+
+                authorizationOfficerName:
+                    officer.name,
+
+                authorizationOfficerId:
+                    officer.id,
+
+                authorizationOfficerRole:
+                    officer.role,
+
+                humanDecision:
+                    humanDecision,
+
+                humanApprovalSatisfied:
+                    true,
+
+                expectedDocumentCount:
+                    EXPECTED_DOCUMENTS.length,
+
+                plannedDocumentCount:
+                    plannedDocumentCount,
+
+                authorizedDocumentCount:
+                    authorizedDocuments.length,
+
+                excludedDocumentCount:
+                    excludedDocuments.length,
+
+                authorizedDocuments:
+                    authorizedDocuments,
+
+                excludedDocuments:
+                    excludedDocuments,
+
+                executionAuthorized:
+                    true,
+
+                writeAuthorized:
+                    authorizedDocuments.length > 0,
+
+                rollbackAuthorized:
+                    authorizedDocuments.length > 0,
+
+                permanentWritesExecuted:
+                    false,
+
+                restoreExecuted:
+                    false,
+
+                authorizationStatus:
+                    "Human Authorized — Execution Manifest Pending",
+
+                requiredNextAction:
+                    "Generate the Permanent Write Execution Manifest in Disabled Mode.",
+
+                reviewRequired:
+                    true,
+
+                reviewChoices: [
+                    "Approve Authorization Record Structure",
+                    "Revise Session",
+                    "Cancel Authorization Record"
+                ]
+            });
 
         return lastAuthorizationRecord;
     }
 
-    function validateAuthorizationRecord(record) {
-        const current = record || lastAuthorizationRecord;
+    function validateAuthorizationRecord(
+        authorization
+    ) {
+        const current =
+            authorization ||
+            lastAuthorizationRecord;
+
         const checks = [];
 
-        checks.push(check(
+        const authorizedDocuments =
+            current &&
+            Array.isArray(
+                current.authorizedDocuments
+            )
+                ? current.authorizedDocuments
+                : [];
+
+        const excludedDocuments =
+            current &&
+            Array.isArray(
+                current.excludedDocuments
+            )
+                ? current.excludedDocuments
+                : [];
+
+        const allDocuments =
+            authorizedDocuments.concat(
+                excludedDocuments
+            );
+
+        const documentIds =
+            allDocuments.map(function (
+                document
+            ) {
+                return document.documentId;
+            });
+
+        const documentSetValid =
+            allDocuments.length ===
+                EXPECTED_DOCUMENTS.length &&
+            EXPECTED_DOCUMENTS.every(function (
+                documentId
+            ) {
+                return documentIds.includes(
+                    documentId
+                );
+            }) &&
+            new Set(documentIds).size ===
+                EXPECTED_DOCUMENTS.length;
+
+        const sequenceValid =
+            allDocuments
+                .slice()
+                .sort(function (
+                    first,
+                    second
+                ) {
+                    return (
+                        Number(first.sequence) -
+                        Number(second.sequence)
+                    );
+                })
+                .every(function (
+                    document,
+                    index
+                ) {
+                    return (
+                        document.sequence ===
+                            index + 1 &&
+                        document.documentId ===
+                            EXPECTED_DOCUMENTS[index]
+                    );
+                });
+
+        const authorizedDocumentsValid =
+            authorizedDocuments.every(
+                function (document) {
+                    return (
+                        document.documentChanged ===
+                            true &&
+                        document.permanentWriteRequired ===
+                            true &&
+                        document.rollbackRequiredBeforeWrite ===
+                            true &&
+                        document.excludedFromExecution ===
+                            false &&
+                        document.executionAction ===
+                            "Replace complete permanent JSON file" &&
+                        document.authorizationStatus ===
+                            "Human Authorized — Awaiting Execution" &&
+                        document.executionAuthorized ===
+                            true &&
+                        document.writeAuthorized ===
+                            true &&
+                        document.rollbackAuthorized ===
+                            true &&
+                        document.permanentWriteExecuted ===
+                            false &&
+                        document.restoreExecuted ===
+                            false &&
+                        typeof document.targetPath ===
+                            "string" &&
+                        document.targetPath.length > 0 &&
+                        typeof document.backupPath ===
+                            "string" &&
+                        document.backupPath.length > 0 &&
+                        typeof document.proposedCopyPath ===
+                            "string" &&
+                        document.proposedCopyPath.length > 0 &&
+                        typeof document.originalChecksum ===
+                            "string" &&
+                        document.originalChecksum.length > 0 &&
+                        typeof document.proposedChecksum ===
+                            "string" &&
+                        document.proposedChecksum.length > 0
+                    );
+                }
+            );
+
+        const excludedDocumentsValid =
+            excludedDocuments.every(
+                function (document) {
+                    return (
+                        document.documentChanged ===
+                            false &&
+                        document.permanentWriteRequired ===
+                            false &&
+                        document.rollbackRequiredBeforeWrite ===
+                            false &&
+                        document.excludedFromExecution ===
+                            true &&
+                        document.executionAction ===
+                            "No Write Required" &&
+                        document.authorizationStatus ===
+                            "Excluded — No Write Required" &&
+                        document.executionAuthorized ===
+                            false &&
+                        document.writeAuthorized ===
+                            false &&
+                        document.rollbackAuthorized ===
+                            false &&
+                        document.permanentWriteExecuted ===
+                            false &&
+                        document.restoreExecuted ===
+                            false &&
+                        typeof document.targetPath ===
+                            "string" &&
+                        document.targetPath.length > 0 &&
+                        document.backupPath ===
+                            null &&
+                        document.proposedCopyPath ===
+                            null &&
+                        typeof document.originalChecksum ===
+                            "string" &&
+                        document.originalChecksum.length > 0 &&
+                        typeof document.proposedChecksum ===
+                            "string" &&
+                        document.proposedChecksum.length > 0
+                    );
+                }
+            );
+
+        checks.push(buildCheck(
             "Authorization record exists",
-            isObject(current),
-            "An authorization record is required."
+            isPlainObject(current),
+            "A Human Controlled Execution Authorization Record is required."
         ));
 
-        checks.push(check(
+        checks.push(buildCheck(
             "Authorization record accepted",
-            Boolean(current && current.accepted),
+            Boolean(
+                current &&
+                current.accepted
+            ),
             "The authorization record must be accepted."
         ));
 
-        checks.push(check(
-            "Explicit human approval satisfied",
-            Boolean(
-                current &&
-                current.humanApprovalSatisfied === true &&
-                current.humanDecision === APPROVE
-            ),
+        checks.push(buildCheck(
+            "Authorization mode is disabled",
+            Boolean(current) &&
+                current.authorizationMode ===
+                    AUTHORIZATION_MODE,
+            "The engine must remain in Disabled Mode."
+        ));
+
+        checks.push(buildCheck(
+            "Exact human approval satisfied",
+            Boolean(current) &&
+                current.humanApprovalSatisfied ===
+                    true &&
+                current.humanDecision ===
+                    APPROVE_DECISION,
             "The exact human approval decision is required."
         ));
 
-        const authorizedDocuments = current &&
-            Array.isArray(current.authorizedDocuments)
-            ? current.authorizedDocuments
-            : [];
-
-        const excludedDocuments = current &&
-            Array.isArray(current.excludedDocuments)
-            ? current.excludedDocuments
-            : [];
-
-        checks.push(check(
-            "Authorized documents valid",
-            authorizedDocuments.every(function (document) {
-                return document.documentChanged === true &&
-                    document.permanentWriteRequired === true &&
-                    document.rollbackRequiredBeforeWrite === true &&
-                    document.executionAuthorized === true &&
-                    document.writeAuthorized === true &&
-                    document.rollbackAuthorized === true &&
-                    document.permanentWriteExecuted === false &&
-                    document.restoreExecuted === false;
-            }),
-            "Only write-required documents may be authorized."
+        checks.push(buildCheck(
+            "Authorization officer identity valid",
+            Boolean(current) &&
+                hasText(
+                    current.authorizationOfficerName
+                ) &&
+                hasText(
+                    current.authorizationOfficerId
+                ) &&
+                hasText(
+                    current.authorizationOfficerRole
+                ),
+            "A complete authorization officer identity is required."
         ));
 
-        checks.push(check(
-            "Excluded documents valid",
-            excludedDocuments.every(function (document) {
-                return document.documentChanged === false &&
-                    document.permanentWriteRequired === false &&
-                    document.rollbackRequiredBeforeWrite === false &&
-                    document.executionAuthorized === false &&
-                    document.writeAuthorized === false &&
-                    document.rollbackAuthorized === false &&
-                    document.permanentWriteExecuted === false &&
-                    document.restoreExecuted === false;
-            }),
-            "No-write documents must remain excluded."
+        checks.push(buildCheck(
+            "Expected planned document count",
+            Boolean(current) &&
+                current.plannedDocumentCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "Exactly six permanent documents must be represented."
         ));
 
-        checks.push(check(
+        checks.push(buildCheck(
             "Authorization counts valid",
             Boolean(current) &&
                 current.authorizedDocumentCount ===
@@ -452,26 +1189,51 @@ human authorization record. It performs no permanent writes or restores.
                 current.excludedDocumentCount ===
                     excludedDocuments.length &&
                 current.plannedDocumentCount ===
-                    authorizedDocuments.length +
-                    excludedDocuments.length,
-            "Authorization counts must match both document sets."
+                    allDocuments.length,
+            "Authorized and excluded document counts must match the record."
         ));
 
-        checks.push(check(
+        checks.push(buildCheck(
+            "Expected authorization document set",
+            documentSetValid,
+            "The record must contain the unique six-document permanent set."
+        ));
+
+        checks.push(buildCheck(
+            "Expected document sequence",
+            sequenceValid,
+            "The six permanent documents must retain their approved sequence."
+        ));
+
+        checks.push(buildCheck(
+            "Authorized documents valid",
+            authorizedDocumentsValid,
+            "Every authorized document must be checksum-backed, rollback-protected, and human-authorized."
+        ));
+
+        checks.push(buildCheck(
+            "Excluded documents valid",
+            excludedDocumentsValid,
+            "Every no-write document must remain complete, excluded, and unauthorized."
+        ));
+
+        checks.push(buildCheck(
             "Execution authorization valid",
-            Boolean(current && current.executionAuthorized === true),
-            "Accepted records must authorize controlled execution."
+            Boolean(current) &&
+                current.executionAuthorized ===
+                    true,
+            "The accepted human authorization record must authorize controlled source execution."
         ));
 
-        checks.push(check(
+        checks.push(buildCheck(
             "Write authorization valid",
             Boolean(current) &&
                 current.writeAuthorized ===
                     (authorizedDocuments.length > 0),
-            "Write authorization is valid only when writes are required."
+            "Write authorization must match whether write-required documents exist."
         ));
 
-        checks.push(check(
+        checks.push(buildCheck(
             "Rollback authorization valid",
             Boolean(current) &&
                 current.rollbackAuthorized ===
@@ -479,39 +1241,74 @@ human authorization record. It performs no permanent writes or restores.
             "Rollback authorization must accompany authorized writes."
         ));
 
-        checks.push(check(
+        checks.push(buildCheck(
             "No permanent writes executed",
-            Boolean(current && current.permanentWritesExecuted === false),
-            "This engine must not execute permanent writes."
+            Boolean(current) &&
+                current.permanentWritesExecuted ===
+                    false,
+            "No permanent write may occur in this engine."
         ));
 
-        checks.push(check(
+        checks.push(buildCheck(
             "No restore executed",
-            Boolean(current && current.restoreExecuted === false),
-            "This engine must not execute restoration."
-        ));
-
-        checks.push(check(
-            "Authorization record immutable",
-            Boolean(
-                current &&
-                current.immutableRecord === true &&
-                Object.isFrozen(current)
-            ),
-            "The accepted authorization record must be immutable."
+            Boolean(current) &&
+                current.restoreExecuted ===
+                    false,
+            "No rollback restoration may occur in this engine."
         ));
 
         return deepFreeze({
-            validatorVersion: ENGINE_VERSION,
-            accepted: checks.every(function (item) {
-                return item.passed;
-            }),
-            checks: checks
+            validatorVersion:
+                ENGINE_VERSION,
+
+            accepted:
+                checks.every(function (
+                    check
+                ) {
+                    return check.passed;
+                }),
+
+            checks:
+                checks
         });
     }
 
-    function formatAuthorizationRecord(record) {
-        const current = record || lastAuthorizationRecord;
+    function getLastAuthorizationRecord() {
+        return lastAuthorizationRecord;
+    }
+
+    function getExpectedDocuments() {
+        return EXPECTED_DOCUMENTS.slice();
+    }
+
+    function getEngineInfo() {
+        return {
+            engineName:
+                ENGINE_NAME,
+
+            engineVersion:
+                ENGINE_VERSION,
+
+            authorizationMode:
+                AUTHORIZATION_MODE,
+
+            expectedDocumentCount:
+                EXPECTED_DOCUMENTS.length,
+
+            expectedDocuments:
+                EXPECTED_DOCUMENTS.slice(),
+
+            allowedDecisions:
+                ALLOWED_DECISIONS.slice()
+        };
+    }
+
+    async function formatAuthorizationRecord(
+        authorization
+    ) {
+        const current =
+            authorization ||
+            lastAuthorizationRecord;
 
         if (!current) {
             return "No Human Controlled Execution Authorization Record is available.";
@@ -519,69 +1316,125 @@ human authorization record. It performs no permanent writes or restores.
 
         const lines = [
             "TMS-OS HUMAN CONTROLLED EXECUTION AUTHORIZATION RECORD",
-            "Authorization ID: " + current.authorizationId,
-            "Accepted: " + (current.accepted ? "YES" : "NO"),
-            "Work Session: " + current.sessionNumber,
-            "Engine Version: " + current.engineVersion,
-            "Authorization Status: " + current.authorizationStatus,
-            "Human Decision: " + (current.humanDecision || "NONE"),
-            "Source Execution Plan ID: " +
-                (current.sourceExecutionPlanId || "NONE"),
-            "Planned Documents: " + current.plannedDocumentCount,
-            "Authorized Documents: " + current.authorizedDocumentCount,
-            "Excluded Documents: " + current.excludedDocumentCount,
-            "Execution Authorized: " +
-                (current.executionAuthorized ? "YES" : "NO"),
-            "Write Authorized: " +
-                (current.writeAuthorized ? "YES" : "NO"),
-            "Rollback Authorized: " +
-                (current.rollbackAuthorized ? "YES" : "NO"),
+            "Authorization ID: " +
+                current.authorizationId,
+            "Accepted: " +
+                (
+                    current.accepted
+                        ? "YES"
+                        : "NO"
+                ),
+            "Work Session: " +
+                current.sessionNumber,
+            "Engine Version: " +
+                current.engineVersion,
+            "Authorization Mode: " +
+                current.authorizationMode,
+            "Authorization Status: " +
+                current.authorizationStatus,
+            "Human Decision: " +
+                current.humanDecision,
+            "Authorization Officer: " +
+                current.authorizationOfficerName,
+            "Planned Documents: " +
+                current.plannedDocumentCount,
+            "Authorized Documents: " +
+                current.authorizedDocumentCount,
+            "Excluded Documents: " +
+                current.excludedDocumentCount,
+            "Execution Authorized in Source Record: " +
+                (
+                    current.executionAuthorized
+                        ? "YES"
+                        : "NO"
+                ),
+            "Write Authorized in Source Record: " +
+                (
+                    current.writeAuthorized
+                        ? "YES"
+                        : "NO"
+                ),
+            "Rollback Authorized in Source Record: " +
+                (
+                    current.rollbackAuthorized
+                        ? "YES"
+                        : "NO"
+                ),
             "Permanent Writes Executed: NO",
             "Restore Executed: NO"
         ];
 
-        (current.authorizedDocuments || []).forEach(function (document) {
+        (
+            current.authorizedDocuments || []
+        ).forEach(function (document) {
             lines.push(
-                document.sequence + " | " +
+                document.sequence +
+                " | " +
                 document.documentId +
-                " | AUTHORIZED | WRITE PENDING"
+                " | HUMAN AUTHORIZED | AWAITING DISABLED MANIFEST"
             );
         });
 
-        (current.excludedDocuments || []).forEach(function (document) {
+        (
+            current.excludedDocuments || []
+        ).forEach(function (document) {
             lines.push(
-                document.sequence + " | " +
+                document.sequence +
+                " | " +
                 document.documentId +
-                " | EXCLUDED | NO WRITE REQUIRED"
+                " | NO WRITE REQUIRED | EXCLUDED"
             );
         });
+
+        if (current.requiredNextAction) {
+            lines.push(
+                "Required Next Action: " +
+                current.requiredNextAction
+            );
+        }
 
         return lines.join("\n");
     }
 
     window.TMSHumanControlledExecutionAuthorizationEngine =
         Object.freeze({
-            engineVersion: ENGINE_VERSION,
-            createAuthorization: createAuthorization,
-            validateSourceExecutionPlan: validateSourceExecutionPlan,
-            validateAuthorizationRecord: validateAuthorizationRecord,
-            formatAuthorizationRecord: formatAuthorizationRecord,
-            getLastAuthorizationRecord: function () {
-                return lastAuthorizationRecord;
-            },
-            getApprovalDecision: function () {
-                return APPROVE;
-            },
-            getReviewChoices: function () {
-                return [APPROVE, REVISE, CANCEL];
-            }
+            engineName:
+                ENGINE_NAME,
+
+            engineVersion:
+                ENGINE_VERSION,
+
+            authorizationMode:
+                AUTHORIZATION_MODE,
+
+            createAuthorizationRecord:
+                createAuthorizationRecord,
+
+            validateAuthorizationRecord:
+                validateAuthorizationRecord,
+
+            formatAuthorizationRecord:
+                formatAuthorizationRecord,
+
+            getLastAuthorizationRecord:
+                getLastAuthorizationRecord,
+
+            getExpectedDocuments:
+                getExpectedDocuments,
+
+            getEngineInfo:
+                getEngineInfo
         });
 
     console.log(
         "Human Controlled Execution Authorization Engine v" +
         ENGINE_VERSION +
-        " initialized for Work Session " +
-        getSessionNumber() +
+        " initialized in " +
+        AUTHORIZATION_MODE +
+        " Mode for Work Session " +
+        window.TMSSessionContext
+            .getSnapshot()
+            .sessionNumber +
         "."
     );
 }());

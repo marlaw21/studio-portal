@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 093 — Controlled Execution Engine v1.1.1
+Work Session 101 — Controlled Execution Engine v1.3.0
 File: js/session/controlled-execution-engine.js
 
 Purpose:
@@ -18,12 +18,15 @@ permanent-output plan. It does not write, replace, delete, restore, download,
 or otherwise modify any permanent file.
 
 Write authorization and rollback authorization remain locked.
+
+Version 1.3.0 accepts governed document identity from either id or documentId
+when validating captured original and proposed documents.
 */
 
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.1.1";
+    const ENGINE_VERSION = "1.3.0";
     const PLAN_TYPE = "TMS-OS Controlled Permanent Output Execution Plan";
 
     const EXPECTED_DOCUMENTS = Object.freeze([
@@ -31,7 +34,8 @@ Write authorization and rollback authorization remain locked.
         "STATE-001",
         "DOC-STATE-001",
         "DEC-LOG-001",
-        "MILE-HIST-001"
+        "MILE-HIST-001",
+        "WORKSPACE-SNAPSHOT-HISTORY-001"
     ]);
 
     let lastExecutionPlan = null;
@@ -163,7 +167,7 @@ Write authorization and rollback authorization remain locked.
             Boolean(capturePackage) &&
                 capturePackage.capturedDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "Exactly five original permanent documents must be captured."
+            "Exactly six original permanent documents must be captured."
         ));
 
         checks.push(buildCheck(
@@ -234,7 +238,7 @@ Write authorization and rollback authorization remain locked.
         checks.push(buildCheck(
             "Expected permanent document set",
             documentSetValid,
-            "The capture package must contain the unique five-document permanent set."
+            "The capture package must contain the unique six-document permanent set."
         ));
 
         const documentSafetyValid =
@@ -244,10 +248,16 @@ Write authorization and rollback authorization remain locked.
                     EXPECTED_DOCUMENTS.includes(document.documentId) &&
                     document.originalDocumentCaptured === true &&
                     isPlainObject(document.originalDocument) &&
-                    document.originalDocument.id === document.documentId &&
+                    (
+                        document.originalDocument.id ||
+                        document.originalDocument.documentId
+                    ) === document.documentId &&
                     document.proposedDocumentCaptured === true &&
                     isPlainObject(document.proposedDocument) &&
-                    document.proposedDocument.id === document.documentId &&
+                    (
+                        document.proposedDocument.id ||
+                        document.proposedDocument.documentId
+                    ) === document.documentId &&
                     typeof document.originalChecksum === "string" &&
                     document.originalChecksum.length > 0 &&
                     typeof document.proposedChecksum === "string" &&
@@ -317,6 +327,19 @@ Write authorization and rollback authorization remain locked.
                 document.sourceSectionCount,
             proposedSectionCount:
                 document.proposedSectionCount,
+
+            sourceCollectionName:
+                document.sourceCollectionName || null,
+            proposedCollectionName:
+                document.proposedCollectionName || null,
+            sourceItemCount:
+                Number.isInteger(document.sourceItemCount)
+                    ? document.sourceItemCount
+                    : document.sourceSectionCount,
+            proposedItemCount:
+                Number.isInteger(document.proposedItemCount)
+                    ? document.proposedItemCount
+                    : document.proposedSectionCount,
 
             prerequisites: writeRequired
                 ? [
@@ -543,7 +566,7 @@ Write authorization and rollback authorization remain locked.
             requiredNextAction:
                 writeRequiredDocumentCount > 0
                     ? "Submit only write-required steps to the future human-controlled execution authorization gate."
-                    : "Record that all five permanent documents are unchanged; no execution authorization is required.",
+                    : "Record that all six permanent documents are unchanged; no execution authorization is required.",
 
             reviewRequired: true,
             reviewChoices: [
@@ -579,7 +602,7 @@ Write authorization and rollback authorization remain locked.
             Boolean(current) &&
                 current.plannedDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "The execution plan must contain five permanent documents."
+            "The execution plan must contain six permanent documents."
         ));
 
         checks.push(buildCheck(
@@ -665,7 +688,7 @@ Write authorization and rollback authorization remain locked.
         checks.push(buildCheck(
             "Expected execution document set",
             stepSetValid,
-            "The execution plan must contain the unique five-document permanent set."
+            "The execution plan must contain the unique six-document permanent set."
         ));
 
         const executionStepsValid =

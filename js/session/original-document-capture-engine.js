@@ -1,29 +1,35 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 093 — Original Document Capture Engine v1.1.0
+Work Session 101 — Original Document Capture Engine v1.3.0
 File: js/session/original-document-capture-engine.js
 
 Purpose:
-Load and verify the five current live permanent JSON documents, capture
+Load and verify the six current live permanent JSON documents, capture
 immutable recovery copies, calculate deterministic document checksums, and
 produce a rollback-ready capture package before any permanent output execution
 can be authorized.
 
 This component does not write, replace, delete, restore, or download permanent
 files. Write authorization remains locked.
+
+Version 1.3.0 preserves each rollback entry's approved
+originalDocumentCaptureRequired decision. No-write documents may still be loaded
+and checksum-verified for pipeline integrity while remaining excluded from
+rollback requirements.
 */
 
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.1.0";
+    const ENGINE_VERSION = "1.3.0";
     const CAPTURE_TYPE = "TMS-OS Original Permanent Document Capture";
     const EXPECTED_DOCUMENTS = Object.freeze([
         "WS-HIST-001",
         "STATE-001",
         "DOC-STATE-001",
         "DEC-LOG-001",
-        "MILE-HIST-001"
+        "MILE-HIST-001",
+        "WORKSPACE-SNAPSHOT-HISTORY-001"
     ]);
 
     let lastCapture = null;
@@ -146,7 +152,7 @@ files. Write authorization remains locked.
             Boolean(rollbackPackage) &&
                 rollbackPackage.rollbackDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "The source rollback package must contain five documents."
+            "The source rollback package must contain six documents."
         ));
 
         checks.push(buildCheck(
@@ -194,7 +200,7 @@ files. Write authorization remains locked.
         checks.push(buildCheck(
             "Expected rollback document set",
             documentSetValid,
-            "All five uncaptured rollback document entries are required."
+            "All six uncaptured rollback document entries are required."
         ));
 
         return {
@@ -262,7 +268,7 @@ files. Write authorization remains locked.
             "Document ID is expected",
             Boolean(rollbackEntry) &&
                 EXPECTED_DOCUMENTS.includes(rollbackEntry.documentId),
-            "The rollback entry must target one of the five permanent documents."
+            "The rollback entry must target one of the six permanent documents."
         ));
 
         checks.push(buildCheck(
@@ -304,21 +310,21 @@ files. Write authorization remains locked.
         checks.push(buildCheck(
             "Live document ID matches target",
             Boolean(loadedDocument) &&
-                loadedDocument.id === rollbackEntry.documentId,
+                (loadedDocument.id || loadedDocument.documentId) === rollbackEntry.documentId,
             "The live permanent document ID must match the rollback target."
         ));
 
         checks.push(buildCheck(
             "Live document sections are valid",
             Boolean(loadedDocument) &&
-                Array.isArray(loadedDocument.sections),
+                (Array.isArray(loadedDocument.sections) || Array.isArray(loadedDocument.items) || Array.isArray(loadedDocument.snapshots)),
             "The live permanent document must contain a sections array."
         ));
 
         checks.push(buildCheck(
             "Live document revision history is valid",
             Boolean(loadedDocument) &&
-                Array.isArray(loadedDocument.revisionHistory),
+                (Array.isArray(loadedDocument.revisionHistory) || Array.isArray(loadedDocument.revisions) || Array.isArray(loadedDocument.snapshots)),
             "The live permanent document must contain revision history."
         ));
 
@@ -364,9 +370,13 @@ files. Write authorization remains locked.
             originalLastUpdated:
                 immutableOriginal.lastUpdated || "Unknown",
             originalSectionCount:
-                immutableOriginal.sections.length,
+                Array.isArray(immutableOriginal.sections)?immutableOriginal.sections.length:
+                (Array.isArray(immutableOriginal.items)?immutableOriginal.items.length:
+                (Array.isArray(immutableOriginal.snapshots)?immutableOriginal.snapshots.length:0)),
             originalRevisionCount:
-                immutableOriginal.revisionHistory.length,
+                Array.isArray(immutableOriginal.revisionHistory)?immutableOriginal.revisionHistory.length:
+                (Array.isArray(immutableOriginal.revisions)?immutableOriginal.revisions.length:
+                (Array.isArray(immutableOriginal.snapshots)?immutableOriginal.snapshots.length:0)),
             responseUrl: responseUrl,
             contentLength: contentLength,
             captureStatus: "Captured and Verified"
@@ -393,7 +403,8 @@ files. Write authorization remains locked.
             backupPath: rollbackEntry.backupPath,
             proposedCopyPath: rollbackEntry.proposedCopyPath,
 
-            originalDocumentCaptureRequired: true,
+            originalDocumentCaptureRequired:
+                rollbackEntry.originalDocumentCaptureRequired === true,
             originalDocumentCaptured: true,
             originalDocument:
                 clone(captureResult.originalDocument),
@@ -605,7 +616,7 @@ files. Write authorization remains locked.
 
             accepted: true,
             message:
-                "All five original permanent documents were loaded, " +
+                "All six original permanent documents were loaded, " +
                 "verified, and captured. No permanent files were changed.",
 
             sourceRollbackPackageAccepted: true,
@@ -679,7 +690,7 @@ files. Write authorization remains locked.
             Boolean(current) &&
                 current.capturedDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "Exactly five original documents must be captured."
+            "Exactly six original documents must be captured."
         ));
 
         checks.push(buildCheck(
@@ -735,8 +746,7 @@ files. Write authorization remains locked.
                 ) &&
                     document.originalDocumentCaptured === true &&
                     isPlainObject(document.originalDocument) &&
-                    document.originalDocument.id ===
-                        document.documentId &&
+                    (document.originalDocument.id || document.originalDocument.documentId) === document.documentId &&
                     document.proposedDocumentCaptured === true &&
                     isPlainObject(document.proposedDocument) &&
                     typeof document.originalChecksum === "string" &&

@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 049 — Rollback Package Generator v1.0.0
+Work Session 101 — Rollback Package Generator v1.3.0
 File: js/session/rollback-package-generator.js
 
 Purpose:
@@ -9,21 +9,25 @@ Permanent Transaction Manager transaction before any controlled permanent
 output execution is allowed to begin.
 
 This component does not read, write, replace, delete, or restore permanent
-files. It prepares the required recovery package contract for a future
-controlled execution and rollback layer.
+files. It prepares the required recovery package contract for the controlled
+execution and rollback layer.
+
+Version 1.2.0 supports the six-document permanent set and accepts governed
+proposed-document identity from either id or documentId.
 */
 
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.3.0";
     const PACKAGE_TYPE = "TMS-OS Permanent Documentation Rollback Package";
     const EXPECTED_DOCUMENTS = Object.freeze([
         "WS-HIST-001",
         "STATE-001",
         "DOC-STATE-001",
         "DEC-LOG-001",
-        "MILE-HIST-001"
+        "MILE-HIST-001",
+        "WORKSPACE-SNAPSHOT-HISTORY-001"
     ]);
 
     let lastRollbackPackage = null;
@@ -148,21 +152,21 @@ controlled execution and rollback layer.
             "Expected manifest count",
             Array.isArray(manifest) &&
                 manifest.length === EXPECTED_DOCUMENTS.length,
-            "The manifest must contain exactly five permanent documents."
+            "The manifest must contain exactly six permanent documents."
         ));
 
         checks.push(buildValidationCheck(
             "Expected replacement count",
             Array.isArray(replacementDocuments) &&
                 replacementDocuments.length === EXPECTED_DOCUMENTS.length,
-            "Exactly five replacement documents are required."
+            "Exactly six replacement documents are required."
         ));
 
         checks.push(buildValidationCheck(
             "Expected rollback metadata count",
             Array.isArray(rollbackMetadata) &&
                 rollbackMetadata.length === EXPECTED_DOCUMENTS.length,
-            "Exactly five rollback metadata records are required."
+            "Exactly six rollback metadata records are required."
         ));
 
         const manifestIds = Array.isArray(manifest)
@@ -195,7 +199,7 @@ controlled execution and rollback layer.
                 manifestIds.length === EXPECTED_DOCUMENTS.length &&
                 replacementIds.length === EXPECTED_DOCUMENTS.length &&
                 rollbackIds.length === EXPECTED_DOCUMENTS.length,
-            "The transaction must contain the complete five-document permanent set."
+            "The transaction must contain the complete six-document permanent set."
         ));
 
         const manifestWriteLocksValid = Array.isArray(manifest) &&
@@ -209,23 +213,70 @@ controlled execution and rollback layer.
             "Every manifest item must remain unauthorized for writing."
         ));
 
-        const rollbackRequirementsValid = Array.isArray(rollbackMetadata) &&
-            rollbackMetadata.every(function (item) {
-                return item.rollbackRequiredBeforeWrite === true &&
-                    item.originalDocumentMustBeCopied === true &&
-                    item.writeAuthorized === false;
+        const rollbackRequirementsValid =
+            Array.isArray(manifest) &&
+            Array.isArray(rollbackMetadata) &&
+            manifest.length === EXPECTED_DOCUMENTS.length &&
+            rollbackMetadata.length === EXPECTED_DOCUMENTS.length &&
+            EXPECTED_DOCUMENTS.every(function (documentId) {
+                const manifestItem =
+                    manifest.find(function (item) {
+                        return item.documentId === documentId;
+                    });
+
+                const rollbackItem =
+                    rollbackMetadata.find(function (item) {
+                        return item.documentId === documentId;
+                    });
+
+                if (
+                    !isPlainObject(manifestItem) ||
+                    !isPlainObject(rollbackItem) ||
+                    rollbackItem.writeAuthorized !== false
+                ) {
+                    return false;
+                }
+
+                if (manifestItem.permanentWriteRequired === true) {
+                    return (
+                        manifestItem.documentChanged === true &&
+                        rollbackItem.rollbackRequiredBeforeWrite === true &&
+                        rollbackItem.originalDocumentMustBeCopied === true
+                    );
+                }
+
+                return (
+                    manifestItem.documentChanged === false &&
+                    manifestItem.permanentWriteRequired === false &&
+                    rollbackItem.rollbackRequiredBeforeWrite === false &&
+                    rollbackItem.originalDocumentMustBeCopied === false
+                );
             });
 
         checks.push(buildValidationCheck(
             "Rollback requirements",
             rollbackRequirementsValid,
-            "Every document must require an original backup before writing."
+            "Each document must preserve its approved write decision and require original capture only when a permanent write is required."
         ));
 
         const replacementDocumentsValid = Array.isArray(replacementDocuments) &&
             replacementDocuments.every(function (item) {
-                return isPlainObject(item.proposedDocument) &&
-                    item.proposedDocument.id === item.documentId;
+                if (!isPlainObject(item.proposedDocument)) {
+                    return false;
+                }
+
+                const proposedIdentity =
+                    typeof item.proposedDocument.id === "string" &&
+                    item.proposedDocument.id.trim().length > 0
+                        ? item.proposedDocument.id.trim()
+                        : (
+                            typeof item.proposedDocument.documentId === "string" &&
+                            item.proposedDocument.documentId.trim().length > 0
+                                ? item.proposedDocument.documentId.trim()
+                                : ""
+                        );
+
+                return proposedIdentity === item.documentId;
             });
 
         checks.push(buildValidationCheck(
@@ -259,6 +310,15 @@ controlled execution and rollback layer.
             return item.documentId === documentId;
         });
 
+        const permanentWriteRequired =
+            manifestItem.permanentWriteRequired === true;
+
+        const documentChanged =
+            manifestItem.documentChanged === true;
+
+        const rollbackRequiredBeforeWrite =
+            rollbackItem.rollbackRequiredBeforeWrite === true;
+
         return {
             order: manifestItem.order,
             documentId: documentId,
@@ -268,7 +328,12 @@ controlled execution and rollback layer.
             backupPath: createBackupPath(sessionNumber, documentId),
             proposedCopyPath: createReplacementPath(sessionNumber, documentId),
 
-            originalDocumentCaptureRequired: true,
+            documentChanged: documentChanged,
+            permanentWriteRequired: permanentWriteRequired,
+            rollbackRequiredBeforeWrite: rollbackRequiredBeforeWrite,
+
+            originalDocumentCaptureRequired:
+                rollbackRequiredBeforeWrite,
             originalDocumentCaptured: false,
             originalDocument: null,
 
@@ -282,15 +347,35 @@ controlled execution and rollback layer.
             sourceSectionCount: manifestItem.sourceSectionCount,
             proposedSectionCount: manifestItem.proposedSectionCount,
 
+            sourceCollectionName:
+                manifestItem.sourceCollectionName || null,
+            proposedCollectionName:
+                manifestItem.proposedCollectionName || null,
+            sourceItemCount:
+                Number.isInteger(manifestItem.sourceItemCount)
+                    ? manifestItem.sourceItemCount
+                    : manifestItem.sourceSectionCount,
+            proposedItemCount:
+                Number.isInteger(manifestItem.proposedItemCount)
+                    ? manifestItem.proposedItemCount
+                    : manifestItem.proposedSectionCount,
+
             checksumRequired: true,
             originalChecksum: null,
             proposedChecksum: null,
 
-            rollbackRequiredBeforeWrite: rollbackItem.rollbackRequiredBeforeWrite,
             rollbackSource: rollbackItem.rollbackSource,
 
-            backupStatus: "Pending Original Document Capture",
-            executionStatus: "Not Started",
+            backupStatus:
+                permanentWriteRequired
+                    ? "Pending Original Document Capture"
+                    : "Pending Verification — No Write Required",
+
+            executionStatus:
+                permanentWriteRequired
+                    ? "Not Started"
+                    : "No Write Required",
+
             restoreStatus: "Not Required",
             verificationStatus: "Pending",
 
@@ -325,6 +410,8 @@ controlled execution and rollback layer.
 
             expectedDocumentCount: EXPECTED_DOCUMENTS.length,
             rollbackDocumentCount: 0,
+            writeRequiredDocumentCount: 0,
+            noWriteRequiredDocumentCount: 0,
             documents: [],
 
             originalDocumentsCaptured: false,
@@ -367,6 +454,14 @@ controlled execution and rollback layer.
             );
         });
 
+        const writeRequiredDocumentCount =
+            documents.filter(function (document) {
+                return document.permanentWriteRequired === true;
+            }).length;
+
+        const noWriteRequiredDocumentCount =
+            documents.length - writeRequiredDocumentCount;
+
         lastRollbackPackage = deepFreeze({
             packageType: PACKAGE_TYPE,
             generatorVersion: ENGINE_VERSION,
@@ -379,7 +474,7 @@ controlled execution and rollback layer.
 
             accepted: true,
             message:
-                "Rollback package generated for review. " +
+                "Six-document rollback package generated for review. " +
                 "Original permanent documents have not yet been captured, " +
                 "and no permanent files were changed.",
 
@@ -393,6 +488,8 @@ controlled execution and rollback layer.
 
             expectedDocumentCount: EXPECTED_DOCUMENTS.length,
             rollbackDocumentCount: documents.length,
+            writeRequiredDocumentCount: writeRequiredDocumentCount,
+            noWriteRequiredDocumentCount: noWriteRequiredDocumentCount,
             documents: documents,
 
             originalDocumentsCaptured: false,
@@ -406,7 +503,7 @@ controlled execution and rollback layer.
             restoreExecuted: false,
 
             requiredNextAction:
-                "Capture and verify all five current live permanent documents.",
+                "Capture and verify all six current live permanent documents while preserving no-write exclusions.",
 
             packageStatus:
                 "Generated — Awaiting Original Document Capture",
@@ -494,7 +591,7 @@ controlled execution and rollback layer.
             "Expected document count",
             Boolean(current) &&
                 current.rollbackDocumentCount === EXPECTED_DOCUMENTS.length,
-            "The rollback package must contain five document entries."
+            "The rollback package must contain six document entries."
         ));
 
         checks.push(buildValidationCheck(
@@ -542,22 +639,71 @@ controlled execution and rollback layer.
         const documentEntriesValid = Boolean(current) &&
             Array.isArray(current.documents) &&
             current.documents.length === EXPECTED_DOCUMENTS.length &&
-            current.documents.every(function (document) {
-                return EXPECTED_DOCUMENTS.includes(document.documentId) &&
+            current.documents.every(function (document, index) {
+                const commonValid =
+                    document.order === index + 1 &&
+                    document.documentId === EXPECTED_DOCUMENTS[index] &&
                     document.originalDocumentCaptured === false &&
                     document.originalDocument === null &&
                     document.proposedDocumentCaptured === true &&
                     isPlainObject(document.proposedDocument) &&
+                    typeof document.documentChanged === "boolean" &&
+                    typeof document.permanentWriteRequired === "boolean" &&
+                    typeof document.rollbackRequiredBeforeWrite === "boolean" &&
                     document.writeAuthorized === false &&
                     document.rollbackAuthorized === false &&
                     document.permanentWriteExecuted === false &&
                     document.restoreExecuted === false;
+
+                if (!commonValid) {
+                    return false;
+                }
+
+                if (document.permanentWriteRequired === true) {
+                    return (
+                        document.documentChanged === true &&
+                        document.rollbackRequiredBeforeWrite === true &&
+                        document.originalDocumentCaptureRequired === true &&
+                        document.executionStatus === "Not Started"
+                    );
+                }
+
+                return (
+                    document.documentChanged === false &&
+                    document.rollbackRequiredBeforeWrite === false &&
+                    document.originalDocumentCaptureRequired === false &&
+                    document.executionStatus === "No Write Required"
+                );
             });
 
         checks.push(buildValidationCheck(
             "Document recovery entries valid",
             documentEntriesValid,
-            "Every recovery entry must contain a proposed document and remain execution locked."
+            "Every recovery entry must preserve its approved write decision, contain a proposed document, and remain execution locked."
+        ));
+
+        const writeRequiredCount =
+            Array.isArray(current && current.documents)
+                ? current.documents.filter(function (document) {
+                    return document.permanentWriteRequired === true;
+                }).length
+                : 0;
+
+        const noWriteRequiredCount =
+            Array.isArray(current && current.documents)
+                ? current.documents.filter(function (document) {
+                    return document.permanentWriteRequired === false;
+                }).length
+                : 0;
+
+        checks.push(buildValidationCheck(
+            "Rollback decision counts valid",
+            Boolean(current) &&
+                current.writeRequiredDocumentCount === writeRequiredCount &&
+                current.noWriteRequiredDocumentCount === noWriteRequiredCount &&
+                writeRequiredCount + noWriteRequiredCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "The rollback package decision counts must match all six document entries."
         ));
 
         return deepFreeze({

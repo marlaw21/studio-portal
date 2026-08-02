@@ -1,25 +1,25 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 054 — Execution Authorization Engine v1.0.0
+Work Session 101 — Execution Authorization Engine v1.1.0
 File: js/session/execution-authorization-engine.js
 
 Purpose:
-Consume an independently verified Permanent Documentation Execution
-Verification package and generate a formal, immutable, review-only execution
-authorization package.
+Consume an independently verified six-document Permanent Documentation
+Execution Verification package and generate a formal, immutable, review-only
+execution authorization eligibility package.
 
-This component validates that all five controlled permanent documents passed
-simulation and independent verification. It does not write, replace, delete,
-restore, download, or otherwise modify any permanent file.
+This component validates that all six controlled permanent documents passed
+simulation and independent verification while preserving each document's
+write-required or no-write-required decision.
 
-Authorization remains locked by default. This version creates an authorization
-eligibility package only and does not grant real execution or write authority.
+This engine does not grant operational execution, write, rollback, restore,
+or permanent-file authority. All operational authorization remains locked.
 */
 
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.1.0";
 
     const AUTHORIZATION_TYPE =
         "TMS-OS Permanent Documentation Execution Authorization";
@@ -29,7 +29,8 @@ eligibility package only and does not grant real execution or write authority.
         "STATE-001",
         "DOC-STATE-001",
         "DEC-LOG-001",
-        "MILE-HIST-001"
+        "MILE-HIST-001",
+        "WORKSPACE-SNAPSHOT-HISTORY-001"
     ]);
 
     let lastAuthorization = null;
@@ -82,9 +83,10 @@ eligibility package only and does not grant real execution or write authority.
         sessionNumber,
         generatedAt
     ) {
-        const timestamp = generatedAt
-            .replace(/[-:.TZ]/g, "")
-            .slice(0, 14);
+        const timestamp =
+            generatedAt
+                .replace(/[-:.TZ]/g, "")
+                .slice(0, 14);
 
         return [
             "TMS",
@@ -92,6 +94,60 @@ eligibility package only and does not grant real execution or write authority.
             String(sessionNumber).padStart(3, "0"),
             timestamp
         ].join("-");
+    }
+
+    function validateVerificationStepState(
+        step,
+        index
+    ) {
+        const baseValid =
+            step.sequence === index + 1 &&
+            step.documentId ===
+                EXPECTED_DOCUMENTS[index] &&
+            step.accepted === true &&
+            step.verificationStatus ===
+                "Verified" &&
+            typeof step.originalChecksum ===
+                "string" &&
+            step.originalChecksum.length > 0 &&
+            typeof step.proposedChecksum ===
+                "string" &&
+            step.proposedChecksum.length > 0 &&
+            typeof step.documentChanged ===
+                "boolean" &&
+            typeof step.permanentWriteRequired ===
+                "boolean" &&
+            typeof step.rollbackRequiredBeforeWrite ===
+                "boolean" &&
+            step.actualWriteAttempted === false &&
+            step.actualWriteExecuted === false &&
+            step.permanentWriteExecuted === false &&
+            step.executionAuthorized === false &&
+            step.writeAuthorized === false &&
+            step.rollbackAuthorized === false &&
+            step.restoreExecuted === false;
+
+        if (!baseValid) {
+            return false;
+        }
+
+        if (step.permanentWriteRequired === true) {
+            return (
+                step.documentChanged === true &&
+                step.rollbackRequiredBeforeWrite === true &&
+                step.excludedFromExecution === false &&
+                step.sourceSimulationStatus ===
+                    "Simulated Successfully"
+            );
+        }
+
+        return (
+            step.documentChanged === false &&
+            step.rollbackRequiredBeforeWrite === false &&
+            step.excludedFromExecution === true &&
+            step.sourceSimulationStatus ===
+                "Excluded — No Write Required"
+        );
     }
 
     function validateVerificationPackage(
@@ -141,94 +197,114 @@ eligibility package only and does not grant real execution or write authority.
             Boolean(verification) &&
                 verification.verifiedDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "Exactly five permanent document executions must be verified."
+            "Exactly six permanent-document simulation entries must be verified."
         ));
 
         checks.push(buildCheck(
             "Execution order verified",
             Boolean(verification) &&
-                verification.executionOrderVerified === true,
+                verification.executionOrderVerified ===
+                    true,
             "The controlled execution order must be verified."
         ));
 
         checks.push(buildCheck(
             "Document set verified",
             Boolean(verification) &&
-                verification.documentSetVerified === true,
-            "The unique five-document permanent set must be verified."
+                verification.documentSetVerified ===
+                    true,
+            "The unique six-document permanent set must be verified."
         ));
 
         checks.push(buildCheck(
             "Checksum presence verified",
             Boolean(verification) &&
-                verification.checksumPresenceVerified === true,
+                verification.checksumPresenceVerified ===
+                    true,
             "Original and proposed checksum presence must be verified."
         ));
 
         checks.push(buildCheck(
             "Simulation completion verified",
             Boolean(verification) &&
-                verification.simulationCompletionVerified === true,
+                verification.simulationCompletionVerified ===
+                    true,
             "The Permanent File Writer simulation must be verified as complete."
+        ));
+
+        checks.push(buildCheck(
+            "Write-decision state verified",
+            Boolean(verification) &&
+                verification.writeDecisionStateVerified ===
+                    true,
+            "Every document's write decision must be independently verified."
         ));
 
         checks.push(buildCheck(
             "Non-destructive state verified",
             Boolean(verification) &&
-                verification.nonDestructiveStateVerified === true,
+                verification.nonDestructiveStateVerified ===
+                    true,
             "The verification package must confirm that no permanent files were changed."
         ));
 
         checks.push(buildCheck(
             "Independent verification passed",
             Boolean(verification) &&
-                verification.verificationPassed === true,
+                verification.verificationPassed ===
+                    true,
             "Independent execution verification must pass."
         ));
 
         checks.push(buildCheck(
             "Execution remains unauthorized",
             Boolean(verification) &&
-                verification.executionAuthorized === false,
+                verification.executionAuthorized ===
+                    false,
             "Execution authorization must remain locked before authorization review."
         ));
 
         checks.push(buildCheck(
             "Write remains unauthorized",
             Boolean(verification) &&
-                verification.writeAuthorized === false,
+                verification.writeAuthorized ===
+                    false,
             "Permanent writing must remain unauthorized."
         ));
 
         checks.push(buildCheck(
             "Rollback remains unauthorized",
             Boolean(verification) &&
-                verification.rollbackAuthorized === false,
+                verification.rollbackAuthorized ===
+                    false,
             "Rollback execution must remain unauthorized."
         ));
 
         checks.push(buildCheck(
             "No actual writes attempted",
             Boolean(verification) &&
-                verification.actualWritesAttempted === false,
+                verification.actualWritesAttempted ===
+                    false,
             "No actual permanent file write may have been attempted."
         ));
 
         checks.push(buildCheck(
             "No permanent writes executed",
             Boolean(verification) &&
-                verification.permanentWritesExecuted === false,
+                verification.permanentWritesExecuted ===
+                    false,
             "No permanent file may have been modified."
         ));
 
         checks.push(buildCheck(
             "No restore executed",
             Boolean(verification) &&
-                verification.restoreExecuted === false,
+                verification.restoreExecuted ===
+                    false,
             "No rollback restoration may have occurred."
         ));
 
-        const verificationSteps =
+        const entries =
             verification &&
             Array.isArray(
                 verification.verificationSteps
@@ -237,12 +313,12 @@ eligibility package only and does not grant real execution or write authority.
                 : [];
 
         const documentIds =
-            verificationSteps.map(function (step) {
-                return step.documentId;
+            entries.map(function (entry) {
+                return entry.documentId;
             });
 
         const documentSetValid =
-            verificationSteps.length ===
+            entries.length ===
                 EXPECTED_DOCUMENTS.length &&
             EXPECTED_DOCUMENTS.every(function (
                 documentId
@@ -257,56 +333,66 @@ eligibility package only and does not grant real execution or write authority.
         checks.push(buildCheck(
             "Expected verification document set",
             documentSetValid,
-            "The verification package must contain the unique five-document permanent set."
+            "The verification package must contain the unique six-document permanent set."
         ));
 
-        const verificationStepsValid =
-            verificationSteps.length ===
+        const entriesValid =
+            entries.length ===
                 EXPECTED_DOCUMENTS.length &&
-            verificationSteps.every(function (
-                step,
+            entries.every(function (
+                entry,
                 index
             ) {
-                return (
-                    step.sequence === index + 1 &&
-                    step.documentId ===
-                        EXPECTED_DOCUMENTS[index] &&
-                    step.accepted === true &&
-                    step.verificationStatus ===
-                        "Verified" &&
-                    typeof step.originalChecksum ===
-                        "string" &&
-                    step.originalChecksum.length > 0 &&
-                    typeof step.proposedChecksum ===
-                        "string" &&
-                    step.proposedChecksum.length > 0 &&
-                    step.actualWriteAttempted ===
-                        false &&
-                    step.actualWriteExecuted ===
-                        false &&
-                    step.permanentWriteExecuted ===
-                        false &&
-                    step.executionAuthorized ===
-                        false &&
-                    step.writeAuthorized ===
-                        false &&
-                    step.rollbackAuthorized ===
-                        false &&
-                    step.restoreExecuted === false
+                return validateVerificationStepState(
+                    entry,
+                    index
                 );
             });
 
         checks.push(buildCheck(
-            "Verification steps valid",
-            verificationStepsValid,
-            "Every verified document must preserve the approved order, checksums, and non-destructive safety state."
+            "Verification entries valid",
+            entriesValid,
+            "Every verified document must preserve order, checksums, write decisions, and non-destructive safety state."
+        ));
+
+        const writeRequiredCount =
+            entries.filter(function (entry) {
+                return (
+                    entry.permanentWriteRequired ===
+                    true
+                );
+            }).length;
+
+        const noWriteRequiredCount =
+            entries.filter(function (entry) {
+                return (
+                    entry.permanentWriteRequired ===
+                    false
+                );
+            }).length;
+
+        checks.push(buildCheck(
+            "Verification decision counts valid",
+            Boolean(verification) &&
+                verification.writeRequiredDocumentCount ===
+                    writeRequiredCount &&
+                verification.noWriteRequiredDocumentCount ===
+                    noWriteRequiredCount &&
+                writeRequiredCount +
+                    noWriteRequiredCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "The verification decision counts must match all six entries."
         ));
 
         return {
-            accepted: checks.every(function (check) {
-                return check.passed;
-            }),
-            checks: checks,
+            accepted:
+                checks.every(function (check) {
+                    return check.passed;
+                }),
+
+            checks:
+                checks,
+
             verificationValidation:
                 verificationValidation
         };
@@ -316,58 +402,114 @@ eligibility package only and does not grant real execution or write authority.
         verificationStep,
         index
     ) {
+        const writeRequired =
+            verificationStep
+                .permanentWriteRequired ===
+            true;
+
         return {
-            sequence: index + 1,
-            order: verificationStep.order,
+            sequence:
+                index + 1,
+
+            order:
+                verificationStep.order,
+
             documentId:
                 verificationStep.documentId,
+
             updateMode:
                 verificationStep.updateMode,
 
             targetPath:
                 verificationStep.targetPath,
+
             backupPath:
                 verificationStep.backupPath,
+
             proposedCopyPath:
                 verificationStep.proposedCopyPath,
 
             originalChecksum:
                 verificationStep.originalChecksum,
+
             proposedChecksum:
                 verificationStep.proposedChecksum,
+
+            documentChanged:
+                verificationStep.documentChanged,
+
+            permanentWriteRequired:
+                verificationStep.permanentWriteRequired,
+
+            rollbackRequiredBeforeWrite:
+                verificationStep.rollbackRequiredBeforeWrite,
+
+            excludedFromExecution:
+                verificationStep.excludedFromExecution,
 
             sourceVerificationStatus:
                 verificationStep.verificationStatus,
 
-            prerequisiteChecks: [
-                "Document simulation completed",
-                "Independent verification passed",
-                "Execution order verified",
-                "Original checksum present",
-                "Proposed checksum present",
-                "No actual write attempted",
-                "No permanent write executed",
-                "No restore executed"
-            ],
+            prerequisiteChecks:
+                writeRequired
+                    ? [
+                        "Document simulation completed",
+                        "Independent verification passed",
+                        "Execution order verified",
+                        "Original checksum present",
+                        "Proposed checksum present",
+                        "Document change confirmed",
+                        "Rollback required before write",
+                        "No actual write attempted",
+                        "No permanent write executed",
+                        "No restore executed"
+                    ]
+                    : [
+                        "Document simulation evaluated",
+                        "Independent verification passed",
+                        "Execution order verified",
+                        "Original checksum present",
+                        "Proposed checksum present",
+                        "No document change detected",
+                        "No permanent write required",
+                        "No actual write attempted",
+                        "No permanent write executed",
+                        "No restore executed"
+                    ],
 
-            prerequisiteStatus: "Passed",
+            prerequisiteStatus:
+                "Passed",
 
             authorizationEligibility:
-                "Eligible for Human Authorization Review",
+                writeRequired
+                    ? "Eligible for Human Authorization Review"
+                    : "No Authorization Required",
 
             authorizationDecision:
                 "Not Granted",
 
             authorizationStatus:
-                "Locked — Awaiting Separate Human Authorization",
+                writeRequired
+                    ? "Locked — Awaiting Separate Human Authorization"
+                    : "Excluded — No Write Required",
 
-            executionAuthorized: false,
-            writeAuthorized: false,
-            rollbackAuthorized: false,
+            executionAuthorized:
+                false,
 
-            actualWriteAttempted: false,
-            permanentWriteExecuted: false,
-            restoreExecuted: false
+            writeAuthorized:
+                false,
+
+            rollbackAuthorized:
+                false,
+
+            actualWriteAttempted:
+                false,
+
+            permanentWriteExecuted:
+                false,
+
+            restoreExecuted:
+                false
         };
     }
 
@@ -377,7 +519,8 @@ eligibility package only and does not grant real execution or write authority.
         validation
     ) {
         const snapshot =
-            window.TMSSessionContext.getSnapshot();
+            window.TMSSessionContext
+                .getSnapshot();
 
         const generatedAt =
             new Date().toISOString();
@@ -401,8 +544,11 @@ eligibility package only and does not grant real execution or write authority.
             sessionNumber:
                 snapshot.sessionNumber,
 
-            accepted: false,
-            message: message,
+            accepted:
+                false,
+
+            message:
+                message,
 
             sourceVerificationAccepted:
                 Boolean(
@@ -434,27 +580,53 @@ eligibility package only and does not grant real execution or write authority.
             expectedDocumentCount:
                 EXPECTED_DOCUMENTS.length,
 
-            authorizationDocumentCount: 0,
-            authorizationEntries: [],
+            authorizationDocumentCount:
+                0,
 
-            prerequisitesVerified: false,
-            authorizationEligible: false,
+            writeRequiredDocumentCount:
+                0,
 
-            authorizationGranted: false,
-            executionAuthorized: false,
-            writeAuthorized: false,
-            rollbackAuthorized: false,
+            noWriteRequiredDocumentCount:
+                0,
 
-            actualWritesAttempted: false,
-            permanentWritesExecuted: false,
-            restoreExecuted: false,
+            authorizationEntries:
+                [],
 
-            authorizationStatus: "Rejected",
+            prerequisitesVerified:
+                false,
+
+            authorizationEligible:
+                false,
+
+            authorizationGranted:
+                false,
+
+            executionAuthorized:
+                false,
+
+            writeAuthorized:
+                false,
+
+            rollbackAuthorized:
+                false,
+
+            actualWritesAttempted:
+                false,
+
+            permanentWritesExecuted:
+                false,
+
+            restoreExecuted:
+                false,
+
+            authorizationStatus:
+                "Rejected",
 
             requiredNextAction:
                 "Correct the failed execution verification or authorization prerequisite checks.",
 
-            reviewRequired: true
+            reviewRequired:
+                true
         });
     }
 
@@ -475,7 +647,7 @@ eligibility package only and does not grant real execution or write authority.
         if (!validation.accepted) {
             lastAuthorization =
                 rejectedAuthorization(
-                    "The Execution Verification package failed authorization prerequisite validation.",
+                    "The six-document Execution Verification package failed authorization prerequisite validation.",
                     sourceVerification,
                     validation
                 );
@@ -491,8 +663,10 @@ eligibility package only and does not grant real execution or write authority.
                 first,
                 second
             ) {
-                return Number(first.sequence) -
-                    Number(second.sequence);
+                return (
+                    Number(first.sequence) -
+                    Number(second.sequence)
+                );
             });
 
         const authorizationEntries =
@@ -506,15 +680,13 @@ eligibility package only and does not grant real execution or write authority.
                 );
             });
 
-        const allEligible =
+        const allEntriesValid =
             authorizationEntries.every(function (
                 entry
             ) {
-                return (
+                const commonValid =
                     entry.prerequisiteStatus ===
                         "Passed" &&
-                    entry.authorizationEligibility ===
-                        "Eligible for Human Authorization Review" &&
                     entry.authorizationDecision ===
                         "Not Granted" &&
                     entry.executionAuthorized ===
@@ -528,14 +700,48 @@ eligibility package only and does not grant real execution or write authority.
                     entry.permanentWriteExecuted ===
                         false &&
                     entry.restoreExecuted ===
-                        false
+                        false;
+
+                if (!commonValid) {
+                    return false;
+                }
+
+                if (
+                    entry.permanentWriteRequired ===
+                    true
+                ) {
+                    return (
+                        entry.documentChanged ===
+                            true &&
+                        entry.rollbackRequiredBeforeWrite ===
+                            true &&
+                        entry.excludedFromExecution ===
+                            false &&
+                        entry.authorizationEligibility ===
+                            "Eligible for Human Authorization Review" &&
+                        entry.authorizationStatus ===
+                            "Locked — Awaiting Separate Human Authorization"
+                    );
+                }
+
+                return (
+                    entry.documentChanged ===
+                        false &&
+                    entry.rollbackRequiredBeforeWrite ===
+                        false &&
+                    entry.excludedFromExecution ===
+                        true &&
+                    entry.authorizationEligibility ===
+                        "No Authorization Required" &&
+                    entry.authorizationStatus ===
+                        "Excluded — No Write Required"
                 );
             });
 
-        if (!allEligible) {
+        if (!allEntriesValid) {
             lastAuthorization =
                 rejectedAuthorization(
-                    "One or more permanent document authorization entries failed eligibility validation.",
+                    "One or more permanent-document authorization entries failed eligibility validation.",
                     sourceVerification,
                     validation
                 );
@@ -543,8 +749,24 @@ eligibility package only and does not grant real execution or write authority.
             return lastAuthorization;
         }
 
+        const writeRequiredDocumentCount =
+            authorizationEntries.filter(
+                function (entry) {
+                    return (
+                        entry
+                            .permanentWriteRequired ===
+                        true
+                    );
+                }
+            ).length;
+
+        const noWriteRequiredDocumentCount =
+            authorizationEntries.length -
+            writeRequiredDocumentCount;
+
         const snapshot =
-            window.TMSSessionContext.getSnapshot();
+            window.TMSSessionContext
+                .getSnapshot();
 
         const generatedAt =
             new Date().toISOString();
@@ -569,10 +791,16 @@ eligibility package only and does not grant real execution or write authority.
                 sessionNumber:
                     snapshot.sessionNumber,
 
-                accepted: true,
+                accepted:
+                    true,
 
                 message:
-                    "All five permanent document executions are eligible for human authorization review. No execution or write authority was granted.",
+                    "All six permanent-document verification entries were evaluated for authorization eligibility. " +
+                    writeRequiredDocumentCount +
+                    " document(s) are eligible for separate human authorization review, and " +
+                    noWriteRequiredDocumentCount +
+                    " document(s) require no execution authorization. " +
+                    "No operational execution or write authority was granted.",
 
                 sourceVerificationAccepted:
                     true,
@@ -609,7 +837,8 @@ eligibility package only and does not grant real execution or write authority.
                     sourceVerification
                         .sourceRollbackPackageId,
 
-                validationAccepted: true,
+                validationAccepted:
+                    true,
 
                 validationChecks:
                     validation.checks,
@@ -620,28 +849,54 @@ eligibility package only and does not grant real execution or write authority.
                 authorizationDocumentCount:
                     authorizationEntries.length,
 
+                writeRequiredDocumentCount:
+                    writeRequiredDocumentCount,
+
+                noWriteRequiredDocumentCount:
+                    noWriteRequiredDocumentCount,
+
                 authorizationEntries:
                     authorizationEntries,
 
-                prerequisitesVerified: true,
-                authorizationEligible: true,
+                prerequisitesVerified:
+                    true,
 
-                authorizationGranted: false,
-                executionAuthorized: false,
-                writeAuthorized: false,
-                rollbackAuthorized: false,
+                authorizationEligible:
+                    writeRequiredDocumentCount > 0,
 
-                actualWritesAttempted: false,
-                permanentWritesExecuted: false,
-                restoreExecuted: false,
+                authorizationGranted:
+                    false,
+
+                executionAuthorized:
+                    false,
+
+                writeAuthorized:
+                    false,
+
+                rollbackAuthorized:
+                    false,
+
+                actualWritesAttempted:
+                    false,
+
+                permanentWritesExecuted:
+                    false,
+
+                restoreExecuted:
+                    false,
 
                 authorizationStatus:
-                    "Eligible — Authorization Locked",
+                    writeRequiredDocumentCount > 0
+                        ? "Eligible — Authorization Locked"
+                        : "Validated — No Execution Authorization Required",
 
                 requiredNextAction:
-                    "Submit this eligibility package to a future separate human execution authorization gate.",
+                    writeRequiredDocumentCount > 0
+                        ? "Submit only write-required entries to the Human Controlled Execution Authorization Engine."
+                        : "Record that no permanent execution authorization is required.",
 
-                reviewRequired: true,
+                reviewRequired:
+                    true,
 
                 reviewChoices: [
                     "Approve Authorization Package Structure",
@@ -682,69 +937,70 @@ eligibility package only and does not grant real execution or write authority.
             Boolean(current) &&
                 current.authorizationDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "Exactly five permanent documents must be included."
+            "Exactly six permanent documents must be included."
         ));
 
         checks.push(buildCheck(
             "Prerequisites verified",
             Boolean(current) &&
-                current.prerequisitesVerified === true,
+                current.prerequisitesVerified ===
+                    true,
             "All execution authorization prerequisites must be verified."
-        ));
-
-        checks.push(buildCheck(
-            "Authorization eligibility confirmed",
-            Boolean(current) &&
-                current.authorizationEligible === true,
-            "The package must be eligible for human authorization review."
         ));
 
         checks.push(buildCheck(
             "Authorization remains ungranted",
             Boolean(current) &&
-                current.authorizationGranted === false,
-            "Version 1.0.0 must not grant real execution authorization."
+                current.authorizationGranted ===
+                    false,
+            "Version 1.1.0 must not grant operational execution authorization."
         ));
 
         checks.push(buildCheck(
             "Execution remains unauthorized",
             Boolean(current) &&
-                current.executionAuthorized === false,
+                current.executionAuthorized ===
+                    false,
             "Execution authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "Write remains unauthorized",
             Boolean(current) &&
-                current.writeAuthorized === false,
+                current.writeAuthorized ===
+                    false,
             "Permanent write authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "Rollback remains unauthorized",
             Boolean(current) &&
-                current.rollbackAuthorized === false,
+                current.rollbackAuthorized ===
+                    false,
             "Rollback authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "No actual writes attempted",
             Boolean(current) &&
-                current.actualWritesAttempted === false,
+                current.actualWritesAttempted ===
+                    false,
             "No actual permanent file write may be attempted."
         ));
 
         checks.push(buildCheck(
             "No permanent writes executed",
             Boolean(current) &&
-                current.permanentWritesExecuted === false,
+                current.permanentWritesExecuted ===
+                    false,
             "No permanent file may be modified."
         ));
 
         checks.push(buildCheck(
             "No restore executed",
             Boolean(current) &&
-                current.restoreExecuted === false,
+                current.restoreExecuted ===
+                    false,
             "No rollback restoration may occur."
         ));
 
@@ -777,7 +1033,7 @@ eligibility package only and does not grant real execution or write authority.
         checks.push(buildCheck(
             "Expected authorization document set",
             documentSetValid,
-            "The authorization package must contain the unique five-document permanent set."
+            "The authorization package must contain the unique six-document permanent set."
         ));
 
         const entriesValid =
@@ -787,24 +1043,27 @@ eligibility package only and does not grant real execution or write authority.
                 entry,
                 index
             ) {
-                return (
-                    entry.sequence === index + 1 &&
+                const commonValid =
+                    entry.sequence ===
+                        index + 1 &&
                     entry.documentId ===
                         EXPECTED_DOCUMENTS[index] &&
                     entry.prerequisiteStatus ===
                         "Passed" &&
-                    entry.authorizationEligibility ===
-                        "Eligible for Human Authorization Review" &&
                     entry.authorizationDecision ===
                         "Not Granted" &&
-                    entry.authorizationStatus ===
-                        "Locked — Awaiting Separate Human Authorization" &&
                     typeof entry.originalChecksum ===
                         "string" &&
                     entry.originalChecksum.length > 0 &&
                     typeof entry.proposedChecksum ===
                         "string" &&
                     entry.proposedChecksum.length > 0 &&
+                    typeof entry.documentChanged ===
+                        "boolean" &&
+                    typeof entry.permanentWriteRequired ===
+                        "boolean" &&
+                    typeof entry.rollbackRequiredBeforeWrite ===
+                        "boolean" &&
                     entry.executionAuthorized ===
                         false &&
                     entry.writeAuthorized ===
@@ -815,14 +1074,86 @@ eligibility package only and does not grant real execution or write authority.
                         false &&
                     entry.permanentWriteExecuted ===
                         false &&
-                    entry.restoreExecuted === false
+                    entry.restoreExecuted ===
+                        false;
+
+                if (!commonValid) {
+                    return false;
+                }
+
+                if (
+                    entry.permanentWriteRequired ===
+                    true
+                ) {
+                    return (
+                        entry.documentChanged ===
+                            true &&
+                        entry.rollbackRequiredBeforeWrite ===
+                            true &&
+                        entry.excludedFromExecution ===
+                            false &&
+                        entry.authorizationEligibility ===
+                            "Eligible for Human Authorization Review" &&
+                        entry.authorizationStatus ===
+                            "Locked — Awaiting Separate Human Authorization"
+                    );
+                }
+
+                return (
+                    entry.documentChanged ===
+                        false &&
+                    entry.rollbackRequiredBeforeWrite ===
+                        false &&
+                    entry.excludedFromExecution ===
+                        true &&
+                    entry.authorizationEligibility ===
+                        "No Authorization Required" &&
+                    entry.authorizationStatus ===
+                        "Excluded — No Write Required"
                 );
             });
 
         checks.push(buildCheck(
             "Authorization entries valid",
             entriesValid,
-            "Every authorization entry must be eligible, complete, checksum-backed, and authorization-locked."
+            "Every authorization entry must preserve eligibility, write decision, checksum state, and operational locks."
+        ));
+
+        const writeRequiredCount =
+            entries.filter(function (entry) {
+                return (
+                    entry.permanentWriteRequired ===
+                    true
+                );
+            }).length;
+
+        const noWriteRequiredCount =
+            entries.filter(function (entry) {
+                return (
+                    entry.permanentWriteRequired ===
+                    false
+                );
+            }).length;
+
+        checks.push(buildCheck(
+            "Authorization decision counts valid",
+            Boolean(current) &&
+                current.writeRequiredDocumentCount ===
+                    writeRequiredCount &&
+                current.noWriteRequiredDocumentCount ===
+                    noWriteRequiredCount &&
+                writeRequiredCount +
+                    noWriteRequiredCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "The authorization decision counts must match all six entries."
+        ));
+
+        checks.push(buildCheck(
+            "Authorization eligibility summary valid",
+            Boolean(current) &&
+                current.authorizationEligible ===
+                    (writeRequiredCount > 0),
+            "Authorization eligibility must reflect whether any document requires a controlled write."
         ));
 
         return deepFreeze({
@@ -834,7 +1165,8 @@ eligibility package only and does not grant real execution or write authority.
                     return check.passed;
                 }),
 
-            checks: checks
+            checks:
+                checks
         });
     }
 
@@ -863,6 +1195,10 @@ eligibility package only and does not grant real execution or write authority.
                 current.authorizationStatus,
             "Authorization Documents: " +
                 current.authorizationDocumentCount,
+            "Write Required Documents: " +
+                current.writeRequiredDocumentCount,
+            "No Write Required Documents: " +
+                current.noWriteRequiredDocumentCount,
             "Prerequisites Verified: " +
                 (
                     current.prerequisitesVerified
@@ -893,7 +1229,12 @@ eligibility package only and does not grant real execution or write authority.
                 entry.documentId +
                 " | " +
                 entry.authorizationEligibility +
-                " | AUTHORIZATION LOCKED"
+                " | " +
+                (
+                    entry.permanentWriteRequired
+                        ? "AUTHORIZATION LOCKED"
+                        : "NO AUTHORIZATION REQUIRED"
+                )
             );
         });
 

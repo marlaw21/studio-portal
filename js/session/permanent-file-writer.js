@@ -1,15 +1,19 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 052 — Permanent File Writer v1.0.0
+Work Session 101 — Permanent File Writer v1.1.0
 Simulation Mode
 File: js/session/permanent-file-writer.js
 
 Purpose:
-Accept a validated Controlled Execution Plan and simulate the complete ordered
-replacement of the five controlled permanent JSON documents.
+Accept a validated six-document Controlled Execution Plan and simulate the
+complete ordered permanent-output execution package.
 
-This version operates in simulation mode only. It does not write, replace,
-delete, restore, download, or otherwise modify any permanent file.
+Documents requiring a permanent write are represented as authorized simulation
+candidates while unchanged documents remain in the controlled package for
+traceability and are explicitly excluded from simulated write execution.
+
+This version operates in Simulation Mode only. It does not write, replace,
+delete, restore, download, authorize, or otherwise modify any permanent file.
 
 Execution authorization, write authorization, and rollback authorization
 remain locked.
@@ -18,8 +22,9 @@ remain locked.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.1.0";
     const WRITER_MODE = "Simulation";
+
     const SIMULATION_TYPE =
         "TMS-OS Permanent Documentation Write Simulation";
 
@@ -28,7 +33,8 @@ remain locked.
         "STATE-001",
         "DOC-STATE-001",
         "DEC-LOG-001",
-        "MILE-HIST-001"
+        "MILE-HIST-001",
+        "WORKSPACE-SNAPSHOT-HISTORY-001"
     ]);
 
     let lastSimulation = null;
@@ -93,7 +99,45 @@ remain locked.
         ].join("-");
     }
 
-    function validateExecutionPlan(executionPlan) {
+    function validateExecutionStepDecision(
+        step
+    ) {
+        if (
+            typeof step.documentChanged !== "boolean" ||
+            typeof step.permanentWriteRequired !== "boolean" ||
+            typeof step.rollbackRequiredBeforeWrite !== "boolean"
+        ) {
+            return false;
+        }
+
+        if (step.permanentWriteRequired === true) {
+            return (
+                step.documentChanged === true &&
+                step.rollbackRequiredBeforeWrite === true &&
+                step.executionAction ===
+                    "Replace complete permanent JSON file" &&
+                step.executionStatus ===
+                    "Planned — Not Authorized" &&
+                step.verificationStatus ===
+                    "Pending Execution"
+            );
+        }
+
+        return (
+            step.documentChanged === false &&
+            step.rollbackRequiredBeforeWrite === false &&
+            step.executionAction ===
+                "No Write Required" &&
+            step.executionStatus ===
+                "No Write Required" &&
+            step.verificationStatus ===
+                "Passed — No Write Required"
+        );
+    }
+
+    function validateExecutionPlan(
+        executionPlan
+    ) {
         const checks = [];
 
         let planValidation = {
@@ -138,7 +182,7 @@ remain locked.
             Boolean(executionPlan) &&
                 executionPlan.plannedDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "The execution plan must contain five permanent documents."
+            "The execution plan must contain six permanent documents."
         ));
 
         checks.push(buildCheck(
@@ -173,21 +217,21 @@ remain locked.
             "Execution remains unauthorized",
             Boolean(executionPlan) &&
                 executionPlan.executionAuthorized === false,
-            "Simulation mode must not authorize execution."
+            "Simulation Mode must not authorize execution."
         ));
 
         checks.push(buildCheck(
             "Write remains unauthorized",
             Boolean(executionPlan) &&
                 executionPlan.writeAuthorized === false,
-            "Simulation mode must not authorize permanent writes."
+            "Simulation Mode must not authorize permanent writes."
         ));
 
         checks.push(buildCheck(
             "Rollback remains unauthorized",
             Boolean(executionPlan) &&
                 executionPlan.rollbackAuthorized === false,
-            "Simulation mode must not authorize rollback execution."
+            "Simulation Mode must not authorize rollback execution."
         ));
 
         checks.push(buildCheck(
@@ -233,7 +277,7 @@ remain locked.
         checks.push(buildCheck(
             "Expected execution document set",
             documentSetValid,
-            "The execution plan must contain the unique five-document set."
+            "The execution plan must contain the unique six-document permanent set."
         ));
 
         const stepsSafe =
@@ -245,23 +289,27 @@ remain locked.
             ) {
                 return (
                     step.sequence === index + 1 &&
-                    EXPECTED_DOCUMENTS.includes(
-                        step.documentId
-                    ) &&
+                    step.documentId ===
+                        EXPECTED_DOCUMENTS[index] &&
                     step.prerequisiteStatus ===
                         "Passed" &&
-                    step.executionStatus ===
-                        "Planned — Not Authorized" &&
                     step.originalDocumentCaptured ===
                         true &&
                     step.proposedDocumentCaptured ===
                         true &&
+                    typeof step.targetPath ===
+                        "string" &&
+                    step.targetPath.length > 0 &&
+                    typeof step.backupPath ===
+                        "string" &&
+                    step.backupPath.length > 0 &&
                     typeof step.originalChecksum ===
                         "string" &&
                     step.originalChecksum.length > 0 &&
                     typeof step.proposedChecksum ===
                         "string" &&
                     step.proposedChecksum.length > 0 &&
+                    validateExecutionStepDecision(step) &&
                     step.writeAuthorized === false &&
                     step.rollbackAuthorized === false &&
                     step.permanentWriteExecuted ===
@@ -273,14 +321,43 @@ remain locked.
         checks.push(buildCheck(
             "Execution steps remain simulation-safe",
             stepsSafe,
-            "Every execution step must remain ordered, verified, and authorization-locked."
+            "Every execution step must remain ordered, checksum-backed, decision-valid, and authorization-locked."
+        ));
+
+        const writeRequiredCount =
+            executionSteps.filter(function (step) {
+                return (
+                    step.permanentWriteRequired === true
+                );
+            }).length;
+
+        const noWriteRequiredCount =
+            executionSteps.filter(function (step) {
+                return (
+                    step.permanentWriteRequired === false
+                );
+            }).length;
+
+        checks.push(buildCheck(
+            "Execution decision counts valid",
+            Boolean(executionPlan) &&
+                executionPlan.writeRequiredDocumentCount ===
+                    writeRequiredCount &&
+                executionPlan.noWriteRequiredDocumentCount ===
+                    noWriteRequiredCount &&
+                writeRequiredCount +
+                    noWriteRequiredCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "The plan-level write-decision counts must match the six execution steps."
         ));
 
         return {
             accepted: checks.every(function (check) {
                 return check.passed;
             }),
+
             checks: checks,
+
             planValidation: planValidation
         };
     }
@@ -293,55 +370,122 @@ remain locked.
         const simulatedAt =
             new Date().toISOString();
 
+        const writeRequired =
+            executionStep.permanentWriteRequired ===
+                true;
+
         return {
             sequence: index + 1,
             order: executionStep.order,
+
             documentId:
                 executionStep.documentId,
+
             updateMode:
                 executionStep.updateMode,
 
             targetPath:
                 executionStep.targetPath,
+
             backupPath:
                 executionStep.backupPath,
+
             proposedCopyPath:
                 executionStep.proposedCopyPath,
 
             originalChecksum:
                 executionStep.originalChecksum,
+
             proposedChecksum:
                 executionStep.proposedChecksum,
 
+            documentChanged:
+                executionStep.documentChanged,
+
+            permanentWriteRequired:
+                executionStep.permanentWriteRequired,
+
+            rollbackRequiredBeforeWrite:
+                executionStep.rollbackRequiredBeforeWrite,
+
             sourceVersion:
                 executionStep.sourceVersion,
+
             proposedVersion:
                 executionStep.proposedVersion,
 
             sourceSectionCount:
                 executionStep.sourceSectionCount,
+
             proposedSectionCount:
                 executionStep.proposedSectionCount,
 
+            sourceCollectionName:
+                executionStep.sourceCollectionName ||
+                null,
+
+            proposedCollectionName:
+                executionStep.proposedCollectionName ||
+                null,
+
+            sourceItemCount:
+                Number.isInteger(
+                    executionStep.sourceItemCount
+                )
+                    ? executionStep.sourceItemCount
+                    : executionStep.sourceSectionCount,
+
+            proposedItemCount:
+                Number.isInteger(
+                    executionStep.proposedItemCount
+                )
+                    ? executionStep.proposedItemCount
+                    : executionStep.proposedSectionCount,
+
             simulationStartedAt:
                 simulationStartedAt,
+
             simulatedAt:
                 simulatedAt,
 
             simulatedAction:
-                "Replace complete permanent JSON file",
+                writeRequired
+                    ? "Replace complete permanent JSON file"
+                    : "No Write Required",
 
-            simulationChecks: [
-                "Target path verified",
-                "Original backup path verified",
-                "Original checksum present",
-                "Proposed checksum present",
-                "Execution order verified",
-                "Write authorization confirmed locked"
-            ],
+            simulationChecks:
+                writeRequired
+                    ? [
+                        "Target path verified",
+                        "Original backup path verified",
+                        "Original checksum present",
+                        "Proposed checksum present",
+                        "Document change confirmed",
+                        "Execution order verified",
+                        "Write authorization confirmed locked"
+                    ]
+                    : [
+                        "Target path verified",
+                        "Original checksum present",
+                        "Proposed checksum present",
+                        "No document change detected",
+                        "No permanent write required",
+                        "Execution order verified",
+                        "Write authorization confirmed locked"
+                    ],
 
             simulationStatus:
-                "Simulated Successfully",
+                writeRequired
+                    ? "Simulated Successfully"
+                    : "Excluded — No Write Required",
+
+            simulationDecision:
+                writeRequired
+                    ? "Simulated but Not Executed"
+                    : "No Simulation Execution Required",
+
+            excludedFromExecution:
+                !writeRequired,
 
             actualWriteAttempted: false,
             actualWriteExecuted: false,
@@ -368,8 +512,10 @@ remain locked.
         return deepFreeze({
             simulationType:
                 SIMULATION_TYPE,
+
             engineVersion:
                 ENGINE_VERSION,
+
             writerMode:
                 WRITER_MODE,
 
@@ -381,6 +527,7 @@ remain locked.
 
             generatedAt:
                 generatedAt,
+
             sessionNumber:
                 snapshot.sessionNumber,
 
@@ -418,6 +565,10 @@ remain locked.
                 EXPECTED_DOCUMENTS.length,
 
             simulatedDocumentCount: 0,
+
+            writeRequiredDocumentCount: 0,
+            noWriteRequiredDocumentCount: 0,
+
             simulationSteps: [],
 
             simulationReady: false,
@@ -472,10 +623,9 @@ remain locked.
                 first,
                 second
             ) {
-                return Number(
-                    first.sequence
-                ) - Number(
-                    second.sequence
+                return (
+                    Number(first.sequence) -
+                    Number(second.sequence)
                 );
             });
 
@@ -494,13 +644,11 @@ remain locked.
                 );
             });
 
-        const allSimulated =
+        const allSimulationEntriesSafe =
             simulationSteps.every(function (
                 step
             ) {
-                return (
-                    step.simulationStatus ===
-                        "Simulated Successfully" &&
+                const commonSafetyState =
                     step.actualWriteAttempted ===
                         false &&
                     step.actualWriteExecuted ===
@@ -514,20 +662,69 @@ remain locked.
                     step.rollbackAuthorized ===
                         false &&
                     step.restoreExecuted ===
-                        false
+                        false;
+
+                if (!commonSafetyState) {
+                    return false;
+                }
+
+                if (
+                    step.permanentWriteRequired ===
+                    true
+                ) {
+                    return (
+                        step.documentChanged === true &&
+                        step.rollbackRequiredBeforeWrite ===
+                            true &&
+                        step.excludedFromExecution ===
+                            false &&
+                        step.simulatedAction ===
+                            "Replace complete permanent JSON file" &&
+                        step.simulationStatus ===
+                            "Simulated Successfully" &&
+                        step.simulationDecision ===
+                            "Simulated but Not Executed"
+                    );
+                }
+
+                return (
+                    step.documentChanged === false &&
+                    step.rollbackRequiredBeforeWrite ===
+                        false &&
+                    step.excludedFromExecution ===
+                        true &&
+                    step.simulatedAction ===
+                        "No Write Required" &&
+                    step.simulationStatus ===
+                        "Excluded — No Write Required" &&
+                    step.simulationDecision ===
+                        "No Simulation Execution Required"
                 );
             });
 
-        if (!allSimulated) {
+        if (!allSimulationEntriesSafe) {
             lastSimulation =
                 rejectedSimulation(
-                    "One or more permanent document write simulations failed.",
+                    "One or more permanent document simulation entries failed Disabled Mode safety validation.",
                     sourcePlan,
                     validation
                 );
 
             return lastSimulation;
         }
+
+        const writeRequiredDocumentCount =
+            simulationSteps.filter(function (
+                step
+            ) {
+                return (
+                    step.permanentWriteRequired === true
+                );
+            }).length;
+
+        const noWriteRequiredDocumentCount =
+            simulationSteps.length -
+            writeRequiredDocumentCount;
 
         const snapshot =
             window.TMSSessionContext.getSnapshot();
@@ -539,8 +736,10 @@ remain locked.
             deepFreeze({
                 simulationType:
                     SIMULATION_TYPE,
+
                 engineVersion:
                     ENGINE_VERSION,
+
                 writerMode:
                     WRITER_MODE,
 
@@ -552,13 +751,19 @@ remain locked.
 
                 generatedAt:
                     generatedAt,
+
                 sessionNumber:
                     snapshot.sessionNumber,
 
                 accepted: true,
 
                 message:
-                    "All five permanent document writes were simulated successfully. No permanent files were changed.",
+                    "All six permanent documents were evaluated in Simulation Mode. " +
+                    writeRequiredDocumentCount +
+                    " write-required document(s) were simulated without execution, and " +
+                    noWriteRequiredDocumentCount +
+                    " unchanged document(s) were excluded from simulated write execution. " +
+                    "No permanent files were changed.",
 
                 sourceExecutionPlanAccepted:
                     true,
@@ -594,6 +799,12 @@ remain locked.
                 simulatedDocumentCount:
                     simulationSteps.length,
 
+                writeRequiredDocumentCount:
+                    writeRequiredDocumentCount,
+
+                noWriteRequiredDocumentCount:
+                    noWriteRequiredDocumentCount,
+
                 simulationSteps:
                     simulationSteps,
 
@@ -609,10 +820,12 @@ remain locked.
                 restoreExecuted: false,
 
                 simulationStatus:
-                    "Completed — No Permanent Writes",
+                    writeRequiredDocumentCount > 0
+                        ? "Completed — Write-Required Steps Simulated — No Permanent Writes"
+                        : "Completed — No Permanent Writes Required",
 
                 requiredNextAction:
-                    "Submit the completed simulation report for human review before any future real-write capability is designed.",
+                    "Submit the completed six-document simulation report for independent execution verification.",
 
                 reviewRequired: true,
 
@@ -630,7 +843,8 @@ remain locked.
         simulation
     ) {
         const current =
-            simulation || lastSimulation;
+            simulation ||
+            lastSimulation;
 
         const checks = [];
 
@@ -654,7 +868,7 @@ remain locked.
             Boolean(current) &&
                 current.writerMode ===
                     WRITER_MODE,
-            "The Permanent File Writer must remain in Simulation mode."
+            "The Permanent File Writer must remain in Simulation Mode."
         ));
 
         checks.push(buildCheck(
@@ -662,14 +876,13 @@ remain locked.
             Boolean(current) &&
                 current.simulatedDocumentCount ===
                     EXPECTED_DOCUMENTS.length,
-            "Exactly five permanent document writes must be simulated."
+            "Exactly six permanent documents must be evaluated in the simulation."
         ));
 
         checks.push(buildCheck(
             "Simulation ready",
             Boolean(current) &&
-                current.simulationReady ===
-                    true,
+                current.simulationReady === true,
             "Simulation prerequisites must pass."
         ));
 
@@ -678,7 +891,7 @@ remain locked.
             Boolean(current) &&
                 current.simulationCompleted ===
                     true,
-            "The five-document simulation must complete."
+            "The six-document simulation must complete."
         ));
 
         checks.push(buildCheck(
@@ -710,7 +923,7 @@ remain locked.
             Boolean(current) &&
                 current.actualWritesAttempted ===
                     false,
-            "Simulation mode must not attempt any actual file write."
+            "Simulation Mode must not attempt any actual file write."
         ));
 
         checks.push(buildCheck(
@@ -718,7 +931,7 @@ remain locked.
             Boolean(current) &&
                 current.permanentWritesExecuted ===
                     false,
-            "Simulation mode must not modify permanent files."
+            "Simulation Mode must not modify permanent files."
         ));
 
         checks.push(buildCheck(
@@ -726,7 +939,7 @@ remain locked.
             Boolean(current) &&
                 current.restoreExecuted ===
                     false,
-            "Simulation mode must not perform rollback restoration."
+            "Simulation Mode must not perform rollback restoration."
         ));
 
         const simulationSteps =
@@ -760,7 +973,7 @@ remain locked.
         checks.push(buildCheck(
             "Expected simulated document set",
             stepSetValid,
-            "The simulation must contain the unique five-document permanent set."
+            "The simulation must contain the unique six-document permanent set."
         ));
 
         const stepsValid =
@@ -770,21 +983,22 @@ remain locked.
                 step,
                 index
             ) {
-                return (
+                const baseValid =
                     step.sequence === index + 1 &&
-                    EXPECTED_DOCUMENTS.includes(
-                        step.documentId
-                    ) &&
-                    step.simulationStatus ===
-                        "Simulated Successfully" &&
-                    step.simulatedAction ===
-                        "Replace complete permanent JSON file" &&
+                    step.documentId ===
+                        EXPECTED_DOCUMENTS[index] &&
                     typeof step.originalChecksum ===
                         "string" &&
                     step.originalChecksum.length > 0 &&
                     typeof step.proposedChecksum ===
                         "string" &&
                     step.proposedChecksum.length > 0 &&
+                    typeof step.documentChanged ===
+                        "boolean" &&
+                    typeof step.permanentWriteRequired ===
+                        "boolean" &&
+                    typeof step.rollbackRequiredBeforeWrite ===
+                        "boolean" &&
                     step.actualWriteAttempted ===
                         false &&
                     step.actualWriteExecuted ===
@@ -797,15 +1011,81 @@ remain locked.
                         false &&
                     step.rollbackAuthorized ===
                         false &&
-                    step.restoreExecuted ===
-                        false
+                    step.restoreExecuted === false;
+
+                if (!baseValid) {
+                    return false;
+                }
+
+                if (
+                    step.permanentWriteRequired ===
+                    true
+                ) {
+                    return (
+                        step.documentChanged === true &&
+                        step.rollbackRequiredBeforeWrite ===
+                            true &&
+                        step.excludedFromExecution ===
+                            false &&
+                        step.simulatedAction ===
+                            "Replace complete permanent JSON file" &&
+                        step.simulationStatus ===
+                            "Simulated Successfully" &&
+                        step.simulationDecision ===
+                            "Simulated but Not Executed"
+                    );
+                }
+
+                return (
+                    step.documentChanged === false &&
+                    step.rollbackRequiredBeforeWrite ===
+                        false &&
+                    step.excludedFromExecution ===
+                        true &&
+                    step.simulatedAction ===
+                        "No Write Required" &&
+                    step.simulationStatus ===
+                        "Excluded — No Write Required" &&
+                    step.simulationDecision ===
+                        "No Simulation Execution Required"
                 );
             });
 
         checks.push(buildCheck(
             "Simulation steps valid",
             stepsValid,
-            "Every simulated write must be ordered, verified, successful, and non-destructive."
+            "Every simulation entry must preserve the controlled write decision, ordering, checksum state, and non-destructive safeguards."
+        ));
+
+        const writeRequiredCount =
+            simulationSteps.filter(function (
+                step
+            ) {
+                return (
+                    step.permanentWriteRequired === true
+                );
+            }).length;
+
+        const noWriteRequiredCount =
+            simulationSteps.filter(function (
+                step
+            ) {
+                return (
+                    step.permanentWriteRequired === false
+                );
+            }).length;
+
+        checks.push(buildCheck(
+            "Simulation decision counts valid",
+            Boolean(current) &&
+                current.writeRequiredDocumentCount ===
+                    writeRequiredCount &&
+                current.noWriteRequiredDocumentCount ===
+                    noWriteRequiredCount &&
+                writeRequiredCount +
+                    noWriteRequiredCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "The simulation-level decision counts must match the six simulation entries."
         ));
 
         return deepFreeze({
@@ -848,8 +1128,12 @@ remain locked.
                 current.writerMode,
             "Simulation Status: " +
                 current.simulationStatus,
-            "Simulated Documents: " +
+            "Evaluated Documents: " +
                 current.simulatedDocumentCount,
+            "Write Required Documents: " +
+                current.writeRequiredDocumentCount,
+            "No Write Required Documents: " +
+                current.noWriteRequiredDocumentCount,
             "Simulation Ready: " +
                 (
                     current.simulationReady
@@ -881,23 +1165,28 @@ remain locked.
                 step.updateMode +
                 " | " +
                 step.simulationStatus +
-                " | NO FILE CHANGE"
+                " | " +
+                (
+                    step.permanentWriteRequired
+                        ? "SIMULATED — NO FILE CHANGE"
+                        : "NO WRITE REQUIRED"
+                )
             );
         });
 
         if (current.requiredNextAction) {
             lines.push(
                 "Required Next Action: " +
-                current.requiredNextAction
+                    current.requiredNextAction
             );
         }
 
         if (current.reviewChoices) {
             lines.push(
                 "Review Choices: " +
-                current.reviewChoices.join(
-                    " | "
-                )
+                    current.reviewChoices.join(
+                        " | "
+                    )
             );
         }
 
