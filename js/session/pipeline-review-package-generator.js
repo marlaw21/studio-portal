@@ -1,35 +1,43 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 058 — Pipeline Review Package Generator v1.0.0
-Disabled Foundation
+Work Session 104 — Pipeline Review Package Generator v2.0.0
 File: js/session/pipeline-review-package-generator.js
 
 Purpose:
-Consume the Permanent Output Orchestrator review and generate one consolidated,
-immutable, review-only package for the complete controlled permanent-output
-pipeline.
+Consume an accepted Permanent Output Execution Layer package and its matching
+twelve-stage Permanent Output Orchestrator review, then produce one immutable,
+review-only governance package for the Final Human Approval Gateway.
 
-This version remains fully disabled and non-destructive. It does not write,
-replace, rename, move, delete, restore, download, authorize, or otherwise
-modify any permanent file.
+Disabled Mode only. No permanent write, rollback, restore, authorization, file
+move, rename, delete, or download operation is performed.
 */
 
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "2.0.0";
     const PACKAGE_MODE = "Disabled";
     const PACKAGE_TYPE =
         "TMS-OS Controlled Permanent Output Consolidated Review Package";
+
+    const EXPECTED_DOCUMENTS = Object.freeze([
+        "WS-HIST-001",
+        "STATE-001",
+        "DOC-STATE-001",
+        "DEC-LOG-001",
+        "MILE-HIST-001",
+        "WORKSPACE-SNAPSHOT-HISTORY-001"
+    ]);
 
     let lastReviewPackage = null;
 
     if (
         !window.TMSSessionContext ||
+        !window.TMSPermanentOutputExecutionLayer ||
         !window.TMSPermanentOutputOrchestrator
     ) {
         console.error(
-            "Pipeline Review Package Generator could not initialize because its dependencies are unavailable."
+            "Pipeline Review Package Generator could not initialize because dependencies are unavailable."
         );
         return;
     }
@@ -65,151 +73,205 @@ modify any permanent file.
     }
 
     function createPackageId(sessionNumber, generatedAt) {
-        const timestamp = generatedAt
-            .replace(/[-:.TZ]/g, "")
-            .slice(0, 14);
-
         return [
             "TMS",
             "PIPELINE-REVIEW-PACKAGE",
             String(sessionNumber).padStart(3, "0"),
-            timestamp
+            generatedAt.replace(/[-:.TZ]/g, "").slice(0, 14)
         ].join("-");
     }
 
-    function validatePipelineReview(review) {
+    function hasExpectedDocuments(documents) {
+        const ids = documents.map(function (document) {
+            return document.documentId;
+        });
+
+        return (
+            documents.length === EXPECTED_DOCUMENTS.length &&
+            EXPECTED_DOCUMENTS.every(function (documentId) {
+                return ids.includes(documentId);
+            }) &&
+            new Set(ids).size === EXPECTED_DOCUMENTS.length
+        );
+    }
+
+    function buildStageSummary(stage) {
+        return {
+            sequence: stage.sequence,
+            stageName: stage.stageName,
+            accepted: stage.accepted === true,
+            completed: stage.completed === true,
+            status: stage.status,
+            sourceId: stage.sourceId || null,
+            safetyState: clone(stage.safetyState || {})
+        };
+    }
+
+    function buildDocumentSummary(document) {
+        return {
+            sequence: document.sequence,
+            documentId: document.documentId,
+            updateMode: document.updateMode,
+            targetPath: document.targetPath,
+            documentChanged: document.documentChanged === true,
+            permanentWriteRequired:
+                document.permanentWriteRequired === true,
+            excludedFromExecution:
+                document.excludedFromExecution === true,
+            excludedFromRestore:
+                document.excludedFromRestore === true,
+            executionDecision: document.executionDecision,
+            restoreDecision: document.restoreDecision,
+            packageDecision: document.packageDecision,
+            executionMode: document.executionMode,
+            authorizationGranted: false,
+            executionAuthorized: false,
+            writeAuthorized: false,
+            rollbackAuthorized: false,
+            restoreAuthorized: false,
+            actualWriteAttempted: false,
+            actualRestoreAttempted: false,
+            permanentWriteExecuted: false,
+            restoreExecuted: false
+        };
+    }
+
+    function validateSources(executionPackage, review) {
         const checks = [];
 
-        let orchestratorValidation = {
-            accepted: false,
-            checks: []
-        };
+        const executionValidation = isPlainObject(executionPackage)
+            ? window.TMSPermanentOutputExecutionLayer
+                .validateExecutionPackage(executionPackage)
+            : { accepted: false, checks: [] };
 
-        if (isPlainObject(review)) {
-            orchestratorValidation =
-                window.TMSPermanentOutputOrchestrator
-                    .validatePipelineReview(review);
-        }
+        const reviewValidation = isPlainObject(review)
+            ? window.TMSPermanentOutputOrchestrator
+                .validatePipelineReview(review)
+            : { accepted: false, checks: [] };
 
         checks.push(buildCheck(
-            "Pipeline review exists",
-            isPlainObject(review),
-            "A Permanent Output Orchestrator review is required."
+            "Unified execution package exists",
+            isPlainObject(executionPackage),
+            "An accepted Permanent Output Execution Layer package is required."
         ));
 
         checks.push(buildCheck(
-            "Pipeline review accepted",
+            "Unified execution package accepted",
+            Boolean(executionPackage && executionPackage.accepted),
+            "The unified execution package must be accepted."
+        ));
+
+        checks.push(buildCheck(
+            "Unified execution package validation accepted",
+            executionValidation.accepted === true,
+            "The unified execution package must pass validation."
+        ));
+
+        checks.push(buildCheck(
+            "Unified execution package ready",
+            Boolean(executionPackage) &&
+                executionPackage.executionMode === PACKAGE_MODE &&
+                executionPackage.executionPackageReady === true &&
+                executionPackage.prerequisitesVerified === true,
+            "The unified execution package must be ready in Disabled Mode."
+        ));
+
+        checks.push(buildCheck(
+            "Six-document decision contract",
+            Boolean(executionPackage) &&
+                executionPackage.executionDocumentCount === 6 &&
+                executionPackage.writeRequiredDocumentCount === 5 &&
+                executionPackage.excludedDocumentCount === 1 &&
+                executionPackage.restoreRequiredDocumentCount === 5 &&
+                executionPackage.noRestoreRequiredDocumentCount === 1,
+            "The unified execution package must preserve the six-document write and restore decisions."
+        ));
+
+        checks.push(buildCheck(
+            "Unified source verification retained",
+            Boolean(executionPackage) &&
+                executionPackage.pipelineVerified === true &&
+                executionPackage.executionManifestVerified === true &&
+                executionPackage.restoreManifestVerified === true &&
+                executionPackage.humanAuthorizationVerified === true,
+            "All source verification states must be retained."
+        ));
+
+        checks.push(buildCheck(
+            "Orchestrator review exists",
+            isPlainObject(review),
+            "The matching twelve-stage orchestrator review is required."
+        ));
+
+        checks.push(buildCheck(
+            "Orchestrator review accepted",
             Boolean(review && review.accepted),
             "The orchestrator review must be accepted."
         ));
 
         checks.push(buildCheck(
-            "Pipeline review validation accepted",
-            Boolean(orchestratorValidation && orchestratorValidation.accepted),
+            "Orchestrator review validation accepted",
+            reviewValidation.accepted === true,
             "The orchestrator review must pass validation."
         ));
 
         checks.push(buildCheck(
-            "Orchestration mode disabled",
-            Boolean(review) && review.orchestrationMode === "Disabled",
-            "The orchestrator must remain in Disabled mode."
-        ));
-
-        checks.push(buildCheck(
-            "Pipeline ready",
-            Boolean(review) && review.pipelineReady === true,
-            "The complete pipeline must be ready."
-        ));
-
-        checks.push(buildCheck(
-            "Pipeline completed",
-            Boolean(review) && review.pipelineCompleted === true,
-            "The complete pipeline must be completed."
-        ));
-
-        checks.push(buildCheck(
-            "All stages completed",
+            "Twelve-stage pipeline complete",
             Boolean(review) &&
-                Number(review.completedStageCount) === Number(review.stageCount) &&
-                Number(review.stageCount) > 0,
-            "Every orchestrated pipeline stage must complete."
+                review.stageCount === 12 &&
+                review.completedStageCount === 12 &&
+                review.pipelineReady === true &&
+                review.pipelineCompleted === true &&
+                review.failedStage === null,
+            "All twelve pipeline stages must be complete."
         ));
 
         checks.push(buildCheck(
-            "Authorization remains ungranted",
-            Boolean(review) && review.authorizationGranted === false,
-            "The consolidated package must not grant authorization."
+            "Source review aligned",
+            Boolean(executionPackage) &&
+                Boolean(review) &&
+                executionPackage.sourcePipelineReviewId === review.reviewId &&
+                executionPackage.sourceSessionNumber === review.sessionNumber,
+            "The unified execution package must reference the same orchestrator review."
         ));
 
-        checks.push(buildCheck(
-            "Execution remains unauthorized",
-            Boolean(review) && review.executionAuthorized === false,
-            "Execution authorization must remain locked."
-        ));
-
-        checks.push(buildCheck(
-            "Write remains unauthorized",
-            Boolean(review) && review.writeAuthorized === false,
-            "Permanent write authorization must remain locked."
-        ));
-
-        checks.push(buildCheck(
-            "Rollback remains unauthorized",
-            Boolean(review) && review.rollbackAuthorized === false,
-            "Rollback authorization must remain locked."
-        ));
-
-        checks.push(buildCheck(
-            "Restore remains unauthorized",
-            Boolean(review) && review.restoreAuthorized === false,
-            "Restore authorization must remain locked."
-        ));
-
-        checks.push(buildCheck(
-            "No actual writes attempted",
-            Boolean(review) && review.actualWritesAttempted === false,
-            "No actual write may be attempted."
-        ));
-
-        checks.push(buildCheck(
-            "No actual restores attempted",
-            Boolean(review) && review.actualRestoresAttempted === false,
-            "No actual restore may be attempted."
-        ));
-
-        checks.push(buildCheck(
-            "No permanent writes executed",
-            Boolean(review) && review.permanentWritesExecuted === false,
-            "No permanent file may be modified."
-        ));
-
-        checks.push(buildCheck(
-            "No restore executed",
-            Boolean(review) && review.restoreExecuted === false,
-            "No rollback restoration may occur."
-        ));
-
-        const stages = review && Array.isArray(review.stages)
-            ? review.stages
+        const documents = executionPackage &&
+            Array.isArray(executionPackage.documents)
+            ? executionPackage.documents
             : [];
 
-        const stagesValid =
-            stages.length > 0 &&
-            stages.length === Number(review.stageCount) &&
-            stages.every(function (stage, index) {
-                return (
-                    stage.sequence === index + 1 &&
-                    stage.accepted === true &&
-                    stage.completed === true &&
-                    typeof stage.stageName === "string" &&
-                    stage.stageName.length > 0
-                );
-            });
+        checks.push(buildCheck(
+            "Expected unified document set",
+            hasExpectedDocuments(documents),
+            "The unique six-document permanent set is required."
+        ));
+
+        const safeguardsLocked =
+            Boolean(executionPackage) &&
+            Boolean(review) &&
+            executionPackage.authorizationGranted === false &&
+            executionPackage.executionAuthorized === false &&
+            executionPackage.writeAuthorized === false &&
+            executionPackage.rollbackAuthorized === false &&
+            executionPackage.restoreAuthorized === false &&
+            executionPackage.actualWritesAttempted === false &&
+            executionPackage.actualRestoresAttempted === false &&
+            executionPackage.permanentWritesExecuted === false &&
+            executionPackage.restoreExecuted === false &&
+            review.authorizationGranted === false &&
+            review.executionAuthorized === false &&
+            review.writeAuthorized === false &&
+            review.rollbackAuthorized === false &&
+            review.restoreAuthorized === false &&
+            review.actualWritesAttempted === false &&
+            review.actualRestoresAttempted === false &&
+            review.permanentWritesExecuted === false &&
+            review.restoreExecuted === false;
 
         checks.push(buildCheck(
-            "Pipeline stages valid",
-            stagesValid,
-            "Every pipeline stage must be accepted, complete, ordered, and named."
+            "All safeguards locked",
+            safeguardsLocked,
+            "All authorization, execution, write, rollback, and restore controls must remain disabled."
         ));
 
         return {
@@ -217,23 +279,12 @@ modify any permanent file.
                 return check.passed;
             }),
             checks: checks,
-            orchestratorValidation: orchestratorValidation
+            executionValidation: executionValidation,
+            reviewValidation: reviewValidation
         };
     }
 
-    function buildStageSummary(stage) {
-        return {
-            sequence: stage.sequence,
-            stageName: stage.stageName,
-            accepted: stage.accepted,
-            completed: stage.completed,
-            status: stage.status,
-            sourceId: stage.sourceId || null,
-            safetyState: clone(stage.safetyState || {})
-        };
-    }
-
-    function rejectedPackage(message, review, validation) {
+    function rejectedPackage(message, executionPackage, review, validation) {
         const snapshot = window.TMSSessionContext.getSnapshot();
         const generatedAt = new Date().toISOString();
 
@@ -246,6 +297,12 @@ modify any permanent file.
             sessionNumber: snapshot.sessionNumber,
             accepted: false,
             message: message,
+            sourceExecutionPackageAccepted:
+                Boolean(executionPackage && executionPackage.accepted),
+            sourceExecutionPackageId:
+                executionPackage ? executionPackage.packageId : null,
+            sourceExecutionPackageStatus:
+                executionPackage ? executionPackage.packageStatus : "Unavailable",
             sourceReviewAccepted: Boolean(review && review.accepted),
             sourceReviewId: review ? review.reviewId : null,
             sourceReviewStatus: review ? review.reviewStatus : "Unavailable",
@@ -254,8 +311,17 @@ modify any permanent file.
             pipelineStageCount: 0,
             completedStageCount: 0,
             stageSummaries: [],
+            expectedDocumentCount: EXPECTED_DOCUMENTS.length,
+            reviewDocumentCount: 0,
+            writeRequiredDocumentCount: 0,
+            excludedDocumentCount: 0,
+            restoreRequiredDocumentCount: 0,
+            noRestoreRequiredDocumentCount: 0,
+            documentSummaries: [],
             pipelineReady: false,
             pipelineCompleted: false,
+            unifiedExecutionPackageVerified: false,
+            humanAuthorizationVerified: false,
             packageReady: false,
             authorizationGranted: false,
             executionAuthorized: false,
@@ -268,37 +334,49 @@ modify any permanent file.
             restoreExecuted: false,
             packageStatus: "Rejected",
             requiredNextAction:
-                "Correct the failed orchestrator review or package prerequisite checks.",
+                "Correct the failed unified execution package, orchestrator review, or governance prerequisite checks.",
             reviewRequired: true
         });
     }
 
-    async function generateReviewPackage(orchestratorReview) {
-        const sourceReview =
-            orchestratorReview ||
-            await window.TMSPermanentOutputOrchestrator
-                .generatePipelineReview();
+    async function generateReviewPackage(unifiedExecutionPackage) {
+        const sourceExecutionPackage =
+            unifiedExecutionPackage ||
+            window.TMSPermanentOutputExecutionLayer
+                .getLastExecutionPackage();
 
-        const validation = validatePipelineReview(sourceReview);
+        const sourceReview =
+            window.TMSPermanentOutputOrchestrator
+                .getLastPipelineReview();
+
+        const validation =
+            validateSources(sourceExecutionPackage, sourceReview);
 
         if (!validation.accepted) {
             lastReviewPackage = rejectedPackage(
-                "The Permanent Output Orchestrator review failed consolidated package validation.",
+                "The unified Permanent Output Execution package failed consolidated governance review validation.",
+                sourceExecutionPackage,
                 sourceReview,
                 validation
             );
-
             return lastReviewPackage;
         }
 
-        const stageSummaries =
-            clone(sourceReview.stages)
+        const stageSummaries = clone(sourceReview.stages)
+            .sort(function (first, second) {
+                return Number(first.sequence) - Number(second.sequence);
+            })
+            .map(buildStageSummary);
+
+        const documentSummaries =
+            clone(sourceExecutionPackage.documents)
                 .sort(function (first, second) {
                     return Number(first.sequence) - Number(second.sequence);
                 })
-                .map(buildStageSummary);
+                .map(buildDocumentSummary);
 
-        const allStagesSafe =
+        const stagesValid =
+            stageSummaries.length === 12 &&
             stageSummaries.every(function (stage, index) {
                 return (
                     stage.sequence === index + 1 &&
@@ -307,13 +385,32 @@ modify any permanent file.
                 );
             });
 
-        if (!allStagesSafe) {
+        const documentsValid =
+            hasExpectedDocuments(documentSummaries) &&
+            documentSummaries.every(function (document, index) {
+                return (
+                    document.sequence === index + 1 &&
+                    document.documentId === EXPECTED_DOCUMENTS[index] &&
+                    document.executionMode === PACKAGE_MODE &&
+                    document.authorizationGranted === false &&
+                    document.executionAuthorized === false &&
+                    document.writeAuthorized === false &&
+                    document.rollbackAuthorized === false &&
+                    document.restoreAuthorized === false &&
+                    document.actualWriteAttempted === false &&
+                    document.actualRestoreAttempted === false &&
+                    document.permanentWriteExecuted === false &&
+                    document.restoreExecuted === false
+                );
+            });
+
+        if (!stagesValid || !documentsValid) {
             lastReviewPackage = rejectedPackage(
-                "One or more consolidated pipeline stage summaries failed validation.",
+                "One or more consolidated stage or document summaries failed Disabled Mode safety validation.",
+                sourceExecutionPackage,
                 sourceReview,
                 validation
             );
-
             return lastReviewPackage;
         }
 
@@ -327,9 +424,17 @@ modify any permanent file.
             packageId: createPackageId(snapshot.sessionNumber, generatedAt),
             generatedAt: generatedAt,
             sessionNumber: snapshot.sessionNumber,
+            sourceSessionNumber: sourceExecutionPackage.sourceSessionNumber,
             accepted: true,
             message:
-                "The complete controlled permanent-output pipeline was consolidated into one review package in Disabled mode. No permanent file operations occurred.",
+                "The unified six-document execution package and twelve-stage pipeline evidence were consolidated into one Disabled Mode governance review package. No permanent file operations occurred.",
+            sourceExecutionPackageAccepted: true,
+            sourceExecutionPackageId: sourceExecutionPackage.packageId,
+            sourceExecutionPackageStatus: sourceExecutionPackage.packageStatus,
+            sourceExecutionPackageEngineVersion:
+                sourceExecutionPackage.engineVersion,
+            sourceExecutionPackageGeneratedAt:
+                sourceExecutionPackage.generatedAt,
             sourceReviewAccepted: true,
             sourceReviewId: sourceReview.reviewId,
             sourceReviewStatus: sourceReview.reviewStatus,
@@ -341,8 +446,22 @@ modify any permanent file.
             completedStageCount: stageSummaries.length,
             stageSummaries: stageSummaries,
             executionSequence: clone(sourceReview.executionSequence || []),
+            expectedDocumentCount: EXPECTED_DOCUMENTS.length,
+            reviewDocumentCount: documentSummaries.length,
+            writeRequiredDocumentCount:
+                sourceExecutionPackage.writeRequiredDocumentCount,
+            excludedDocumentCount:
+                sourceExecutionPackage.excludedDocumentCount,
+            restoreRequiredDocumentCount:
+                sourceExecutionPackage.restoreRequiredDocumentCount,
+            noRestoreRequiredDocumentCount:
+                sourceExecutionPackage.noRestoreRequiredDocumentCount,
+            documentSummaries: documentSummaries,
             pipelineReady: true,
             pipelineCompleted: true,
+            unifiedExecutionPackageVerified: true,
+            humanAuthorizationVerified:
+                sourceExecutionPackage.humanAuthorizationVerified === true,
             packageReady: true,
             authorizationGranted: false,
             executionAuthorized: false,
@@ -353,9 +472,10 @@ modify any permanent file.
             actualRestoresAttempted: false,
             permanentWritesExecuted: false,
             restoreExecuted: false,
-            packageStatus: "Ready for Human Review — Disabled",
+            packageStatus:
+                "Ready for Human Review — Unified Execution Disabled",
             requiredNextAction:
-                "Submit this consolidated review package for human approval before any future write-enabled or restore-enabled design is considered.",
+                "Submit this consolidated governance package to the Final Human Approval Gateway. Version 2.0.0 remains non-executing.",
             reviewRequired: true,
             reviewChoices: [
                 "Approve Consolidated Review Package",
@@ -374,7 +494,7 @@ modify any permanent file.
         checks.push(buildCheck(
             "Review package exists",
             isPlainObject(current),
-            "A consolidated pipeline review package is required."
+            "A consolidated review package is required."
         ));
 
         checks.push(buildCheck(
@@ -386,114 +506,108 @@ modify any permanent file.
         checks.push(buildCheck(
             "Package mode disabled",
             Boolean(current) && current.packageMode === PACKAGE_MODE,
-            "Version 1.0.0 must remain in Disabled mode."
+            "Version 2.0.0 must remain in Disabled mode."
         ));
 
         checks.push(buildCheck(
-            "Pipeline stages present",
-            Boolean(current) && current.pipelineStageCount > 0,
-            "The package must contain pipeline stage summaries."
-        ));
-
-        checks.push(buildCheck(
-            "All stages completed",
+            "Twelve stages present",
             Boolean(current) &&
-                current.completedStageCount === current.pipelineStageCount,
-            "Every pipeline stage must be complete."
+                current.pipelineStageCount === 12 &&
+                current.completedStageCount === 12,
+            "All twelve pipeline stages must be represented and complete."
         ));
 
         checks.push(buildCheck(
-            "Pipeline ready",
-            Boolean(current) && current.pipelineReady === true,
-            "The complete pipeline must be ready."
+            "Six governed documents present",
+            Boolean(current) &&
+                current.expectedDocumentCount === 6 &&
+                current.reviewDocumentCount === 6,
+            "All six governed permanent documents must be represented."
         ));
 
         checks.push(buildCheck(
-            "Pipeline completed",
-            Boolean(current) && current.pipelineCompleted === true,
-            "The complete pipeline must be completed."
+            "Decision counts valid",
+            Boolean(current) &&
+                current.writeRequiredDocumentCount === 5 &&
+                current.excludedDocumentCount === 1 &&
+                current.restoreRequiredDocumentCount === 5 &&
+                current.noRestoreRequiredDocumentCount === 1,
+            "Five required and one excluded document must be preserved for both write and restore paths."
         ));
 
         checks.push(buildCheck(
-            "Package ready",
-            Boolean(current) && current.packageReady === true,
-            "The consolidated package must be ready for review."
+            "Pipeline and unified package verified",
+            Boolean(current) &&
+                current.pipelineReady === true &&
+                current.pipelineCompleted === true &&
+                current.unifiedExecutionPackageVerified === true &&
+                current.humanAuthorizationVerified === true &&
+                current.packageReady === true,
+            "The complete governance package must be verified and ready."
         ));
 
-        checks.push(buildCheck(
-            "Authorization remains ungranted",
-            Boolean(current) && current.authorizationGranted === false,
-            "The package must not grant authorization."
-        ));
-
-        checks.push(buildCheck(
-            "Execution remains unauthorized",
-            Boolean(current) && current.executionAuthorized === false,
-            "Execution authorization must remain locked."
-        ));
-
-        checks.push(buildCheck(
-            "Write remains unauthorized",
-            Boolean(current) && current.writeAuthorized === false,
-            "Permanent write authorization must remain locked."
-        ));
-
-        checks.push(buildCheck(
-            "Rollback remains unauthorized",
-            Boolean(current) && current.rollbackAuthorized === false,
-            "Rollback authorization must remain locked."
-        ));
-
-        checks.push(buildCheck(
-            "Restore remains unauthorized",
-            Boolean(current) && current.restoreAuthorized === false,
-            "Restore authorization must remain locked."
-        ));
-
-        checks.push(buildCheck(
-            "No actual writes attempted",
-            Boolean(current) && current.actualWritesAttempted === false,
-            "No actual write may be attempted."
-        ));
-
-        checks.push(buildCheck(
-            "No actual restores attempted",
-            Boolean(current) && current.actualRestoresAttempted === false,
-            "No actual restore may be attempted."
-        ));
-
-        checks.push(buildCheck(
-            "No permanent writes executed",
-            Boolean(current) && current.permanentWritesExecuted === false,
-            "No permanent file may be modified."
-        ));
-
-        checks.push(buildCheck(
-            "No restore executed",
-            Boolean(current) && current.restoreExecuted === false,
-            "No rollback restoration may occur."
-        ));
+        [
+            ["Authorization remains ungranted", "authorizationGranted"],
+            ["Execution remains unauthorized", "executionAuthorized"],
+            ["Write remains unauthorized", "writeAuthorized"],
+            ["Rollback remains unauthorized", "rollbackAuthorized"],
+            ["Restore remains unauthorized", "restoreAuthorized"],
+            ["No actual writes attempted", "actualWritesAttempted"],
+            ["No actual restores attempted", "actualRestoresAttempted"],
+            ["No permanent writes executed", "permanentWritesExecuted"],
+            ["No restore executed", "restoreExecuted"]
+        ].forEach(function (item) {
+            checks.push(buildCheck(
+                item[0],
+                Boolean(current) && current[item[1]] === false,
+                item[0] + "."
+            ));
+        });
 
         const stages = current && Array.isArray(current.stageSummaries)
             ? current.stageSummaries
             : [];
 
-        const stagesValid =
-            stages.length === Number(current.pipelineStageCount) &&
-            stages.every(function (stage, index) {
-                return (
-                    stage.sequence === index + 1 &&
-                    stage.accepted === true &&
-                    stage.completed === true &&
-                    typeof stage.stageName === "string" &&
-                    stage.stageName.length > 0
-                );
-            });
-
         checks.push(buildCheck(
             "Stage summaries valid",
-            stagesValid,
-            "Every consolidated stage summary must be accepted, complete, ordered, and named."
+            stages.length === 12 &&
+                stages.every(function (stage, index) {
+                    return (
+                        stage.sequence === index + 1 &&
+                        stage.accepted === true &&
+                        stage.completed === true &&
+                        typeof stage.stageName === "string" &&
+                        stage.stageName.length > 0
+                    );
+                }),
+            "Every stage summary must be accepted, complete, ordered, and named."
+        ));
+
+        const documents =
+            current && Array.isArray(current.documentSummaries)
+                ? current.documentSummaries
+                : [];
+
+        checks.push(buildCheck(
+            "Document summaries valid",
+            hasExpectedDocuments(documents) &&
+                documents.every(function (document, index) {
+                    return (
+                        document.sequence === index + 1 &&
+                        document.documentId === EXPECTED_DOCUMENTS[index] &&
+                        document.executionMode === PACKAGE_MODE &&
+                        document.authorizationGranted === false &&
+                        document.executionAuthorized === false &&
+                        document.writeAuthorized === false &&
+                        document.rollbackAuthorized === false &&
+                        document.restoreAuthorized === false &&
+                        document.actualWriteAttempted === false &&
+                        document.actualRestoreAttempted === false &&
+                        document.permanentWriteExecuted === false &&
+                        document.restoreExecuted === false
+                    );
+                }),
+            "Every document summary must be complete, ordered, disabled, and non-destructive."
         ));
 
         return deepFreeze({
@@ -506,20 +620,34 @@ modify any permanent file.
     }
 
     async function formatReviewPackage(reviewPackage) {
-        const current = reviewPackage || await generateReviewPackage();
+        const current =
+            reviewPackage || await generateReviewPackage();
 
         const lines = [
             "TMS-OS CONTROLLED PERMANENT OUTPUT CONSOLIDATED REVIEW PACKAGE",
             "Package ID: " + current.packageId,
             "Accepted: " + (current.accepted ? "YES" : "NO"),
             "Work Session: " + current.sessionNumber,
+            "Source Work Session: " +
+                (current.sourceSessionNumber || "Unavailable"),
             "Engine Version: " + current.engineVersion,
             "Package Mode: " + current.packageMode,
             "Package Status: " + current.packageStatus,
             "Pipeline Stages: " + current.pipelineStageCount,
             "Completed Stages: " + current.completedStageCount,
-            "Pipeline Ready: " + (current.pipelineReady ? "YES" : "NO"),
-            "Pipeline Completed: " + (current.pipelineCompleted ? "YES" : "NO"),
+            "Governed Documents: " + current.reviewDocumentCount,
+            "Write Required Documents: " +
+                current.writeRequiredDocumentCount,
+            "No Write Required Documents: " +
+                current.excludedDocumentCount,
+            "Restore Required Documents: " +
+                current.restoreRequiredDocumentCount,
+            "No Restore Required Documents: " +
+                current.noRestoreRequiredDocumentCount,
+            "Unified Execution Package Verified: " +
+                (current.unifiedExecutionPackageVerified ? "YES" : "NO"),
+            "Human Authorization Verified: " +
+                (current.humanAuthorizationVerified ? "YES" : "NO"),
             "Package Ready: " + (current.packageReady ? "YES" : "NO"),
             "Authorization Granted: NO",
             "Execution Authorized: NO",
@@ -544,15 +672,27 @@ modify any permanent file.
             );
         });
 
+        (current.documentSummaries || []).forEach(function (document) {
+            lines.push(
+                document.sequence +
+                " | " +
+                document.documentId +
+                " | " +
+                document.packageDecision
+            );
+        });
+
         if (current.requiredNextAction) {
             lines.push(
-                "Required Next Action: " + current.requiredNextAction
+                "Required Next Action: " +
+                current.requiredNextAction
             );
         }
 
         if (current.reviewChoices) {
             lines.push(
-                "Review Choices: " + current.reviewChoices.join(" | ")
+                "Review Choices: " +
+                current.reviewChoices.join(" | ")
             );
         }
 
