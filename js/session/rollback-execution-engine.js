@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 056 — Rollback Execution Engine v1.0.0
+Work Session 102 — Rollback Execution Engine v2.3.0
 Disabled Foundation
 File: js/session/rollback-execution-engine.js
 
@@ -18,7 +18,7 @@ every safety lock.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "2.3.0";
     const EXECUTION_MODE = "Disabled";
     const MANIFEST_TYPE =
         "TMS-OS Permanent Documentation Rollback Restoration Manifest";
@@ -28,7 +28,8 @@ every safety lock.
         "DEC-LOG-001",
         "DOC-STATE-001",
         "STATE-001",
-        "WS-HIST-001"
+        "WS-HIST-001",
+        "WORKSPACE-SNAPSHOT-HISTORY-001"
     ]);
 
     let lastRestoreManifest = null;
@@ -117,8 +118,8 @@ every safety lock.
         checks.push(buildCheck(
             "Expected captured document count",
             Boolean(capturePackage) &&
-                capturePackage.capturedDocumentCount === 5,
-            "Exactly five original permanent documents must be captured."
+                capturePackage.capturedDocumentCount === EXPECTED_DOCUMENTS.length,
+            "Exactly six original permanent documents must be captured."
         ));
 
         checks.push(buildCheck(
@@ -182,17 +183,26 @@ every safety lock.
         checks.push(buildCheck(
             "Expected captured document set",
             sourceSetValid,
-            "The capture package must contain the unique five-document permanent set."
+            "The capture package must contain the unique six-document permanent set."
         ));
 
         const documentsValid =
             documents.length === expectedSourceIds.length &&
             documents.every(function (document) {
-                return (
+                const originalIdentity =
+                    isPlainObject(document.originalDocument)
+                        ? (
+                            document.originalDocument.id ||
+                            document.originalDocument.documentId ||
+                            ""
+                        )
+                        : "";
+
+                const commonValid =
                     expectedSourceIds.includes(document.documentId) &&
                     document.originalDocumentCaptured === true &&
                     isPlainObject(document.originalDocument) &&
-                    document.originalDocument.id === document.documentId &&
+                    originalIdentity === document.documentId &&
                     typeof document.originalChecksum === "string" &&
                     document.originalChecksum.length > 0 &&
                     typeof document.targetPath === "string" &&
@@ -201,10 +211,30 @@ every safety lock.
                     document.backupPath.length > 0 &&
                     document.backupStatus === "Captured and Verified" &&
                     document.verificationStatus === "Passed" &&
+                    typeof document.permanentWriteRequired === "boolean" &&
+                    typeof document.rollbackRequiredBeforeWrite === "boolean" &&
+                    typeof document.originalDocumentCaptureRequired === "boolean" &&
                     document.writeAuthorized === false &&
                     document.rollbackAuthorized === false &&
                     document.permanentWriteExecuted === false &&
-                    document.restoreExecuted === false
+                    document.restoreExecuted === false;
+
+                if (!commonValid) {
+                    return false;
+                }
+
+                if (document.permanentWriteRequired === true) {
+                    return (
+                        document.documentChanged === true &&
+                        document.rollbackRequiredBeforeWrite === true &&
+                        document.originalDocumentCaptureRequired === true
+                    );
+                }
+
+                return (
+                    document.documentChanged === false &&
+                    document.rollbackRequiredBeforeWrite === false &&
+                    document.originalDocumentCaptureRequired === false
                 );
             });
 
@@ -224,6 +254,9 @@ every safety lock.
     }
 
     function buildRestoreEntry(document, index) {
+        const restoreRequired =
+            document.permanentWriteRequired === true;
+
         return {
             sequence: index + 1,
             sourceOrder: document.order,
@@ -238,20 +271,56 @@ every safety lock.
             proposedVersion: document.proposedVersion,
             originalSectionCount: document.sourceSectionCount,
             proposedSectionCount: document.proposedSectionCount,
-            prerequisiteChecks: [
-                "Original document captured",
-                "Original checksum present",
-                "Backup path present",
-                "Target path present",
-                "Restore order verified",
-                "Execution mode confirmed disabled"
-            ],
+            sourceCollectionName:
+                document.sourceCollectionName || null,
+            proposedCollectionName:
+                document.proposedCollectionName || null,
+            sourceItemCount:
+                Number.isInteger(document.sourceItemCount)
+                    ? document.sourceItemCount
+                    : document.sourceSectionCount,
+            proposedItemCount:
+                Number.isInteger(document.proposedItemCount)
+                    ? document.proposedItemCount
+                    : document.proposedSectionCount,
+            documentChanged:
+                document.documentChanged === true,
+            permanentWriteRequired:
+                restoreRequired,
+            rollbackRequiredBeforeWrite:
+                document.rollbackRequiredBeforeWrite === true,
+            excludedFromRestore:
+                !restoreRequired,
+            prerequisiteChecks:
+                restoreRequired
+                    ? [
+                        "Original document captured",
+                        "Original checksum present",
+                        "Backup path present",
+                        "Target path present",
+                        "Restore order verified",
+                        "Execution mode confirmed disabled"
+                    ]
+                    : [
+                        "Original document verified",
+                        "No permanent write required",
+                        "No rollback restore required",
+                        "Execution mode confirmed disabled"
+                    ],
             prerequisiteStatus: "Passed",
             intendedRestoreAction:
-                "Restore complete original permanent JSON file",
+                restoreRequired
+                    ? "Restore complete original permanent JSON file"
+                    : "No Restore Required",
             executionMode: EXECUTION_MODE,
-            restoreStatus: "Disabled — Manifest Only",
-            restoreDecision: "Not Executed",
+            restoreStatus:
+                restoreRequired
+                    ? "Disabled — Manifest Only"
+                    : "Excluded — No Restore Required",
+            restoreDecision:
+                restoreRequired
+                    ? "Not Executed"
+                    : "No Restore Required",
             rollbackAuthorized: false,
             restoreAuthorized: false,
             writeAuthorized: false,
@@ -283,6 +352,8 @@ every safety lock.
             validationChecks: validation ? validation.checks : [],
             expectedDocumentCount: EXPECTED_DOCUMENTS.length,
             restoreDocumentCount: 0,
+            restoreRequiredDocumentCount: 0,
+            noRestoreRequiredDocumentCount: 0,
             restoreEntries: [],
             originalsVerified: false,
             restoreManifestReady: false,
@@ -332,17 +403,44 @@ every safety lock.
         });
 
         const allEntriesSafe = restoreEntries.every(function (entry) {
-            return (
+            const commonValid =
                 entry.prerequisiteStatus === "Passed" &&
                 entry.executionMode === EXECUTION_MODE &&
-                entry.restoreStatus === "Disabled — Manifest Only" &&
-                entry.restoreDecision === "Not Executed" &&
                 entry.rollbackAuthorized === false &&
                 entry.restoreAuthorized === false &&
                 entry.writeAuthorized === false &&
                 entry.actualRestoreAttempted === false &&
                 entry.actualRestoreExecuted === false &&
-                entry.permanentWriteExecuted === false
+                entry.permanentWriteExecuted === false;
+
+            if (!commonValid) {
+                return false;
+            }
+
+            if (entry.permanentWriteRequired === true) {
+                return (
+                    entry.documentChanged === true &&
+                    entry.rollbackRequiredBeforeWrite === true &&
+                    entry.excludedFromRestore === false &&
+                    entry.intendedRestoreAction ===
+                        "Restore complete original permanent JSON file" &&
+                    entry.restoreStatus ===
+                        "Disabled — Manifest Only" &&
+                    entry.restoreDecision ===
+                        "Not Executed"
+                );
+            }
+
+            return (
+                entry.documentChanged === false &&
+                entry.rollbackRequiredBeforeWrite === false &&
+                entry.excludedFromRestore === true &&
+                entry.intendedRestoreAction ===
+                    "No Restore Required" &&
+                entry.restoreStatus ===
+                    "Excluded — No Restore Required" &&
+                entry.restoreDecision ===
+                    "No Restore Required"
             );
         });
 
@@ -354,6 +452,15 @@ every safety lock.
             );
             return lastRestoreManifest;
         }
+
+        const restoreRequiredDocumentCount =
+            restoreEntries.filter(function (entry) {
+                return entry.permanentWriteRequired === true;
+            }).length;
+
+        const noRestoreRequiredDocumentCount =
+            restoreEntries.length -
+            restoreRequiredDocumentCount;
 
         const snapshot = window.TMSSessionContext.getSnapshot();
         const generatedAt = new Date().toISOString();
@@ -367,7 +474,7 @@ every safety lock.
             sessionNumber: snapshot.sessionNumber,
             accepted: true,
             message:
-                "The five-document rollback restoration manifest was generated in Disabled mode. No files were changed and no restore authority was granted.",
+                "The six-document rollback restoration manifest was generated in Disabled mode. No files were changed and no restore authority was granted.",
             sourceCaptureAccepted: true,
             sourceCaptureId: sourceCapture.captureId,
             sourceCaptureStatus: sourceCapture.captureStatus,
@@ -378,6 +485,10 @@ every safety lock.
             validationChecks: validation.checks,
             expectedDocumentCount: EXPECTED_DOCUMENTS.length,
             restoreDocumentCount: restoreEntries.length,
+            restoreRequiredDocumentCount:
+                restoreRequiredDocumentCount,
+            noRestoreRequiredDocumentCount:
+                noRestoreRequiredDocumentCount,
             restoreEntries: restoreEntries,
             originalsVerified: true,
             restoreManifestReady: true,
@@ -418,13 +529,13 @@ every safety lock.
         checks.push(buildCheck(
             "Execution mode is disabled",
             Boolean(current) && current.executionMode === EXECUTION_MODE,
-            "Version 1.0.0 must remain in Disabled mode."
+            "Version 2.3.0 must remain in Disabled mode."
         ));
         checks.push(buildCheck(
             "Expected restore document count",
             Boolean(current) &&
                 current.restoreDocumentCount === EXPECTED_DOCUMENTS.length,
-            "Exactly five permanent documents must be included."
+            "Exactly six permanent documents must be included."
         ));
         checks.push(buildCheck(
             "Originals verified",
@@ -490,32 +601,81 @@ every safety lock.
         const entriesValid =
             entries.length === EXPECTED_DOCUMENTS.length &&
             entries.every(function (entry, index) {
-                return (
+                const commonValid =
                     entry.sequence === index + 1 &&
                     entry.documentId === EXPECTED_DOCUMENTS[index] &&
                     entry.prerequisiteStatus === "Passed" &&
                     entry.executionMode === EXECUTION_MODE &&
-                    entry.restoreStatus === "Disabled — Manifest Only" &&
-                    entry.restoreDecision === "Not Executed" &&
                     typeof entry.targetPath === "string" &&
                     entry.targetPath.length > 0 &&
                     typeof entry.backupPath === "string" &&
                     entry.backupPath.length > 0 &&
                     typeof entry.originalChecksum === "string" &&
                     entry.originalChecksum.length > 0 &&
+                    typeof entry.permanentWriteRequired === "boolean" &&
+                    typeof entry.rollbackRequiredBeforeWrite === "boolean" &&
+                    typeof entry.excludedFromRestore === "boolean" &&
                     entry.rollbackAuthorized === false &&
                     entry.restoreAuthorized === false &&
                     entry.writeAuthorized === false &&
                     entry.actualRestoreAttempted === false &&
                     entry.actualRestoreExecuted === false &&
-                    entry.permanentWriteExecuted === false
+                    entry.permanentWriteExecuted === false;
+
+                if (!commonValid) {
+                    return false;
+                }
+
+                if (entry.permanentWriteRequired === true) {
+                    return (
+                        entry.documentChanged === true &&
+                        entry.rollbackRequiredBeforeWrite === true &&
+                        entry.excludedFromRestore === false &&
+                        entry.restoreStatus ===
+                            "Disabled — Manifest Only" &&
+                        entry.restoreDecision ===
+                            "Not Executed"
+                    );
+                }
+
+                return (
+                    entry.documentChanged === false &&
+                    entry.rollbackRequiredBeforeWrite === false &&
+                    entry.excludedFromRestore === true &&
+                    entry.restoreStatus ===
+                        "Excluded — No Restore Required" &&
+                    entry.restoreDecision ===
+                        "No Restore Required"
                 );
             });
 
         checks.push(buildCheck(
             "Restore entries valid",
             entriesValid,
-            "Every restore entry must be complete, ordered, checksum-backed, disabled, and non-destructive."
+            "Every restore entry must be complete, ordered, checksum-backed, decision-valid, disabled, and non-destructive."
+        ));
+
+        const restoreRequiredCount =
+            entries.filter(function (entry) {
+                return entry.permanentWriteRequired === true;
+            }).length;
+
+        const noRestoreRequiredCount =
+            entries.filter(function (entry) {
+                return entry.permanentWriteRequired === false;
+            }).length;
+
+        checks.push(buildCheck(
+            "Restore decision counts valid",
+            Boolean(current) &&
+                current.restoreRequiredDocumentCount ===
+                    restoreRequiredCount &&
+                current.noRestoreRequiredDocumentCount ===
+                    noRestoreRequiredCount &&
+                restoreRequiredCount +
+                    noRestoreRequiredCount ===
+                    EXPECTED_DOCUMENTS.length,
+            "The restore-manifest decision counts must match all six entries."
         ));
 
         return deepFreeze({
@@ -539,6 +699,10 @@ every safety lock.
             "Execution Mode: " + current.executionMode,
             "Manifest Status: " + current.manifestStatus,
             "Restore Documents: " + current.restoreDocumentCount,
+            "Restore Required Documents: " +
+                (current.restoreRequiredDocumentCount || 0),
+            "No Restore Required Documents: " +
+                (current.noRestoreRequiredDocumentCount || 0),
             "Originals Verified: " +
                 (current.originalsVerified ? "YES" : "NO"),
             "Restore Manifest Ready: " +

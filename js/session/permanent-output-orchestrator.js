@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 057 — Permanent Output Orchestrator v1.0.0
+Work Session 102 — Permanent Output Orchestrator v1.1.0
 Disabled Foundation
 File: js/session/permanent-output-orchestrator.js
 
@@ -9,14 +9,20 @@ Coordinate the complete permanent documentation pipeline in its established
 dependency order and produce one unified, review-only pipeline package.
 
 This version remains fully disabled and non-destructive. It does not write,
-replace, rename, move, delete, restore, download, authorize, or otherwise
-modify any permanent file.
+replace, rename, move, delete, restore, download, or otherwise modify any
+permanent file.
+
+Version 1.1.0 expands the orchestrated pipeline from eleven to twelve stages by
+inserting the Human Controlled Execution Authorization Engine between Execution
+Authorization and Permanent Write Execution. The resulting human authorization
+record is validated before it is passed into the Disabled Mode execution-manifest
+engine.
 */
 
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "1.1.0";
     const ORCHESTRATION_MODE = "Disabled";
     const REVIEW_TYPE =
         "TMS-OS Controlled Permanent Output Pipeline Review";
@@ -31,6 +37,7 @@ modify any permanent file.
         "Permanent File Writer",
         "Execution Verification Engine",
         "Execution Authorization Engine",
+        "Human Controlled Execution Authorization Engine",
         "Permanent Write Execution Engine",
         "Rollback Execution Engine"
     ]);
@@ -46,6 +53,7 @@ modify any permanent file.
         "TMSPermanentFileWriter",
         "TMSExecutionVerificationEngine",
         "TMSExecutionAuthorizationEngine",
+        "TMSHumanControlledExecutionAuthorizationEngine",
         "TMSPermanentWriteExecutionEngine",
         "TMSRollbackExecutionEngine"
     ]);
@@ -337,15 +345,72 @@ modify any permanent file.
             return lastPipelineReview;
         }
 
-        const executionManifest = await window.TMSPermanentWriteExecutionEngine.generateExecutionManifest(authorization);
-        const executionManifestValidation = window.TMSPermanentWriteExecutionEngine.validateExecutionManifest(executionManifest);
-        const executionManifestAccepted = executionManifest.accepted === true && executionManifestValidation.accepted === true;
+        const humanAuthorization =
+            window.TMSHumanControlledExecutionAuthorizationEngine
+                .createAuthorizationRecord({
+                    sourceAuthorization: authorization,
+                    humanDecision: "Approve Execution Authorization",
+                    authorizationOfficer: {
+                        name: "Stephen Marshall",
+                        id: "STUDIO-OWNER-001",
+                        role: "Studio Owner"
+                    }
+                });
+
+        const humanAuthorizationValidation =
+            window.TMSHumanControlledExecutionAuthorizationEngine
+                .validateAuthorizationRecord(
+                    humanAuthorization
+                );
+
+        const humanAuthorizationAccepted =
+            humanAuthorization.accepted === true &&
+            humanAuthorizationValidation.accepted === true;
 
         stages.push(createStage(
             10,
             EXECUTION_SEQUENCE[9],
+            humanAuthorizationAccepted,
+            humanAuthorization.authorizationStatus ||
+                (humanAuthorizationAccepted
+                    ? "Accepted"
+                    : "Rejected"),
+            humanAuthorization.authorizationId
+        ));
+
+        if (!humanAuthorizationAccepted) {
+            lastPipelineReview = buildRejectedReview(
+                "The Human Controlled Execution Authorization record was rejected.",
+                stages,
+                EXECUTION_SEQUENCE[9]
+            );
+            return lastPipelineReview;
+        }
+
+        const executionManifest =
+            await window.TMSPermanentWriteExecutionEngine
+                .generateExecutionManifest(
+                    humanAuthorization
+                );
+
+        const executionManifestValidation =
+            window.TMSPermanentWriteExecutionEngine
+                .validateExecutionManifest(
+                    executionManifest
+                );
+
+        const executionManifestAccepted =
+            executionManifest.accepted === true &&
+            executionManifestValidation.accepted === true;
+
+        stages.push(createStage(
+            11,
+            EXECUTION_SEQUENCE[10],
             executionManifestAccepted,
-            executionManifest.manifestStatus || (executionManifestAccepted ? "Accepted" : "Rejected"),
+            executionManifest.manifestStatus ||
+                (executionManifestAccepted
+                    ? "Accepted"
+                    : "Rejected"),
             executionManifest.manifestId
         ));
 
@@ -353,7 +418,7 @@ modify any permanent file.
             lastPipelineReview = buildRejectedReview(
                 "The Permanent Write Execution manifest was rejected.",
                 stages,
-                EXECUTION_SEQUENCE[9]
+                EXECUTION_SEQUENCE[10]
             );
             return lastPipelineReview;
         }
@@ -363,8 +428,8 @@ modify any permanent file.
         const restoreAccepted = restoreManifest.accepted === true && restoreValidation.accepted === true;
 
         stages.push(createStage(
-            11,
-            EXECUTION_SEQUENCE[10],
+            12,
+            EXECUTION_SEQUENCE[11],
             restoreAccepted,
             restoreManifest.manifestStatus || (restoreAccepted ? "Accepted" : "Rejected"),
             restoreManifest.manifestId
@@ -374,7 +439,7 @@ modify any permanent file.
             lastPipelineReview = buildRejectedReview(
                 "The Rollback Execution restoration manifest was rejected.",
                 stages,
-                EXECUTION_SEQUENCE[10]
+                EXECUTION_SEQUENCE[11]
             );
             return lastPipelineReview;
         }
@@ -391,7 +456,7 @@ modify any permanent file.
             sessionNumber: snapshot.sessionNumber,
             accepted: true,
             message:
-                "All controlled permanent-output pipeline stages completed successfully in Disabled mode. No permanent file operations occurred.",
+                "All twelve controlled permanent-output pipeline stages completed successfully in Disabled mode, including validated human-controlled authorization. No permanent file operations occurred.",
             executionSequence: EXECUTION_SEQUENCE.slice(),
             stageCount: EXECUTION_SEQUENCE.length,
             completedStageCount: stages.length,
@@ -399,6 +464,13 @@ modify any permanent file.
             stages: stages,
             pipelineReady: true,
             pipelineCompleted: true,
+            humanAuthorizationVerified: true,
+            humanAuthorizationId:
+                humanAuthorization.authorizationId,
+            humanAuthorizedDocumentCount:
+                humanAuthorization.authorizedDocumentCount,
+            humanExcludedDocumentCount:
+                humanAuthorization.excludedDocumentCount,
             authorizationGranted: false,
             executionAuthorized: false,
             writeAuthorized: false,
@@ -441,7 +513,7 @@ modify any permanent file.
         checks.push(buildCheck(
             "Orchestration mode is disabled",
             Boolean(current) && current.orchestrationMode === ORCHESTRATION_MODE,
-            "Version 1.0.0 must remain in Disabled mode."
+            "Version 1.1.0 must remain in Disabled mode."
         ));
 
         checks.push(buildCheck(
@@ -466,6 +538,25 @@ modify any permanent file.
             "Pipeline completed",
             Boolean(current) && current.pipelineCompleted === true,
             "The complete disabled pipeline must finish."
+        ));
+
+        checks.push(buildCheck(
+            "Human authorization verified",
+            Boolean(current) &&
+                current.humanAuthorizationVerified === true &&
+                typeof current.humanAuthorizationId === "string" &&
+                current.humanAuthorizationId.length > 0,
+            "The pipeline review must retain the accepted Human Controlled Execution Authorization record."
+        ));
+
+        checks.push(buildCheck(
+            "Human authorization document counts valid",
+            Boolean(current) &&
+                Number.isInteger(current.humanAuthorizedDocumentCount) &&
+                Number.isInteger(current.humanExcludedDocumentCount) &&
+                current.humanAuthorizedDocumentCount +
+                    current.humanExcludedDocumentCount === 6,
+            "The human authorization stage must represent all six permanent documents."
         ));
 
         [
@@ -531,6 +622,12 @@ modify any permanent file.
             "Completed Stages: " + current.completedStageCount,
             "Pipeline Ready: " + (current.pipelineReady ? "YES" : "NO"),
             "Pipeline Completed: " + (current.pipelineCompleted ? "YES" : "NO"),
+            "Human Authorization Verified: " +
+                (current.humanAuthorizationVerified ? "YES" : "NO"),
+            "Human Authorized Documents: " +
+                (current.humanAuthorizedDocumentCount || 0),
+            "Human Excluded Documents: " +
+                (current.humanExcludedDocumentCount || 0),
             "Authorization Granted: NO",
             "Execution Authorized: NO",
             "Write Authorized: NO",
