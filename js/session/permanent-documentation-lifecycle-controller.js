@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 063 — Permanent Documentation Lifecycle Controller v1.0.0
+Work Session 107 — Permanent Documentation Lifecycle Controller v2.0.0
 Disabled Foundation
 File: js/session/permanent-documentation-lifecycle-controller.js
 
@@ -8,7 +8,7 @@ Purpose:
 Model and supervise the complete lifecycle of a Permanent Documentation
 transaction from session start through historical completion.
 
-Version 1.0.0 remains permanently locked in Disabled Mode. It defines lifecycle
+Version 2.0.0 remains permanently locked in Disabled Mode. It defines lifecycle
 phases, validates lifecycle readiness, summarizes lifecycle state, and reports
 safety status only. It never grants human approval, execution, write, rollback,
 or restore authority and performs no permanent file operations.
@@ -17,7 +17,7 @@ or restore authority and performs no permanent file operations.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.0.0";
+    const ENGINE_VERSION = "2.0.0";
     const LIFECYCLE_MODE = "Disabled";
     const REPORT_TYPE =
         "TMS-OS Permanent Documentation Lifecycle Report";
@@ -40,7 +40,7 @@ or restore authority and performs no permanent file operations.
 
     if (
         !window.TMSSessionContext ||
-        !window.TMSPermanentDocumentationSystemCoordinator
+        !window.TMSPermanentDocumentationExecutionCoordinator
     ) {
         console.error(
             "Permanent Documentation Lifecycle Controller could not initialize because its dependencies are unavailable."
@@ -95,12 +95,7 @@ or restore authority and performs no permanent file operations.
         ].join("-");
     }
 
-    function buildPhaseState(systemReport) {
-        const systemState =
-            systemReport && isPlainObject(systemReport.systemState)
-                ? systemReport.systemState
-                : {};
-
+    function buildPhaseState(coordinationPackage) {
         return LIFECYCLE_PHASES.map(function (phase, index) {
             let phaseReady = false;
             let phaseStatus = "Blocked";
@@ -116,53 +111,54 @@ or restore authority and performs no permanent file operations.
                 phase === "Documentation Generation" ||
                 phase === "Review"
             ) {
-                phaseReady =
-                    Boolean(systemReport && systemReport.accepted);
-                phaseStatus =
-                    phaseReady ? "Ready" : "Blocked";
+                phaseReady = Boolean(
+                    coordinationPackage &&
+                    coordinationPackage.accepted
+                );
+                phaseStatus = phaseReady ? "Ready" : "Blocked";
             }
 
             if (phase === "Approval") {
-                phaseReady =
-                    Boolean(systemReport && systemReport.systemReviewEligible);
-                phaseStatus =
-                    phaseReady
-                        ? "Eligible — Approval Locked"
-                        : "Blocked";
+                phaseReady = Boolean(
+                    coordinationPackage &&
+                    coordinationPackage.governanceApprovalVerified === true
+                );
+                phaseStatus = phaseReady
+                    ? "Governance Approved — Execution Locked"
+                    : "Blocked";
             }
 
-            if (phase === "Execution Authorization") {
-                phaseReady = false;
-                phaseStatus = "Disabled";
-            }
-
-            if (phase === "Permanent Write") {
+            if (
+                phase === "Execution Authorization" ||
+                phase === "Permanent Write"
+            ) {
                 phaseReady = false;
                 phaseStatus = "Disabled";
             }
 
             if (phase === "Verification") {
-                phaseReady =
-                    Boolean(systemReport && systemReport.accepted);
-                phaseStatus =
-                    phaseReady ? "Review Only" : "Blocked";
+                phaseReady = Boolean(
+                    coordinationPackage &&
+                    coordinationPackage.lifecycleTraceabilityComplete === true
+                );
+                phaseStatus = phaseReady
+                    ? "Verified — Review Only"
+                    : "Blocked";
             }
 
             if (phase === "Rollback Availability") {
-                phaseReady =
-                    Boolean(
-                        systemState &&
-                        systemState.totalComponents > 0
-                    );
-                phaseStatus =
-                    phaseReady
-                        ? "Available — Restore Disabled"
-                        : "Blocked";
+                phaseReady = Boolean(
+                    coordinationPackage &&
+                    coordinationPackage.coordinationReady === true
+                );
+                phaseStatus = phaseReady
+                    ? "Available — Restore Disabled"
+                    : "Blocked";
             }
 
             if (phase === "Historical Completion") {
                 phaseReady = false;
-                phaseStatus = "Pending Human Closure";
+                phaseStatus = "Pending Separate Human Closure";
             }
 
             return {
@@ -177,289 +173,272 @@ or restore authority and performs no permanent file operations.
         });
     }
 
-    function rejectedReport(message, systemReport, checks) {
-        const snapshot =
-            window.TMSSessionContext.getSnapshot();
-
-        const generatedAt =
-            new Date().toISOString();
-
-        const phaseState =
-            buildPhaseState(systemReport);
+    function rejectedReport(message, coordinationPackage, checks) {
+        const snapshot = window.TMSSessionContext.getSnapshot();
+        const generatedAt = new Date().toISOString();
+        const phaseState = buildPhaseState(coordinationPackage);
 
         return deepFreeze({
             reportType: REPORT_TYPE,
             engineVersion: ENGINE_VERSION,
             lifecycleMode: LIFECYCLE_MODE,
-
-            reportId:
-                createReportId(
-                    snapshot.sessionNumber,
-                    generatedAt
-                ),
-
+            reportId: createReportId(snapshot.sessionNumber, generatedAt),
             generatedAt: generatedAt,
             sessionNumber: snapshot.sessionNumber,
-
             accepted: false,
             message: message,
-
-            sourceSystemAccepted:
-                Boolean(
-                    systemReport &&
-                    systemReport.accepted
-                ),
-
-            sourceSystemReportId:
-                systemReport
-                    ? systemReport.reportId
+            sourceCoordinationAccepted: Boolean(
+                coordinationPackage &&
+                coordinationPackage.accepted
+            ),
+            sourceCoordinationId:
+                coordinationPackage
+                    ? coordinationPackage.coordinationId
                     : null,
-
-            sourceSystemStatus:
-                systemReport
-                    ? systemReport.coordinationStatus
+            sourceCoordinationStatus:
+                coordinationPackage
+                    ? coordinationPackage.coordinationStatus
                     : "Unavailable",
-
             validationChecks: checks || [],
-
-            lifecyclePhaseCount:
-                LIFECYCLE_PHASES.length,
-
+            lifecyclePhaseCount: LIFECYCLE_PHASES.length,
             completedPhaseCount: 0,
             phases: phaseState,
-
+            pipelineStageCount: 0,
+            completedStageCount: 0,
+            finalDecisionRecorded: false,
+            finalDecision: "Not Recorded",
+            governanceApprovalVerified: false,
+            lifecycleTraceabilityComplete: false,
             lifecycleReady: false,
             lifecycleModeled: true,
             lifecycleCompleted: false,
             lifecycleReviewEligible: false,
-
             humanApprovalGranted: false,
+            executionApprovalGranted: false,
             authorizationGranted: false,
             executionAuthorized: false,
             writeAuthorized: false,
             rollbackAuthorized: false,
             restoreAuthorized: false,
-
             actualWritesAttempted: false,
             actualRestoresAttempted: false,
             permanentWritesExecuted: false,
             restoreExecuted: false,
-
             lifecycleStatus: "Rejected",
-
             requiredNextAction:
-                "Correct the failed system-coordination report or lifecycle prerequisite checks.",
-
+                "Correct the failed execution coordination package or lifecycle prerequisite checks.",
             reviewRequired: true
         });
     }
 
-    async function generateLifecycleReport(systemReport) {
-        const sourceReport =
-            systemReport ||
-            await window
-                .TMSPermanentDocumentationSystemCoordinator
-                .generateSystemReport();
+    async function generateLifecycleReport(coordinationPackage) {
+        const sourcePackage =
+            coordinationPackage ||
+            window.TMSPermanentDocumentationExecutionCoordinator
+                .getLastCoordinationPackage();
 
         const checks = [];
+        let sourceValidation = { accepted: false, checks: [] };
 
-        let sourceValidation = {
-            accepted: false,
-            checks: []
-        };
-
-        if (isPlainObject(sourceReport)) {
+        if (isPlainObject(sourcePackage)) {
             sourceValidation =
-                window
-                    .TMSPermanentDocumentationSystemCoordinator
-                    .validateSystemReport(sourceReport);
+                window.TMSPermanentDocumentationExecutionCoordinator
+                    .validateCoordinationPackage(sourcePackage);
         }
 
         checks.push(buildCheck(
-            "System coordination report exists",
-            isPlainObject(sourceReport),
-            "A Permanent Documentation System Coordination Report is required."
+            "Execution coordination package exists",
+            isPlainObject(sourcePackage),
+            "A Permanent Documentation Execution Coordination Package is required."
         ));
 
         checks.push(buildCheck(
-            "System coordination report accepted",
-            Boolean(sourceReport && sourceReport.accepted),
-            "The system coordination report must be accepted."
+            "Execution coordination package accepted",
+            Boolean(sourcePackage && sourcePackage.accepted),
+            "The execution coordination package must be accepted."
         ));
 
         checks.push(buildCheck(
-            "System coordination report validation accepted",
+            "Execution coordination validation accepted",
             Boolean(sourceValidation.accepted),
-            "The system coordination report must pass validation."
+            "The execution coordination package must pass validation."
         ));
 
         checks.push(buildCheck(
-            "Coordinator mode disabled",
-            Boolean(sourceReport) &&
-                sourceReport.coordinatorMode === "Disabled",
-            "The System Coordinator must remain in Disabled mode."
+            "Coordination mode disabled",
+            Boolean(sourcePackage) &&
+                sourcePackage.coordinationMode === "Disabled",
+            "The Execution Coordinator must remain in Disabled mode."
         ));
 
         checks.push(buildCheck(
-            "System ready",
-            Boolean(sourceReport) &&
-                sourceReport.systemReady === true,
-            "The coordinated system must be ready."
+            "Twelve-stage lifecycle retained",
+            Boolean(sourcePackage) &&
+                sourcePackage.pipelineStageCount === 12 &&
+                sourcePackage.completedStageCount === 12,
+            "All twelve completed pipeline stages must be retained."
         ));
 
         checks.push(buildCheck(
-            "System coordinated",
-            Boolean(sourceReport) &&
-                sourceReport.systemCoordinated === true,
-            "The system must be coordinated."
+            "Final governance decision retained",
+            Boolean(sourcePackage) &&
+                sourcePackage.finalDecisionRecorded === true &&
+                sourcePackage.finalDecision === "Approve Governance Structure",
+            "The approved final governance decision must be retained."
         ));
 
         checks.push(buildCheck(
-            "Human approval remains ungranted",
-            Boolean(sourceReport) &&
-                sourceReport.humanApprovalGranted === false,
-            "Human approval must remain ungranted."
+            "Governance approval verified",
+            Boolean(sourcePackage) &&
+                sourcePackage.governanceApprovalVerified === true,
+            "Governance approval must be verified."
+        ));
+
+        checks.push(buildCheck(
+            "Lifecycle traceability complete",
+            Boolean(sourcePackage) &&
+                sourcePackage.lifecycleTraceabilityComplete === true,
+            "Complete lifecycle traceability is required."
+        ));
+
+        checks.push(buildCheck(
+            "Coordination ready",
+            Boolean(sourcePackage) &&
+                sourcePackage.coordinationReady === true,
+            "The execution coordination package must be ready."
+        ));
+
+        checks.push(buildCheck(
+            "Execution approval remains ungranted",
+            Boolean(sourcePackage) &&
+                sourcePackage.executionApprovalGranted === false,
+            "Governance approval must remain separate from execution approval."
+        ));
+
+        checks.push(buildCheck(
+            "Authorization remains ungranted",
+            Boolean(sourcePackage) &&
+                sourcePackage.authorizationGranted === false,
+            "Authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "Execution remains unauthorized",
-            Boolean(sourceReport) &&
-                sourceReport.executionAuthorized === false,
+            Boolean(sourcePackage) &&
+                sourcePackage.executionAuthorized === false,
             "Execution authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "Write remains unauthorized",
-            Boolean(sourceReport) &&
-                sourceReport.writeAuthorized === false,
+            Boolean(sourcePackage) &&
+                sourcePackage.writeAuthorized === false,
             "Permanent write authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "Rollback remains unauthorized",
-            Boolean(sourceReport) &&
-                sourceReport.rollbackAuthorized === false,
+            Boolean(sourcePackage) &&
+                sourcePackage.rollbackAuthorized === false,
             "Rollback authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "Restore remains unauthorized",
-            Boolean(sourceReport) &&
-                sourceReport.restoreAuthorized === false,
+            Boolean(sourcePackage) &&
+                sourcePackage.restoreAuthorized === false,
             "Restore authorization must remain locked."
         ));
 
         checks.push(buildCheck(
             "No permanent writes executed",
-            Boolean(sourceReport) &&
-                sourceReport.permanentWritesExecuted === false,
+            Boolean(sourcePackage) &&
+                sourcePackage.permanentWritesExecuted === false,
             "No permanent file may be modified."
         ));
 
         checks.push(buildCheck(
             "No restore executed",
-            Boolean(sourceReport) &&
-                sourceReport.restoreExecuted === false,
+            Boolean(sourcePackage) &&
+                sourcePackage.restoreExecuted === false,
             "No restore operation may occur."
         ));
 
-        const accepted =
-            checks.every(function (check) {
-                return check.passed;
-            });
-
-        if (!accepted) {
-            lastLifecycleReport =
-                rejectedReport(
-                    "The Permanent Documentation System Coordination Report failed Lifecycle Controller validation.",
-                    sourceReport,
-                    checks
-                );
-
+        if (!checks.every(function (check) { return check.passed; })) {
+            lastLifecycleReport = rejectedReport(
+                "The Permanent Documentation Execution Coordination Package failed Lifecycle Controller validation.",
+                sourcePackage,
+                checks
+            );
             return lastLifecycleReport;
         }
 
-        const snapshot =
-            window.TMSSessionContext.getSnapshot();
+        const snapshot = window.TMSSessionContext.getSnapshot();
+        const generatedAt = new Date().toISOString();
+        const phases = buildPhaseState(sourcePackage);
 
-        const generatedAt =
-            new Date().toISOString();
-
-        const phases =
-            buildPhaseState(sourceReport);
-
-        lastLifecycleReport =
-            deepFreeze({
-                reportType: REPORT_TYPE,
-                engineVersion: ENGINE_VERSION,
-                lifecycleMode: LIFECYCLE_MODE,
-
-                reportId:
-                    createReportId(
-                        snapshot.sessionNumber,
-                        generatedAt
-                    ),
-
-                generatedAt: generatedAt,
-                sessionNumber:
-                    snapshot.sessionNumber,
-
-                accepted: true,
-
-                message:
-                    "The complete Permanent Documentation lifecycle is modeled and available for supervised human review in Disabled mode. No authority was granted and no permanent file operations occurred.",
-
-                sourceSystemAccepted: true,
-                sourceSystemReportId:
-                    sourceReport.reportId,
-                sourceSystemStatus:
-                    sourceReport.coordinationStatus,
-                sourceSystemGeneratedAt:
-                    sourceReport.generatedAt,
-
-                validationChecks: checks,
-
-                lifecyclePhaseCount:
-                    LIFECYCLE_PHASES.length,
-
-                completedPhaseCount:
-                    phases.filter(function (phase) {
-                        return phase.ready;
-                    }).length,
-
-                phases: phases,
-
-                lifecycleReady: true,
-                lifecycleModeled: true,
-                lifecycleCompleted: false,
-                lifecycleReviewEligible: true,
-
-                humanApprovalGranted: false,
-                authorizationGranted: false,
-                executionAuthorized: false,
-                writeAuthorized: false,
-                rollbackAuthorized: false,
-                restoreAuthorized: false,
-
-                actualWritesAttempted: false,
-                actualRestoresAttempted: false,
-                permanentWritesExecuted: false,
-                restoreExecuted: false,
-
-                lifecycleStatus:
-                    "Modeled for Supervised Human Review — Disabled",
-
-                requiredNextAction:
-                    "Review the complete lifecycle model. Any future execution-enabled lifecycle requires a separate approved milestone.",
-
-                reviewRequired: true,
-
-                reviewChoices: [
-                    "Approve Lifecycle Controller Structure",
-                    "Revise Session",
-                    "Cancel Lifecycle Report"
-                ]
-            });
+        lastLifecycleReport = deepFreeze({
+            reportType: REPORT_TYPE,
+            engineVersion: ENGINE_VERSION,
+            lifecycleMode: LIFECYCLE_MODE,
+            reportId: createReportId(snapshot.sessionNumber, generatedAt),
+            generatedAt: generatedAt,
+            sessionNumber: snapshot.sessionNumber,
+            sourceSessionNumber: sourcePackage.sourceSessionNumber,
+            accepted: true,
+            message:
+                "The complete Permanent Documentation lifecycle was modeled from the validated execution coordination package in Disabled mode. Governance approval was retained, execution approval remained ungranted, and no permanent file operations occurred.",
+            sourceCoordinationAccepted: true,
+            sourceCoordinationId: sourcePackage.coordinationId,
+            sourceCoordinationStatus: sourcePackage.coordinationStatus,
+            sourceCoordinationEngineVersion: sourcePackage.engineVersion,
+            sourceCoordinationGeneratedAt: sourcePackage.generatedAt,
+            sourceDecisionPackageId: sourcePackage.sourceDecisionPackageId,
+            sourceGatewayId: sourcePackage.sourceGatewayId,
+            sourceReviewPackageId: sourcePackage.sourceReviewPackageId,
+            validationAccepted: true,
+            validationChecks: checks,
+            lifecyclePhaseCount: LIFECYCLE_PHASES.length,
+            completedPhaseCount:
+                phases.filter(function (phase) {
+                    return phase.ready;
+                }).length,
+            phases: phases,
+            pipelineStageCount: sourcePackage.pipelineStageCount,
+            completedStageCount: sourcePackage.completedStageCount,
+            finalDecisionRecorded: true,
+            finalDecision: sourcePackage.finalDecision,
+            finalDecisionStatus: sourcePackage.finalDecisionStatus,
+            governanceApprovalVerified:
+                sourcePackage.governanceApprovalVerified === true,
+            lifecycleTraceabilityComplete:
+                sourcePackage.lifecycleTraceabilityComplete === true,
+            lifecycleReady: true,
+            lifecycleModeled: true,
+            lifecycleCompleted: false,
+            lifecycleReviewEligible: true,
+            humanApprovalGranted: false,
+            executionApprovalGranted: false,
+            authorizationGranted: false,
+            executionAuthorized: false,
+            writeAuthorized: false,
+            rollbackAuthorized: false,
+            restoreAuthorized: false,
+            actualWritesAttempted: false,
+            actualRestoresAttempted: false,
+            permanentWritesExecuted: false,
+            restoreExecuted: false,
+            lifecycleStatus:
+                "Modeled from Execution Coordination — Governance Approved / Execution Disabled",
+            requiredNextAction:
+                "Retain the lifecycle report for review. Any future execution-enabled lifecycle requires a separate approved module.",
+            reviewRequired: true,
+            reviewChoices: [
+                "Approve Lifecycle Controller Structure",
+                "Revise Session",
+                "Cancel Lifecycle Report"
+            ]
+        });
 
         return lastLifecycleReport;
     }
@@ -486,7 +465,58 @@ or restore authority and performs no permanent file operations.
             "Lifecycle mode disabled",
             Boolean(current) &&
                 current.lifecycleMode === LIFECYCLE_MODE,
-            "Version 1.0.0 must remain in Disabled mode."
+            "Version 2.0.0 must remain in Disabled mode."
+        ));
+
+        checks.push(buildCheck(
+            "Source execution coordination accepted",
+            Boolean(current) &&
+                current.sourceCoordinationAccepted === true,
+            "The lifecycle report must retain an accepted execution coordination source."
+        ));
+
+        checks.push(buildCheck(
+            "Source validation accepted",
+            Boolean(current) &&
+                current.validationAccepted === true,
+            "The source execution coordination package must pass validation."
+        ));
+
+        checks.push(buildCheck(
+            "Twelve-stage lifecycle evidence retained",
+            Boolean(current) &&
+                current.pipelineStageCount === 12 &&
+                current.completedStageCount === 12,
+            "All twelve completed pipeline stages must be retained."
+        ));
+
+        checks.push(buildCheck(
+            "Final governance decision retained",
+            Boolean(current) &&
+                current.finalDecisionRecorded === true &&
+                current.finalDecision === "Approve Governance Structure",
+            "The approved final governance decision must be retained."
+        ));
+
+        checks.push(buildCheck(
+            "Governance approval verified",
+            Boolean(current) &&
+                current.governanceApprovalVerified === true,
+            "Governance approval must be verified."
+        ));
+
+        checks.push(buildCheck(
+            "Lifecycle traceability complete",
+            Boolean(current) &&
+                current.lifecycleTraceabilityComplete === true,
+            "Complete lifecycle traceability must be retained."
+        ));
+
+        checks.push(buildCheck(
+            "Execution approval remains ungranted",
+            Boolean(current) &&
+                current.executionApprovalGranted === false,
+            "The lifecycle report must not grant execution approval."
         ));
 
         checks.push(buildCheck(
@@ -643,10 +673,24 @@ or restore authority and performs no permanent file operations.
                 current.lifecycleMode,
             "Lifecycle Status: " +
                 current.lifecycleStatus,
+            "Source Work Session: " +
+                (current.sourceSessionNumber || "Unavailable"),
             "Lifecycle Phases: " +
                 current.lifecyclePhaseCount,
             "Ready Phases: " +
                 current.completedPhaseCount,
+            "Pipeline Stages: " +
+                current.pipelineStageCount,
+            "Completed Stages: " +
+                current.completedStageCount,
+            "Final Decision Recorded: " +
+                (current.finalDecisionRecorded ? "YES" : "NO"),
+            "Final Decision: " +
+                current.finalDecision,
+            "Governance Approval Verified: " +
+                (current.governanceApprovalVerified ? "YES" : "NO"),
+            "Lifecycle Traceability Complete: " +
+                (current.lifecycleTraceabilityComplete ? "YES" : "NO"),
             "Lifecycle Ready: " +
                 (current.lifecycleReady ? "YES" : "NO"),
             "Lifecycle Modeled: " +
@@ -659,6 +703,7 @@ or restore authority and performs no permanent file operations.
                         ? "YES"
                         : "NO"
                 ),
+            "Execution Approval Granted: NO",
             "Human Approval Granted: NO",
             "Authorization Granted: NO",
             "Execution Authorized: NO",
