@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 101 — Six-Document Update Plan
+Work Session 110 — Enriched STATE-001 Proposal Contract
 File: js/session/document-update-engine.js
 
 Purpose:
@@ -11,7 +11,7 @@ Update Plan for six governed documents. No permanent files are written.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.1.0";
+    const ENGINE_VERSION = "1.2.0";
     const REQUIRED_STATUS = "Closure Approved";
     const SNAPSHOT_HISTORY_DOCUMENT_ID =
         "WORKSPACE-SNAPSHOT-HISTORY-001";
@@ -211,13 +211,41 @@ Update Plan for six governed documents. No permanent files are written.
             proposal(
                 "STATE-001",
                 "Replace",
-                "The current-state document must reflect the newly approved session state.",
+                "The current-state document must reflect the newly approved session state and its approved governance safeguards.",
                 {
                     currentVersion: review.session.version,
                     currentMilestone: review.session.milestone,
                     currentModule: review.session.module,
                     lastApprovedSession: review.session.sessionNumber,
-                    sessionStatus: review.session.status
+                    sessionStatus: review.session.status,
+                    governanceMode: "Disabled",
+                    documentationMode: "Review Only",
+                    executionMode: "Disabled",
+                    validationStatus:
+                        review.validation &&
+                        review.validation.readyForReview === true &&
+                        Number(review.validation.failedTestCount || 0) === 0
+                            ? "Validated — No Failed Tests"
+                            : "Validation Review Required",
+                    readyForReview: Boolean(
+                        review.validation &&
+                        review.validation.readyForReview === true
+                    ),
+                    failedTestCount: Number(
+                        review.validation &&
+                        review.validation.failedTestCount || 0
+                    ),
+                    reviewPackageType:
+                        review.packageType ||
+                        "TMS-OS Prepare Session Review Package",
+                    reviewGeneratedAt:
+                        review.generatedAt || null,
+                    governanceSource:
+                        "Approved Session Review Package",
+                    executionLockStatus: "Locked",
+                    permanentWriteStatus: "Not Executed",
+                    rollbackStatus: "Not Executed",
+                    restoreStatus: "Not Executed"
                 },
                 true
             ),
@@ -285,7 +313,7 @@ Update Plan for six governed documents. No permanent files are written.
             generatedAt: new Date().toISOString(),
             accepted: true,
             message:
-                "Reviewable proposals generated for six governed documents. No permanent files were changed.",
+                "Reviewable proposals generated for six governed documents. STATE-001 includes approved session-governance metadata. No permanent files were changed.",
             approval: approval,
             session: review.session,
             proposals: proposals,
