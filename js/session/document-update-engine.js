@@ -1,13 +1,13 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 111 — Enriched DOC-STATE-001 Proposal Contract
+Work Session 112 — Enriched WS-HIST-001 Proposal Contract
 File: js/session/document-update-engine.js
 
 Purpose:
 Transform an approved Session Context into a read-only, reviewable Document
-Update Plan for six governed documents. Version 1.3.0 preserves the enriched
-STATE-001 proposal contract from v1.2.0 and adds an enriched DOC-STATE-001
-proposal payload based only on the approved session review package.
+Update Plan for six governed documents. Version 1.4.0 preserves the enriched STATE-001 and DOC-STATE-001 proposal
+contracts and adds an enriched WS-HIST-001 proposal envelope based only on the
+approved session review package.
 
 No downstream lifecycle, state, or workflow component is consumed.
 No permanent files are written.
@@ -16,7 +16,7 @@ No permanent files are written.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.3.0";
+    const ENGINE_VERSION = "1.4.0";
     const REQUIRED_STATUS = "Closure Approved";
     const SNAPSHOT_HISTORY_DOCUMENT_ID =
         "WORKSPACE-SNAPSHOT-HISTORY-001";
@@ -92,6 +92,69 @@ No permanent files are written.
             technicalDebt: review.technicalDebt,
             enhancementIdeas: review.enhancementIdeas,
             documentationUpdates: review.documentationUpdates
+        };
+    }
+
+    function buildWorkSessionHistoryPayload(review) {
+        const validation =
+            review && review.validation
+                ? review.validation
+                : {};
+
+        const failedTestCount =
+            Number(validation.failedTestCount) || 0;
+
+        return {
+            sessionRecord:
+                buildSessionRecord(review),
+
+            governanceEnvelope: {
+                governanceMode:
+                    "Disabled",
+
+                documentationMode:
+                    "Review Only",
+
+                executionMode:
+                    "Disabled",
+
+                reviewPackageType:
+                    review.packageType ||
+                    "TMS-OS Prepare Session Review Package",
+
+                reviewGeneratedAt:
+                    review.generatedAt || null,
+
+                validationStatus:
+                    validation.readyForReview === true &&
+                    failedTestCount === 0
+                        ? "Validated — No Failed Tests"
+                        : "Validation Review Required",
+
+                failedTestCount:
+                    failedTestCount,
+
+                approvalStatus:
+                    review.session.status,
+
+                humanApprovalRecorded:
+                    true,
+
+                permanentWriteStatus:
+                    "Not Executed",
+
+                rollbackStatus:
+                    "Not Executed",
+
+                restoreStatus:
+                    "Not Executed",
+
+                executionLockStatus:
+                    "Locked",
+
+                downstreamGovernanceDependency:
+                    false
+            }
         };
     }
 
@@ -433,10 +496,7 @@ No permanent files are written.
                 "WS-HIST-001",
                 "Append",
                 "Every approved work session requires a permanent history entry.",
-                {
-                    sessionRecord:
-                        sessionRecord
-                },
+                buildWorkSessionHistoryPayload(review),
                 true
             ),
             proposal(
@@ -530,7 +590,7 @@ No permanent files are written.
             accepted:
                 true,
             message:
-                "Reviewable proposals generated for six governed documents. STATE-001 and DOC-STATE-001 include approved session-governance metadata. No permanent files were changed.",
+                "Reviewable proposals generated for six governed documents. WS-HIST-001, STATE-001, and DOC-STATE-001 include approved session-governance metadata. No permanent files were changed.",
             approval:
                 approval,
             session:
