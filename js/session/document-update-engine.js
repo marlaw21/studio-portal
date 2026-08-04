@@ -1,13 +1,13 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 114 — Enriched MILE-HIST-001 Proposal Contract
+Work Session 115 — Enriched WORKSPACE-SNAPSHOT-HISTORY-001 Proposal Contract
 File: js/session/document-update-engine.js
 
 Purpose:
 Transform an approved Session Context into a read-only, reviewable Document
-Update Plan for six governed documents. Version 1.6.0 preserves the enriched WS-HIST-001, STATE-001, DOC-STATE-001,
-and DEC-LOG-001 proposal contracts and adds an enriched MILE-HIST-001 proposal
-envelope based only on the approved session review package.
+Update Plan for six governed documents. Version 1.7.0 preserves all five previously enriched permanent-document proposal
+contracts and adds an enriched WORKSPACE-SNAPSHOT-HISTORY-001 proposal envelope
+based only on the approved session review package and validated snapshot record.
 
 No downstream lifecycle, state, or workflow component is consumed.
 No permanent files are written.
@@ -16,7 +16,7 @@ No permanent files are written.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.6.0";
+    const ENGINE_VERSION = "1.7.0";
     const REQUIRED_STATUS = "Closure Approved";
     const SNAPSHOT_HISTORY_DOCUMENT_ID =
         "WORKSPACE-SNAPSHOT-HISTORY-001";
@@ -470,7 +470,50 @@ No permanent files are written.
         };
     }
 
-    function getSnapshotHistoryProposal() {
+    function buildWorkspaceSnapshotHistoryPayload(latestRecord, review) {
+        const validation = review && review.validation ? review.validation : {};
+        const failedTestCount = Number(validation.failedTestCount) || 0;
+
+        return {
+            snapshotRecord: clone(latestRecord),
+            sourceSession: {
+                sessionNumber: review.session.sessionNumber,
+                version: review.session.version,
+                milestone: review.session.milestone,
+                module: review.session.module,
+                status: review.session.status
+            },
+            governanceEnvelope: {
+                governanceMode: "Disabled",
+                documentationMode: "Review Only",
+                executionMode: "Disabled",
+                reviewPackageType: review.packageType || "TMS-OS Prepare Session Review Package",
+                reviewGeneratedAt: review.generatedAt || null,
+                validationStatus: validation.readyForReview === true && failedTestCount === 0
+                    ? "Validated — No Failed Tests"
+                    : "Validation Review Required",
+                failedTestCount: failedTestCount,
+                approvalStatus: review.session.status,
+                humanApprovalRecorded: true,
+                permanentWriteStatus: "Not Executed",
+                rollbackStatus: "Not Executed",
+                restoreStatus: "Not Executed",
+                executionLockStatus: "Locked",
+                sourceSnapshotEmbedded: false,
+                duplicateDetected: false,
+                downstreamGovernanceDependency: false
+            },
+            transactionMetadata: {
+                governedDocumentId: SNAPSHOT_HISTORY_DOCUMENT_ID,
+                collectionName: "snapshots",
+                transactionCollectionName: "items",
+                updateMode: "Append",
+                proposalSource: "Workspace Snapshot History Manager"
+            }
+        };
+    }
+
+    function getSnapshotHistoryProposal(review) {
         const manager =
             window.TMSWorkspaceSnapshotHistoryManager;
 
@@ -549,10 +592,10 @@ No permanent files are written.
             SNAPSHOT_HISTORY_DOCUMENT_ID,
             "Append",
             "The latest validated compact workspace snapshot record is not yet present in the governed snapshot history.",
-            {
-                snapshotRecord:
-                    clone(latestRecord)
-            },
+            buildWorkspaceSnapshotHistoryPayload(
+                latestRecord,
+                review
+            ),
             true
         );
     }
@@ -668,7 +711,7 @@ No permanent files are written.
                     : null,
                 hasEntries(review.completedTasks)
             ),
-            getSnapshotHistoryProposal()
+            getSnapshotHistoryProposal(review)
         ];
 
         const summary =
@@ -707,7 +750,7 @@ No permanent files are written.
             accepted:
                 true,
             message:
-                "Reviewable proposals generated for six governed documents. WS-HIST-001, STATE-001, DOC-STATE-001, DEC-LOG-001, and MILE-HIST-001 include approved session-governance metadata. No permanent files were changed.",
+                "Reviewable proposals generated for six governed documents. All six governed document proposals include approved session-governance metadata. No permanent files were changed.",
             approval:
                 approval,
             session:
