@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 101 — Controlled Execution Engine v1.3.0
+Work Session 116 — Controlled Execution Engine v2.0.1
 File: js/session/controlled-execution-engine.js
 
 Purpose:
@@ -26,7 +26,7 @@ when validating captured original and proposed documents.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.3.0";
+    const ENGINE_VERSION = "2.0.1";
     const PLAN_TYPE = "TMS-OS Controlled Permanent Output Execution Plan";
 
     const EXPECTED_DOCUMENTS = Object.freeze([
@@ -219,6 +219,18 @@ when validating captured original and proposed documents.
             "No rollback restore may have been executed."
         ));
 
+        checks.push(buildCheck(
+            "Governance evidence retained",
+            Boolean(capturePackage) &&
+                capturePackage.governanceEvidenceRetained ===
+                    true &&
+                capturePackage.sourceSessionIdentityRetained ===
+                    true &&
+                capturePackage.downstreamGovernanceDependency ===
+                    false,
+            "The capture package must retain the enriched six-document governance evidence."
+        ));
+
         const documents =
             capturePackage && Array.isArray(capturePackage.documents)
                 ? capturePackage.documents
@@ -265,6 +277,25 @@ when validating captured original and proposed documents.
                     document.backupStatus === "Captured and Verified" &&
                     document.verificationStatus === "Passed" &&
                     validateDocumentDecisionState(document) &&
+                    typeof document.writerVersion === "string" &&
+                    document.writerVersion.length > 0 &&
+                    typeof document.proposalAction === "string" &&
+                    document.proposalAction.length > 0 &&
+                    isPlainObject(document.sourceSession) &&
+                    isPlainObject(document.governanceEnvelope) &&
+                    document.governanceEnvelope.governanceMode === "Disabled" &&
+                    document.governanceEnvelope.documentationMode === "Review Only" &&
+                    document.governanceEnvelope.executionMode === "Disabled" &&
+                    document.governanceEnvelope.executionLockStatus === "Locked" &&
+                    document.downstreamGovernanceDependency === false &&
+                    (
+                        document.documentId !== "WORKSPACE-SNAPSHOT-HISTORY-001" ||
+                        (
+                            isPlainObject(document.transactionMetadata) &&
+                            document.transactionMetadata.governedDocumentId ===
+                                document.documentId
+                        )
+                    ) &&
                     document.writeAuthorized === false &&
                     document.rollbackAuthorized === false &&
                     document.permanentWriteExecuted === false &&
@@ -341,6 +372,52 @@ when validating captured original and proposed documents.
                     ? document.proposedItemCount
                     : document.proposedSectionCount,
 
+            writerId:
+                document.writerId,
+
+            writerVersion:
+                document.writerVersion,
+
+            proposalAction:
+                document.proposalAction,
+
+            reviewRequired:
+                document.reviewRequired,
+
+            reviewChoices:
+                clone(
+                    document.reviewChoices || []
+                ),
+
+            sourceSession:
+                clone(
+                    document.sourceSession
+                ),
+
+            governanceEnvelope:
+                clone(
+                    document.governanceEnvelope
+                ),
+
+            transactionMetadata:
+                document.transactionMetadata
+                    ? clone(
+                        document.transactionMetadata
+                    )
+                    : null,
+
+            governanceEnvelopeRetained:
+                document.governanceEnvelopeRetained,
+
+            sourceSessionIdentityRetained:
+                document.sourceSessionIdentityRetained,
+
+            transactionMetadataRetained:
+                document.transactionMetadataRetained,
+
+            downstreamGovernanceDependency:
+                document.downstreamGovernanceDependency,
+
             prerequisites: writeRequired
                 ? [
                     "Original permanent document captured",
@@ -386,8 +463,14 @@ when validating captured original and proposed documents.
         capturePackage,
         validation
     ) {
-        const snapshot =
+        const sessionSnapshot =
             window.TMSSessionContext.getSnapshot();
+
+        const sourceSessionNumber =
+            capturePackage &&
+            capturePackage.sessionNumber
+                ? capturePackage.sessionNumber
+                : sessionSnapshot.sessionNumber;
 
         const generatedAt =
             new Date().toISOString();
@@ -396,11 +479,11 @@ when validating captured original and proposed documents.
             planType: PLAN_TYPE,
             engineVersion: ENGINE_VERSION,
             planId: createPlanId(
-                snapshot.sessionNumber,
+                sourceSessionNumber,
                 generatedAt
             ),
             generatedAt: generatedAt,
-            sessionNumber: snapshot.sessionNumber,
+            sessionNumber: sourceSessionNumber,
 
             accepted: false,
             message: message,
@@ -434,6 +517,12 @@ when validating captured original and proposed documents.
             originalDocumentsCaptured: false,
             proposedDocumentsCaptured: false,
             rollbackReady: false,
+
+            governanceEvidenceRetained: false,
+            sourceSessionIdentityRetained:
+                Boolean(sourceSessionNumber),
+            transactionMetadataRetained: false,
+            downstreamGovernanceDependency: false,
 
             executionReady: false,
             executionAuthorized: false,
@@ -496,8 +585,8 @@ when validating captured original and proposed documents.
             executionSteps.length -
             writeRequiredDocumentCount;
 
-        const snapshot =
-            window.TMSSessionContext.getSnapshot();
+        const sourceSessionNumber =
+            sourceCapture.sessionNumber;
 
         const generatedAt =
             new Date().toISOString();
@@ -506,11 +595,11 @@ when validating captured original and proposed documents.
             planType: PLAN_TYPE,
             engineVersion: ENGINE_VERSION,
             planId: createPlanId(
-                snapshot.sessionNumber,
+                sourceSessionNumber,
                 generatedAt
             ),
             generatedAt: generatedAt,
-            sessionNumber: snapshot.sessionNumber,
+            sessionNumber: sourceSessionNumber,
 
             accepted: true,
             message:
@@ -549,6 +638,19 @@ when validating captured original and proposed documents.
             originalDocumentsCaptured: true,
             proposedDocumentsCaptured: true,
             rollbackReady: true,
+
+            governanceEvidenceRetained: true,
+            sourceSessionIdentityRetained: true,
+            transactionMetadataRetained:
+                executionSteps.some(function (
+                    step
+                ) {
+                    return (
+                        step.transactionMetadata !==
+                        null
+                    );
+                }),
+            downstreamGovernanceDependency: false,
 
             executionReady: true,
             executionAuthorized: false,
@@ -634,6 +736,18 @@ when validating captured original and proposed documents.
         ));
 
         checks.push(buildCheck(
+            "Enriched governance evidence retained",
+            Boolean(current) &&
+                current.governanceEvidenceRetained ===
+                    true &&
+                current.sourceSessionIdentityRetained ===
+                    true &&
+                current.downstreamGovernanceDependency ===
+                    false,
+            "The execution plan must preserve the enriched six-document governance evidence."
+        ));
+
+        checks.push(buildCheck(
             "Execution remains unauthorized",
             Boolean(current) &&
                 current.executionAuthorized === false,
@@ -711,6 +825,25 @@ when validating captured original and proposed documents.
                     step.originalDocumentCaptured === true &&
                     step.proposedDocumentCaptured === true &&
                     step.prerequisiteStatus === "Passed" &&
+                    typeof step.writerVersion === "string" &&
+                    step.writerVersion.length > 0 &&
+                    typeof step.proposalAction === "string" &&
+                    step.proposalAction.length > 0 &&
+                    isPlainObject(step.sourceSession) &&
+                    isPlainObject(step.governanceEnvelope) &&
+                    step.governanceEnvelope.governanceMode === "Disabled" &&
+                    step.governanceEnvelope.documentationMode === "Review Only" &&
+                    step.governanceEnvelope.executionMode === "Disabled" &&
+                    step.governanceEnvelope.executionLockStatus === "Locked" &&
+                    step.downstreamGovernanceDependency === false &&
+                    (
+                        step.documentId !== "WORKSPACE-SNAPSHOT-HISTORY-001" ||
+                        (
+                            isPlainObject(step.transactionMetadata) &&
+                            step.transactionMetadata.governedDocumentId ===
+                                step.documentId
+                        )
+                    ) &&
                     step.writeAuthorized === false &&
                     step.rollbackAuthorized === false &&
                     step.permanentWriteExecuted === false &&
@@ -817,6 +950,24 @@ when validating captured original and proposed documents.
             "Rollback Ready: " +
                 (
                     current.rollbackReady
+                        ? "YES"
+                        : "NO"
+                ),
+            "Governance Evidence Retained: " +
+                (
+                    current.governanceEvidenceRetained
+                        ? "YES"
+                        : "NO"
+                ),
+            "Source Session Identity Retained: " +
+                (
+                    current.sourceSessionIdentityRetained
+                        ? "YES"
+                        : "NO"
+                ),
+            "Downstream Governance Dependency: " +
+                (
+                    current.downstreamGovernanceDependency
                         ? "YES"
                         : "NO"
                 ),

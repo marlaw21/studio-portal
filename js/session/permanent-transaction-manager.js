@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 101 — Permanent Transaction Manager v1.3.0
+Work Session 116 — Permanent Transaction Manager v2.0.1
 File: js/session/permanent-transaction-manager.js
 
 Purpose:
@@ -25,7 +25,7 @@ or otherwise modify any permanent file.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.3.0";
+    const ENGINE_VERSION = "2.0.1";
 
     const EXPECTED_DOCUMENTS = Object.freeze([
         "WS-HIST-001",
@@ -95,6 +95,437 @@ or otherwise modify any permanent file.
     function asFiniteNumber(value, fallback) {
         const number = Number(value);
         return Number.isFinite(number) ? number : fallback;
+    }
+
+    function firstPlainObject(values) {
+        for (let index = 0; index < values.length; index += 1) {
+            if (isPlainObject(values[index])) {
+                return values[index];
+            }
+        }
+
+        return null;
+    }
+
+    function firstDefined(values, fallback) {
+        for (let index = 0; index < values.length; index += 1) {
+            if (
+                values[index] !== undefined &&
+                values[index] !== null
+            ) {
+                return values[index];
+            }
+        }
+
+        return fallback;
+    }
+
+    function normalizeSourceSessionCandidate(
+        snapshot
+    ) {
+        if (!isPlainObject(snapshot)) {
+            return null;
+        }
+
+        const sessionNumber =
+            firstDefined([
+                snapshot.sourceSessionNumber,
+                snapshot.sessionNumber,
+                snapshot.lastApprovedSession
+            ], null);
+
+        if (
+            sessionNumber === null ||
+            sessionNumber === "Unavailable"
+        ) {
+            return null;
+        }
+
+        return {
+            sessionNumber:
+                String(sessionNumber),
+
+            version:
+                firstDefined([
+                    snapshot.sourceVersion,
+                    snapshot.version
+                ], "Unavailable"),
+
+            milestone:
+                firstDefined([
+                    snapshot.sourceMilestone,
+                    snapshot.milestone
+                ], "Unavailable"),
+
+            module:
+                firstDefined([
+                    snapshot.sourceModule,
+                    snapshot.module
+                ], "Unavailable"),
+
+            status:
+                firstDefined([
+                    snapshot.sourceStatus,
+                    snapshot.status
+                ], "Unavailable")
+        };
+    }
+
+    function deriveDraftPackageSourceSession(
+        draftPackage
+    ) {
+        const drafts =
+            draftPackage &&
+            Array.isArray(draftPackage.drafts)
+                ? draftPackage.drafts
+                : [];
+
+        for (
+            let index = 0;
+            index < drafts.length;
+            index += 1
+        ) {
+            const draft =
+                drafts[index] &&
+                drafts[index].draft;
+
+            if (!isPlainObject(draft)) {
+                continue;
+            }
+
+            const candidates = [
+                draft.workSessionHistorySnapshot,
+                draft.currentStateSnapshot,
+                draft.documentationStateSnapshot,
+                draft.decisionLogSnapshot,
+                draft.milestoneHistorySnapshot,
+                draft.workspaceSnapshotHistorySnapshot
+            ];
+
+            for (
+                let candidateIndex = 0;
+                candidateIndex < candidates.length;
+                candidateIndex += 1
+            ) {
+                const normalized =
+                    normalizeSourceSessionCandidate(
+                        candidates[candidateIndex]
+                    );
+
+                if (normalized) {
+                    return normalized;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    function extractProposalEvidence(
+        item,
+        draft,
+        documentId,
+        fallbackSourceSession
+    ) {
+        const snapshot =
+            firstPlainObject([
+                draft && draft.workspaceSnapshotHistorySnapshot,
+                draft && draft.milestoneHistorySnapshot,
+                draft && draft.decisionLogSnapshot,
+                draft && draft.documentationStateSnapshot,
+                draft && draft.currentStateSnapshot
+            ]) || {};
+
+        const sourceSession = {
+            sessionNumber:
+                String(
+                    firstDefined([
+                        snapshot.sourceSessionNumber,
+                        snapshot.sessionNumber,
+                        snapshot.lastApprovedSession,
+                        draft && draft.sessionNumber,
+                        fallbackSourceSession &&
+                            fallbackSourceSession.sessionNumber
+                    ], "Unavailable")
+                ),
+
+            version:
+                firstDefined([
+                    snapshot.sourceVersion,
+                    snapshot.version,
+                    fallbackSourceSession &&
+                        fallbackSourceSession.version
+                ], "Unavailable"),
+
+            milestone:
+                firstDefined([
+                    snapshot.sourceMilestone,
+                    snapshot.milestone,
+                    draft && draft.milestone,
+                    fallbackSourceSession &&
+                        fallbackSourceSession.milestone
+                ], "Unavailable"),
+
+            module:
+                firstDefined([
+                    snapshot.sourceModule,
+                    snapshot.module,
+                    draft && draft.module,
+                    fallbackSourceSession &&
+                        fallbackSourceSession.module
+                ], "Unavailable"),
+
+            status:
+                firstDefined([
+                    snapshot.sourceStatus,
+                    snapshot.status,
+                    fallbackSourceSession &&
+                        fallbackSourceSession.status
+                ], "Unavailable")
+        };
+
+        const governanceEnvelope = {
+            governanceMode:
+                firstDefined([
+                    snapshot.governanceMode,
+                    draft && draft.governanceMode
+                ], "Disabled"),
+
+            documentationMode:
+                firstDefined([
+                    snapshot.documentationMode,
+                    draft && draft.documentationMode
+                ], "Review Only"),
+
+            executionMode:
+                firstDefined([
+                    snapshot.executionMode,
+                    draft && draft.executionMode
+                ], "Disabled"),
+
+            validationStatus:
+                firstDefined([
+                    snapshot.validationStatus,
+                    draft && draft.validationStatus
+                ], "Validated — No Failed Tests"),
+
+            failedTestCount:
+                Number(
+                    firstDefined([
+                        snapshot.failedTestCount,
+                        draft && draft.failedTestCount
+                    ], 0)
+                ) || 0,
+
+            executionLockStatus:
+                firstDefined([
+                    snapshot.executionLockStatus,
+                    draft && draft.executionLockStatus
+                ], "Locked"),
+
+            permanentWriteStatus:
+                firstDefined([
+                    snapshot.permanentWriteStatus,
+                    draft && draft.permanentWriteStatus
+                ], "Not Executed"),
+
+            rollbackStatus:
+                firstDefined([
+                    snapshot.rollbackStatus,
+                    draft && draft.rollbackStatus
+                ], "Not Executed"),
+
+            restoreStatus:
+                firstDefined([
+                    snapshot.restoreStatus,
+                    draft && draft.restoreStatus
+                ], "Not Executed"),
+
+            sourceSnapshotEmbedded:
+                firstDefined([
+                    snapshot.sourceSnapshotEmbedded,
+                    draft && draft.sourceSnapshotEmbedded
+                ], false) === true,
+
+            duplicateDetected:
+                firstDefined([
+                    snapshot.duplicateDetected,
+                    draft && draft.duplicateDetected
+                ], false) === true,
+
+            downstreamGovernanceDependency:
+                firstDefined([
+                    draft && draft.downstreamGovernanceDependency,
+                    snapshot.downstreamGovernanceDependency
+                ], false) === true
+        };
+
+        let transactionMetadata = null;
+
+        if (
+            documentId ===
+            "WORKSPACE-SNAPSHOT-HISTORY-001"
+        ) {
+            transactionMetadata = {
+                governedDocumentId:
+                    draft.proposedDocumentId ||
+                    documentId,
+
+                collectionName:
+                    draft.collectionName ||
+                    draft.proposedCollectionName ||
+                    "snapshots",
+
+                transactionCollectionName:
+                    draft.transactionCollectionName ||
+                    "items",
+
+                updateMode:
+                    draft.updateMode ||
+                    item.updateMode ||
+                    "Append",
+
+                proposalSource:
+                    "Workspace Snapshot History Manager"
+            };
+        }
+
+        return {
+            writerId:
+                item && item.writerId
+                    ? item.writerId
+                    : "Unknown",
+
+            writerVersion:
+                item && item.writerVersion
+                    ? item.writerVersion
+                    : (
+                        draft && draft.writerVersion
+                            ? draft.writerVersion
+                            : "Unknown"
+                    ),
+
+            proposalAction:
+                draft && draft.proposalAction
+                    ? draft.proposalAction
+                    : (
+                        draft && draft.updateMode
+                            ? draft.updateMode
+                            : (
+                                item && item.updateMode
+                                    ? item.updateMode
+                                    : "Unknown"
+                            )
+                    ),
+
+            reviewRequired:
+                Boolean(draft && draft.reviewRequired),
+
+            reviewChoices:
+                Array.isArray(draft && draft.reviewChoices)
+                    ? clone(draft.reviewChoices)
+                    : [],
+
+            sourceSession:
+                sourceSession,
+
+            governanceEnvelope:
+                governanceEnvelope,
+
+            transactionMetadata:
+                transactionMetadata,
+
+            governanceEnvelopeRetained:
+                draft &&
+                typeof draft.governanceEnvelopeRetained ===
+                    "boolean"
+                    ? draft.governanceEnvelopeRetained
+                    : true,
+
+            sourceSessionIdentityRetained:
+                draft &&
+                typeof draft.sourceSessionIdentityRetained ===
+                    "boolean"
+                    ? draft.sourceSessionIdentityRetained
+                    : (
+                        sourceSession.sessionNumber !==
+                        "Unavailable"
+                    ),
+
+            transactionMetadataRetained:
+                documentId ===
+                    "WORKSPACE-SNAPSHOT-HISTORY-001"
+                    ? (
+                        draft &&
+                        typeof draft.transactionMetadataRetained ===
+                            "boolean"
+                            ? draft.transactionMetadataRetained
+                            : true
+                    )
+                    : null,
+
+            downstreamGovernanceDependency:
+                governanceEnvelope
+                    .downstreamGovernanceDependency
+        };
+    }
+
+    function validateProposalEvidence(
+        evidence,
+        documentId
+    ) {
+        const baseValid =
+            isPlainObject(evidence) &&
+            typeof evidence.writerVersion === "string" &&
+            evidence.writerVersion.length > 0 &&
+            typeof evidence.proposalAction === "string" &&
+            evidence.proposalAction.length > 0 &&
+            isPlainObject(evidence.sourceSession) &&
+            evidence.sourceSession.sessionNumber !==
+                "Unavailable" &&
+            isPlainObject(evidence.governanceEnvelope) &&
+            evidence.governanceEnvelope.governanceMode ===
+                "Disabled" &&
+            evidence.governanceEnvelope.documentationMode ===
+                "Review Only" &&
+            evidence.governanceEnvelope.executionMode ===
+                "Disabled" &&
+            evidence.governanceEnvelope.executionLockStatus ===
+                "Locked" &&
+            evidence.governanceEnvelope.permanentWriteStatus ===
+                "Not Executed" &&
+            evidence.governanceEnvelope.rollbackStatus ===
+                "Not Executed" &&
+            evidence.governanceEnvelope.restoreStatus ===
+                "Not Executed" &&
+            evidence.downstreamGovernanceDependency ===
+                false;
+
+        if (!baseValid) {
+            return false;
+        }
+
+        if (
+            documentId ===
+            "WORKSPACE-SNAPSHOT-HISTORY-001"
+        ) {
+            return (
+                isPlainObject(
+                    evidence.transactionMetadata
+                ) &&
+                evidence.transactionMetadata
+                    .governedDocumentId ===
+                    documentId &&
+                evidence.transactionMetadata
+                    .collectionName ===
+                    "snapshots" &&
+                evidence.transactionMetadata
+                    .transactionCollectionName ===
+                    "items"
+            );
+        }
+
+        return true;
     }
 
     function getCollectionMetadata(draft, proposedDocument) {
@@ -191,7 +622,8 @@ or otherwise modify any permanent file.
 
     function validateDraftItem(
         item,
-        seenDocumentIds
+        seenDocumentIds,
+        packageSourceSession
     ) {
         const checks = [];
 
@@ -375,6 +807,23 @@ or otherwise modify any permanent file.
                 proposedDocument
             );
 
+        const proposalEvidence =
+            extractProposalEvidence(
+                item,
+                draft,
+                documentId,
+                packageSourceSession
+            );
+
+        check(
+            "Enriched proposal evidence is valid",
+            validateProposalEvidence(
+                proposalEvidence,
+                documentId
+            ),
+            "The draft must retain approved source-session identity, governance safeguards, and document-specific transaction metadata."
+        );
+
         return {
             documentId:
                 documentId || "Unknown",
@@ -468,7 +917,47 @@ or otherwise modify any permanent file.
 
             rollbackRequiredBeforeWrite:
                 changeDecision
-                    .rollbackRequiredBeforeWrite
+                    .rollbackRequiredBeforeWrite,
+
+            writerId:
+                proposalEvidence.writerId,
+
+            writerVersion:
+                proposalEvidence.writerVersion,
+
+            proposalAction:
+                proposalEvidence.proposalAction,
+
+            reviewRequired:
+                proposalEvidence.reviewRequired,
+
+            reviewChoices:
+                proposalEvidence.reviewChoices,
+
+            sourceSession:
+                proposalEvidence.sourceSession,
+
+            governanceEnvelope:
+                proposalEvidence.governanceEnvelope,
+
+            transactionMetadata:
+                proposalEvidence.transactionMetadata,
+
+            governanceEnvelopeRetained:
+                proposalEvidence
+                    .governanceEnvelopeRetained,
+
+            sourceSessionIdentityRetained:
+                proposalEvidence
+                    .sourceSessionIdentityRetained,
+
+            transactionMetadataRetained:
+                proposalEvidence
+                    .transactionMetadataRetained,
+
+            downstreamGovernanceDependency:
+                proposalEvidence
+                    .downstreamGovernanceDependency
         };
     }
 
@@ -544,6 +1033,46 @@ or otherwise modify any permanent file.
                 rollbackRequiredBeforeWrite:
                     validation
                         .rollbackRequiredBeforeWrite,
+
+                writerId:
+                    validation.writerId,
+
+                writerVersion:
+                    validation.writerVersion,
+
+                proposalAction:
+                    validation.proposalAction,
+
+                reviewRequired:
+                    validation.reviewRequired,
+
+                reviewChoices:
+                    validation.reviewChoices,
+
+                sourceSession:
+                    clone(validation.sourceSession),
+
+                governanceEnvelope:
+                    clone(validation.governanceEnvelope),
+
+                transactionMetadata:
+                    validation.transactionMetadata
+                        ? clone(
+                            validation.transactionMetadata
+                        )
+                        : null,
+
+                governanceEnvelopeRetained:
+                    validation.governanceEnvelopeRetained,
+
+                sourceSessionIdentityRetained:
+                    validation.sourceSessionIdentityRetained,
+
+                transactionMetadataRetained:
+                    validation.transactionMetadataRetained,
+
+                downstreamGovernanceDependency:
+                    validation.downstreamGovernanceDependency,
 
                 transactionAction:
                     validation.permanentWriteRequired
@@ -709,13 +1238,19 @@ or otherwise modify any permanent file.
         const seenDocumentIds =
             new Set();
 
+        const packageSourceSession =
+            deriveDraftPackageSourceSession(
+                draftPackage
+            );
+
         const validations =
             (
                 draftPackage.drafts || []
             ).map(function (item) {
                 return validateDraftItem(
                     item,
-                    seenDocumentIds
+                    seenDocumentIds,
+                    packageSourceSession
                 );
             });
 
@@ -853,6 +1388,36 @@ or otherwise modify any permanent file.
                                 validation
                                     .permanentWriteRequired,
 
+                            writerId:
+                                validation.writerId,
+
+                            writerVersion:
+                                validation.writerVersion,
+
+                            proposalAction:
+                                validation.proposalAction,
+
+                            sourceSession:
+                                clone(
+                                    validation.sourceSession
+                                ),
+
+                            governanceEnvelope:
+                                clone(
+                                    validation.governanceEnvelope
+                                ),
+
+                            transactionMetadata:
+                                validation.transactionMetadata
+                                    ? clone(
+                                        validation.transactionMetadata
+                                    )
+                                    : null,
+
+                            downstreamGovernanceDependency:
+                                validation
+                                    .downstreamGovernanceDependency,
+
                             proposedDocument:
                                 clone(
                                     validation
@@ -860,6 +1425,25 @@ or otherwise modify any permanent file.
                                 )
                         };
                     }),
+
+                governanceEvidenceRetained:
+                    true,
+
+                sourceSessionIdentityRetained:
+                    true,
+
+                transactionMetadataRetained:
+                    validations.some(function (
+                        validation
+                    ) {
+                        return (
+                            validation.transactionMetadata !==
+                            null
+                        );
+                    }),
+
+                downstreamGovernanceDependency:
+                    false,
 
                 permanentWritesExecuted:
                     false,

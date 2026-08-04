@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 101 — Rollback Package Generator v1.3.0
+Work Session 116 — Rollback Package Generator v2.0.0
 File: js/session/rollback-package-generator.js
 
 Purpose:
@@ -19,7 +19,7 @@ proposed-document identity from either id or documentId.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.3.0";
+    const ENGINE_VERSION = "2.0.0";
     const PACKAGE_TYPE = "TMS-OS Permanent Documentation Rollback Package";
     const EXPECTED_DOCUMENTS = Object.freeze([
         "WS-HIST-001",
@@ -213,6 +213,70 @@ proposed-document identity from either id or documentId.
             "Every manifest item must remain unauthorized for writing."
         ));
 
+        const enrichedEvidenceValid =
+            Array.isArray(manifest) &&
+            manifest.length ===
+                EXPECTED_DOCUMENTS.length &&
+            manifest.every(function (item) {
+                const baseValid =
+                    typeof item.writerVersion ===
+                        "string" &&
+                    item.writerVersion.length > 0 &&
+                    typeof item.proposalAction ===
+                        "string" &&
+                    item.proposalAction.length > 0 &&
+                    isPlainObject(item.sourceSession) &&
+                    isPlainObject(
+                        item.governanceEnvelope
+                    ) &&
+                    item.governanceEnvelope
+                        .governanceMode ===
+                        "Disabled" &&
+                    item.governanceEnvelope
+                        .documentationMode ===
+                        "Review Only" &&
+                    item.governanceEnvelope
+                        .executionMode ===
+                        "Disabled" &&
+                    item.governanceEnvelope
+                        .executionLockStatus ===
+                        "Locked" &&
+                    item.downstreamGovernanceDependency ===
+                        false;
+
+                if (!baseValid) {
+                    return false;
+                }
+
+                if (
+                    item.documentId ===
+                    "WORKSPACE-SNAPSHOT-HISTORY-001"
+                ) {
+                    return (
+                        isPlainObject(
+                            item.transactionMetadata
+                        ) &&
+                        item.transactionMetadata
+                            .governedDocumentId ===
+                            item.documentId &&
+                        item.transactionMetadata
+                            .collectionName ===
+                            "snapshots" &&
+                        item.transactionMetadata
+                            .transactionCollectionName ===
+                            "items"
+                    );
+                }
+
+                return true;
+            });
+
+        checks.push(buildValidationCheck(
+            "Enriched proposal evidence",
+            enrichedEvidenceValid,
+            "Every transaction manifest item must retain approved source-session identity, governance safeguards, and required transaction metadata."
+        ));
+
         const rollbackRequirementsValid =
             Array.isArray(manifest) &&
             Array.isArray(rollbackMetadata) &&
@@ -360,6 +424,52 @@ proposed-document identity from either id or documentId.
                     ? manifestItem.proposedItemCount
                     : manifestItem.proposedSectionCount,
 
+            writerId:
+                manifestItem.writerId,
+
+            writerVersion:
+                manifestItem.writerVersion,
+
+            proposalAction:
+                manifestItem.proposalAction,
+
+            reviewRequired:
+                manifestItem.reviewRequired,
+
+            reviewChoices:
+                clone(
+                    manifestItem.reviewChoices || []
+                ),
+
+            sourceSession:
+                clone(
+                    manifestItem.sourceSession
+                ),
+
+            governanceEnvelope:
+                clone(
+                    manifestItem.governanceEnvelope
+                ),
+
+            transactionMetadata:
+                manifestItem.transactionMetadata
+                    ? clone(
+                        manifestItem.transactionMetadata
+                    )
+                    : null,
+
+            governanceEnvelopeRetained:
+                manifestItem.governanceEnvelopeRetained,
+
+            sourceSessionIdentityRetained:
+                manifestItem.sourceSessionIdentityRetained,
+
+            transactionMetadataRetained:
+                manifestItem.transactionMetadataRetained,
+
+            downstreamGovernanceDependency:
+                manifestItem.downstreamGovernanceDependency,
+
             checksumRequired: true,
             originalChecksum: null,
             proposedChecksum: null,
@@ -494,6 +604,19 @@ proposed-document identity from either id or documentId.
 
             originalDocumentsCaptured: false,
             proposedDocumentsCaptured: true,
+
+            governanceEvidenceRetained: true,
+            sourceSessionIdentityRetained: true,
+            transactionMetadataRetained:
+                documents.some(function (
+                    document
+                ) {
+                    return (
+                        document.transactionMetadata !==
+                        null
+                    );
+                }),
+            downstreamGovernanceDependency: false,
 
             rollbackReady: false,
             rollbackAuthorized: false,
@@ -647,6 +770,25 @@ proposed-document identity from either id or documentId.
                     document.originalDocument === null &&
                     document.proposedDocumentCaptured === true &&
                     isPlainObject(document.proposedDocument) &&
+                    typeof document.writerVersion === "string" &&
+                    document.writerVersion.length > 0 &&
+                    typeof document.proposalAction === "string" &&
+                    document.proposalAction.length > 0 &&
+                    isPlainObject(document.sourceSession) &&
+                    isPlainObject(document.governanceEnvelope) &&
+                    document.governanceEnvelope.governanceMode === "Disabled" &&
+                    document.governanceEnvelope.documentationMode === "Review Only" &&
+                    document.governanceEnvelope.executionMode === "Disabled" &&
+                    document.governanceEnvelope.executionLockStatus === "Locked" &&
+                    document.downstreamGovernanceDependency === false &&
+                    (
+                        document.documentId !== "WORKSPACE-SNAPSHOT-HISTORY-001" ||
+                        (
+                            isPlainObject(document.transactionMetadata) &&
+                            document.transactionMetadata.governedDocumentId ===
+                                document.documentId
+                        )
+                    ) &&
                     typeof document.documentChanged === "boolean" &&
                     typeof document.permanentWriteRequired === "boolean" &&
                     typeof document.rollbackRequiredBeforeWrite === "boolean" &&

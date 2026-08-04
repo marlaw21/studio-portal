@@ -1,6 +1,6 @@
 /*
 TMS-OS / Two Marshalls Studios Operating System
-Work Session 101 — Original Document Capture Engine v1.3.0
+Work Session 116 — Original Document Capture Engine v2.0.0
 File: js/session/original-document-capture-engine.js
 
 Purpose:
@@ -21,7 +21,7 @@ rollback requirements.
 (function () {
     "use strict";
 
-    const ENGINE_VERSION = "1.3.0";
+    const ENGINE_VERSION = "2.0.0";
     const CAPTURE_TYPE = "TMS-OS Original Permanent Document Capture";
     const EXPECTED_DOCUMENTS = Object.freeze([
         "WS-HIST-001",
@@ -425,6 +425,71 @@ rollback requirements.
             proposedSectionCount:
                 rollbackEntry.proposedSectionCount,
 
+            sourceCollectionName:
+                rollbackEntry.sourceCollectionName ||
+                null,
+            proposedCollectionName:
+                rollbackEntry.proposedCollectionName ||
+                null,
+            sourceItemCount:
+                Number.isInteger(
+                    rollbackEntry.sourceItemCount
+                )
+                    ? rollbackEntry.sourceItemCount
+                    : rollbackEntry.sourceSectionCount,
+            proposedItemCount:
+                Number.isInteger(
+                    rollbackEntry.proposedItemCount
+                )
+                    ? rollbackEntry.proposedItemCount
+                    : rollbackEntry.proposedSectionCount,
+
+            writerId:
+                rollbackEntry.writerId,
+
+            writerVersion:
+                rollbackEntry.writerVersion,
+
+            proposalAction:
+                rollbackEntry.proposalAction,
+
+            reviewRequired:
+                rollbackEntry.reviewRequired,
+
+            reviewChoices:
+                clone(
+                    rollbackEntry.reviewChoices || []
+                ),
+
+            sourceSession:
+                clone(
+                    rollbackEntry.sourceSession
+                ),
+
+            governanceEnvelope:
+                clone(
+                    rollbackEntry.governanceEnvelope
+                ),
+
+            transactionMetadata:
+                rollbackEntry.transactionMetadata
+                    ? clone(
+                        rollbackEntry.transactionMetadata
+                    )
+                    : null,
+
+            governanceEnvelopeRetained:
+                rollbackEntry.governanceEnvelopeRetained,
+
+            sourceSessionIdentityRetained:
+                rollbackEntry.sourceSessionIdentityRetained,
+
+            transactionMetadataRetained:
+                rollbackEntry.transactionMetadataRetained,
+
+            downstreamGovernanceDependency:
+                rollbackEntry.downstreamGovernanceDependency,
+
             checksumRequired: true,
             originalChecksum:
                 captureResult.originalChecksum,
@@ -643,6 +708,19 @@ rollback requirements.
             originalDocumentsCaptured: true,
             proposedDocumentsCaptured: true,
 
+            governanceEvidenceRetained: true,
+            sourceSessionIdentityRetained: true,
+            transactionMetadataRetained:
+                capturedDocuments.some(function (
+                    document
+                ) {
+                    return (
+                        document.transactionMetadata !==
+                        null
+                    );
+                }),
+            downstreamGovernanceDependency: false,
+
             rollbackReady: true,
             rollbackAuthorized: false,
             writeAuthorized: false,
@@ -749,6 +827,25 @@ rollback requirements.
                     (document.originalDocument.id || document.originalDocument.documentId) === document.documentId &&
                     document.proposedDocumentCaptured === true &&
                     isPlainObject(document.proposedDocument) &&
+                    typeof document.writerVersion === "string" &&
+                    document.writerVersion.length > 0 &&
+                    typeof document.proposalAction === "string" &&
+                    document.proposalAction.length > 0 &&
+                    isPlainObject(document.sourceSession) &&
+                    isPlainObject(document.governanceEnvelope) &&
+                    document.governanceEnvelope.governanceMode === "Disabled" &&
+                    document.governanceEnvelope.documentationMode === "Review Only" &&
+                    document.governanceEnvelope.executionMode === "Disabled" &&
+                    document.governanceEnvelope.executionLockStatus === "Locked" &&
+                    document.downstreamGovernanceDependency === false &&
+                    (
+                        document.documentId !== "WORKSPACE-SNAPSHOT-HISTORY-001" ||
+                        (
+                            isPlainObject(document.transactionMetadata) &&
+                            document.transactionMetadata.governedDocumentId ===
+                                document.documentId
+                        )
+                    ) &&
                     typeof document.originalChecksum === "string" &&
                     document.originalChecksum.length > 0 &&
                     typeof document.proposedChecksum === "string" &&
